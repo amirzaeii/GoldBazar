@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#f5f5f5"
+             FlowDirection="RightToLeft"
+             x:Class="MauiApp1.FilterPage"
+             Title="FilterPage">
+    
+    <ScrollView>
+        <Grid RowDefinitions="Auto, *, Auto" Padding="0" Margin="0">
+
+            <!-- Header Section -->
+            <Grid Grid.Row="0" Padding="15, 15, 15, 5" BackgroundColor="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Back Button -->
+                <StackLayout Grid.Column="2" Orientation="Horizontal" Spacing="5" VerticalOptions="Center">
+                    <Label Text="جیەکاری"
+                       VerticalOptions="Center"
+                       FontSize="16"
+                       TextColor="Black" />
+                    <Image Source="assets/Icons/left.svg"
+                       VerticalOptions="Center"
+                       WidthRequest="16"
+                       HeightRequest="16" />
+
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnBackButtonTapped"/>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
+
+                <!-- Filter Trigger Button -->
+                <Frame Grid.Column="0"
+                   BackgroundColor="Transparent"
+                   CornerRadius="20"
+                   Padding="6, 12"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center">
+                    <Frame.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#8060f4" Offset="0.0" />
+                            <GradientStop Color="#6c47ff" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Frame.Background>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                        <!-- Text Label -->
+                        <Label Text="جیاکاریەکان"
+                           VerticalOptions="Center"
+                           FontSize="14"
+                           TextColor="White" />
+                        <!-- Arrow Icon to the left -->
+                        <Image Source="assets/Icons/leftarrow.svg"
+                           VerticalOptions="Center"
+                           WidthRequest="16"
+                           HeightRequest="16" />
+
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnFilterTriggerTapped"/>
+                    </Frame.GestureRecognizers>
+                </Frame>
+            </Grid>
+
+            <!-- Thin Black Line -->
+            <BoxView Grid.Row="1"
+                 HeightRequest="1"
+                 BackgroundColor="LightGray"
+                 HorizontalOptions="FillAndExpand"
+                 Margin="0, 5, 0, 0"
+                 VerticalOptions="End" />
+
+            <!-- Content Section (Filter Menu and Checkbox) -->
+            <ScrollView Grid.Row="2" BackgroundColor="#FFFFFF">
+                <StackLayout Padding="16">
+
+                    <!-- Filter chips (Dyanamic rendering) -->
+                    <ScrollView Orientation="Horizontal" Padding="0,15,0,0" BackgroundColor="White">
+                        <StackLayout x:Name="FilterChipsContainer" Orientation="Horizontal" Spacing="5" />
+                    </ScrollView>
+
+                    <!-- Clear All Wrapper -->
+                    <StackLayout x:Name="ClearAllWrapper" IsVisible="True" Padding="0" Margin="0,1,0,0">
+                        <Button x:Name="ClearAllButton"
+                            Text="لابردنی هەمووی"
+                            BackgroundColor="#FFF5F5"
+                            TextColor="#f46079"
+                            FontSize="14"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="Center"
+                            HeightRequest="30"
+                            CornerRadius="20"
+                            Padding="10,0">
+                            <Button.ImageSource>
+                                <FileImageSource File="assets/Icons/corss.svg" />
+                            </Button.ImageSource>
+                        </Button>
+                    </StackLayout>
+
+                    <!-- View Options Container -->
+                    <StackLayout Padding="0,20,0,0">
+                        <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto,*" Padding="0,0,0,20">
+                            <!-- View Label (Placed in Row 0) -->
+                            <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.ColumnSpan="2" VerticalOptions="Start" HorizontalOptions="Start" Spacing="8" Padding="0,0,0,10">
+                                <Label Text="ڕیزکردن بە پێی"
+                                   FontSize="14"
+                                   TextColor="#787878"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"
+                                   Padding="0,0,0,0" />
+                                <Image Source="assets/Icons/arange.svg" VerticalOptions="Center" HorizontalOptions="Center" />
+                            </StackLayout>
+
+                            <!-- View Options Buttons (Placed in Row 1) -->
+                            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="End" Spacing="15" Padding="0,0,0,-20">
+                                <!-- Updated Buttons -->
+                                <Button Text="گران بۆ هەرزان"
+                                    FontSize="14"
+                                    BackgroundColor="White"
+                                    TextColor="#666"
+                                    BorderColor="#666"
+                                    BorderWidth="1"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    Padding="15,5"
+                                    HorizontalOptions="Center" />
+
+                                <Button Text="هەرزان بۆ گران"
+                                    FontSize="14"
+                                    BackgroundColor="#0066ff3b"
+                                    TextColor="#666"
+                                    BorderColor="#666"
+                                    BorderWidth="1"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    Padding="15,5"
+                                    x:Name="ActiveButton"
+                                    HorizontalOptions="Center" />
+
+                                <Button Text="VIP"
+                                    FontSize="14"
+                                    BackgroundColor="White"
+                                    TextColor="#666"
+                                    BorderColor="#666"
+                                    BorderWidth="1"
+                                    CornerRadius="20"
+                                    HeightRequest="40"
+                                    WidthRequest="100"
+                                    HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Grid>
+                    </StackLayout>
+
+                    <!-- Product Grid Section -->
+                    <StackLayout Padding="16">
+                        <CollectionView ItemsSource="{Binding Products}" Margin="0,0,0,0">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="8" HorizontalItemSpacing="8" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="0" Margin="8" CornerRadius="24" BackgroundColor="#F8F8FA" HeightRequest="220" WidthRequest="160" HasShadow="False" BorderColor="Transparent">
+                                        <StackLayout Padding="8" Spacing="12" VerticalOptions="CenterAndExpand">
+                                            <!-- Offer Badge -->
+                                            <Image Source="{Binding OfferBadge}" WidthRequest="24" HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Start" />
+
+                                            <!-- Product Image -->
+                                            <Grid HeightRequest="140" HorizontalOptions="Center" VerticalOptions="Center" Padding="0,-35,0,0">
+                                                <Image Source="{Binding ProductImage}" Aspect="AspectFit" HorizontalOptions="Center" VerticalOptions="Center" />
+                                            </Grid>
+
+                                            <!-- Product Info -->
+                                            <StackLayout Spacing="6" Padding="0,-50,0,0">
+                                                <Label Text="{Binding ProductTitle}" FontSize="15" TextColor="#1A1A1A" FontFamily="rabar14" FontAttributes="Bold" HorizontalTextAlignment="End" />
+                                                <Grid ColumnDefinitions="Auto,Auto" VerticalOptions="Center">
+                                                    <Frame Padding="5" CornerRadius="15" BackgroundColor="#E6DFFA" WidthRequest="36" HeightRequest="36" HorizontalOptions="Start">
+                                                        <ImageButton Source="{Binding FavoriteIcon}" BackgroundColor="Transparent" WidthRequest="20" HeightRequest="20" Aspect="AspectFit" />
+                                                    </Frame>
+                                                    <Label Grid.Column="1" Text="{Binding Price}" FontFamily="rabar14" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Padding="0,0,50,0"/>
+                                                </Grid>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+
+        </Grid>
+    </ScrollView>
+</ContentPage>
