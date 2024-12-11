@@ -9,17 +9,22 @@
         public decimal Discount { get; set; }
         public decimal CreateCost { get; set; }
         public double Weight { get; set; }
-        public string ProductType { get; set; } = string.Empty;
-        public string Material { get; set; } = string.Empty;
-        public string Metal { get; set; } = string.Empty;
+        public ProductType Type { get; set; }
+        public int TypeId { get; set; }
+        public Material Material { get; set; } = default!;
+        public int MaterialId { get; set; }
+        public Metal Metal { get; set; } = default!;
+        public string MetalId { get; set; } 
         public int Size { get; set; }
-        public string Occasion { get; set; } = string.Empty;
-        public string Style { get; set; } = string.Empty;
+        public Occassion Occassion { get; set; }
+        public string OccasionId { get; set; } = string.Empty;
+        public Style Style { get; set; } = default!;
+        public string StyleId { get; set; }
         public string Description { get; set; } = string.Empty;
         public decimal CostPerGram { get; set; }
         public int Quantity { get; set; }
+        public Shop Shop { get; set; }  
         public int ShopId { get; set; }
         public string MainImage { get; set; } = string.Empty;
-        public string Manufacturer { get; set; } = string.Empty;
     }
 }

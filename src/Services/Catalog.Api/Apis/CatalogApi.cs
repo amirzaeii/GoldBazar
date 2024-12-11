@@ -11,7 +11,7 @@ public static class CatalogApi
 
         // Routes for managing products
         api.MapGet("/products", GetAllProducts);
-        api.MapGet("/products/{id:int}", GetProductById);
+        api.MapGet("/product/{id:int}", GetProductById);
         api.MapPost("/products", CreateProduct);
         api.MapPut("/products/{id:int}", UpdateProduct);
         api.MapDelete("/products/{id:int}", DeleteProduct);
