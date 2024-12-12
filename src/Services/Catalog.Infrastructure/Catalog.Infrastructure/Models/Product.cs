@@ -14,16 +14,16 @@
         public Material Material { get; set; } = default!;
         public int MaterialId { get; set; }
         public Metal Metal { get; set; } = default!;
-        public string MetalId { get; set; } 
+        public int MetalId { get; set; } 
         public int Size { get; set; }
-        public Occassion Occassion { get; set; }
-        public string OccasionId { get; set; } = string.Empty;
+        public Occassion Occassion { get; set; } = default!;
+        public int OccasionId { get; set; }
         public Style Style { get; set; } = default!;
-        public string StyleId { get; set; }
+        public int StyleId { get; set; }
         public string Description { get; set; } = string.Empty;
         public decimal CostPerGram { get; set; }
         public int Quantity { get; set; }
-        public Shop Shop { get; set; }  
+        public Shop Shop { get; set; } = default!; 
         public int ShopId { get; set; }
         public string MainImage { get; set; } = string.Empty;
     }
