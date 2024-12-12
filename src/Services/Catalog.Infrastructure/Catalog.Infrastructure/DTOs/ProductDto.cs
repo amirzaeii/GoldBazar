@@ -33,18 +33,20 @@ namespace Catalog.Infrastructure
             Discount = product.Discount;
             CreateCost = product.CreateCost;
             Weight = product.Weight;
-            ProductType = product.ProductType;
-            Material = product.Material;
-            Metal = product.Metal;
-            Size = product.Size > 15 ? 10 : 0;
-            Occasion = product.Occasion;
-            Style = product.Style;
+            Size = product.Size;
             Description = product.Description;
             CostPerGram = product.CostPerGram;
             Quantity = product.Quantity;
             ShopId = product.ShopId;
             MainImage = product.MainImage;
             Manufacturer = product.Manufacturer;
+
+            // Mapped properties from related entities
+            ProductType = product.Type?.Name ?? string.Empty;
+            Material = product.Material?.Name ?? string.Empty;
+            Metal = product.Metal?.Name ?? string.Empty;
+            Occasion = product.Occassion?.Name ?? string.Empty;
+            Style = product.Style?.Name ?? string.Empty;
         }
 
     }
