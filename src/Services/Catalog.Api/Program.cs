@@ -1,5 +1,3 @@
-using AutoMapper;
-using Catalog.Api.Profiles;
 using ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,10 +8,6 @@ builder.Services.AddProblemDetails();
 var withApiVersioning = builder.Services.AddApiVersioning();
 
 builder.AddDefaultOpenApi(withApiVersioning);
-
-// AutoMapper Configuration: Added this section
-builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 
 var app = builder.Build();
 
