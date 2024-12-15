@@ -1,100 +1,106 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+
 namespace Catalog.Api;
 
 public static class CatalogApi
 {
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapCatalogApiV1(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/products", GetProducts);
-            app.MapGet("/products/{id}", GetProductById);
-            app.MapPost("/products", AddProduct);
-            app.MapPut("/products/{id}", UpdateProduct);
-            app.MapDelete("/products/{id}", DeleteProduct);
-            app.MapGet("/products/discounted", GetDiscountedProducts);
-            app.MapGet("/products/similar/{typeId}", GetSimilarProducts);
-            app.MapPost("/products/filter", FilterProducts);
+            app.MapGet("/products", GetAllItems);
+            // app.MapGet("/products/{id}", GetProductById);
+            // app.MapPost("/products", AddProduct);
+            // app.MapPut("/products/{id}", UpdateProduct);
+            // app.MapDelete("/products/{id}", DeleteProduct);
+            // app.MapGet("/products/discounted", GetDiscountedProducts);
+            // app.MapGet("/products/similar/{typeId}", GetSimilarProducts);
+            //app.MapPost("/products/filter", FilterProducts);
+
+            return app;
         }
 
-        private static List<Product> productList = new List<Product>();
-
-        private static IResult GetProducts(int? pageNumber, int? pageSize)
+        public static async Task<Results<Ok<PaginatedItems<Product>>, BadRequest<string>>> GetAllItems(
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
-            pageNumber ??= 1;
-            pageSize ??= 10;
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
 
-            var paginatedProducts = productList
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
-                .ToList();
+            var totalItems = await services.Context.Products
+                .LongCountAsync();
 
-            return Results.Ok(paginatedProducts);
+            var itemsOnPage = await services.Context.Products
+                .OrderBy(c => c.Caption)
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return TypedResults.Ok(new PaginatedItems<Product>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
-        private static IResult GetProductById(int id)
-        {
-            var product = productList.FirstOrDefault(p => p.Id == id);
-            return product is not null ? Results.Ok(product) : Results.NotFound($"Product with ID {id} not found.");
-        }
+        // private static IResult GetProductById(int id)
+        // {
+        //     var product = productList.FirstOrDefault(p => p.Id == id);
+        //     return product is not null ? Results.Ok(product) : Results.NotFound($"Product with ID {id} not found.");
+        // }
 
-        private static IResult AddProduct(Product product)
-        {
-            if (productList.Any(p => p.Id == product.Id))
-            {
-                return Results.BadRequest($"A product with ID {product.Id} already exists.");
-            }
+        // private static IResult AddProduct(Product product)
+        // {
+        //     if (productList.Any(p => p.Id == product.Id))
+        //     {
+        //         return Results.BadRequest($"A product with ID {product.Id} already exists.");
+        //     }
 
-            productList.Add(product);
-            return Results.Created($"/products/{product.Id}", product);
-        }
+        //     productList.Add(product);
+        //     return Results.Created($"/products/{product.Id}", product);
+        // }
 
-        private static IResult UpdateProduct(int id, Product updatedProduct)
-        {
-            var product = productList.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-            {
-                return Results.NotFound($"Product with ID {id} not found.");
-            }
+        // private static IResult UpdateProduct(int id, Product updatedProduct)
+        // {
+        //     var product = productList.FirstOrDefault(p => p.Id == id);
+        //     if (product == null)
+        //     {
+        //         return Results.NotFound($"Product with ID {id} not found.");
+        //     }
 
-            product.Caption = updatedProduct.Caption;
-            product.ActivityStatus = updatedProduct.ActivityStatus;
-            product.HasOffer = updatedProduct.HasOffer;
-            product.Discount = updatedProduct.Discount;
-            product.CreateCost = updatedProduct.CreateCost;
-            product.Weight = updatedProduct.Weight;
-            product.TypeId = updatedProduct.TypeId;
-            product.MaterialId = updatedProduct.MaterialId;
-            product.MetalId = updatedProduct.MetalId;
-            product.OccasionId = updatedProduct.OccasionId;
-            product.StyleId = updatedProduct.StyleId;
-            product.ShopId = updatedProduct.ShopId;
-            product.Description = updatedProduct.Description;
-            product.MainImage = updatedProduct.MainImage;
+        //     product.Caption = updatedProduct.Caption;
+        //     product.ActivityStatus = updatedProduct.ActivityStatus;
+        //     product.HasOffer = updatedProduct.HasOffer;
+        //     product.Discount = updatedProduct.Discount;
+        //     product.Weight = updatedProduct.Weight;
+        //     product.TypeId = updatedProduct.TypeId;
+        //     product.MaterialId = updatedProduct.MaterialId;
+        //     product.MetalId = updatedProduct.MetalId;
+        //     product.OccasionId = updatedProduct.OccasionId;
+        //     product.StyleId = updatedProduct.StyleId;
+        //     product.ShopId = updatedProduct.ShopId;
+        //     product.Description = updatedProduct.Description;
 
-            return Results.Ok(product);
-        }
+        //     return Results.Ok(product);
+        // }
 
-        private static IResult DeleteProduct(int id)
-        {
-            var product = productList.FirstOrDefault(p => p.Id == id);
-            if (product == null)
-            {
-                return Results.NotFound($"Product with ID {id} not found.");
-            }
+        // private static IResult DeleteProduct(int id)
+        // {
+        //     var product = productList.FirstOrDefault(p => p.Id == id);
+        //     if (product == null)
+        //     {
+        //         return Results.NotFound($"Product with ID {id} not found.");
+        //     }
 
-            productList.Remove(product);
-            return Results.Ok($"Product with ID {id} deleted.");
-        }
+        //     productList.Remove(product);
+        //     return Results.Ok($"Product with ID {id} deleted.");
+        // }
 
-        private static IResult GetDiscountedProducts()
-        {
-            var discountedProducts = productList.Where(p => p.HasOffer && p.Discount > 0).ToList();
-            return Results.Ok(discountedProducts);
-        }
+        // private static IResult GetDiscountedProducts()
+        // {
+        //     var discountedProducts = productList.Where(p => p.HasOffer && p.Discount > 0).ToList();
+        //     return Results.Ok(discountedProducts);
+        // }
 
-        private static IResult GetSimilarProducts(int typeId)
-        {
-            var similarProducts = productList.Where(p => p.TypeId == typeId).ToList();
-            return Results.Ok(similarProducts);
-        }
+        // private static IResult GetSimilarProducts(int typeId)
+        // {
+        //     var similarProducts = productList.Where(p => p.TypeId == typeId).ToList();
+        //     return Results.Ok(similarProducts);
+        // }
 
     private static IResult FilterProducts(CompositeFilterDto filter)
     {

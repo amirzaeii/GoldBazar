@@ -7,15 +7,23 @@ namespace Catalog.Infrastructure
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Name is required.")]
-        [StringLength(100, ErrorMessage = "Name cannot exceed 100 characters.")]
-        public string? Name { get; set; }
+        [StringLength(255, ErrorMessage = "Name cannot exceed 100 characters.")]
+        public string Name { get; set; } = default!;
 
         [Required(ErrorMessage = "Manufacture is required.")]
-        [RegularExpression("^(Dubai|Local|Turkey)$", ErrorMessage = "Manufacture must be one of the following: Dubai, Local, Turkey.")]
-        public string? Manufacture { get; set; }
+        public ManufactureEnum Manufacture { get; set; }
 
         [Required(ErrorMessage = "KT is required.")]
-        [Range(18, 24, ErrorMessage = "KT must be a valid karat value (e.g., 18, 19, 20, ..., 24).")]
-        public int KT { get; set; }
+        [Range(1, 24, ErrorMessage = "KT must be a valid karat value (e.g., 18, 19, 20, ..., 24).")]
+        public int Karat { get; set; }
+    }
+
+    public enum ManufactureEnum
+    {
+        Dubai = 1,
+        Turkey = 2,
+        Local = 3,
+        Other = 4
+
     }
 }

@@ -1,74 +1,47 @@
 namespace ServiceDefaults;
-
-public static partial class Extensions
+public static class Extensions
 {
-    public static IApplicationBuilder UseDefaultOpenApi(this WebApplication app)
+    public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
-        var configuration = app.Configuration;
-        var openApiSection = configuration.GetSection("OpenApi");
-
-        if (!openApiSection.Exists())
+        builder.AddNpgsqlDbContext<CatalogContext>("catalogdb", configureDbContextOptions: dbContextOptionsBuilder =>
         {
-            return app;
-        }
-
-        app.MapOpenApi();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapScalarApiReference(options =>
+            dbContextOptionsBuilder.UseNpgsql(builder =>
             {
-                // Disable default fonts to avoid download unnecessary fonts
-                options.DefaultFonts = false;
+                //builder.UseVector();
             });
-            app.MapGet("/", () => Results.Redirect("/scalar/v1")).ExcludeFromDescription();
-        }
+        });
 
-        return app;
-    }
+        // REVIEW: This is done for development ease but shouldn't be here in production
+        //builder.Services.AddMigration<CatalogContext, CatalogContextSeed>();
 
-    public static IHostApplicationBuilder AddDefaultOpenApi(
-        this IHostApplicationBuilder builder,
-        IApiVersioningBuilder? apiVersioning = default)
-    {
-        var openApi = builder.Configuration.GetSection("OpenApi");
-        var identitySection = builder.Configuration.GetSection("Identity");
+        // Add the integration services that consume the DbContext
+        //builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();
 
-        var scopes = identitySection.Exists()
-            ? identitySection.GetRequiredSection("Scopes").GetChildren().ToDictionary(p => p.Key, p => p.Value)
-            : new Dictionary<string, string?>();
+        //builder.Services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
+        // builder.AddRabbitMqEventBus("eventbus")
+        //        .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
+        //        .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-        if (!openApi.Exists())
-        {
-            return builder;
-        }
+        // builder.Services.AddOptions<CatalogOptions>()
+        //     .BindConfiguration(nameof(CatalogOptions));
 
-        if (apiVersioning is not null)
-        {
-            // the default format will just be ApiVersion.ToString(); for example, 1.0.
-            // this will format the version as "'v'major[.minor][-status]"
-            var versioned = apiVersioning.AddApiExplorer(options => options.GroupNameFormat = "'v'VVV");
-            string[] versions = ["v1"];
-            foreach (var description in versions)
-            {
-                builder.Services.AddOpenApi(description, options =>
-                {
-                    options.ApplyApiVersionInfo(openApi.GetRequiredValue("Document:Title"), openApi.GetRequiredValue("Document:Description"));
-                    options.ApplyAuthorizationChecks([.. scopes.Keys]);
-                    options.ApplySecuritySchemeDefinitions();
-                    options.ApplyOperationDeprecatedStatus();
-                    // Clear out the default servers so we can fallback to
-                    // whatever ports have been allocated for the service by Aspire
-                    options.AddDocumentTransformer((document, context, cancellationToken) =>
-                    {
-                        document.Servers = [];
-                        return Task.CompletedTask;
-                    });
-                });
-            }
-        }
+        // if (builder.Configuration["AI:Ollama:Endpoint"] is string ollamaEndpoint && !string.IsNullOrWhiteSpace(ollamaEndpoint))
+        // {
+        //     builder.Services.AddEmbeddingGenerator(new OllamaEmbeddingGenerator(ollamaEndpoint, builder.Configuration["AI:Ollama:EmbeddingModel"]))
+        //         .UseOpenTelemetry()
+        //         .UseLogging()
+        //         .Build();
+        // }
+        // else if (!string.IsNullOrWhiteSpace(builder.Configuration.GetConnectionString("openai")))
+        // {
+        //     builder.AddOpenAIClientFromConfiguration("openai");
+        //     builder.Services.AddEmbeddingGenerator(sp => sp.GetRequiredService<OpenAIClient>().AsEmbeddingGenerator(builder.Configuration["AI:OpenAI:EmbeddingModel"]!))
+        //         .UseOpenTelemetry()
+        //         .UseLogging()
+        //         .Build();
+        // }
 
-        return builder;
+        // builder.Services.AddScoped<ICatalogAI, CatalogAI>();
     }
 }
