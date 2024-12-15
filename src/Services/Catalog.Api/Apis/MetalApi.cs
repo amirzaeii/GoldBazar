@@ -36,9 +36,9 @@
         {
             if (string.IsNullOrWhiteSpace(metal.Name))
                 return Results.BadRequest("Name is required.");
-            if (string.IsNullOrWhiteSpace(metal.Manufacture))
+            if (metal.Manufacture == 0)
                 return Results.BadRequest("Manufacture is required.");
-            if (metal.KT < 18 || metal.KT > 24)
+            if (metal.Karat < 18 || metal.Karat > 24)
                 return Results.BadRequest("KT must be between 18 and 24.");
 
             metal.Id = metals.Any() ? metals.Max(m => m.Id) + 1 : 1; // Auto-generate ID
@@ -55,14 +55,14 @@
 
             if (string.IsNullOrWhiteSpace(updatedMetal.Name))
                 return Results.BadRequest("Name is required.");
-            if (string.IsNullOrWhiteSpace(updatedMetal.Manufacture))
+            if (updatedMetal.Manufacture == 0)
                 return Results.BadRequest("Manufacture is required.");
-            if (updatedMetal.KT < 18 || updatedMetal.KT > 24)
+            if (updatedMetal.Karat < 18 || updatedMetal.Karat > 24)
                 return Results.BadRequest("KT must be between 18 and 24.");
 
             existingMetal.Name = updatedMetal.Name;
             existingMetal.Manufacture = updatedMetal.Manufacture;
-            existingMetal.KT = updatedMetal.KT;
+            existingMetal.Karat = updatedMetal.Karat;
 
             return Results.Ok(existingMetal);
         }

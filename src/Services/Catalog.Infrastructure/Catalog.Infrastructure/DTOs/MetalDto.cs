@@ -12,8 +12,8 @@ namespace Catalog.Infrastructure
         {
             Id = metal.Id;
             Name = metal.Name;
-            Manufacture = metal.Manufacture;
-            KT = metal.KT;
+            Manufacture = metal.Manufacture.ToString();
+            KT = metal.Karat;
         }
     }
 }

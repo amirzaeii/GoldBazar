@@ -55,8 +55,6 @@ namespace Catalog.Api.Apis
             shop.City = updatedShop.City;
             shop.Address = updatedShop.Address;
             shop.ContactNumber = updatedShop.ContactNumber;
-            shop.Rating = updatedShop.Rating;
-
             return Results.Ok(shop);
         }
 

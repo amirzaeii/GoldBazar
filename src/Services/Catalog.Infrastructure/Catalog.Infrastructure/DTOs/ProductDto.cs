@@ -9,7 +9,6 @@ namespace Catalog.Infrastructure
         public bool ActivityStatus { get; }
         public bool HasOffer { get; }
         public decimal Discount { get;}
-        public decimal CreateCost { get; set; }
         public double Weight { get; set; }
         public string ProductType { get; set; } = string.Empty;
         public string Material { get; set; } = string.Empty;
@@ -31,15 +30,11 @@ namespace Catalog.Infrastructure
             ActivityStatus = product.ActivityStatus;
             HasOffer = product.HasOffer;
             Discount = product.Discount;
-            CreateCost = product.CreateCost;
             Weight = product.Weight;
-            Size = product.Size;
             Description = product.Description;
             CostPerGram = product.CostPerGram;
             Quantity = product.Quantity;
             ShopId = product.ShopId;
-            MainImage = product.MainImage;
-            Manufacturer = product.Manufacturer;
 
             // Mapped properties from related entities
             ProductType = product.Type?.Name ?? string.Empty;
