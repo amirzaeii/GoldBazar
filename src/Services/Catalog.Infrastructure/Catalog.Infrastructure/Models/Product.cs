@@ -41,5 +41,10 @@ namespace Catalog.Infrastructure
         public int Quantity { get; set; }
         public int ShopId { get; set; } // FK to Shop
         public Shop Shop { get; set; } = default!; // Navigation property
-    }
+
+        // Added 
+        [Range(0, int.MaxValue, ErrorMessage = "Size cannot be negative.")]
+        public int Size { get; set; } // Optional or required, depending on business rules
+
+   }
 }

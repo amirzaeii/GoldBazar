@@ -24,6 +24,5 @@ namespace Catalog.Infrastructure
         Turkey = 2,
         Local = 3,
         Other = 4
-
     }
 }
