@@ -66,7 +66,7 @@ builder.AddProject<Projects.Mobile_Bff>("mobile-bff")
 //     .WithReference(webHooksApi)
 //     .WithEnvironment("IdentityUrl", identityEndpoint);
 
-var webApp = builder.AddProject<Projects.HybridApp>("webapp", launchProfileName)
+var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithExternalHttpEndpoints()
     //.WithReference(basketApi)
     .WithReference(catalogApi)
@@ -99,7 +99,7 @@ builder.Build().Run();
 // are doing this for ease of running the Playwright tests in CI.
 static bool ShouldUseHttpForEndpoints()
 {
-    const string EnvVarName = "ESHOP_USE_HTTP_ENDPOINTS";
+    const string EnvVarName = "GOLDBAZAR_USE_HTTP_ENDPOINTS";
     var envValue = Environment.GetEnvironmentVariable(EnvVarName);
 
     // Attempt to parse the environment variable value; return true if it's exactly "1".

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
   </ItemGroup>
 
