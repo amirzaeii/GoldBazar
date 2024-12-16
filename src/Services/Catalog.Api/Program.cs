@@ -23,8 +23,7 @@ if(app.Environment.IsDevelopment()){
 
 app.UseHttpsRedirection();
 
-app.NewVersionedApi("Catalog")
-   .MapCatalogApiV1();
+//app.NewVersionedApi("Catalog").MapCatalogApiV1();
 
 //app.UseDefaultOpenApi();
 app.Run();

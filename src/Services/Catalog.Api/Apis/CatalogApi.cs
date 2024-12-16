@@ -102,66 +102,66 @@ public static class CatalogApi
         //     return Results.Ok(similarProducts);
         // }
 
-        // private static IResult FilterProducts(CompositeFilterDto filter)
-        // {
-        //     var queryableProducts = productList.AsQueryable();
+    private static IResult FilterProducts(CompositeFilterDto filter)
+    {
+        var queryableProducts = productList.AsQueryable();
 
-        //     if (filter.MinWeight > 0 || filter.MaxWeight > 0)
-        //     {
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             (filter.MinWeight == 0 || p.Weight >= filter.MinWeight) &&
-        //             (filter.MaxWeight == 0 || p.Weight <= filter.MaxWeight));
-        //     }
+        if (filter.MinWeight > 0 || filter.MaxWeight > 0)
+        {
+            queryableProducts = queryableProducts.Where(p =>
+                (filter.MinWeight == 0 || p.Weight >= filter.MinWeight) &&
+                (filter.MaxWeight == 0 || p.Weight <= filter.MaxWeight));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.ProductType))
-        //     {
-        //         var productTypes = filter.ProductType.Split(',').Select(pt => pt.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             productTypes.Any(pt => string.Equals(pt, p.ProductType, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.ProductType))
+        {
+            var productTypes = filter.ProductType.Split(',').Select(pt => pt.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                productTypes.Any(pt => string.Equals(pt, p.Type.Name, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Material))
-        //     {
-        //         var materials = filter.Material.Split(',').Select(m => m.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             materials.Any(m => string.Equals(m, p.Material, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Material))
+        {
+            var materials = filter.Material.Split(',').Select(m => m.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                materials.Any(m => string.Equals(m, p.Material.Name, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Metal))
-        //     {
-        //         var metals = filter.Metal.Split(',').Select(m => m.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             metals.Any(m => string.Equals(m, p.Metal, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Metal))
+        {
+            var metals = filter.Metal.Split(',').Select(m => m.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                metals.Any(m => string.Equals(m, p.Metal.Name, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Size))
-        //     {
-        //         var sizes = filter.Size.Split(',').Select(int.Parse).ToList();
-        //         queryableProducts = queryableProducts.Where(p => sizes.Contains(p.Size));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Size))
+        {
+            var sizes = filter.Size.Split(',').Select(int.Parse).ToList();
+            queryableProducts = queryableProducts.Where(p => sizes.Contains(p.Size));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Occasion))
-        //     {
-        //         var occasions = filter.Occasion.Split(',').Select(o => o.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             occasions.Any(o => string.Equals(o, p.Occasion, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Occasion))
+        {
+            var occasions = filter.Occasion.Split(',').Select(o => o.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                occasions.Any(o => string.Equals(o, p.Occassion.Name, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Style))
-        //     {
-        //         var styles = filter.Style.Split(',').Select(s => s.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             styles.Any(s => string.Equals(s, p.Style, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Style))
+        {
+            var styles = filter.Style.Split(',').Select(s => s.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                styles.Any(s => string.Equals(s, p.Style.Name, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     if (!string.IsNullOrWhiteSpace(filter.Manufacturer))
-        //     {
-        //         var manufacturers = filter.Manufacturer.Split(',').Select(m => m.Trim()).ToList();
-        //         queryableProducts = queryableProducts.Where(p =>
-        //             manufacturers.Any(m => string.Equals(m, p.Manufacturer, StringComparison.OrdinalIgnoreCase)));
-        //     }
+        if (!string.IsNullOrWhiteSpace(filter.Manufacturer))
+        {
+            var manufacturers = filter.Manufacturer.Split(',').Select(m => m.Trim()).ToList();
+            queryableProducts = queryableProducts.Where(p =>
+                manufacturers.Any(m => string.Equals(m, p.Manufacturer, StringComparison.OrdinalIgnoreCase)));
+        }
 
-        //     return Results.Ok(queryableProducts.ToList());
-        // }
-    //}
+        return Results.Ok(queryableProducts.ToList());
+    }
+
 }
