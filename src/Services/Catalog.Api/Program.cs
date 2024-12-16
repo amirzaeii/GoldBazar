@@ -1,8 +1,8 @@
 using ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.AddServiceDefaults();
-//builder.AddApplicationServices();
+builder.AddServiceDefaults();
+builder.AddApplicationServices();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -14,7 +14,8 @@ var withApiVersioning = builder.Services.AddApiVersioning();
 
 var app = builder.Build();
 
-//app.MapDefaultEndpoints();
+app.MapDefaultEndpoints();
+
 if(app.Environment.IsDevelopment()){
    app.UseSwagger();
    app.UseSwaggerUI();

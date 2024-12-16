@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Client/HybridApp/HybridApp.csproj" />
+    <ProjectReference Include="../Client/WebApp/WebApp.csproj" />
     <ProjectReference Include="../Services/BFF/Mobile.Bff/Mobile.Bff.csproj" />
     <ProjectReference Include="../Services/Catalog.Api/Catalog.Api.csproj" />
   </ItemGroup>
