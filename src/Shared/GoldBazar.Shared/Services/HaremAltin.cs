@@ -1,9 +1,11 @@
 ﻿using System.Text;
+using GoldBazar.Shared.DTOs;
+using GoldBazar.Shared.Interfaces;
 using Newtonsoft.Json;
 
 namespace LivePrice
 {
-    public class HaremAltin : IGoldPrice
+    public class HaremAltin 
     {
         private readonly HttpClient _httpClient;
 
@@ -20,7 +22,7 @@ namespace LivePrice
         private const string Referrer = "https://www.haremaltin.com/canli-piyasalar/";
 
         // Function to fetch live ONS and USDKG prices
-        public async Task<(decimal onsPrice, decimal usdKgPrice)> GetLivePricesAsync()
+        public async Task<HaremAltinResponse> GetLivePricesAsync()
         {
             var request = new HttpRequestMessage(HttpMethod.Post, ApiUrl);
             request.Headers.Add("accept", "*/*");
@@ -40,7 +42,7 @@ namespace LivePrice
                 decimal onsPrice = jsonResponse.data.ONS.satis; // Use 'satis' for selling price
                 decimal usdKgPrice = jsonResponse.data.USDKG.satis;
 
-                return (onsPrice, usdKgPrice);
+                return new HaremAltinResponse(onsPrice, usdKgPrice);
             }
             catch (Exception ex)
             {
@@ -49,7 +51,7 @@ namespace LivePrice
         }
 
         // Function to calculate gold price
-        public async Task<decimal> CalculateGoldPriceAsync(decimal goldWeight, string karate, string manufacturer, decimal createCost, decimal transferCostPerDollar)
+        public async Task<decimal> CalculateGoldPriceAsync(decimal goldWeight, int karate, ManufactureEnum manufacture, decimal createCost, decimal transferCostPerDollar)
         {
             decimal onsPrice, usdKgPrice;
 
@@ -57,36 +59,39 @@ namespace LivePrice
             {
                 // Fetch live prices asynchronously
                 var livePrices = await GetLivePricesAsync();
-                onsPrice = livePrices.onsPrice;
-                usdKgPrice = livePrices.usdKgPrice;
+                onsPrice = livePrices.satisOns;
+                usdKgPrice = livePrices.satisUSD;
             }
             catch (Exception ex)
             {
                 throw new Exception("Unable to fetch live prices: " + ex.Message);
             }
 
-            decimal kgPrice;
+            decimal kgPrice = 0;
 
             // Convert prices based on the manufacturer
-            if (manufacturer == "Dubai")
+            switch (manufacture)
             {
-                kgPrice = onsPrice * 32.154m;
-            }
-            else if (manufacturer == "Turkey" || manufacturer == "Local")
-            {
-                kgPrice = usdKgPrice; // Assuming Turkey's price is in USD per kg
-            }
-            else
-            {
-                throw new ArgumentException("Invalid manufacturer.");
+                case ManufactureEnum.Dubai:
+                    kgPrice = onsPrice * 32.154m;
+                    break;
+                case ManufactureEnum.Turkey:
+                    kgPrice = usdKgPrice;
+                    break;
+                case ManufactureEnum.Local:
+                    kgPrice = onsPrice * 32.154m;
+                    break;
+                default:
+                    kgPrice = onsPrice * 32.154m;
+                    break;
             }
 
             // Adjust price per kg based on karate
             decimal pricePerKg = karate switch
             {
-                "21" => kgPrice * 0.875m,
-                "18" => kgPrice * 0.750m,
-                "22" => kgPrice * 0.916m,
+                21 => kgPrice * 0.875m,
+                18 => kgPrice * 0.750m,
+                22 => kgPrice * 0.916m,
                 _ => kgPrice // Default for 24k
             };
 

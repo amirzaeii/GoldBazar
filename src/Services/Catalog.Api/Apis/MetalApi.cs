@@ -1,80 +1,102 @@
-﻿namespace Catalog.Api.Apis
+﻿using GoldBazar.Shared.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace Catalog.Api.Apis
 {
     public static class MetalApi
     {
-        private static readonly List<Metal> metals = new();
-
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapMetalApi(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/metals", GetAllMetals); // Supports paging
+            app.MapGet("/metals", GetAllMetals);
             app.MapGet("/metals/{id}", GetMetalById);
             app.MapPost("/metals", AddMetal);
             app.MapPut("/metals/{id}", UpdateMetal);
             app.MapDelete("/metals/{id}", DeleteMetal);
+
+            return app;
         }
 
-        private static IResult GetAllMetals(int? pageNumber, int? pageSize)
-        {
-            pageNumber ??= 1; // Default page number
-            pageSize ??= 10;  // Default page size
+        private static readonly List<Metal> metals = new();
 
-            var paginatedMetals = metals
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
+        public static async Task<Results<Ok<PaginatedItems<Metal>>, BadRequest<string>>> GetAllMetals(
+            [AsParameters] PaginationRequest paginationRequest)
+        {
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
+
+            var totalItems = metals.Count;
+
+            var itemsOnPage = metals
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
                 .ToList();
 
-            return Results.Ok(paginatedMetals);
+            return TypedResults.Ok(new PaginatedItems<Metal>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
-        private static IResult GetMetalById(int id)
+        public static async Task<Results<Ok<Metal>, NotFound>> GetMetalById(
+            int id)
         {
             var metal = metals.FirstOrDefault(m => m.Id == id);
-            return metal is not null ? Results.Ok(metal) : Results.NotFound($"Metal with ID {id} not found.");
+            return metal is not null ? TypedResults.Ok(metal) : TypedResults.NotFound();
         }
 
-        private static IResult AddMetal(Metal metal)
+        public static async Task<Results<Created<Metal>, BadRequest<string>>> AddMetal(
+            Metal metal)
         {
-            if (string.IsNullOrWhiteSpace(metal.Name))
-                return Results.BadRequest("Name is required.");
-            if (metal.Manufacture == 0)
-                return Results.BadRequest("Manufacture is required.");
+            if (!Enum.IsDefined(typeof(ManufactureEnum), metal.Manufacture))
+            {
+                return TypedResults.BadRequest("Invalid Manufacture value.");
+            }
+
             if (metal.Karat < 18 || metal.Karat > 24)
-                return Results.BadRequest("KT must be between 18 and 24.");
+            {
+                return TypedResults.BadRequest("Karat must be between 18 and 24.");
+            }
 
-            metal.Id = metals.Any() ? metals.Max(m => m.Id) + 1 : 1; // Auto-generate ID
-
+            metal.Id = metals.Any() ? metals.Max(m => m.Id) + 1 : 1;
             metals.Add(metal);
-            return Results.Created($"/metals/{metal.Id}", metal);
+
+            return TypedResults.Created($"/metals/{metal.Id}", metal);
         }
 
-        private static IResult UpdateMetal(int id, Metal updatedMetal)
+        public static async Task<Results<Ok<Metal>, NotFound, BadRequest<string>>> UpdateMetal(
+            int id, Metal updatedMetal)
         {
             var existingMetal = metals.FirstOrDefault(m => m.Id == id);
             if (existingMetal is null)
-                return Results.NotFound($"Metal with ID {id} not found.");
+            {
+                return TypedResults.NotFound();
+            }
 
-            if (string.IsNullOrWhiteSpace(updatedMetal.Name))
-                return Results.BadRequest("Name is required.");
-            if (updatedMetal.Manufacture == 0)
-                return Results.BadRequest("Manufacture is required.");
+            if (!Enum.IsDefined(typeof(ManufactureEnum), updatedMetal.Manufacture))
+            {
+                return TypedResults.BadRequest("Invalid Manufacture value.");
+            }
+
             if (updatedMetal.Karat < 18 || updatedMetal.Karat > 24)
-                return Results.BadRequest("KT must be between 18 and 24.");
+            {
+                return TypedResults.BadRequest("Karat must be between 18 and 24.");
+            }
 
             existingMetal.Name = updatedMetal.Name;
             existingMetal.Manufacture = updatedMetal.Manufacture;
             existingMetal.Karat = updatedMetal.Karat;
 
-            return Results.Ok(existingMetal);
+            return TypedResults.Ok(existingMetal);
         }
 
-        private static IResult DeleteMetal(int id)
+        public static async Task<Results<Ok<string>, NotFound>> DeleteMetal(
+            int id)
         {
             var metal = metals.FirstOrDefault(m => m.Id == id);
             if (metal is null)
-                return Results.NotFound($"Metal with ID {id} not found.");
+            {
+                return TypedResults.NotFound();
+            }
 
             metals.Remove(metal);
-            return Results.Ok($"Metal with ID {id} deleted.");
+            return TypedResults.Ok($"Metal with ID {id} deleted.");
         }
     }
-}
+    }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GoldBazar.Shared.DTOs;
+using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.Infrastructure
 {
@@ -16,13 +17,5 @@ namespace Catalog.Infrastructure
         [Required(ErrorMessage = "KT is required.")]
         [Range(1, 24, ErrorMessage = "KT must be a valid karat value (e.g., 18, 19, 20, ..., 24).")]
         public int Karat { get; set; }
-    }
-
-    public enum ManufactureEnum
-    {
-        Dubai = 1,
-        Turkey = 2,
-        Local = 3,
-        Other = 4
     }
 }

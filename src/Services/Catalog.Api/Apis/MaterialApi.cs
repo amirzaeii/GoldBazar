@@ -1,85 +1,91 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.Api.Apis
 {
     public static class MaterialApi
     {
-        private static readonly List<Material> materials = new();
-
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapMaterialApi(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/materials", GetAllMaterials); // Paging added
+            app.MapGet("/materials", GetAllMaterials);
             app.MapGet("/materials/{id}", GetMaterialById);
             app.MapPost("/materials", AddMaterial);
             app.MapPut("/materials/{id}", UpdateMaterial);
-            app.MapDelete("/materials/{id}", DeleteMaterial);
+            app.MapDelete("/materials", DeleteMaterial);
+
+            return app;
         }
 
-        private static IResult GetAllMaterials(int? pageNumber, int? pageSize)
-        {
-            pageNumber ??= 1; // Default to first page
-            pageSize ??= 10;  // Default to 10 items per page
+        private static readonly List<Material> materials = new();
 
-            var paginatedMaterials = materials
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
+        public static async Task<Results<Ok<PaginatedItems<Material>>, BadRequest<string>>> GetAllMaterials(
+            [AsParameters] PaginationRequest paginationRequest)
+        {
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
+
+            var totalItems = materials.Count;
+
+            var itemsOnPage = materials
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
                 .ToList();
 
-            return Results.Ok(paginatedMaterials);
+            return TypedResults.Ok(new PaginatedItems<Material>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
-        private static IResult GetMaterialById(int id)
+        public static async Task<Results<Ok<Material>, NotFound>> GetMaterialById(
+            int id)
         {
             var material = materials.FirstOrDefault(m => m.Id == id);
-            return material is not null ? Results.Ok(material) : Results.NotFound($"Material with ID {id} not found.");
+            return material is not null ? TypedResults.Ok(material) : TypedResults.NotFound();
         }
 
-        private static IResult AddMaterial(MaterialDto materialDto)
+        public static async Task<Results<Created<Material>, BadRequest<string>>> AddMaterial(
+            Material material)
         {
-            if (string.IsNullOrWhiteSpace(materialDto.Name))
-                return Results.BadRequest("Name is required.");
-
-            var material = new Material
+            if (string.IsNullOrWhiteSpace(material.Name))
             {
-                Id = materials.Any() ? materials.Max(m => m.Id) + 1 : 1, // Auto-generate ID
-                Name = materialDto.Name
-            };
+                return TypedResults.BadRequest("Name is required.");
+            }
 
+            material.Id = materials.Any() ? materials.Max(m => m.Id) + 1 : 1;
             materials.Add(material);
-            return Results.Created($"/materials/{material.Id}", material);
+
+            return TypedResults.Created($"/materials/{material.Id}", material);
         }
 
-        private static IResult UpdateMaterial(int id, MaterialDto updatedMaterialDto)
+        public static async Task<Results<Ok<Material>, NotFound, BadRequest<string>>> UpdateMaterial(
+            int id, Material updatedMaterial)
         {
             var existingMaterial = materials.FirstOrDefault(m => m.Id == id);
             if (existingMaterial == null)
-                return Results.NotFound($"Material with ID {id} not found.");
-
-            if (string.IsNullOrWhiteSpace(updatedMaterialDto.Name))
-                return Results.BadRequest("Name is required.");
-
-            // Create a new instance for immutability
-            var updatedMaterial = new Material
             {
-                Id = existingMaterial.Id, // Preserve ID
-                Name = updatedMaterialDto.Name
-            };
+                return TypedResults.NotFound();
+            }
 
-            // Replace old material with the updated one
-            materials.Remove(existingMaterial);
-            materials.Add(updatedMaterial);
+            if (string.IsNullOrWhiteSpace(updatedMaterial.Name))
+            {
+                return TypedResults.BadRequest("Name is required.");
+            }
 
-            return Results.Ok(updatedMaterial);
+            existingMaterial.Name = updatedMaterial.Name;
+
+            return TypedResults.Ok(existingMaterial);
         }
 
-        private static IResult DeleteMaterial(int id)
+        public static async Task<Results<Ok<string>, NotFound>> DeleteMaterial(
+            int id)
         {
             var material = materials.FirstOrDefault(m => m.Id == id);
             if (material == null)
-                return Results.NotFound($"Material with ID {id} not found.");
+            {
+                return TypedResults.NotFound();
+            }
 
             materials.Remove(material);
-            return Results.Ok($"Material with ID {id} deleted.");
+
+            return TypedResults.Ok($"Material with ID {id} deleted.");
         }
     }
 }

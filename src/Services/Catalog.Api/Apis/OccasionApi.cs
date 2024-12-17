@@ -1,70 +1,89 @@
-﻿namespace Catalog.Api.Apis
+﻿using Catalog.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace Catalog.Api.Apis
 {
     public static class OccasionApi
     {
-        private static readonly List<Occassion> occasions = new();
-
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapOccasionApi(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/occasions", GetAllOccasions); // Supports paging
+            app.MapGet("/occasions", GetAllOccasions);
             app.MapGet("/occasions/{id}", GetOccasionById);
             app.MapPost("/occasions", AddOccasion);
             app.MapPut("/occasions/{id}", UpdateOccasion);
             app.MapDelete("/occasions/{id}", DeleteOccasion);
-        }
 
-        private static IResult GetAllOccasions(int? pageNumber, int? pageSize)
+            return app;
+        }
+        private static readonly List<Occassion> occasions = new();
+
+        public static async Task<Results<Ok<PaginatedItems<Occassion>>, BadRequest<string>>> GetAllOccasions(
+            [AsParameters] PaginationRequest paginationRequest)
         {
-            pageNumber ??= 1; // Default to first page
-            pageSize ??= 10;  // Default to 10 items per page
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
 
-            var paginatedOccasions = occasions
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
-                .ToList();
+            var totalItems = occasions.Count;
 
-            return Results.Ok(paginatedOccasions);
+            var itemsOnPage = occasions
+                .Skip(pageSize * pageIndex)
+            .Take(pageSize)
+            .ToList();
+
+            return TypedResults.Ok(new PaginatedItems<Occassion>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
-        private static IResult GetOccasionById(int id)
+        public static async Task<Results<Ok<Occassion>, NotFound>> GetOccasionById(
+            int id)
         {
             var occasion = occasions.FirstOrDefault(o => o.Id == id);
-            return occasion is not null ? Results.Ok(occasion) : Results.NotFound($"Occasion with ID {id} not found.");
+            return occasion is not null ? TypedResults.Ok(occasion) : TypedResults.NotFound();
         }
 
-        private static IResult AddOccasion(Occassion occasion)
+        public static async Task<Results<Created<Occassion>, BadRequest<string>>> AddOccasion(
+            Occassion occasion)
         {
             if (string.IsNullOrWhiteSpace(occasion.Name))
-                return Results.BadRequest("Name is required.");
+            {
+                return TypedResults.BadRequest("Name is required.");
+            }
 
-            occasion.Id = occasions.Any() ? occasions.Max(o => o.Id) + 1 : 1; // Auto-generate ID
+            occasion.Id = occasions.Any() ? occasions.Max(o => o.Id) + 1 : 1;
             occasions.Add(occasion);
 
-            return Results.Created($"/occasions/{occasion.Id}", occasion);
+            return TypedResults.Created($"/occasions/{occasion.Id}", occasion);
         }
 
-        private static IResult UpdateOccasion(int id, Occassion updatedOccasion)
+        public static async Task<Results<Ok<Occassion>, NotFound, BadRequest<string>>> UpdateOccasion(
+            int id, Occassion updatedOccasion)
         {
             var existingOccasion = occasions.FirstOrDefault(o => o.Id == id);
             if (existingOccasion is null)
-                return Results.NotFound($"Occasion with ID {id} not found.");
+            {
+                return TypedResults.NotFound();
+            }
 
             if (string.IsNullOrWhiteSpace(updatedOccasion.Name))
-                return Results.BadRequest("Name is required.");
+            {
+                return TypedResults.BadRequest("Name is required.");
+            }
 
             existingOccasion.Name = updatedOccasion.Name;
 
-            return Results.Ok(existingOccasion);
+            return TypedResults.Ok(existingOccasion);
         }
 
-        private static IResult DeleteOccasion(int id)
+        public static async Task<Results<Ok<string>, NotFound>> DeleteOccasion(
+            int id)
         {
             var occasion = occasions.FirstOrDefault(o => o.Id == id);
             if (occasion is null)
-                return Results.NotFound($"Occasion with ID {id} not found.");
+            {
+                return TypedResults.NotFound();
+            }
 
             occasions.Remove(occasion);
-            return Results.Ok($"Occasion with ID {id} deleted.");
+            return TypedResults.Ok($"Occasion with ID {id} deleted.");
         }
     }
 }

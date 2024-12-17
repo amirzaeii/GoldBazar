@@ -1,88 +1,90 @@
-﻿namespace Catalog.Api.Apis
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace Catalog.Api.Apis
 {
     public static class StyleApi
     {
-        // Static list to simulate a database
         private static readonly List<Style> styles = new();
 
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapStyleApi(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/styles", GetStyles); // Paging added
+            app.MapGet("/styles", GetAllStyles);
             app.MapGet("/styles/{id}", GetStyleById);
             app.MapPost("/styles", AddStyle);
             app.MapPut("/styles/{id}", UpdateStyle);
             app.MapDelete("/styles/{id}", DeleteStyle);
+
+            return app;
         }
 
-        private static IResult GetStyles(int? pageNumber, int? pageSize)
+        public static async Task<Results<Ok<PaginatedItems<Style>>, BadRequest<string>>> GetAllStyles(
+            [AsParameters] PaginationRequest paginationRequest)
         {
-            pageNumber ??= 1; // Default page number
-            pageSize ??= 10;  // Default page size
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
 
-            var paginatedStyles = styles
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
-                .Select(s => new StyleDto(s))
+            var totalItems = styles.Count;
+
+            var itemsOnPage = styles
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
                 .ToList();
 
-            return Results.Ok(paginatedStyles);
+            return TypedResults.Ok(new PaginatedItems<Style>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
-        private static IResult GetStyleById(int id)
+        public static async Task<Results<Ok<Style>, NotFound>> GetStyleById(
+            int id)
         {
             var style = styles.FirstOrDefault(s => s.Id == id);
-            if (style == null)
-                return Results.NotFound($"Style with ID {id} not found.");
-
-            return Results.Ok(new StyleDto(style));
+            return style is not null ? TypedResults.Ok(style) : TypedResults.NotFound();
         }
 
-        private static IResult AddStyle(StyleDto styleDto)
+        public static async Task<Results<Created<Style>, BadRequest<string>>> AddStyle(
+            Style style)
         {
-            if (string.IsNullOrWhiteSpace(styleDto.Name))
-                return Results.BadRequest("Name is required.");
-
-            var style = new Style
+            if (string.IsNullOrWhiteSpace(style.Name))
             {
-                Id = styles.Any() ? styles.Max(s => s.Id) + 1 : 1, // Auto-generate ID
-                Name = styleDto.Name
-            };
+                return TypedResults.BadRequest("Name is required.");
+            }
 
+            style.Id = styles.Any() ? styles.Max(s => s.Id) + 1 : 1;
             styles.Add(style);
-            return Results.Created($"/styles/{style.Id}", new StyleDto(style));
+
+            return TypedResults.Created($"/styles/{style.Id}", style);
         }
 
-        private static IResult UpdateStyle(int id, StyleDto updatedStyleDto)
+        public static async Task<Results<Ok<Style>, NotFound, BadRequest<string>>> UpdateStyle(
+            int id, Style updatedStyle)
         {
-            var style = styles.FirstOrDefault(s => s.Id == id);
-            if (style == null)
-                return Results.NotFound($"Style with ID {id} not found.");
-
-            if (string.IsNullOrWhiteSpace(updatedStyleDto.Name))
-                return Results.BadRequest("Name is required.");
-
-            // Create a new instance to maintain immutability
-            var updatedStyle = new Style
+            var existingStyle = styles.FirstOrDefault(s => s.Id == id);
+            if (existingStyle is null)
             {
-                Id = style.Id, // Preserve ID
-                Name = updatedStyleDto.Name
-            };
+                return TypedResults.NotFound();
+            }
 
-            // Replace old style with the updated one
-            styles.Remove(style);
-            styles.Add(updatedStyle);
+            if (string.IsNullOrWhiteSpace(updatedStyle.Name))
+            {
+                return TypedResults.BadRequest("Name is required.");
+            }
 
-            return Results.Ok(new StyleDto(updatedStyle));
+            existingStyle.Name = updatedStyle.Name;
+
+            return TypedResults.Ok(existingStyle);
         }
 
-        private static IResult DeleteStyle(int id)
+        public static async Task<Results<Ok<string>, NotFound>> DeleteStyle(
+            int id)
         {
             var style = styles.FirstOrDefault(s => s.Id == id);
-            if (style == null)
-                return Results.NotFound($"Style with ID {id} not found.");
+            if (style is null)
+            {
+                return TypedResults.NotFound();
+            }
 
             styles.Remove(style);
-            return Results.Ok($"Style with ID {id} deleted.");
+
+            return TypedResults.Ok($"Style with ID {id} deleted.");
         }
     }
 }

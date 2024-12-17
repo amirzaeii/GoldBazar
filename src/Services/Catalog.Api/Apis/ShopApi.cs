@@ -1,10 +1,12 @@
 ﻿using Catalog.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Catalog.Api.Apis
 {
-    public class ShopApi
+    //The class is now declared as static, which is required for extension methods.
+    public static class ShopApi
     {
-        public static void MapEndpoints(WebApplication app)
+        public static IEndpointRouteBuilder MapShopApi(this IEndpointRouteBuilder app)
         {
             app.MapGet("/shops", GetShops);
             app.MapGet("/shops/{id}", GetShopById);
@@ -12,81 +14,113 @@ namespace Catalog.Api.Apis
             app.MapPut("/shops/{id}", UpdateShop);
             app.MapDelete("/shops/{id}", DeleteShop);
             app.MapGet("/shops/products/{shopId}", GetShopProducts);
+
+            return app;
         }
 
-        private static List<Shop> shopList = new List<Shop>();
-        private static List<Product> productList = new List<Product>();
+        private static readonly List<Shop> shopList = new();
+        private static readonly List<Product> productList = new();
 
-        private static IResult GetShops(int? pageNumber, int? pageSize)
+        public static async Task<Results<Ok<PaginatedItems<Shop>>, NotFound>> GetShops(
+            [AsParameters] PaginationRequest paginationRequest)
         {
-            pageNumber ??= 1;
-            pageSize ??= 10;
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
 
-            var paginatedShops = shopList
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
+            var totalItems = shopList.Count;
+
+            var itemsOnPage = shopList
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
                 .ToList();
 
-            return Results.Ok(paginatedShops);
-        }
-
-        private static IResult GetShopById(int id)
-        {
-            var shop = shopList.FirstOrDefault(s => s.Id == id);
-            return shop is not null ? Results.Ok(shop) : Results.NotFound($"Shop with ID {id} not found.");
-        }
-
-        private static IResult AddShop(Shop shop)
-        {
-            shop.Id = shopList.Any() ? shopList.Max(s => s.Id) + 1 : 1; // Auto-generate ID
-            shopList.Add(shop);
-            return Results.Created($"/shops/{shop.Id}", shop);
-        }
-
-        private static IResult UpdateShop(int id, Shop updatedShop)
-        {
-            var shop = shopList.FirstOrDefault(s => s.Id == id);
-            if (shop == null)
+            if (!itemsOnPage.Any())
             {
-                return Results.NotFound($"Shop with ID {id} not found.");
+                return TypedResults.NotFound();
+            }
+
+            return TypedResults.Ok(new PaginatedItems<Shop>(pageIndex, pageSize, totalItems, itemsOnPage));
+        }
+
+        public static async Task<Results<Ok<Shop>, NotFound>> GetShopById(
+            int id)
+        {
+            var shop = shopList.FirstOrDefault(s => s.Id == id);
+            return shop is not null ? TypedResults.Ok(shop) : TypedResults.NotFound();
+        }
+
+        public static async Task<Results<Created<Shop>, BadRequest<string>>> AddShop(
+            Shop shop)
+        {
+            if (string.IsNullOrWhiteSpace(shop.Name))
+            {
+                return TypedResults.BadRequest("Shop name is required.");
+            }
+
+            shop.Id = shopList.Any() ? shopList.Max(s => s.Id) + 1 : 1;
+            shopList.Add(shop);
+
+            return TypedResults.Created($"/shops/{shop.Id}", shop);
+        }
+
+        public static async Task<Results<Ok<Shop>, NotFound, BadRequest<string>>> UpdateShop(
+            int id, Shop updatedShop)
+        {
+            var shop = shopList.FirstOrDefault(s => s.Id == id);
+            if (shop is null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(updatedShop.Name))
+            {
+                return TypedResults.BadRequest("Name is required.");
             }
 
             shop.Name = updatedShop.Name;
             shop.City = updatedShop.City;
             shop.Address = updatedShop.Address;
             shop.ContactNumber = updatedShop.ContactNumber;
-            return Results.Ok(shop);
+            shop.Owner = updatedShop.Owner;
+
+            return TypedResults.Ok(shop);
         }
 
-        private static IResult DeleteShop(int id)
+        public static async Task<Results<Ok<string>, NotFound>> DeleteShop(
+            int id)
         {
             var shop = shopList.FirstOrDefault(s => s.Id == id);
-            if (shop == null)
+            if (shop is null)
             {
-                return Results.NotFound($"Shop with ID {id} not found.");
+                return TypedResults.NotFound();
             }
 
             shopList.Remove(shop);
-            return Results.Ok($"Shop with ID {id} deleted.");
+
+            return TypedResults.Ok($"Shop with ID {id} deleted.");
         }
 
-        private static IResult GetShopProducts(int shopId, int? pageNumber, int? pageSize)
+        public static async Task<Results<Ok<PaginatedItems<Product>>, NotFound>> GetShopProducts(
+            int shopId, [AsParameters] PaginationRequest paginationRequest)
         {
-            pageNumber ??= 1;
-            pageSize ??= 10;
+            var pageSize = paginationRequest.PageSize;
+            var pageIndex = paginationRequest.PageIndex;
 
-            var shopProducts = productList.Where(p => p.ShopId == shopId);
+            var shopProducts = productList.Where(p => p.ShopId == shopId).ToList();
+
             if (!shopProducts.Any())
             {
-                return Results.NotFound($"No products found for shop ID {shopId}.");
+                return TypedResults.NotFound();
             }
 
-            var paginatedProducts = shopProducts
-                .Skip((pageNumber.Value - 1) * pageSize.Value)
-                .Take(pageSize.Value)
+            var totalItems = shopProducts.Count;
+
+            var itemsOnPage = shopProducts
+                .Skip(pageSize * pageIndex)
+                .Take(pageSize)
                 .ToList();
 
-            return Results.Ok(paginatedProducts);
+            return TypedResults.Ok(new PaginatedItems<Product>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
     }
 }
