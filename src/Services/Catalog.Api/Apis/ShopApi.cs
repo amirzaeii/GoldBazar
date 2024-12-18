@@ -18,21 +18,20 @@ namespace Catalog.Api.Apis
             return app;
         }
 
-        private static readonly List<Shop> shopList = new();
-        private static readonly List<Product> productList = new();
-
         public static async Task<Results<Ok<PaginatedItems<Shop>>, NotFound>> GetShops(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = shopList.Count;
+            var totalItems = await services.Context.Shops.LongCountAsync();
 
-            var itemsOnPage = shopList
+            var itemsOnPage = await services.Context.Shops
+                .OrderBy(s => s.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             if (!itemsOnPage.Any())
             {
@@ -43,30 +42,30 @@ namespace Catalog.Api.Apis
         }
 
         public static async Task<Results<Ok<Shop>, NotFound>> GetShopById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var shop = shopList.FirstOrDefault(s => s.Id == id);
+            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
             return shop is not null ? TypedResults.Ok(shop) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<Shop>, BadRequest<string>>> AddShop(
-            Shop shop)
+            Shop shop, [AsParameters] CatalogServices services)
         {
             if (string.IsNullOrWhiteSpace(shop.Name))
             {
                 return TypedResults.BadRequest("Shop name is required.");
             }
 
-            shop.Id = shopList.Any() ? shopList.Max(s => s.Id) + 1 : 1;
-            shopList.Add(shop);
+            services.Context.Shops.Add(shop);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/shops/{shop.Id}", shop);
         }
 
         public static async Task<Results<Ok<Shop>, NotFound, BadRequest<string>>> UpdateShop(
-            int id, Shop updatedShop)
+            int id, Shop updatedShop, [AsParameters] CatalogServices services)
         {
-            var shop = shopList.FirstOrDefault(s => s.Id == id);
+            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
             if (shop is null)
             {
                 return TypedResults.NotFound();
@@ -74,7 +73,7 @@ namespace Catalog.Api.Apis
 
             if (string.IsNullOrWhiteSpace(updatedShop.Name))
             {
-                return TypedResults.BadRequest("Name is required.");
+                return TypedResults.BadRequest("Shop name is required.");
             }
 
             shop.Name = updatedShop.Name;
@@ -83,30 +82,36 @@ namespace Catalog.Api.Apis
             shop.ContactNumber = updatedShop.ContactNumber;
             shop.Owner = updatedShop.Owner;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(shop);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteShop(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var shop = shopList.FirstOrDefault(s => s.Id == id);
+            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
             if (shop is null)
             {
                 return TypedResults.NotFound();
             }
 
-            shopList.Remove(shop);
+            services.Context.Shops.Remove(shop);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Ok($"Shop with ID {id} deleted.");
         }
 
         public static async Task<Results<Ok<PaginatedItems<Product>>, NotFound>> GetShopProducts(
-            int shopId, [AsParameters] PaginationRequest paginationRequest)
+            int shopId, [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var shopProducts = productList.Where(p => p.ShopId == shopId).ToList();
+            var shopProducts = await services.Context.Products
+                .Where(p => p.ShopId == shopId)
+                .ToListAsync();
 
             if (!shopProducts.Any())
             {

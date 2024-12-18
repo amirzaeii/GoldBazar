@@ -16,33 +16,33 @@ namespace Catalog.Api.Apis
             return app;
         }
 
-        private static readonly List<Metal> metals = new();
-
         public static async Task<Results<Ok<PaginatedItems<Metal>>, BadRequest<string>>> GetAllMetals(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = metals.Count;
+            var totalItems = await services.Context.Metals.LongCountAsync();
 
-            var itemsOnPage = metals
+            var itemsOnPage = await services.Context.Metals
+                .OrderBy(m => m.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return TypedResults.Ok(new PaginatedItems<Metal>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
         public static async Task<Results<Ok<Metal>, NotFound>> GetMetalById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var metal = metals.FirstOrDefault(m => m.Id == id);
+            var metal = await services.Context.Metals.FirstOrDefaultAsync(m => m.Id == id);
             return metal is not null ? TypedResults.Ok(metal) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<Metal>, BadRequest<string>>> AddMetal(
-            Metal metal)
+            Metal metal, [AsParameters] CatalogServices services)
         {
             if (!Enum.IsDefined(typeof(ManufactureEnum), metal.Manufacture))
             {
@@ -54,16 +54,17 @@ namespace Catalog.Api.Apis
                 return TypedResults.BadRequest("Karat must be between 18 and 24.");
             }
 
-            metal.Id = metals.Any() ? metals.Max(m => m.Id) + 1 : 1;
-            metals.Add(metal);
+            services.Context.Metals.Add(metal);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/metals/{metal.Id}", metal);
         }
 
         public static async Task<Results<Ok<Metal>, NotFound, BadRequest<string>>> UpdateMetal(
-            int id, Metal updatedMetal)
+            int id, Metal updatedMetal, [AsParameters] CatalogServices services)
         {
-            var existingMetal = metals.FirstOrDefault(m => m.Id == id);
+            var existingMetal = await services.Context.Metals.FirstOrDefaultAsync(m => m.Id == id);
+
             if (existingMetal is null)
             {
                 return TypedResults.NotFound();
@@ -83,20 +84,24 @@ namespace Catalog.Api.Apis
             existingMetal.Manufacture = updatedMetal.Manufacture;
             existingMetal.Karat = updatedMetal.Karat;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(existingMetal);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteMetal(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var metal = metals.FirstOrDefault(m => m.Id == id);
+            var metal = await services.Context.Metals.FirstOrDefaultAsync(m => m.Id == id);
             if (metal is null)
             {
                 return TypedResults.NotFound();
             }
 
-            metals.Remove(metal);
+            services.Context.Metals.Remove(metal);
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok($"Metal with ID {id} deleted.");
         }
     }
-    }
+}

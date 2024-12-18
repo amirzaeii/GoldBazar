@@ -4,8 +4,6 @@ namespace Catalog.Api.Apis
 {
     public static class StyleApi
     {
-        private static readonly List<Style> styles = new();
-
         public static IEndpointRouteBuilder MapStyleApi(this IEndpointRouteBuilder app)
         {
             app.MapGet("/styles", GetAllStyles);
@@ -18,46 +16,48 @@ namespace Catalog.Api.Apis
         }
 
         public static async Task<Results<Ok<PaginatedItems<Style>>, BadRequest<string>>> GetAllStyles(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = styles.Count;
+            var totalItems = await services.Context.Styles.LongCountAsync();
 
-            var itemsOnPage = styles
+            var itemsOnPage = await services.Context.Styles
+                .OrderBy(s => s.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return TypedResults.Ok(new PaginatedItems<Style>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
         public static async Task<Results<Ok<Style>, NotFound>> GetStyleById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var style = styles.FirstOrDefault(s => s.Id == id);
+            var style = await services.Context.Styles.FirstOrDefaultAsync(s => s.Id == id);
             return style is not null ? TypedResults.Ok(style) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<Style>, BadRequest<string>>> AddStyle(
-            Style style)
+            Style style, [AsParameters] CatalogServices services)
         {
             if (string.IsNullOrWhiteSpace(style.Name))
             {
                 return TypedResults.BadRequest("Name is required.");
             }
 
-            style.Id = styles.Any() ? styles.Max(s => s.Id) + 1 : 1;
-            styles.Add(style);
+            services.Context.Styles.Add(style);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/styles/{style.Id}", style);
         }
 
         public static async Task<Results<Ok<Style>, NotFound, BadRequest<string>>> UpdateStyle(
-            int id, Style updatedStyle)
+            int id, Style updatedStyle, [AsParameters] CatalogServices services)
         {
-            var existingStyle = styles.FirstOrDefault(s => s.Id == id);
+            var existingStyle = await services.Context.Styles.FirstOrDefaultAsync(s => s.Id == id);
             if (existingStyle is null)
             {
                 return TypedResults.NotFound();
@@ -70,19 +70,22 @@ namespace Catalog.Api.Apis
 
             existingStyle.Name = updatedStyle.Name;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(existingStyle);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteStyle(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var style = styles.FirstOrDefault(s => s.Id == id);
+            var style = await services.Context.Styles.FirstOrDefaultAsync(s => s.Id == id);
             if (style is null)
             {
                 return TypedResults.NotFound();
             }
 
-            styles.Remove(style);
+            services.Context.Styles.Remove(style);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Ok($"Style with ID {id} deleted.");
         }

@@ -15,49 +15,50 @@ namespace Catalog.Api.Apis
 
             return app;
         }
-        private static readonly List<Occassion> occasions = new();
 
         public static async Task<Results<Ok<PaginatedItems<Occassion>>, BadRequest<string>>> GetAllOccasions(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = occasions.Count;
+            var totalItems = await services.Context.Occasions.LongCountAsync();
 
-            var itemsOnPage = occasions
+            var itemsOnPage = await services.Context.Occasions
+                .OrderBy(o => o.Name)
                 .Skip(pageSize * pageIndex)
-            .Take(pageSize)
-            .ToList();
+                .Take(pageSize)
+                .ToListAsync();
 
             return TypedResults.Ok(new PaginatedItems<Occassion>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
         public static async Task<Results<Ok<Occassion>, NotFound>> GetOccasionById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var occasion = occasions.FirstOrDefault(o => o.Id == id);
+            var occasion = await services.Context.Occasions.FirstOrDefaultAsync(o => o.Id == id);
             return occasion is not null ? TypedResults.Ok(occasion) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<Occassion>, BadRequest<string>>> AddOccasion(
-            Occassion occasion)
+            Occassion occasion, [AsParameters] CatalogServices services)
         {
             if (string.IsNullOrWhiteSpace(occasion.Name))
             {
                 return TypedResults.BadRequest("Name is required.");
             }
 
-            occasion.Id = occasions.Any() ? occasions.Max(o => o.Id) + 1 : 1;
-            occasions.Add(occasion);
+            services.Context.Occasions.Add(occasion);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/occasions/{occasion.Id}", occasion);
         }
 
         public static async Task<Results<Ok<Occassion>, NotFound, BadRequest<string>>> UpdateOccasion(
-            int id, Occassion updatedOccasion)
+            int id, Occassion updatedOccasion, [AsParameters] CatalogServices services)
         {
-            var existingOccasion = occasions.FirstOrDefault(o => o.Id == id);
+            var existingOccasion = await services.Context.Occasions.FirstOrDefaultAsync(o => o.Id == id);
             if (existingOccasion is null)
             {
                 return TypedResults.NotFound();
@@ -70,19 +71,23 @@ namespace Catalog.Api.Apis
 
             existingOccasion.Name = updatedOccasion.Name;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(existingOccasion);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteOccasion(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var occasion = occasions.FirstOrDefault(o => o.Id == id);
+            var occasion = await services.Context.Occasions.FirstOrDefaultAsync(o => o.Id == id);
             if (occasion is null)
             {
                 return TypedResults.NotFound();
             }
 
-            occasions.Remove(occasion);
+            services.Context.Occasions.Remove(occasion);
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok($"Occasion with ID {id} deleted.");
         }
     }

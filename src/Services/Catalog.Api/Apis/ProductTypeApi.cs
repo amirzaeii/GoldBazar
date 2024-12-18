@@ -15,49 +15,49 @@ namespace Catalog.Api.Apis
             return app;
         }
 
-        private static readonly List<ProductType> productTypes = new();
-
         public static async Task<Results<Ok<PaginatedItems<ProductType>>, BadRequest<string>>> GetAllProductTypes(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = productTypes.Count;
+            var totalItems = await services.Context.ProductTypes.LongCountAsync();
 
-            var itemsOnPage = productTypes
+            var itemsOnPage = await services.Context.ProductTypes
+                .OrderBy(pt => pt.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return TypedResults.Ok(new PaginatedItems<ProductType>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
         public static async Task<Results<Ok<ProductType>, NotFound>> GetProductTypeById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var productType = productTypes.FirstOrDefault(pt => pt.Id == id);
+            var productType = await services.Context.ProductTypes.FirstOrDefaultAsync(pt => pt.Id == id);
             return productType is not null ? TypedResults.Ok(productType) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<ProductType>, BadRequest<string>>> AddProductType(
-            ProductType productType)
+            ProductType productType, [AsParameters] CatalogServices services)
         {
             if (string.IsNullOrWhiteSpace(productType.Name))
             {
                 return TypedResults.BadRequest("Name is required.");
             }
 
-            productType.Id = productTypes.Any() ? productTypes.Max(pt => pt.Id) + 1 : 1;
-            productTypes.Add(productType);
+            services.Context.ProductTypes.Add(productType);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/producttypes/{productType.Id}", productType);
         }
 
         public static async Task<Results<Ok<ProductType>, NotFound, BadRequest<string>>> UpdateProductType(
-            int id, ProductType updatedProductType)
+            int id, ProductType updatedProductType, [AsParameters] CatalogServices services)
         {
-            var existingProductType = productTypes.FirstOrDefault(pt => pt.Id == id);
+            var existingProductType = await services.Context.ProductTypes.FirstOrDefaultAsync(pt => pt.Id == id);
             if (existingProductType is null)
             {
                 return TypedResults.NotFound();
@@ -70,19 +70,23 @@ namespace Catalog.Api.Apis
 
             existingProductType.Name = updatedProductType.Name;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(existingProductType);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteProductType(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var productType = productTypes.FirstOrDefault(pt => pt.Id == id);
+            var productType = await services.Context.ProductTypes.FirstOrDefaultAsync(pt => pt.Id == id);
             if (productType is null)
             {
                 return TypedResults.NotFound();
             }
 
-            productTypes.Remove(productType);
+            services.Context.ProductTypes.Remove(productType);
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok($"ProductType with ID {id} deleted.");
         }
     }

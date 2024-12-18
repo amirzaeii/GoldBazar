@@ -11,54 +11,55 @@ namespace Catalog.Api.Apis
             app.MapGet("/materials/{id}", GetMaterialById);
             app.MapPost("/materials", AddMaterial);
             app.MapPut("/materials/{id}", UpdateMaterial);
-            app.MapDelete("/materials", DeleteMaterial);
+            app.MapDelete("/materials/{id}", DeleteMaterial);
 
             return app;
         }
 
-        private static readonly List<Material> materials = new();
-
         public static async Task<Results<Ok<PaginatedItems<Material>>, BadRequest<string>>> GetAllMaterials(
-            [AsParameters] PaginationRequest paginationRequest)
+            [AsParameters] PaginationRequest paginationRequest,
+            [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var totalItems = materials.Count;
+            var totalItems = await services.Context.Materials.LongCountAsync();
 
-            var itemsOnPage = materials
+            var itemsOnPage = await services.Context.Materials
+                .OrderBy(m => m.Name)
                 .Skip(pageSize * pageIndex)
                 .Take(pageSize)
-                .ToList();
+                .ToListAsync();
 
             return TypedResults.Ok(new PaginatedItems<Material>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
 
         public static async Task<Results<Ok<Material>, NotFound>> GetMaterialById(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var material = materials.FirstOrDefault(m => m.Id == id);
+            var material = await services.Context.Materials.FirstOrDefaultAsync(m => m.Id == id);
             return material is not null ? TypedResults.Ok(material) : TypedResults.NotFound();
         }
 
         public static async Task<Results<Created<Material>, BadRequest<string>>> AddMaterial(
-            Material material)
+            Material material, [AsParameters] CatalogServices services)
         {
             if (string.IsNullOrWhiteSpace(material.Name))
             {
                 return TypedResults.BadRequest("Name is required.");
             }
 
-            material.Id = materials.Any() ? materials.Max(m => m.Id) + 1 : 1;
-            materials.Add(material);
+            services.Context.Materials.Add(material);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Created($"/materials/{material.Id}", material);
         }
 
         public static async Task<Results<Ok<Material>, NotFound, BadRequest<string>>> UpdateMaterial(
-            int id, Material updatedMaterial)
+            int id, Material updatedMaterial, [AsParameters] CatalogServices services)
         {
-            var existingMaterial = materials.FirstOrDefault(m => m.Id == id);
+            var existingMaterial = await services.Context.Materials.FirstOrDefaultAsync(m => m.Id == id);
+
             if (existingMaterial == null)
             {
                 return TypedResults.NotFound();
@@ -71,19 +72,22 @@ namespace Catalog.Api.Apis
 
             existingMaterial.Name = updatedMaterial.Name;
 
+            await services.Context.SaveChangesAsync();
+
             return TypedResults.Ok(existingMaterial);
         }
 
         public static async Task<Results<Ok<string>, NotFound>> DeleteMaterial(
-            int id)
+            int id, [AsParameters] CatalogServices services)
         {
-            var material = materials.FirstOrDefault(m => m.Id == id);
+            var material = await services.Context.Materials.FirstOrDefaultAsync(m => m.Id == id);
             if (material == null)
             {
                 return TypedResults.NotFound();
             }
 
-            materials.Remove(material);
+            services.Context.Materials.Remove(material);
+            await services.Context.SaveChangesAsync();
 
             return TypedResults.Ok($"Material with ID {id} deleted.");
         }
