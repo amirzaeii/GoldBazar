@@ -1,4 +1,4 @@
-namespace ServiceDefaults;
+namespace Catalog.Api.Extensions;
 public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
@@ -15,13 +15,13 @@ public static class Extensions
         //builder.Services.AddMigration<CatalogContext, CatalogContextSeed>();
 
         // Add the integration services that consume the DbContext
-        //builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();
+        builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();
 
-        //builder.Services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
+        builder.Services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
-        // builder.AddRabbitMqEventBus("eventbus")
-        //        .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
-        //        .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
+        builder.AddRabbitMqEventBus("eventbus")
+               .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
+               .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
         // builder.Services.AddOptions<CatalogOptions>()
         //     .BindConfiguration(nameof(CatalogOptions));
