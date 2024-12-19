@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Catalog.Infrastructure
 {
@@ -14,20 +15,24 @@ namespace Catalog.Infrastructure
         public decimal Discount { get; set; }
 
         [Required(ErrorMessage = "Weight is required.")]
-        public double Weight { get; set; }
-
+        public double Weight { get; set; }        
         public int TypeId { get; set; } // FK to ProductType
+        [ForeignKey("TypeId")]
         public ProductType Type { get; set; } = default!; // Navigation property
 
         public int MaterialId { get; set; } // FK to Material
+        [ForeignKey("MaterialId")]
         public Material Material { get; set; } = default!; // Navigation property
 
         public int MetalId { get; set; } 
+        [ForeignKey("MetalId")]
         public Metal Metal { get; set; } = default!; // Navigation property
 
         public int OccasionId { get; set; } // FK to Occasion
+        [ForeignKey("OccasionId")]
         public Occassion Occassion { get; set; } = default!; // Navigation property
-        public string StyleId { get; set; } = string.Empty; // FK to Style
+        public int StyleId { get; set; } // FK to Style
+        [ForeignKey("StyleId")]
         public Style Style { get; set; } = default!; // Navigation property
 
         [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
@@ -40,6 +45,7 @@ namespace Catalog.Infrastructure
         [Range(0, int.MaxValue, ErrorMessage = "Quantity cannot be negative.")]
         public int Quantity { get; set; }
         public int ShopId { get; set; } // FK to Shop
+         [ForeignKey("ShopId")]
         public Shop Shop { get; set; } = default!; // Navigation property
 
         // Added 
