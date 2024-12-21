@@ -9,4 +9,5 @@ global using EventBus.Abstractions;
 global using EventBus.Events;
 global using IntegrationEventLogEF.Utilities;
 global using Catalog.API.IntegrationEvents.EventHandling;
-
+global using Microsoft.Extensions.Hosting;
+global using  Microsoft.AspNetCore.Hosting;

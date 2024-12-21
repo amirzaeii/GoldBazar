@@ -1,6 +1,6 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-public static class ActivityExtensions
+internal static class ActivityExtensions
 {
     // See https://opentelemetry.io/docs/specs/otel/trace/semantic_conventions/exceptions/
     public static void SetExceptionTags(this Activity activity, Exception ex)

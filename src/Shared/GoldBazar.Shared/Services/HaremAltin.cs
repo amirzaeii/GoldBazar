@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using GoldBazar.Shared.DTOs;
 using GoldBazar.Shared.Interfaces;
-using Newtonsoft.Json;
+
 
 namespace LivePrice
 {
@@ -38,7 +38,7 @@ namespace LivePrice
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
-                var jsonResponse = JsonConvert.DeserializeObject<RootObject>(responseBody);
+                var jsonResponse = System.Text.Json.JsonSerializer.Deserialize<RootObject>(responseBody);
                 decimal onsPrice = jsonResponse.data.ONS.satis; // Use 'satis' for selling price
                 decimal usdKgPrice = jsonResponse.data.USDKG.satis;
 

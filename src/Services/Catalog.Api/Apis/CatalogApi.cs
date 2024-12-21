@@ -6,8 +6,18 @@ public static class CatalogApi
 {
     public static IEndpointRouteBuilder MapCatalogApiV1(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/products", GetAllItems);
-        app.MapGet("/products/{id}", GetProductById);
+        app.MapGet("/products", GetAllItems)
+            .WithName("ProductsList")
+            .WithSummary("List of products")
+            .WithDescription("Get a paginated list of products in the catalog.")
+            .WithTags("Items");
+
+        app.MapGet("/products/{id}", GetProductById)
+            .WithName("GetProduct")
+            .WithSummary("Get a product by its id")
+            .WithDescription("Get a product item by its id")
+            .WithTags("Item");
+            
         app.MapPost("/products", AddProduct);
         app.MapPut("/products/{id}", UpdateProduct);
         app.MapDelete("/products/{id}", DeleteProduct);
@@ -55,7 +65,7 @@ public static class CatalogApi
         services.Context.Products.Add(product);
         await services.Context.SaveChangesAsync();
 
-        return TypedResults.Created($"/products/{product.Id}", product);
+        return TypedResults.Created($"/product/{product.Id}", product);
     }
 
     public static async Task<Results<Ok<Product>, NotFound>> UpdateProduct(
@@ -78,7 +88,6 @@ public static class CatalogApi
         product.MetalId = updatedProduct.MetalId;
         product.OccasionId = updatedProduct.OccasionId;
         product.StyleId = updatedProduct.StyleId;
-        product.ShopId = updatedProduct.ShopId;
         product.Description = updatedProduct.Description;
 
         await services.Context.SaveChangesAsync();
