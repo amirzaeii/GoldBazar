@@ -1,5 +1,34 @@
-﻿<h3>ProductList</h3>
+﻿<div class="product-grid">
+    @foreach (var product in products)
+    {
+        <ProductCard ProductName="@product.ProductName"
+        OriginalPrice="@product.OriginalPrice"
+        CurrentPrice="@product.CurrentPrice"
+        JewelerName="@product.JewelerName"
+        ProductImage="@product.ProductImage"
+        BadgeIcon="@product.BadgeIcon" />
+    }
+</div>
 
 @code {
 
+    public class Product
+    {
+        public string ProductName { get; set; }
+        public decimal OriginalPrice { get; set; }
+        public decimal CurrentPrice { get; set; }
+        public string JewelerName { get; set; }
+        public string ProductImage { get; set; }
+        public string BadgeIcon { get; set; }
+    }
+
+    private List<Product> products = new()
+    {
+        new Product { ProductName = "Gold Ring 21K", OriginalPrice = 200, CurrentPrice = 180, JewelerName = "Twana Jewels", ProductImage = "assets/Image/ring.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
+        new Product { ProductName = "Bracelet 18K", OriginalPrice = 150, CurrentPrice = 140, JewelerName = "Zarengar", ProductImage = "assets/Image/gwara.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
+        new Product { ProductName = "Necklace 22K", OriginalPrice = 300, CurrentPrice = 275, JewelerName = "Royal Gold", ProductImage = "assets/Image/nickle.svg", BadgeIcon = "" },
+         new Product { ProductName = "Gold Ring 21K", OriginalPrice = 200, CurrentPrice = 180, JewelerName = "Twana Jewels", ProductImage = "assets/Image/ring.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
+        new Product { ProductName = "Bracelet 18K", OriginalPrice = 150, CurrentPrice = 140, JewelerName = "Zarengar", ProductImage = "assets/Image/gwara.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
+        new Product { ProductName = "Necklace 22K", OriginalPrice = 300, CurrentPrice = 275, JewelerName = "Royal Gold", ProductImage = "assets/Image/nickle.svg", BadgeIcon = "" }
+    };
 }

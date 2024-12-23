@@ -1,0 +1,137 @@
+﻿/* Product Grid - Responsive Layout */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 12px 8px;
+    justify-content: center;
+}
+
+/* Product Card Styling */
+.product-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    height: 260px;
+    width: 100%;
+    max-width: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #eee;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+    }
+
+.badge-container {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space for badge if present */
+}
+
+/* Heart Icon (Fixed to Top-Right) */
+.fav {
+    position: absolute;
+    top: 8px;
+    right: 8px; /* Always stays on the right */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(108, 99, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .fav img {
+        width: 18px;
+        height: 18px;
+    }
+
+/* Offer Badge (Left Side) */
+.badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .badge img {
+        width: 18px;
+        height: 18px;
+    }
+
+/* Product Image Section */
+.product-image {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+    .product-image img {
+        max-width: 90%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+/* Product Info Section */
+.product-info {
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #f0f0f0;
+}
+
+.product-title {
+    font-size: 15px;
+    color: #333;
+    margin: 6px 0;
+}
+
+/* Price Section */
+.price-container {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    align-items: center;
+}
+
+.current-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #6c63ff;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* Jeweler Name Section - Fixed Width */
+.jeweler-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.jeweler-name {
+    font-size: 13px;
+    color: #484848;
+    background: rgba(108, 99, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 10px;
+    width: 140px; /* Fixed width to ensure uniform size */
+    text-align: center;
+}

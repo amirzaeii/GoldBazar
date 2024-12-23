@@ -1,0 +1,40 @@
+﻿<div class="product-card">
+    <div class="badge-container">
+        @if (!string.IsNullOrEmpty(BadgeIcon))
+        {
+            <div class="badge">
+                <img src="@BadgeIcon" alt="Badge">
+            </div>
+        }
+    </div>
+    <div class="fav">
+        <img src="@FavIcon" alt="Favorite">
+    </div>
+
+    <div class="product-image">
+        <img src="@ProductImage" alt="@ProductName">
+    </div>
+
+    <div class="product-info">
+        <h3 class="product-title">@ProductName</h3>
+        <div class="price-row">
+            <div class="price-container">
+                <span class="original-price">$@OriginalPrice</span>
+                <span class="current-price">$@CurrentPrice</span>
+            </div>
+        </div>
+        <div class="jeweler-container">
+            <span class="jeweler-name">@JewelerName</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string FavIcon { get; set; } = "assets/Icons/Heart.svg";
+    [Parameter] public string BadgeIcon { get; set; } = "assets/Icons/offerFill.svg";
+    [Parameter] public string ProductImage { get; set; } = "";
+    [Parameter] public string ProductName { get; set; } = "";
+    [Parameter] public decimal OriginalPrice { get; set; }
+    [Parameter] public decimal CurrentPrice { get; set; }
+    [Parameter] public string JewelerName { get; set; } = "";
+}

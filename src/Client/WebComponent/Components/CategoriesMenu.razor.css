@@ -1,0 +1,123 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+/* Categories Background (Purple Box) */
+.cat-bg {
+    margin-top: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    background: linear-gradient(to right, #6a11cb, #8460e0); /* Gradient Adjusted */
+    border-radius: 8px;
+    padding: 4px -5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Subtle Shadow */
+}
+
+    /* Hide Scrollbars */
+    .cat-bg::-webkit-scrollbar {
+        display: none;
+    }
+
+.cat-bg {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Categories Row */
+.categories {
+    display: flex;
+    gap: 14px;
+    padding: 8px;
+    justify-content: flex-start; /* Left-align */
+}
+
+/* Category Item */
+.category-item {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 65px; /* Slightly Smaller */
+    height: 80px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+    .category-item:hover {
+        transform: translateY(-3px); /* Hover Lift Effect */
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+/* Category Icon (Circle) */
+.category-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+    .category-icon img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+/* Category Text */
+.category-item span {
+    font-size: 10px; /* Slim Font */
+    font-weight: 500;
+    color: #fff;
+    margin-top: 6px;
+}
+
+/* Remove Overflow and Scrollbars on Desktop */
+@media (min-width: 1024px) {
+    .cat-bg {
+        overflow-x: hidden;
+    }
+
+    .categories {
+        justify-content: center; /* Center-align on Desktop */
+    }
+}
+
+/* Mobile View Adjustments */
+@media (max-width: 768px) {
+    .categories {
+        gap: 10px;
+        padding: 6px;
+    }
+
+    .category-item {
+        width: 60px;
+        height: 70px;
+    }
+
+    .category-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .category-item span {
+        font-size: 12px;
+    }
+}

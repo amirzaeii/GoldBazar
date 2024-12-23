@@ -1,0 +1,121 @@
+﻿
+@inject IJSRuntime JS
+
+<div class="slider-container">
+    <div class="slider">
+        @for (var i = 0; i < Slides.Count; i++)
+        {
+            <div class="carousel-slide @(i == currentIndex ? "active" : "")">
+                <img src="@Slides[i].ImageUrl" class="carousel-image">
+                <div class="carousel-caption">
+                    <h3>@Slides[i].Title</h3>
+                    <p>@Slides[i].Description</p>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="carousel-dots">
+        @for (var i = 0; i < Slides.Count; i++)
+        {
+            <span class="dot @(i == currentIndex ? "active" : "")"
+                  onclick="currentSlide(@(i + 1))"></span>
+        }
+    </div>
+</div>
+
+<script>
+    let slideIndex = 0;
+    let autoSlideInterval;
+
+    // Initialize slideshow on load
+    window.addEventListener('load', () => {
+        showSlides();
+        startSlideShow();
+    });
+
+    function plusSlides(n) {
+        stopSlideShow();
+        slideIndex += n;
+        showSlides();
+        startSlideShow();
+    }
+
+    function currentSlide(n) {
+        stopSlideShow();
+        slideIndex = n;
+        showSlides();
+        startSlideShow();
+    }
+
+    function showSlides() {
+        let slides = document.getElementsByClassName("carousel-slide");
+        let dots = document.getElementsByClassName("dot");
+
+        if (slideIndex > slides.length) { slideIndex = 1; }
+        if (slideIndex < 1) { slideIndex = slides.length; }
+
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+    }
+
+    function startSlideShow() {
+        autoSlideInterval = setInterval(() => {
+            slideIndex++;
+            showSlides();
+        }, 4000);
+    }
+
+    function stopSlideShow() {
+        clearInterval(autoSlideInterval);
+    }
+</script>
+
+@code {
+    [Parameter]
+    public List<CarouselSlide> Slides { get; set; } = new();
+
+    private int currentIndex = 0;
+
+    protected override void OnInitialized()
+    {
+        if (Slides == null || !Slides.Any())
+        {
+            Slides = new List<CarouselSlide>
+            {
+                new CarouselSlide
+                {
+                    ImageUrl = "/assets/Image/banner.svg",
+                    Title = "داشکاندن ٢٠٪",
+                    Description = "لە ڕیشتەکانی سێرکان"
+                },
+                new CarouselSlide
+                {
+                    ImageUrl = "/assets/Image/banner.svg",
+                    Title = "کۆلێکشنی نوێ",
+                    Description = "بەهاری ٢٠٢٤"
+                },
+                new CarouselSlide
+                {
+                    ImageUrl = "/assets/Image/banner.svg",
+                    Title = "پێشنیاری تایبەت",
+                    Description = "بەرهەمە نوێیەکان"
+                }
+            };
+        }
+    }
+
+    public class CarouselSlide
+    {
+        public string ImageUrl { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+}
