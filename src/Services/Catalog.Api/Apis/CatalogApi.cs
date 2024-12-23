@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Catalog.Api;
 
@@ -10,20 +12,49 @@ public static class CatalogApi
             .WithName("ProductsList")
             .WithSummary("List of products")
             .WithDescription("Get a paginated list of products in the catalog.")
-            .WithTags("Items");
+            .WithTags("Products");
 
         app.MapGet("/products/{id}", GetProductById)
             .WithName("GetProduct")
             .WithSummary("Get a product by its id")
             .WithDescription("Get a product item by its id")
-            .WithTags("Item");
+            .WithTags("Products");
             
-        app.MapPost("/products", AddProduct);
-        app.MapPut("/products/{id}", UpdateProduct);
-        app.MapDelete("/products/{id}", DeleteProduct);
-        app.MapGet("/products/discounted", GetDiscountedProducts);
-        app.MapGet("/products/similar/{typeId}", GetSimilarProducts);
-        app.MapPost("/products/filter", FilterProducts);
+        app.MapPost("/products", AddProduct)
+            .WithName("AddProduct")
+            .WithSummary("Create a product")
+            .WithDescription("reate a product")
+            .WithTags("Products");
+
+        app.MapPut("/products/{id}", UpdateProduct)
+            .WithName("EditProduct")
+            .WithSummary("Update a product")
+            .WithDescription("Update a product")
+            .WithTags("Products");
+
+        app.MapDelete("/products/{id}", DeleteProduct)
+            .WithName("DeleteProduct")
+            .WithSummary("Delete a product")
+            .WithDescription("delete a product")
+            .WithTags("Products");
+
+        app.MapGet("/products/discounted", GetDiscountedProducts)
+            .WithName("GetListOfDiscountedProducts")
+            .WithSummary("get list of products which has discount")
+            .WithDescription("dget list of products which has discount")
+            .WithTags("Products");
+
+        app.MapGet("/products/similar/{typeId}", GetSimilarProducts)
+            .WithName("GetSimilarProducts")
+            .WithSummary("Get list of similar products")
+            .WithDescription("Get list of similar products")
+            .WithTags("Products");
+
+        app.MapGet("/products/filter", FilterProducts)
+            .WithName("FilterProducts")
+            .WithSummary("Filter products")
+            .WithDescription("Filter products")
+            .WithTags("Products");
 
         return app;
     }
@@ -131,7 +162,9 @@ public static class CatalogApi
     }
 
     public static async Task<Ok<List<Product>>> FilterProducts(
-        CompositeFilterDto filter, [AsParameters] CatalogServices services)
+        [AsParameters] CatalogServices services,
+        [Description("object filter composit")][FromBody] CompositeFilterDto filter
+        )
     {
         var queryableProducts = services.Context.Products.AsQueryable();
 
