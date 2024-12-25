@@ -1,6 +1,87 @@
 ﻿@page "/categories"
-<h3>Categories</h3>
+@inject NavigationManager Navigation
+
+<div class="container">
+    <header class="header">
+        <NavLink href="/">
+        <button class="back" @onclick="NavigateToIndex">
+            <img src="assets/Icons/left.svg" alt="" class="icon">
+            <span>Filters</span>
+        </button></NavLink>
+        <NavLink href="categories-options">
+            <button class="filter-trigger" @onclick="NavigateToFilters">
+                <img src="assets/Icons/leftarrow.svg" alt="">
+                <span>Options</span>
+            </button>
+        </NavLink>
+    </header>
+    <div class="main-content">
+        <hr />
+
+        <div class="view-label">
+            <span>Sort by</span>
+            <img src="assets/Icons/arange.svg" alt="">
+        </div>
+
+        <div class="view-options-container">
+            <div class="view-options">
+                <button class="view-option">VIP</button>
+                <button class="view-option active">Low to High</button>
+                <button class="view-option">High to Low</button>
+            </div>
+        </div>
+
+        <div class="product-grid">
+            <ProductList />
+        </div>
+    </div>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top-btn" onclick="scrollToTop()">
+        <img src="assets/Icons/arrowup.png">
+    </button>
+</div>
 
 @code {
 
+    private void ClearAllFilters()
+    {
+        // Logic for clearing filters if needed
+    }
+
+    private void NavigateToFilters()
+    {
+        Navigation.NavigateTo("/filters");
+    }
+
+
+
+    private void NavigateToIndex()
+    {
+
+    }
+
+
 }
+<script>
+        window.onscroll = function() {
+        toggleScrollTopButton();
+    };
+
+    function toggleScrollTopButton() {
+        const scrollTopButton = document.querySelector('.scroll-top-btn');
+        if (document.documentElement.scrollTop > 200) {
+            scrollTopButton.classList.add('show');
+        } else {
+            scrollTopButton.classList.remove('show');
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+</script>
