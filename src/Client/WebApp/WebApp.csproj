@@ -7,7 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
+    <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
     <ProjectReference Include="../WebComponent/WebComponent.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Asp.Versioning.Http.Client" Version="8.1.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.67.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.68.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,15 @@
-using WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+builder.AddApplicationServices();
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -17,12 +19,12 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-
 app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
 
 app.Run();
