@@ -1,5 +1,4 @@
-﻿using Catalog.Infrastructure;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Catalog.Api.Apis
 {
@@ -102,15 +101,20 @@ namespace Catalog.Api.Apis
             return TypedResults.Ok($"Shop with ID {id} deleted.");
         }
 
-        public static async Task<Results<Ok<PaginatedItems<Product>>, NotFound>> GetShopProducts(
+        public static async Task<Results<Ok<PaginatedItems<ItemDto>>, NotFound>> GetShopProducts(
             int shopId, [AsParameters] PaginationRequest paginationRequest,
             [AsParameters] CatalogServices services)
         {
             var pageSize = paginationRequest.PageSize;
             var pageIndex = paginationRequest.PageIndex;
 
-            var shopProducts = await services.Context.Products
+            var shopProducts = await services.Context.Items
                 .Where(p => p.ShopId == shopId)
+                .Select(s => new ItemDto (s.Id, s.Caption, s.Description, 
+                            s.CostPerGram, s.Weight, s.Size, 
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, 
+                            s.ShopId, s.Shop.Name, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
+                            ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus))
                 .ToListAsync();
 
             if (!shopProducts.Any())
@@ -125,7 +129,7 @@ namespace Catalog.Api.Apis
                 .Take(pageSize)
                 .ToList();
 
-            return TypedResults.Ok(new PaginatedItems<Product>(pageIndex, pageSize, totalItems, itemsOnPage));
+            return TypedResults.Ok(new PaginatedItems<ItemDto>(pageIndex, pageSize, totalItems, itemsOnPage));
         }
     }
 }

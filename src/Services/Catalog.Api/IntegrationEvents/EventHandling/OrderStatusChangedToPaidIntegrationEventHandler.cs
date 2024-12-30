@@ -12,7 +12,7 @@ public class OrderStatusChangedToPaidIntegrationEventHandler(
         //we're not blocking stock/inventory
         foreach (var orderStockItem in @event.OrderStockItems)
         {
-            var catalogItem = catalogContext.Products.Find(orderStockItem.ProductId);
+            var catalogItem = catalogContext.Items.Find(orderStockItem.ProductId);
 
             //catalogItem.RemoveStock(orderStockItem.Units);
         }

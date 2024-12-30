@@ -1,4 +1,5 @@
 ﻿@inject ICatalogService CatalogService
+@inject IProductImageUrlProvider ImageProvider
 @inject NavigationManager Nav
 <div class="container">
     @if(catalogItemTypes == null)
@@ -15,7 +16,7 @@
                 {
                     <div class="category-item">
                         <div class="category-icon">
-                            <img src="@category.PictureUrl" alt="@category.Name">
+                            <img src="@ImageProvider.GetTypeImageUrl(category)" alt="@category.Name">
                         </div>
                         <span>@category.Name</span>
                     </div>
@@ -27,35 +28,8 @@
 
 @code {
     IEnumerable<CatalogItemType>? catalogItemTypes;
-    [Parameter] public int? BrandId { get; set; }
-    [Parameter] public int? ItemTypeId { get; set; }
-
     protected override async Task OnInitializedAsync()
     {
         catalogItemTypes = await CatalogService.GetTypes();        
     }
-
-    private string BrandUri(int? brandId) => Nav.GetUriWithQueryParameters(new Dictionary<string, object?>()
-    {
-        { "page", null },
-        { "brand", brandId },
-    });
-
-    private string TypeUri(int? typeId) => Nav.GetUriWithQueryParameters(new Dictionary<string, object?>()
-    {
-        { "page", null },
-        { "type", typeId },
-    });
-   @* var s =  new CategoryModel { Name = "Ring", Icon = "png/005-wedding-ring.png" },
-        new CategoryModel { Name = "Anklet", Icon = "png/011-bracelet-2.png" },
-        new CategoryModel { Name = "Traditional", Icon = "png/014-necklace-2.png" },
-        new CategoryModel { Name = "Nose piercing", Icon = "png/010-piercing.png" },
-        new CategoryModel { Name = "Hand watch", Icon = "png/004-watch.png" },
-        new CategoryModel { Name = "Cuff bracelet", Icon = "png/003-bracelet-1.png" },
-        new CategoryModel { Name = "Tiara", Icon = "png/013-tiara.png" },
-        new CategoryModel { Name = "Engagement ring", Icon = "png/006-engagement-ring.png" },
-        new CategoryModel { Name = "Pendants", Icon = "png/008-necklace-1.png" },
-        new CategoryModel { Name = "Full sets", Icon = "png/015-necklace-3.png" },
-        new CategoryModel { Name = "Lira", Icon = "png/001-turkish-lira.png" }
-    }; *@
 }

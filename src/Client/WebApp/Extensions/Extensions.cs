@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.IdentityModel.JsonWebTokens;
+using WebApp.Services;
 using WebComponent.Services;
 
 namespace WebApp.Extensions;
@@ -23,16 +24,16 @@ public static class Extensions
         //builder.Services.AddScoped<LogOutService>();
         //builder.Services.AddSingleton<BasketService>();
         //builder.Services.AddSingleton<OrderStatusNotificationService>();
-        //builder.Services.AddSingleton<IProductImageUrlProvider, ProductImageUrlProvider>();
+        builder.Services.AddSingleton<IProductImageUrlProvider, ProductImageUrlProvider>();
         //builder.AddAIServices();
 
         // HTTP and GRPC client registrations
         //builder.Services.AddGrpcClient<Basket.BasketClient>(o => o.Address = new("http://basket-api"))
           //  .AddAuthToken();
 
-        builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
-            .AddApiVersion(1.0)
-            .AddAuthToken();
+        builder.Services.AddHttpClient<ICatalogService, CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
+            .AddApiVersion(1.0);
+            //.AddAuthToken();
 
         // builder.Services.AddHttpClient<OrderingService>(o => o.BaseAddress = new("http://ordering-api"))
         //     .AddApiVersion(1.0)

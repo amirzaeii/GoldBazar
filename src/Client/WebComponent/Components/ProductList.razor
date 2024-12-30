@@ -1,34 +1,46 @@
-﻿<div class="product-grid">
-    @foreach (var product in products)
+﻿@inject ICatalogService CatalogService
+@inject NavigationManager Nav
+@attribute [StreamRendering]
+
+<div class="product-grid">
+    @if (catalogResult is null)
     {
-        <ProductCard ProductName="@product.ProductName"
-        OriginalPrice="@product.OriginalPrice"
-        CurrentPrice="@product.CurrentPrice"
-        JewelerName="@product.JewelerName"
-        ProductImage="@product.ProductImage"
-        BadgeIcon="@product.BadgeIcon" />
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var product in catalogResult.Data)
+        {
+            <ProductCard Item="@product"/>
+        }
+         <div class="page-links">
+                @foreach (var pageIndex in GetVisiblePageIndexes(catalogResult))
+                {
+                    <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
+                        @pageIndex</NavLink>
+                }
+        </div>
     }
 </div>
 
 @code {
+     const int PageSize = 40;
 
-    public class Product
+    [SupplyParameterFromQuery]
+    public int? Page { get; set; }
+
+    [SupplyParameterFromQuery(Name = "type")]
+    public int? ItemTypeId { get; set; }
+
+    CatalogResult? catalogResult;
+
+    static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
+        => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
+    protected override async Task OnInitializedAsync()
     {
-        public string ProductName { get; set; }
-        public decimal OriginalPrice { get; set; }
-        public decimal CurrentPrice { get; set; }
-        public string JewelerName { get; set; }
-        public string ProductImage { get; set; }
-        public string BadgeIcon { get; set; }
+        catalogResult = await CatalogService.GetCatalogItems(
+            Page.GetValueOrDefault(1) - 1,
+            PageSize,
+            ItemTypeId);
     }
-
-    private List<Product> products = new()
-    {
-        new Product { ProductName = "Gold Ring 21K", OriginalPrice = 200, CurrentPrice = 180, JewelerName = "Twana Jewels", ProductImage = "assets/Image/ring.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
-        new Product { ProductName = "Bracelet 18K", OriginalPrice = 150, CurrentPrice = 140, JewelerName = "Zarengar", ProductImage = "assets/Image/gwara.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
-        new Product { ProductName = "Necklace 22K", OriginalPrice = 300, CurrentPrice = 275, JewelerName = "Royal Gold", ProductImage = "assets/Image/nickle.svg", BadgeIcon = "" },
-         new Product { ProductName = "Gold Ring 21K", OriginalPrice = 200, CurrentPrice = 180, JewelerName = "Twana Jewels", ProductImage = "assets/Image/ring.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
-        new Product { ProductName = "Bracelet 18K", OriginalPrice = 150, CurrentPrice = 140, JewelerName = "Zarengar", ProductImage = "assets/Image/gwara.svg", BadgeIcon = "assets/Icons/offerFill.svg" },
-        new Product { ProductName = "Necklace 22K", OriginalPrice = 300, CurrentPrice = 275, JewelerName = "Royal Gold", ProductImage = "assets/Image/nickle.svg", BadgeIcon = "" }
-    };
 }

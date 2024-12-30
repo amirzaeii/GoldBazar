@@ -13,7 +13,7 @@ public class OrderStatusChangedToAwaitingValidationIntegrationEventHandler(
 
         foreach (var orderStockItem in @event.OrderStockItems)
         {
-            var item = catalogContext.Products.Find(orderStockItem.ProductId);
+            var item = catalogContext.Items.Find(orderStockItem.ProductId);
             var hasStock = item!.Quantity >= orderStockItem.Units;
             var confirmedOrderStockItem = new ConfirmedOrderStockItem(item.Id, hasStock);
 

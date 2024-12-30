@@ -37,17 +37,17 @@ public partial class CatalogContextSeed(
         }
 
         
-        if (!context.Products.Any())
+        if (!context.Types.Any())
         {
             var sourcePath = Path.Combine(contentRootPath, "Setup", "catalogSampleData.json");
             var sourceJson = File.ReadAllText(sourcePath);
             var sourceItems = JsonSerializer.Deserialize<CatalogSourceEntry[]>(sourceJson);
 
-            context.ProductTypes.RemoveRange(context.ProductTypes);
-            await context.ProductTypes.AddRangeAsync(sourceItems.Select(x => x.productType).Distinct()
-                .Select(brandName => new ProductType { Name = brandName }));
+            context.Types.RemoveRange(context.Types);
+            await context.Types.AddRangeAsync(sourceItems.Select(x => x.productType).Distinct()
+                .Select(brandName => new Type { Name = brandName }));
 
-            logger.LogInformation("Seeded catalog with {NumBrands} ProductTypes", context.ProductTypes.Count());
+            logger.LogInformation("Seeded catalog with {NumBrands} ProductTypes", context.Types.Count());
 
             context.Materials.RemoveRange(context.Materials);
             await context.Materials.AddRangeAsync(sourceItems.Select(x => x.material).Distinct()
@@ -72,13 +72,13 @@ public partial class CatalogContextSeed(
 
             await context.SaveChangesAsync();
 
-            var productTypeIdsByName = await context.ProductTypes.ToDictionaryAsync(x => x.Name, x => x.Id);
+            var productTypeIdsByName = await context.Types.ToDictionaryAsync(x => x.Name, x => x.Id);
             var materialIdsByName = await context.Materials.ToDictionaryAsync(x => x.Name, x => x.Id);
             var metalIdsByName = await context.Metals.ToDictionaryAsync(x => x.Name, x => x.Id);
             var styleIdsByName = await context.Styles.ToDictionaryAsync(x => x.Name, x => x.Id);
             var occasionIdsByName = await context.Occasions.ToDictionaryAsync(x => x.Name, x => x.Id);
 
-            var catalogItems = sourceItems.Select(source => new Product
+            var catalogItems = sourceItems.Select(source => new Item
             {
                 //Id = source.Id,
                 Description = source.description,
@@ -94,8 +94,8 @@ public partial class CatalogContextSeed(
                  //= $"{source.Id}.webp",
             }).ToArray();
 
-            await context.Products.AddRangeAsync(catalogItems);
-            logger.LogInformation("Seeded catalog with {NumItems} items", context.Products.Count());
+            await context.Items.AddRangeAsync(catalogItems);
+            logger.LogInformation("Seeded catalog with {NumItems} items", context.Items.Count());
             await context.SaveChangesAsync();
         }
     }

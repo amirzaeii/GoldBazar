@@ -1,40 +1,43 @@
-﻿<div class="product-card">
-    <div class="badge-container">
-        @if (!string.IsNullOrEmpty(BadgeIcon))
-        {
-            <div class="badge">
-                <img src="@BadgeIcon" alt="Badge">
+﻿@inject IProductImageUrlProvider ImageProvider
+@if (Item == null){
+
+}
+else{
+    <div class="product-card">
+        <div class="badge-container">
+            @if(Item.Discount > 0)
+            {
+                <div class="badge">
+                    <img src="assets/Icons/offerFill.svg" alt="Badge">
+                </div>
+            }
+        </div>
+        <div class="fav">
+            <img src="assets/Icons/Heart.svg" alt="Favorite">
+        </div>
+
+        <div class="product-image">
+            <img src="@ImageProvider.GetProductImageUrl(Item.Id)" alt="@Item.Caption">
+        </div>
+
+        <div class="product-info">
+            <h3 class="product-title">@Item.Caption</h3>
+            <div class="price-row">
+                <div class="price-container">
+                    @if(Item.Discount > 0)
+                    {
+                       <span class="original-price">@Item.OldPrice.ToString("#,##")</span>
+                    }
+                        <span class="current-price">$@Item.Price.ToString("#,##")</span>
+                                       
+                </div>
             </div>
-        }
-    </div>
-    <div class="fav">
-        <img src="@FavIcon" alt="Favorite">
-    </div>
-
-    <div class="product-image">
-        <img src="@ProductImage" alt="@ProductName">
-    </div>
-
-    <div class="product-info">
-        <h3 class="product-title">@ProductName</h3>
-        <div class="price-row">
-            <div class="price-container">
-                <span class="original-price">$@OriginalPrice</span>
-                <span class="current-price">$@CurrentPrice</span>
+            <div class="jeweler-container">
+                <span class="jeweler-name">@Item.ShopName</span>
             </div>
         </div>
-        <div class="jeweler-container">
-            <span class="jeweler-name">@JewelerName</span>
-        </div>
     </div>
-</div>
-
+}
 @code {
-    [Parameter] public string FavIcon { get; set; } = "assets/Icons/Heart.svg";
-    [Parameter] public string BadgeIcon { get; set; } = "assets/Icons/offerFill.svg";
-    [Parameter] public string ProductImage { get; set; } = "";
-    [Parameter] public string ProductName { get; set; } = "";
-    [Parameter] public decimal OriginalPrice { get; set; }
-    [Parameter] public decimal CurrentPrice { get; set; }
-    [Parameter] public string JewelerName { get; set; } = "";
+    [Parameter] public CatalogItem? Item { get; set; }
 }
