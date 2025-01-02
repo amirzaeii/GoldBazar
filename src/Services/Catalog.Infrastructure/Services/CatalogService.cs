@@ -10,4 +10,5 @@ public class CatalogServices(
     //public IOptions<CatalogOptions> Options { get; } = options;
     public ILogger<CatalogServices> Logger { get; } = logger;
     public ICatalogIntegrationEventService EventService { get; } = eventService;
+
 };

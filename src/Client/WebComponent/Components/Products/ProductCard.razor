@@ -1,0 +1,39 @@
+﻿@inject IProductImageUrlProvider ImageProvider
+
+@if (Item == null){
+
+}
+else{
+<a href="/product/@Item.Id" class="product-card">
+    <div class="badge-container">
+        @if (Item.Discount > 0)
+        {
+            <div class="badge">
+                <img src="assets/Icons/offerFill.svg" alt="Discount">
+            </div>
+        }
+    </div>
+
+    <div class="product-image">
+        <img src="@Item.ImageUrl" alt="@Item.Caption">
+    </div>
+
+    <div class="product-info">
+        <h3 class="product-title">@Item.Caption</h3>
+        <div class="price-row">
+            @if (Item.Discount > 0)
+            {
+                <span class="original-price">@Item.OldPrice.ToString("C")</span>
+            }
+            <span class="current-price">@Item.Price.ToString("C")</span>
+        </div>
+        <div class="jeweler-container">
+            <span class="jeweler-name">@Item.ShopName</span>
+        </div>
+    </div>
+</a>
+
+}
+@code {
+    [Parameter] public CatalogItem Item { get; set; }
+}

@@ -1,0 +1,52 @@
+﻿@inject ICatalogService CatalogService
+@inject NavigationManager Nav
+@attribute [StreamRendering]
+
+<div class="product-grid">
+    @if (catalogResult is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var product in catalogResult.Data)
+        {
+            <ProductCard Item="product" />
+            
+        }
+         <div class="page-links">
+                @foreach (var pageIndex in GetVisiblePageIndexes(catalogResult))
+                {
+                    <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
+                        @pageIndex</NavLink>
+                }
+        </div>
+    }
+</div>
+
+@code {
+     const int PageSize = 40;
+
+    [SupplyParameterFromQuery]
+    public int? Page { get; set; }
+
+    [SupplyParameterFromQuery(Name = "type")]
+    public int? ItemTypeId { get; set; }
+
+    CatalogResult? catalogResult;
+
+    static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
+        => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
+    protected override async Task OnInitializedAsync()
+    {
+        catalogResult = await CatalogService.GetCatalogItems(
+            Page.GetValueOrDefault(1) - 1,
+            PageSize,
+            ItemTypeId);
+    }
+    private void NavigateToProduct(int productId)
+    {
+        Nav.NavigateTo($"/product/{productId}");
+    }
+
+}

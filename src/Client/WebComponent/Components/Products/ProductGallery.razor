@@ -1,0 +1,9 @@
+﻿<div class="gallery">
+    <div class="gallery_container">
+        <img src="@Item.ImageUrl" alt="Product" class="gallery_image">
+    </div>
+</div>
+
+@code {
+    [Parameter] public CatalogItem Item { get; set; }
+}

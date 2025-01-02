@@ -1,0 +1,99 @@
+﻿<div class="bottom-bar">
+    @if (Item != null)
+    {
+        <div class="bottom-bar__price">
+            @if (Item.Discount > 0)
+            {
+                <span class="price__original">@Item.OldPrice.ToString("C")</span>
+            }
+            <span class="price">@Item.Price.ToString("C")</span>
+        </div>
+        <button class="add-to-cart bold" @onclick="ShowPopup">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+            </svg>
+            Add to cart
+        </button>
+    }
+    else
+    {
+        <p>Loading product details...</p>
+    }
+</div>
+
+
+@if (IsBottomSheetVisible)
+{
+    <div class="bottom-sheet-overlay">
+        <div class="bottom-sheet">
+            <div class="bottom-sheet__header">
+                <button class="bottom-sheet__close" @onclick="HideBottomSheet">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="bottom-sheet__title">
+                    <p>نرخی خەمڵێنراو</p>
+                    <div class="bottom-sheet__price">179$</div>
+                </div>
+            </div>
+
+            <div class="selection-group">
+                <div class="selection-group__title">عەیارە</div>
+                <div class="selection-group__options">
+                    <button class="option option--type">عەیارە 21</button>
+                    <button class="option option--type">عەیارە 20</button>
+                    <button class="option option--type">عەیارە 24</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (IsPopupVisible)
+{
+    <div class="popup-overlay bold">
+        <div class="popup">
+            <h2 class="popup__title">بەرهەمەكە زیادکرا بۆ بەشی كاڵاكان</h2>
+            <img src="assets/Image/cart.jpg" class="cart-icon" alt="">
+            <div class="button-group">
+                <button class="button button--primary bold" @onclick="GoToCart">کڕینەکەم تەواودەکەم</button>
+                <button class="button button--secondary bold" @onclick="HidePopup">زیاتر دەگەڕێم</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public CatalogItem? Item { get; set; }
+    private bool IsBottomSheetVisible { get; set; } = false;
+    private bool IsPopupVisible { get; set; } = false;
+
+    private void ShowPopup()
+    {
+        IsPopupVisible = true;
+        IsBottomSheetVisible = false;
+    }
+
+    private void HidePopup()
+    {
+        IsPopupVisible = false;
+    }
+
+    private void ShowBottomSheetOptions()
+    {
+        IsBottomSheetVisible = true;
+    }
+
+    private void HideBottomSheet()
+    {
+        IsBottomSheetVisible = false;
+    }
+
+    private void GoToCart()
+    {
+        // Navigate to cart or perform checkout logic
+    }
+}

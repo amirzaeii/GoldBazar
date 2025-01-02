@@ -97,8 +97,10 @@ public partial class CatalogContextSeed(
             await context.Items.AddRangeAsync(catalogItems);
             logger.LogInformation("Seeded catalog with {NumItems} items", context.Items.Count());
             await context.SaveChangesAsync();
-        }
-    }
+        } 
+
+}
+    
 
     private class CatalogSourceEntry
     {

@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WebComponent.Dtos
+{
+    public record Shop (int Id, string Name,string Address, string City, string ContactNo, string OwnerName)
+    {
+        public decimal Rate { get; init; } = 3.5M;
+        public string ImageUrl { get; set; }
+    }
+}

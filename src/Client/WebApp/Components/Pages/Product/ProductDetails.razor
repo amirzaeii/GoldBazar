@@ -1,0 +1,119 @@
+﻿@page "/product/{id:int}"
+@inject ICatalogService CatalogService
+@inject NavigationManager Nav
+@layout EmptyLayout
+
+
+@if (item == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <header class="header">
+            <button class="header_back" onclick="history.go(-1)">
+                <img src="assets/Icons/left.svg" alt="Back">
+            </button>
+        <h1 class="header_title">@item.Caption</h1>
+
+    </header>
+    <main>
+        <ProductGallery Item="item" />
+        <section class="product-info2">
+            <div class="product-info_header">
+                <div class="price">
+                    @if (item.Discount > 0)
+                    {
+                        <span class="price_original">@item.OldPrice.ToString("C")</span>
+                    }
+                    <span class="price_current">
+                        @((item.Price > 0) ? item.Price.ToString("C") : "N/A")
+                    </span>
+                </div>
+
+                <div class="rating-pill">
+                    <span class="rating-pill__value">@item.Rating</span>
+                    <img src="assets/Icons/star.svg" alt="Star" class="rating_stars">
+                    <span class="rating-pill__divider">|</span>
+                    <span class="rating-pill__count">@item.RatingCount</span>
+                </div>
+            </div>
+        </section>
+        <div class="specs-container">
+            <div class="specs-grid">
+                <div class="spec-item">
+                    <div class="spec-item__label">Type:</div>
+                    <div class="spec-item__value">@item.TypeName</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-item__label">Weight:</div>
+                    <div class="spec-item__value">@item.Weight g</div>
+                </div>
+                <div class="spec-item">
+                    <div class="spec-item__label">Purity:</div>
+                    <div class="spec-item__value">@item.KT carat</div>
+                </div>
+            </div>
+            <button class="action-button bold">
+                Choose based on your preferences
+            </button>
+        </div>
+       
+        <StoreInfo ShopId="item.ShopId" />
+
+
+        <div class="details bold">
+            <div class="details__header">
+                <img src="assets/Icons/gold.svg" alt="Gold Icon">
+                <span class="details__title">Specifications</span>
+            </div>
+            <div class="details__grid">
+                <div class="details__item">
+                    <div class="details__label">Occasion</div>
+                    <div class="details__value">
+                        <span>@item.OccasionName</span>
+                    </div>
+                </div>
+                <div class="details__item">
+                    <div class="details__label">Style</div>
+                    <div class="details__value">@item.StyleName</div>
+                </div>
+                <div class="details__item">
+                    <div class="details__label">Metal</div>
+                    <div class="details__value">@item.MetalName</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-container">
+            <h3 class="tab-title">Features</h3>
+            <ul class="features-grid">
+                @if (!string.IsNullOrEmpty(item.Description))
+                {
+                    @foreach (var feature in item.Description.Split('\n'))
+                    {
+                        <li class="feature-item">@feature</li>
+                    }
+                }
+                else
+                {
+                    <p>No features available.</p>
+                }
+            </ul>
+        </div>
+    </main>
+    <AddToCart Item="item" />
+}
+
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    CatalogItem? item;
+
+    protected override async Task OnInitializedAsync()
+    {
+        item = await CatalogService.GetCatalogItem(Id);
+    }
+}
+

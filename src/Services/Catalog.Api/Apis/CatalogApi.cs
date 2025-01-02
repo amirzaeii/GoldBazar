@@ -96,10 +96,22 @@ public static class CatalogApi
         return TypedResults.Ok(new PaginatedItems<ItemDto>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
 
-    public static async Task<Results<Ok<Item>, NotFound>> GetCatalogItemById(
+    public static async Task<Results<Ok<ItemDto>, NotFound>> GetCatalogItemById(
         int id, [AsParameters] CatalogServices services)
     {
-        var item = await services.Context.Items.FirstOrDefaultAsync(p => p.Id == id);
+        var item = await services.Context.Items
+            .Include(i => i.Metal)
+            .Include(i => i.Material)
+            .Include(i => i.Shop)
+            .Include(i => i.Occassion)
+            .Include(i => i.Style)
+            .Where(i => i.Id == id)
+             .Select(s => new ItemDto(s.Id, s.Caption, s.Description,
+                            s.CostPerGram, s.Weight, s.Size,
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat,
+                            s.ShopId, s.Shop.Name, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
+                            , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).FirstOrDefaultAsync();
+
         return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
     }
 
@@ -334,4 +346,7 @@ public static class CatalogApi
         Path.Combine(contentRootPath, "Pic/Type", pictureFileName);
     public static string GetFullPathItem(string contentRootPath, string pictureFileName) =>
         Path.Combine(contentRootPath, "Pic/Item", pictureFileName);
+
+
 }
+

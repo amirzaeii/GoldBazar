@@ -17,5 +17,8 @@ public class Metal
     [Required(ErrorMessage = "KT is required.")]
     [Range(1, 24, ErrorMessage = "KT must be a valid karat value (e.g., 18, 19, 20, ..., 24).")]
     public int Karat { get; set; }
+
+    [Required(ErrorMessage = "Purity is required.")]
+    public decimal Purity { get; set; }
 }
 

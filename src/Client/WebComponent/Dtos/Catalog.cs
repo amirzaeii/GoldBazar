@@ -23,6 +23,10 @@ public record CatalogItem(
     bool Status,
     decimal Price,
     decimal OldPrice,
+    //Added
+    string ImageUrl,
+    decimal Rating,
+    int RatingCount,
     CatalogItemType CatalogType);
 
 public record CatalogResult(int PageIndex, int PageSize, int Count, List<CatalogItem> Data);
