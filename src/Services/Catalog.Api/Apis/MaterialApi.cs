@@ -3,11 +3,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.Api.Apis
 {
-    public static class MaterialApi
+    public static class OtherInfoApi
     {
-        public static IEndpointRouteBuilder MapMaterialApi(this IEndpointRouteBuilder app)
+        public static IEndpointRouteBuilder MapInfoApiV1(this IEndpointRouteBuilder app)
         {
-            app.MapGet("/materials", GetAllMaterials);
+            var api = app.MapGroup("api/catalog").HasApiVersion(1.0);
+
+                api.MapGet("/materials", GetAllMaterials)
+                .WithName("MaterailList")
+                .WithSummary("List of products")
+                .WithDescription("Get a paginated list of products in the catalog.")
+                .WithTags("Material"); 
+
+
             app.MapGet("/materials/{id}", GetMaterialById);
             app.MapPost("/materials", AddMaterial);
             app.MapPut("/materials/{id}", UpdateMaterial);

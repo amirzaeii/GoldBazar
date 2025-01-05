@@ -19,8 +19,4 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
-  </ItemGroup>
-
 </Project>

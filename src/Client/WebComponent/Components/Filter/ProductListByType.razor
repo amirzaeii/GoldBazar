@@ -1,4 +1,4 @@
-﻿@inject ICatalogService CatalogService﻿
+﻿@inject ICatalogService CatalogService
 @inject NavigationManager Nav
 @attribute [StreamRendering]
 
@@ -30,8 +30,8 @@
     [SupplyParameterFromQuery]
     public int? Page { get; set; }
 
-    [SupplyParameterFromQuery(Name = "type")]
-    public int? ItemTypeId { get; set; }
+    [Parameter]
+    public int ItemTypeId { get; set; }
 
     CatalogResult? catalogResult;
 
@@ -39,10 +39,11 @@
         => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
     protected override async Task OnInitializedAsync()
     {
-        catalogResult = await CatalogService.GetCatalogItems(
+        catalogResult = await CatalogService.GetCatalogItemsByType(
             Page.GetValueOrDefault(1) - 1,
             PageSize,
             ItemTypeId);
     }
+
 
 }

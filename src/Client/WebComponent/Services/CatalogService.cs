@@ -1,5 +1,3 @@
-using Catalog.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
 using WebComponent.Dtos;
 
@@ -33,5 +31,32 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
     {
         return $"{baseUri}items?pageIndex={pageIndex}&pageSize={pageSize}";
     }
+
+    public async Task<CatalogResult> GetCatalogItemsByType(int pageIndex, int pageSize, int typeId)
+    {
+        var uri = $"{remoteServiceBaseUrl}items/type/{typeId}?pageIndex={pageIndex}&pageSize={pageSize}";
+
+        // Deserialize as array of CatalogItem
+        var items = await httpClient.GetFromJsonAsync<CatalogItem[]>(uri);
+
+        items ??= Array.Empty<CatalogItem>();
+
+        var paginatedItems = items
+    .Skip(pageIndex * pageSize)
+    .Take(pageSize)
+    .ToList();
+
+
+        // Wrap in CatalogResult
+        var result = new CatalogResult(
+            pageIndex,
+            pageSize,
+            items.Length,
+            paginatedItems
+        );
+
+        return result;
+    }
+
 
 }

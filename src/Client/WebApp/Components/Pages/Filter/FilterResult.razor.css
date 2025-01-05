@@ -3,12 +3,20 @@
     background: var(--bg-main);
     min-height: 100vh;
     position: relative;
+    min-height: auto;
+    padding-top: 0px;
     z-index: 1;
 }
 
-    .main-content.shifted {
-        transform: translateX(-280px);
-    }
+
+.main-content.shifted {
+    transform: translateX(-280px);
+}
+
+.app-bar span {
+   font-size:medium;
+   padding-bottom:2px;
+}
 
 .header {
     display: flex;
@@ -677,3 +685,4 @@ body {
         .checkbox-label input[type="checkbox"]:focus {
             box-shadow: 0 0 0 2px rgba(128, 96, 244, 0.2);
         }
+

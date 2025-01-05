@@ -9,6 +9,7 @@ public class MetalDto
     public string Name { get; }
     public ManufactureEnum Manufacture { get; } // Enum type for Manufacture
     public int KT { get; }
+    public decimal Purity { get; }
 
     public MetalDto(Metal metal)
     {
@@ -16,5 +17,6 @@ public class MetalDto
         Name = metal.Name;
         Manufacture = metal.Manufacture;
         KT = metal.Karat;
+        Purity = metal.Purity;
     }
 }

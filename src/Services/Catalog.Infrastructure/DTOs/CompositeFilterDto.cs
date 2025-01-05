@@ -1,30 +1,7 @@
-﻿
-namespace Catalog.Infrastructure;
-
-public class CompositeFilterDto
+﻿namespace Catalog.Infrastructure;
+public record CompositeFilterDto
 {
-    public decimal MinWeight { get; set; }
-    public decimal MaxWeight { get; set; }
-    public string ProductType { get; set; }
-    public string Material { get; set; }
-    public string Metal { get; set; }
-    public string Size { get; set; }
-    public string Occasion { get; set; }
-    public string Style { get; set; }
-    public string Manufacturer { get; set; }
-
-
-    // Constructor to initialize all properties with default values
-    public CompositeFilterDto(
-        decimal minWeight = 0,
-        decimal maxWeight = 0,
-        string productType = "",
-        string material = "",
-        string metal = "",
-        string size = "",
-        string occasion = "",
-        string style = "",
-        string manufacturer = "")
+    public CompositeFilterDto(decimal minWeight, decimal maxWeight, int[] productType, int[] material, int[] metal, string size, int[] occasion, int[] style, int[] shopId, int[] city, int pageIndex, int pageSize, string sortField, string sortOrder)
     {
         MinWeight = minWeight;
         MaxWeight = maxWeight;
@@ -34,6 +11,26 @@ public class CompositeFilterDto
         Size = size;
         Occasion = occasion;
         Style = style;
-        Manufacturer = manufacturer;
+        ShopId = shopId;
+        City = city;
+        PageIndex = pageIndex;
+        PageSize = pageSize;
+        SortField = sortField;
+        SortOrder = sortOrder;
     }
+
+    public decimal MinWeight { get; set; }
+    public decimal MaxWeight { get; set; }
+    public int[] ProductType { get; set; }
+    public int[] Material { get; set; } 
+    public int[] Metal { get; set; }
+    public string Size { get; set; } 
+    public int[] Occasion { get; set; } 
+    public int[] Style { get; set; } 
+    public int[] ShopId { get; set; } 
+    public int[] City { get; set; }  
+    public int PageIndex { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+    public string SortField { get; set; } = "Caption";
+    public string SortOrder { get; set; } = "asc";
 }

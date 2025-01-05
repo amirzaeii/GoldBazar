@@ -1,5 +1,4 @@
-﻿
-namespace Catalog.Infrastructure;
+﻿namespace Catalog.Infrastructure;
 
 public record ItemDto(int Id, 
 string Caption, 
@@ -14,6 +13,7 @@ string MetalName,
 decimal KT,
 int ShopId,
 string ShopName,
+string City,
 int MaterialId,
 string MaterailName,
 int OccasionId,

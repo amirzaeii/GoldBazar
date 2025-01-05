@@ -7,5 +7,6 @@ public interface ICatalogService
     Task<CatalogItem?> GetCatalogItem(int id);
     Task<CatalogResult> GetCatalogItems(int pageIndex, int pageSize, int? type);
     Task<IEnumerable<CatalogItemType>> GetTypes();
+    Task<CatalogResult> GetCatalogItemsByType(int typeId, int pageIndex, int pageSize);
 
 }

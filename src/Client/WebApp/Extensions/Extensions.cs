@@ -29,11 +29,15 @@ public static class Extensions
 
         // HTTP and GRPC client registrations
         //builder.Services.AddGrpcClient<Basket.BasketClient>(o => o.Address = new("http://basket-api"))
-          //  .AddAuthToken();
+        //  .AddAuthToken();
 
         builder.Services.AddHttpClient<ICatalogService, CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
             .AddApiVersion(1.0);
-            //.AddAuthToken();
+        //.AddAuthToken();
+
+        builder.Services.AddHttpClient<IFilterService, FilterService>(o => o.BaseAddress = new("http://catalog-api"))
+            .AddApiVersion(1.0);
+        //.AddAuthToken();
 
         // builder.Services.AddHttpClient<OrderingService>(o => o.BaseAddress = new("http://ordering-api"))
         //     .AddApiVersion(1.0)

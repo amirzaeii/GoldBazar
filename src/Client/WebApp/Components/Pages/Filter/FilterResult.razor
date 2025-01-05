@@ -1,20 +1,22 @@
-﻿@page "/categories"
-@inject NavigationManager Navigation
+﻿@page "/filters-result/{ItemTypeId:int?}"
+@using WebComponent.Components.Filter
+@inject ICatalogService CatalogService
+@inject NavigationManager Nav
+@attribute [StreamRendering]
 
 <div class="container">
     <header class="header">
-        <NavLink href="/">
-        <button class="back" @onclick="NavigateToIndex">
-            <img src="assets/Icons/left.svg" alt="" class="icon">
-            <span>Filters</span>
-        </button></NavLink>
-        <NavLink href="categories-options">
-            <button class="filter-trigger" @onclick="NavigateToFilters">
+        <div class="app-bar">
+            <span>Sort and Filter</span>
+        </div>
+        <NavLink href="filters">
+            <button class="filter-trigger">
                 <img src="assets/Icons/leftarrow.svg" alt="">
                 <span>Options</span>
             </button>
         </NavLink>
     </header>
+
     <div class="main-content">
         <hr />
 
@@ -30,41 +32,31 @@
                 <button class="view-option">High to Low</button>
             </div>
         </div>
-
-        <div class="product-grid">
-            <ProductList />
-        </div>
     </div>
 
-    <!-- Scroll to Top Button -->
+    <!-- Conditional Rendering for Product List -->
+    @if (ItemTypeId > 0)
+    {
+        <div class="product-grid">
+            <ProductListByType ItemTypeId="ItemTypeId" />
+        </div>
+    }
+    else
+    {
+        
+    }
+
     <button class="scroll-top-btn" onclick="scrollToTop()">
         <img src="assets/Icons/arrowup.png">
     </button>
 </div>
 
 @code {
-
-    private void ClearAllFilters()
-    {
-        // Logic for clearing filters if needed
-    }
-
-    private void NavigateToFilters()
-    {
-        Navigation.NavigateTo("/filters");
-    }
-
-
-
-    private void NavigateToIndex()
-    {
-
-    }
-
-
+    [Parameter]
+    public int ItemTypeId { get; set; }
 }
 <script>
-        window.onscroll = function() {
+    window.onscroll = function () {
         toggleScrollTopButton();
     };
 
@@ -83,5 +75,4 @@
             behavior: 'smooth'
         });
     }
-
 </script>

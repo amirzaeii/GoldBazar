@@ -113,7 +113,7 @@ namespace Catalog.Api.Apis
                 .Select(s => new ItemDto (s.Id, s.Caption, s.Description, 
                             s.CostPerGram, s.Weight, s.Size, 
                             s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, 
-                            s.ShopId, s.Shop.Name, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
+                            s.ShopId, s.Shop.Name,s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
                             ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus))
                 .ToListAsync();
 

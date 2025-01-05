@@ -1,0 +1,112 @@
+﻿@page "/filters"
+@inject IFilterService FilterService
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@layout EmptyLayout
+@rendermode InteractiveServer
+@if (FilterDictionary.Count == 0)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="app-bar">
+        <button onclick="history.go(-1)"></button>
+        <span class="title">Sort and Filter</span>
+    </div>
+
+
+    <div class="container">
+        <div class="left-column">
+            @foreach (var filter in FilterDictionary)
+            {
+                <button class="category" @onclick="() => ShowSubcategories(filter.Key)">
+                    @filter.Value
+                </button>
+            }
+        </div>
+
+        <div class="right-column">
+            <div class="subcategories">
+                @if (SelectedFilter != null)
+                {
+                    @foreach (var subcategory in Subcategories[SelectedFilter])
+                    {
+                        <div class="subcategory">
+                            <input type="checkbox" id="@subcategory" value="@subcategory" />
+                            <label for="@subcategory">@subcategory</label>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="submit" @onclick="Submit">Search</button>
+        <button class="clear-all" @onclick="ClearAll">Clear</button>
+    </div>
+}
+
+@code {
+    Dictionary<string, string> FilterDictionary = new();
+    Dictionary<string, List<string>> Subcategories = new();
+    string SelectedFilter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var materials = await FilterService.GetCatalogDataAsync("materials");
+        var metals = await FilterService.GetCatalogDataAsync("metals");
+        var occasions = await FilterService.GetCatalogDataAsync("occasions");
+        var styles = await FilterService.GetCatalogDataAsync("styles");
+
+        Subcategories["Material"] = materials.Select(m => m.Name).ToList();
+        Subcategories["Metal"] = metals.Select(m => m.Name).ToList();
+        Subcategories["Occasion"] = occasions.Select(o => o.Name).ToList();
+        Subcategories["Style"] = styles.Select(s => s.Name).ToList();
+
+        FilterDictionary["Material"] = "Materials";
+        FilterDictionary["Metal"] = "Metals";
+        FilterDictionary["Occasion"] = "Occasions";
+        FilterDictionary["Style"] = "Styles";
+    }
+
+    private async Task ShowSubcategories(string filterKey)
+    {
+        SelectedFilter = filterKey;
+
+        var endpointMapping = new Dictionary<string, string>
+        {
+            { "Material", "materials" },
+            { "Metal", "metals" },
+            { "Occasion", "occasions" },
+            { "Style", "styles" }
+        };
+
+        if (endpointMapping.TryGetValue(filterKey, out var endpoint))
+        {
+            var result = await FilterService.GetCatalogDataAsync(endpoint);
+            Subcategories[filterKey] = result.Select(item => item.Name).ToList();
+        }
+
+        StateHasChanged();
+    }
+
+    async Task ClearAll()
+    {
+        // Only uncheck the checkboxes, do not clear subcategories
+        await JS.InvokeVoidAsync("clearCheckboxes");
+    }
+
+    private void Submit(MouseEventArgs e)
+    {
+        Console.WriteLine($"Searching for {SelectedFilter} items...");
+    }
+}
+<script>
+    function clearCheckboxes() {
+        document.querySelectorAll('.subcategory input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+    }
+</script>

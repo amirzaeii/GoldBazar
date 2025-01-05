@@ -1,4 +1,4 @@
-
+using WebComponent.Dtos;
 using WebComponent.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +8,10 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.AddApplicationServices();
+// server interactive
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
 
 var app = builder.Build();
 
@@ -20,6 +24,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+// default server interactive
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 
@@ -29,7 +38,6 @@ app.MapRazorComponents<App>()
 
 app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
 app.MapForwarder("/type-images/{id}", "http://catalog-api", "/api/catalog/types/{id}/pic");
-
 
 
 app.Run();

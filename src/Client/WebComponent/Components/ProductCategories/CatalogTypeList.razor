@@ -1,8 +1,9 @@
 ﻿@inject ICatalogService CatalogService
 @inject IProductImageUrlProvider ImageProvider
 @inject NavigationManager Nav
+
 <div class="container">
-    @if(catalogItemTypes == null)
+    @if (catalogItemTypes == null)
     {
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -14,22 +15,43 @@
             <nav class="categories">
                 @foreach (var category in catalogItemTypes)
                 {
-                    <div class="category-item">
-                        <div class="category-icon">
-                            <img src="@ImageProvider.GetTypeImageUrl(category)" alt="@category.Name">
+                    <a href="/filters-result/@category.Id">
+                        <div class="category-item">
+                            <div class="category-icon">
+                                <img src="@ImageProvider.GetTypeImageUrl(category)" alt="@category.Name">
+                            </div>
+                            <span>@category.Name</span>
                         </div>
-                        <span>@category.Name</span>
-                    </div>
+                    </a>
                 }
             </nav>
         </div>
     }
 </div>
 
-@code {
+@code { 
+    [Parameter]
+      public int ItemTypeId { get; set; }
     IEnumerable<CatalogItemType>? catalogItemTypes;
+
     protected override async Task OnInitializedAsync()
     {
-        catalogItemTypes = await CatalogService.GetTypes();        
+        catalogItemTypes = await CatalogService.GetTypes();
     }
+       
+
+        CatalogResult? catalogResult;
+
+
+        const int PageSize = 40;
+
+        protected override async Task OnParametersSetAsync()
+        {
+            catalogResult = await CatalogService.GetCatalogItemsByType(
+                ItemTypeId,
+                0, // Default page index
+                PageSize
+            );
+        }
+
 }
