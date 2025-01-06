@@ -5,74 +5,74 @@
 @attribute [StreamRendering]
 
 <div class="container">
-    <header class="header">
-        <div class="app-bar">
-            <span>Sort and Filter</span>
-        </div>
-        <NavLink href="filters">
-            <button class="filter-trigger">
-                <img src="assets/Icons/leftarrow.svg" alt="">
-                <span>Options</span>
+    <div class="search-bar-container">
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button type="submit">
+                <img src="assets/icons/search.png" alt="Search">
             </button>
-        </NavLink>
-    </header>
-
-    <div class="main-content">
-        <hr />
-
-        <div class="view-label">
-            <span>Sort by</span>
-            <img src="assets/Icons/arange.svg" alt="">
-        </div>
-
-        <div class="view-options-container">
-            <div class="view-options">
-                <button class="view-option">VIP</button>
-                <button class="view-option active">Low to High</button>
-                <button class="view-option">High to Low</button>
-            </div>
         </div>
     </div>
 
+    <div class="filter-sort-container">
+        <button class="filter-button">
+            <span>Filter</span>
+            <img src="assets/icons/filter.png" alt="Filter">
+        </button>
+        <span class="divider"></span>
+        <button class="sort-button">
+            <span>Sort by</span>
+            <img src="assets/icons/sorting.png" alt="Sort">
+        </button>
+    </div>
+</div>
+
+<div>
     <!-- Conditional Rendering for Product List -->
     @if (ItemTypeId > 0)
     {
         <div class="product-grid">
             <ProductListByType ItemTypeId="ItemTypeId" />
         </div>
+
+      
     }
     else
     {
-        
+       
     }
-
     <button class="scroll-top-btn" onclick="scrollToTop()">
-        <img src="assets/Icons/arrowup.png">
+        <img src="assets/icons/arrowup.png" alt="Scroll to top">
     </button>
+    
 </div>
 
 @code {
     [Parameter]
     public int ItemTypeId { get; set; }
 }
+
 <script>
-    window.onscroll = function () {
-        toggleScrollTopButton();
-    };
-
-    function toggleScrollTopButton() {
+    document.addEventListener("DOMContentLoaded", function () {
         const scrollTopButton = document.querySelector('.scroll-top-btn');
-        if (document.documentElement.scrollTop > 200) {
-            scrollTopButton.classList.add('show');
-        } else {
-            scrollTopButton.classList.remove('show');
-        }
-    }
 
-    function scrollToTop() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+        if (!scrollTopButton) return;
+
+        // Attach the scroll listener
+        window.addEventListener('scroll', function () {
+            if (document.documentElement.scrollTop > 100 || document.body.scrollTop > 100) {
+                scrollTopButton.classList.add('show');
+            } else {
+                scrollTopButton.classList.remove('show');
+            }
         });
-    }
+
+        // Smooth Scroll to Top
+        scrollTopButton.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
 </script>

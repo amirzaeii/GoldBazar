@@ -1,0 +1,212 @@
+﻿body {
+    font-family: 'Trebuchet MS', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.title-bar {
+    text-align: center;
+    padding: 20px;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    color: black;
+    margin: 0;
+    display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .title {
+        font-size: 24px;
+    }
+
+    .title-bar {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 20px;
+    }
+
+    .title-bar {
+        padding: 12px;
+        border-radius: 0 0 15px 15px;
+    }
+}
+
+.scrollmenu {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px;
+    gap: 20px;
+    scrollbar-width: none;
+}
+
+    .scrollmenu::-webkit-scrollbar {
+        display: none;
+    }
+
+.offer-card {
+    flex: 0 0 auto;
+    width: 300px;
+    background: linear-gradient(135deg, #8060f4, #6c47ff);
+    color: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+    .offer-card:hover {
+        transform: scale(1.05);
+    }
+
+    .offer-card .badge {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 40px;
+        height: 40px;
+    }
+
+/* Shop Section */
+.shop-info {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    gap: 10px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.shop-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.offer-card h3 {
+    margin: 40px 0 10px;
+    font-size: 22px;
+}
+
+.offer-card p {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.offer-card .duration {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.icon-small {
+    width: 18px;
+    height: 18px;
+}
+
+.cta {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ffeb3b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .scrollmenu {
+        padding: 15px;
+    }
+
+    .offer-card {
+        width: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .scrollmenu {
+        padding: 10px;
+    }
+
+    .offer-card {
+        width: 200px;
+    }
+}
+.offer-card p.cta {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #ffeb3b;
+    text-align: center;
+    white-space: normal; /* Allow text to wrap */
+    overflow: hidden; /* Prevent overflow */
+    text-overflow: ellipsis;
+    max-width: 100%; /* Ensure it fits within the card */
+    display: block; /* Force it to behave as a block element */
+    word-wrap: break-word; /* Break long words if necessary */
+}
+/* Search Bar */
+.search-bar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    background: #f1f1f1;
+    border-radius: 25px;
+    padding: 12px 20px;
+}
+
+    .search-bar input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+    }
+
+    .search-bar button {
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+        .search-bar button img {
+            width: 20px;
+            height: 20px;
+        }
+.scroll-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #6c47ff;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1001;
+}
+
+    .scroll-top-btn.show {
+        display: block;
+    }

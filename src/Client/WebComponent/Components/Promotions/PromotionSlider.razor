@@ -1,5 +1,4 @@
-﻿
-@inject IJSRuntime JS
+﻿@inject IJSRuntime JS
 
 <div class="slider-container">
     <div class="slider">
@@ -27,10 +26,9 @@
     let slideIndex = 0;
     let autoSlideInterval;
 
-    // Initialize slideshow on load
     window.addEventListener('load', () => {
-        showSlides();
         startSlideShow();
+        showSlides();
     });
 
     function plusSlides(n) {
@@ -42,7 +40,7 @@
 
     function currentSlide(n) {
         stopSlideShow();
-        slideIndex = n;
+        slideIndex = n - 1;  // Correct for zero-indexing
         showSlides();
         startSlideShow();
     }
@@ -51,31 +49,42 @@
         let slides = document.getElementsByClassName("carousel-slide");
         let dots = document.getElementsByClassName("dot");
 
-        if (slideIndex > slides.length) { slideIndex = 1; }
-        if (slideIndex < 1) { slideIndex = slides.length; }
+        if (slides.length === 0) return;  // Early exit if no slides are available
 
+        // Reset slideIndex if out of bounds
+        if (slideIndex >= slides.length) {
+            slideIndex = 0;  // Go back to the first slide
+        }
+        if (slideIndex < 0) {
+            slideIndex = slides.length - 1;  // Go to the last slide
+        }
+
+        // Hide all slides
         for (let i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
         }
 
+        // Deactivate all dots
         for (let i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
+            dots[i].classList.remove("active");
         }
 
-        slides[slideIndex - 1].style.display = "block";
-        dots[slideIndex - 1].className += " active";
+        // Show the current slide
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].classList.add("active");
     }
 
     function startSlideShow() {
         autoSlideInterval = setInterval(() => {
             slideIndex++;
             showSlides();
-        }, 4000);
+        }, 4000);  // Change every 4 seconds
     }
 
     function stopSlideShow() {
         clearInterval(autoSlideInterval);
     }
+
 </script>
 
 @code {
@@ -119,3 +128,20 @@
         public string Description { get; set; } = string.Empty;
     }
 }
+<script>
+        let startX;
+
+    document.querySelector('.slider-container').addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+
+    document.querySelector('.slider-container').addEventListener('touchend', (e) => {
+        let endX = e.changedTouches[0].clientX;
+
+        if (startX > endX + 50) {
+            plusSlides(1);  // Swipe left
+        } else if (startX < endX - 50) {
+            plusSlides(-1);  // Swipe right
+        }
+    });
+</script>

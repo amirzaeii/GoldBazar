@@ -28,22 +28,11 @@ public static class CatalogApi
             .WithDescription("Get the picture for a catalog type")
             .WithTags("Types");
 
-        //api.MapGet("/Items/{id}", GetCatalogItemById)
-        //    .WithName("GetProduct")
-        //    .WithSummary("Get a item by its id")
-        //    .WithDescription("Get a item item by its id")
-        //    .WithTags("Items");
-
-        //  api.MapGet("/Items/{typeid}", GetCatalogItemByTypeId)
-        //  .WithName("GetProductByType")
-        //  .WithSummary("Get a item by its type")
-        //  .WithDescription("Get a item item by its type")
-        //  .WithTags("Items");
         api.MapGet("/Items/{id:int}", GetCatalogItemById)
-    .WithName("GetProduct")
-    .WithSummary("Get an item by its ID")
-    .WithDescription("Retrieves a specific item from the catalog by its unique identifier (ID).")
-    .WithTags("Items");
+            .WithName("GetProduct")
+            .WithSummary("Get an item by its ID")
+            .WithDescription("Retrieves a specific item from the catalog by its unique identifier (ID).")
+            .WithTags("Items");
 
         api.MapGet("/Items/type/{typeid:int}", GetCatalogItemByTypeId)
             .WithName("GetProductByType")
@@ -82,13 +71,17 @@ public static class CatalogApi
             .WithDescription("Get list of similar products")
             .WithTags("Items");
      
-        api.MapPost("/item/filter", FilterByComposite)
+        api.MapGet("/item/filter", FilterByComposite)
              .WithName("FilterByComposite")
              .WithSummary("Filter catalog items by composite filter")
              .WithDescription("Apply various filters to get a list of catalog items along with their corresponding shop details.")
              .WithTags("Items");
 
-
+        api.MapGet("/items/discounted", GetDiscountedProducts)
+          .WithName("GetDiscountedProducts")
+          .WithSummary("List of discounted products")
+          .WithDescription("Get a list of all products that have a discount or offer.")
+          .WithTags("Items");
 
         return app;
     }
@@ -231,15 +224,15 @@ public static class CatalogApi
         return TypedResults.Ok($"Item with ID {id} deleted.");
     }
 
-    public static async Task<Ok<List<Item>>> GetDiscountedProducts(
-        [AsParameters] CatalogServices services)
-    {
-        var discountedProducts = await services.Context.Items
-            .Where(p => p.Discount > 0)
-            .ToListAsync();
+    //public static async Task<Ok<List<Item>>> GetDiscountedProducts(
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    var discountedProducts = await services.Context.Items
+    //        .Where(p => p.Discount > 0)
+    //        .ToListAsync();
 
-        return TypedResults.Ok(discountedProducts);
-    }
+    //    return TypedResults.Ok(discountedProducts);
+    //}
 
     public static async Task<Ok<List<Item>>> GetSimilarProducts(
         int typeId, [AsParameters] CatalogServices services)
@@ -250,73 +243,6 @@ public static class CatalogApi
 
         return TypedResults.Ok(similarProducts);
     }
-
-    //public static async Task<Ok<List<Item>>> FilterProducts(
-    //    [AsParameters] CatalogServices services,
-    //    [Description("object filter composit")][FromBody] CompositeFilterDto filter
-    //    )
-    //{
-    //    var queryableProducts = services.Context.Items.AsQueryable();
-
-    //    if (filter.MinWeight > 0 || filter.MaxWeight > 0)
-    //    {
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            (filter.MinWeight == 0 || p.Weight >= filter.MinWeight) &&
-    //            (filter.MaxWeight == 0 || p.Weight <= filter.MaxWeight));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.ProductType))
-    //    {
-    //        var productTypes = filter.ProductType.Split(',').Select(pt => pt.Trim()).ToList();
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            productTypes.Any(pt => string.Equals(pt, p.Type.Name, StringComparison.OrdinalIgnoreCase)));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.Material))
-    //    {
-    //        var materials = filter.Material.Split(',').Select(m => m.Trim()).ToList();
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            materials.Any(m => string.Equals(m, p.Material.Name, StringComparison.OrdinalIgnoreCase)));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.Metal))
-    //    {
-    //        var metals = filter.Metal.Split(',').Select(m => m.Trim()).ToList();
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            metals.Any(m => string.Equals(m, p.Metal.Name, StringComparison.OrdinalIgnoreCase)));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.Size))
-    //    {
-    //        var sizes = filter.Size.Split(',').Select(int.Parse).ToList();
-    //        queryableProducts = queryableProducts.Where(p => sizes.Contains(p.Size));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.Occasion))
-    //    {
-    //        var occasions = filter.Occasion.Split(',').Select(o => o.Trim()).ToList();
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            occasions.Any(o => string.Equals(o, p.Occassion.Name, StringComparison.OrdinalIgnoreCase)));
-    //    }
-
-    //    if (!string.IsNullOrWhiteSpace(filter.Style))
-    //    {
-    //        var styles = filter.Style.Split(',').Select(s => s.Trim()).ToList();
-    //        queryableProducts = queryableProducts.Where(p =>
-    //            styles.Any(s => string.Equals(s, p.Style.Name, StringComparison.OrdinalIgnoreCase)));
-    //    }
-
-    //    //if (!string.IsNullOrWhiteSpace(filter.Manufacturer))
-    //    //{
-    //    //    var manufacturers = filter.Metal.Manufacturer.Split(',').Select(m => m.Trim()).ToList();
-    //    //    queryableProducts = queryableProducts.Where(p =>
-    //    //        manufacturers.Any(m => string.Equals(m, p.Manufacturer, StringComparison.OrdinalIgnoreCase)));
-    //    //}
-
-    //    var filteredProducts = await queryableProducts.ToListAsync();
-
-    //    return TypedResults.Ok(filteredProducts);
-    //}
 
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
@@ -364,6 +290,43 @@ public static class CatalogApi
         DateTime lastModified = File.GetLastWriteTimeUtc(path);
 
         return TypedResults.PhysicalFile(path, mimetype, lastModified: lastModified);
+    }
+    public static async Task<Results<Ok<List<ItemDto>>, BadRequest<string>>> GetDiscountedProducts(
+       [AsParameters] CatalogServices services)
+    {
+        var discountedProducts = await services.Context.Items
+            .Where(p => p.Discount > 0)
+            .Include(p => p.Metal)
+            .Include(p => p.Material)
+            .Include(p => p.Shop)
+            .Include(p => p.Type)
+            .Select(p => new ItemDto(
+                p.Id,
+                p.Caption,
+                p.Description,
+                p.CostPerGram,
+                p.Weight,
+                p.Size,
+                p.TypeId,
+                p.Type.Name,
+                p.MetalId,
+                p.Metal.Name,
+                p.Metal.Karat,
+                p.ShopId,
+                p.Shop.Name,
+                p.Shop.City,
+                p.MaterialId,
+                p.Material.Name,
+                p.OccasionId,
+                p.Occassion.Name,
+                p.StyleId,
+                p.Style.Name,
+                p.Discount,
+                p.ActivityStatus
+            ))
+            .ToListAsync();
+
+        return discountedProducts.Any() ? TypedResults.Ok(discountedProducts) : TypedResults.BadRequest("No discounted products found.");
     }
     //Added
     public static async Task<Ok<List<ItemDto>>> FilterByComposite(

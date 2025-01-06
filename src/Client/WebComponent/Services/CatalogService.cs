@@ -58,5 +58,11 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
         return result;
     }
 
+    public async Task<IEnumerable<CatalogItem>> GetDiscountedCatalogItems(int pageIndex, int pageSize)
+    {
+        var uri = $"{remoteServiceBaseUrl}items/discounted?pageIndex={pageIndex}&pageSize={pageSize}";
+        var result = await httpClient.GetFromJsonAsync<CatalogItem[]>(uri);
+        return result ?? Array.Empty<CatalogItem>();
+    }
 
 }
