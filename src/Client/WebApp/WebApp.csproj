@@ -5,63 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\Pic\Item\1.png" />
-    <Content Remove="wwwroot\Pic\Item\10.png" />
-    <Content Remove="wwwroot\Pic\Item\10.svg" />
-    <Content Remove="wwwroot\Pic\Item\2.png" />
-    <Content Remove="wwwroot\Pic\Item\3.png" />
-    <Content Remove="wwwroot\Pic\Item\4.png" />
-    <Content Remove="wwwroot\Pic\Item\5.png" />
-    <Content Remove="wwwroot\Pic\Item\6.png" />
-    <Content Remove="wwwroot\Pic\Item\9.png" />
-    <Content Remove="wwwroot\Pic\Item\9.svg" />
-    <Content Remove="wwwroot\Pic\Type\avita.svg" />
-    <Content Remove="wwwroot\Pic\Type\belt.png" />
-    <Content Remove="wwwroot\Pic\Type\bracelet-1.png" />
-    <Content Remove="wwwroot\Pic\Type\bracelet-2.png" />
-    <Content Remove="wwwroot\Pic\Type\bracelet.png" />
-    <Content Remove="wwwroot\Pic\Type\earrings.png" />
-    <Content Remove="wwwroot\Pic\Type\lira.png" />
-    <Content Remove="wwwroot\Pic\Type\medal.png" />
-    <Content Remove="wwwroot\Pic\Type\necklace.png" />
-    <Content Remove="wwwroot\Pic\Type\piercing.png" />
-    <Content Remove="wwwroot\Pic\Type\ring.png" />
-    <Content Remove="wwwroot\Pic\Type\set.png" />
-    <Content Remove="wwwroot\Pic\Type\tiara.png" />
-    <Content Remove="wwwroot\Pic\Type\watch.png" />
-    <Content Remove="wwwroot\Pic\Type\wedding-ring.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Pic\Item\1.png" />
-    <None Include="wwwroot\Pic\Item\10.png" />
-    <None Include="wwwroot\Pic\Item\10.svg" />
-    <None Include="wwwroot\Pic\Item\2.png" />
-    <None Include="wwwroot\Pic\Item\3.png" />
-    <None Include="wwwroot\Pic\Item\4.png" />
-    <None Include="wwwroot\Pic\Item\5.png" />
-    <None Include="wwwroot\Pic\Item\6.png" />
-    <None Include="wwwroot\Pic\Item\9.png" />
-    <None Include="wwwroot\Pic\Item\9.svg" />
-    <None Include="wwwroot\Pic\Type\avita.svg" />
-    <None Include="wwwroot\Pic\Type\belt.png" />
-    <None Include="wwwroot\Pic\Type\bracelet-1.png" />
-    <None Include="wwwroot\Pic\Type\bracelet-2.png" />
-    <None Include="wwwroot\Pic\Type\bracelet.png" />
-    <None Include="wwwroot\Pic\Type\earrings.png" />
-    <None Include="wwwroot\Pic\Type\lira.png" />
-    <None Include="wwwroot\Pic\Type\medal.png" />
-    <None Include="wwwroot\Pic\Type\necklace.png" />
-    <None Include="wwwroot\Pic\Type\piercing.png" />
-    <None Include="wwwroot\Pic\Type\ring.png" />
-    <None Include="wwwroot\Pic\Type\set.png" />
-    <None Include="wwwroot\Pic\Type\tiara.png" />
-    <None Include="wwwroot\Pic\Type\watch.png" />
-    <None Include="wwwroot\Pic\Type\wedding-ring.png" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
