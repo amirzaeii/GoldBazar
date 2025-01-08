@@ -57,12 +57,20 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
 
         return result;
     }
-
     public async Task<IEnumerable<CatalogItem>> GetDiscountedCatalogItems(int pageIndex, int pageSize)
     {
         var uri = $"{remoteServiceBaseUrl}items/discounted?pageIndex={pageIndex}&pageSize={pageSize}";
-        var result = await httpClient.GetFromJsonAsync<CatalogItem[]>(uri);
-        return result ?? Array.Empty<CatalogItem>();
+
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<CatalogItem[]>(uri);
+            return result ?? Array.Empty<CatalogItem>();
+        }
+        catch (HttpRequestException)
+        {
+            // Log the error or handle it as needed
+            return Array.Empty<CatalogItem>();
+        }
     }
 
 }
