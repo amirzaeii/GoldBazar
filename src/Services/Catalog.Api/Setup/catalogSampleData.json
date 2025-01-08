@@ -1,5 +1,6 @@
 [
     {
+        "id": 1,
         "weight": 15.4,
         "productType": "Ring",
         "material": "Gold",
@@ -11,15 +12,18 @@
         "costPerGram": 70.76,
         "quantity": 7,
         "shopId": 100,
+        "discount": 10,
         "mainImage": "/images/products/ring_0.jpg"
     },
     {
+        "id": 2,
         "weight": 17.1,
         "productType": "Bracelet",
         "material": "Gold",
         "metal": "24KT Yellow Gold-Turkey",
         "size": 12,
         "occasion": "daily",
+        "discount": 12.72,
         "style": "men",
         "description": "Bold bracelet for daily wear",
         "costPerGram": 112.72,
@@ -28,6 +32,7 @@
         "mainImage": "/images/products/bracelet_1.jpg"
     },
     {
+        "id": 3,
         "weight": 18.5,
         "productType": "Ring",
         "material": "Gold",
@@ -42,6 +47,7 @@
         "mainImage": "/images/products/ring_2.jpg"
     },
     {
+        "id": 4,
         "weight": 18.1,
         "productType": "Bracelet",
         "material": "Gold",
@@ -56,6 +62,7 @@
         "mainImage": "/images/products/bracelet_3.jpg"
     },
     {
+        "id": 5,
         "weight": 10.6,
         "productType": "Bracelet",
         "material": "Gold",
@@ -70,6 +77,7 @@
         "mainImage": "/images/products/bracelet_4.jpg"
     },
     {
+        "id": 6,
         "weight": 10.3,
         "productType": "Necklace",
         "material": "Gold",
@@ -84,6 +92,7 @@
         "mainImage": "/images/products/necklace_5.jpg"
     },
     {
+        "id": 7,
         "weight": 8.6,
         "productType": "Necklace",
         "material": "Gold",
@@ -98,6 +107,7 @@
         "mainImage": "/images/products/necklace_6.jpg"
     },
     {
+        "id": 8,
         "weight": 13.7,
         "productType": "Bracelet",
         "material": "Gold",
@@ -112,6 +122,7 @@
         "mainImage": "/images/products/bracelet_7.jpg"
     },
     {
+        "id": 9,
         "weight": 18.9,
         "productType": "Ring",
         "material": "Gold",
@@ -126,6 +137,7 @@
         "mainImage": "/images/products/ring_8.jpg"
     },
     {
+        "id": 10,
         "weight": 15.3,
         "productType": "Necklace",
         "material": "Gold",
@@ -140,6 +152,7 @@
         "mainImage": "/images/products/necklace_9.jpg"
     },
     {
+        "id": 11,
         "weight": 5.7,
         "productType": "Bracelet",
         "material": "Gold",
@@ -154,6 +167,7 @@
         "mainImage": "/images/products/bracelet_10.jpg"
     },
     {
+        "id": 12,
         "weight": 16.2,
         "productType": "Necklace",
         "material": "Gold",
@@ -168,6 +182,7 @@
         "mainImage": "/images/products/necklace_11.jpg"
     },
     {
+        "id": 13,
         "weight": 11.1,
         "productType": "Ring",
         "material": "Gold",
@@ -182,6 +197,7 @@
         "mainImage": "/images/products/ring_12.jpg"
     },
     {
+        "id": 14,
         "weight": 6.2,
         "productType": "Bracelet",
         "material": "Gold",
@@ -196,6 +212,7 @@
         "mainImage": "/images/products/bracelet_13.jpg"
     },
     {
+        "id": 15,
         "weight": 6.9,
         "productType": "Bracelet",
         "material": "Gold",
@@ -210,6 +227,7 @@
         "mainImage": "/images/products/bracelet_14.jpg"
     },
     {
+        "id": 16,
         "weight": 16.3,
         "productType": "Anklet",
         "material": "Gold",
@@ -224,12 +242,14 @@
         "mainImage": "/images/products/anklet_15.jpg"
     },
     {
+        "id": 17,
         "weight": 18.8,
         "productType": "Earring",
         "material": "Gold",
         "metal": "18KT Rose Gold-Dubai",
         "size": 0,
         "occasion": "daily",
+        "discount": 50,
         "style": "women",
         "description": "Graceful earring for daily wear",
         "costPerGram": 111.7,
@@ -238,6 +258,7 @@
         "mainImage": "/images/products/earring_16.jpg"
     },
     {
+        "id": 18,
         "weight": 19.9,
         "productType": "Earring",
         "material": "Gold",
@@ -252,6 +273,7 @@
         "mainImage": "/images/products/earring_17.jpg"
     },
     {
+        "id": 19,
         "weight": 14.6,
         "productType": "Ring",
         "material": "Gold",
@@ -266,6 +288,7 @@
         "mainImage": "/images/products/ring_18.jpg"
     },
     {
+        "id": 20,
         "weight": 17.2,
         "productType": "Anklet",
         "material": "Gold",
@@ -280,6 +303,7 @@
         "mainImage": "/images/products/anklet_19.jpg"
     },
     {
+        "id": 21,
         "weight": 6.3,
         "productType": "Earring",
         "material": "Gold",
@@ -294,6 +318,7 @@
         "mainImage": "/images/products/earring_20.jpg"
     },
     {
+        "id": 22,
         "weight": 19.6,
         "productType": "Necklace",
         "material": "Gold",
@@ -308,6 +333,7 @@
         "mainImage": "/images/products/necklace_21.jpg"
     },
     {
+        "id": 23,
         "weight": 14.2,
         "productType": "Ring",
         "material": "Gold",
@@ -322,6 +348,7 @@
         "mainImage": "/images/products/ring_22.jpg"
     },
     {
+        "id": 24,
         "weight": 5.2,
         "productType": "Necklace",
         "material": "Gold",
@@ -336,6 +363,7 @@
         "mainImage": "/images/products/necklace_23.jpg"
     },
     {
+        "id": 25,
         "weight": 13.5,
         "productType": "Ring",
         "material": "Gold",
@@ -346,10 +374,12 @@
         "description": "Elegant ring for work wear",
         "costPerGram": 112.04,
         "quantity": 3,
+        "discount": 62,
         "shopId": 106,
         "mainImage": "/images/products/ring_24.jpg"
     },
     {
+        "id": 26,
         "weight": 15.6,
         "productType": "Ring",
         "material": "Gold",
@@ -364,6 +394,7 @@
         "mainImage": "/images/products/ring_25.jpg"
     },
     {
+        "id": 27,
         "weight": 16.8,
         "productType": "Ring",
         "material": "Gold",
@@ -378,6 +409,7 @@
         "mainImage": "/images/products/ring_26.jpg"
     },
     {
+        "id": 28,
         "weight": 18.0,
         "productType": "Necklace",
         "material": "Gold",
@@ -389,9 +421,10 @@
         "costPerGram": 102.76,
         "quantity": 4,
         "shopId": 107,
-        "mainImage": "/images/products/necklace_27.jpg"
+        "mainImage": "id1.jpeg"
     },
     {
+        "id": 29,
         "weight": 10.2,
         "productType": "Anklet",
         "material": "Gold",
@@ -403,9 +436,10 @@
         "costPerGram": 109.53,
         "quantity": 2,
         "shopId": 107,
-        "mainImage": "/images/products/anklet_28.jpg"
+        "mainImage": "id2.jpeg"
     },
     {
+        "id": 30,
         "weight": 16.5,
         "productType": "Necklace",
         "material": "Gold",

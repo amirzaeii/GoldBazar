@@ -1,9 +1,11 @@
-﻿<div class="gallery">
+﻿@inject IProductImageUrlProvider ImageProvider
+
+<div class="gallery">
     <div class="gallery_container">
-        <img src="@Item.ImageUrl" alt="Product" class="gallery_image">
+        <img src="@ImageProvider.GetProductImageUrl(ItemId)" alt="Product" class="gallery_image">
     </div>
 </div>
 
 @code {
-    [Parameter] public CatalogItem Item { get; set; }
+    [Parameter] public int ItemId { get; set; }
 }

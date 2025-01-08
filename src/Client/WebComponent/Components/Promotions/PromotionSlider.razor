@@ -128,20 +128,3 @@
         public string Description { get; set; } = string.Empty;
     }
 }
-<script>
-        let startX;
-
-    document.querySelector('.slider-container').addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-    });
-
-    document.querySelector('.slider-container').addEventListener('touchend', (e) => {
-        let endX = e.changedTouches[0].clientX;
-
-        if (startX > endX + 50) {
-            plusSlides(1);  // Swipe left
-        } else if (startX < endX - 50) {
-            plusSlides(-1);  // Swipe right
-        }
-    });
-</script>

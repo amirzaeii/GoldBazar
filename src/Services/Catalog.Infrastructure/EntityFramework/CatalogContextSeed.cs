@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
+using GoldBazar.Shared.DTOs;
 using Npgsql;
 
 namespace Catalog.Infrastructure;
@@ -20,7 +21,7 @@ public partial class CatalogContextSeed(
         if(!context.Shops.Any()){
             var sourcePath = Path.Combine(contentRootPath, "Setup", "shopsSampleData.json");
             var sourceJson = File.ReadAllText(sourcePath);
-            var sourceItems = JsonSerializer.Deserialize<ShaopSourceEntry[]>(sourceJson);
+            var sourceItems = JsonSerializer.Deserialize<ShopSourceEntry[]>(sourceJson);
             var shopItems = sourceItems.Select(source => new Shop
                         {
                             Id = source.shopId,
@@ -37,7 +38,7 @@ public partial class CatalogContextSeed(
         }
 
         
-        if (!context.Types.Any())
+        if (!context.Items.Any())
         {
             var sourcePath = Path.Combine(contentRootPath, "Setup", "catalogSampleData.json");
             var sourceJson = File.ReadAllText(sourcePath);
@@ -45,18 +46,21 @@ public partial class CatalogContextSeed(
 
             context.Types.RemoveRange(context.Types);
             await context.Types.AddRangeAsync(sourceItems.Select(x => x.productType).Distinct()
-                .Select(brandName => new Type { Name = brandName }));
+                .Select(brandName => new Type { Name = brandName, Photo = brandName.ToLower() + ".jpg" }));
 
             logger.LogInformation("Seeded catalog with {NumBrands} ProductTypes", context.Types.Count());
 
             context.Materials.RemoveRange(context.Materials);
             await context.Materials.AddRangeAsync(sourceItems.Select(x => x.material).Distinct()
-                .Select(materialName => new Material { Name = materialName }));
+                .Select(materialName => new Material { Name = materialName}));
             logger.LogInformation("Seeded catalog with {NumTypes} types", context.Materials.Count());
 
             context.Metals.RemoveRange(context.Metals);
             await context.Metals.AddRangeAsync(sourceItems.Select(x => x.metal).Distinct()
-                .Select(metalName => new Metal { Name = metalName }));
+                .Select(metalName => new Metal { Name = metalName, 
+                    Karat = metalName.Contains("18") ? 18 : (metalName.Contains("21") ? 21 : (metalName.Contains("24") ? 24 : 22)), 
+                    Purity = metalName.Contains("18") ? 0.750M : (metalName.Contains("21") ? 0.875M : (metalName.Contains("24") ? 0.1M : 0.890M)), 
+                    Manufacture = metalName.Contains("Dubai") ? ManufactureEnum.Dubai : (metalName.Contains("Turkey") ? ManufactureEnum.Turkey : (metalName.Contains("Local") ? ManufactureEnum.Local: ManufactureEnum.Local)),  }));
             logger.LogInformation("Seeded catalog with {NumTypes} Metals", context.Materials.Count());
 
             context.Styles.RemoveRange(context.Styles);
@@ -80,7 +84,7 @@ public partial class CatalogContextSeed(
 
             var catalogItems = sourceItems.Select(source => new Item
             {
-                //Id = source.Id,
+                Id = source.id,
                 Description = source.description,
                 CostPerGram = source.costPerGram,
                 TypeId = productTypeIdsByName[source.productType],
@@ -88,10 +92,11 @@ public partial class CatalogContextSeed(
                 MaterialId = materialIdsByName[source.material],
                 StyleId = styleIdsByName[source.style],
                 OccasionId = occasionIdsByName[source.occasion],
+                Discount = source.discount,
                 Size = source.size,
                 Weight = source.weight,
                 ShopId = source.shopId,
-                 //= $"{source.Id}.webp",
+                MainPhoto = $"id{source.id}.jpeg",
             }).ToArray();
 
             await context.Items.AddRangeAsync(catalogItems);
@@ -104,7 +109,7 @@ public partial class CatalogContextSeed(
 
     private class CatalogSourceEntry
     {
-        public int Id { get; set; }
+        public int id { get; set; }
         public decimal weight { get; set; }
         public int size { get; set; }
         public string productType { get; set; }
@@ -115,9 +120,10 @@ public partial class CatalogContextSeed(
         public string description { get; set; }
         public decimal costPerGram { get; set; }
         public int shopId { get; set; }
+        public decimal discount { get; set; }
     }
 
-    private class ShaopSourceEntry
+    private class ShopSourceEntry
     {
         public int shopId { get; set; }
         public string name { get; set; }

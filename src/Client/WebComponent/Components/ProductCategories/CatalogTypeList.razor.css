@@ -1,11 +1,4 @@
-﻿body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f4;
-}
-
-/* Main Container */
+﻿/* Main Container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -76,9 +69,10 @@
 }
 
     .category-icon img {
-        width: 40px;
-        height: 40px;
+        width: 53px;
+        height: 53px;
         object-fit: contain;
+        border-radius: 50%;
     }
 
 /* Category Text */
