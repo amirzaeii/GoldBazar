@@ -12,3 +12,5 @@ namespace WebComponent.Dtos
         public string ImageUrl { get; set; }
     }
 }
+//public string ImageUrl { get; set; } = "assets/Image/avita.svg";
+//public int ReviewCount { get; set; } = 57;

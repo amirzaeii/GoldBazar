@@ -7,30 +7,39 @@
         </button>
     </div>
 </div>
-<div class="scrollmenu">
-    @foreach (var offer in OfferList)
-    {
-        <div class="offer-card">
-            <img src="assets/Icons/pricetag.png" class="badge">
-            <h3>@offer.Title</h3>
-            <p>@offer.Description</p>
+@if (OfferList != null && OfferList.Any())
+{
+    <div class="scrollmenu">
+        @foreach (var offer in OfferList)
+        {
+            <div class="offer-card">
+                <img src="assets/Icons/pricetag.png" class="badge">
+                <h3>@offer.Title</h3>
+                <p>@offer.Description</p>
 
-            <!-- Shop Section -->
-            <div class="shop-info">
-                <img src="assets\Icons\shop.png" alt="Shop" class="shop-icon">
-                <span>@offer.Shop</span>
+                <!-- Shop Section -->
+                <div class="shop-info">
+                    <img src="assets/Icons/shop.png" alt="Shop" class="shop-icon">
+                    <span>@offer.Shop</span>
+                </div>
+
+                <!-- Duration Section with Clock Icon -->
+                <div class="duration">
+                    <img src="assets/Icons/clock.png" alt="Clock" class="icon-small">
+                    @offer.Duration
+                </div>
+
+                <p class="cta">@offer.CTA</p>
             </div>
-
-            <!-- Duration Section with Clock Icon -->
-            <div class="duration">
-                <img src="assets/Icons/clock.png" alt="Clock" class="icon-small">
-                @offer.Duration
-            </div>
-
-            <p class="cta">@offer.CTA</p>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <div class="no-offers">
+        <p>No special offers available at the moment. Please check back later!</p>
+    </div>
+}
 <button class="scroll-top-btn" onclick="scrollToTop()">
     <img src="assets/icons/arrowup.png" alt="Scroll to top">
 </button>

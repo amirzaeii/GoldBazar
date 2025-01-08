@@ -58,8 +58,8 @@ else
                 Metal Structure
             </button>
         </div>
-       
-        <StoreInfo ShopId="item.ShopId" />
+
+        <StoreInfo ShopId="@item.ShopId" />
 
 
         <div class="details bold">
@@ -108,7 +108,6 @@ else
 
 @code {
     [Parameter] public int Id { get; set; }
-
     CatalogItem? item;
 
     protected override async Task OnInitializedAsync()

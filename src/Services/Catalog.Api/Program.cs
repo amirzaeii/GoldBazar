@@ -21,5 +21,8 @@ app.NewVersionedApi("Catalog")
 app.NewVersionedApi("CatalogInfo")
    .MapCatalogInfoApiV1();
 
+app.NewVersionedApi("Shops")
+    .MapShopApiV1();
+
 app.UseDefaultOpenApi();
 app.Run();

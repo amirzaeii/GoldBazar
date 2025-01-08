@@ -1,135 +1,101 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+namespace Catalog.Api;
 
-namespace Catalog.Api.Apis
+public static class ShopApi
 {
-    //The class is now declared as static, which is required for extension methods.
-    public static class ShopApi
+    public static IEndpointRouteBuilder MapShopApiV1(this IEndpointRouteBuilder app)
     {
-        public static IEndpointRouteBuilder MapShopApi(this IEndpointRouteBuilder app)
-        {
-            app.MapGet("/shops", GetShops);
-            app.MapGet("/shops/{id}", GetShopById);
-            app.MapPost("/shops", AddShop);
-            app.MapPut("/shops/{id}", UpdateShop);
-            app.MapDelete("/shops/{id}", DeleteShop);
-            app.MapGet("/shops/products/{shopId}", GetShopProducts);
+        var api = app.MapGroup("api/shop").HasApiVersion(1.0);
 
-            return app;
+        api.MapGet("/shops", GetAllShops)
+            .WithName("GetAllShops")
+            .WithSummary("Get all shops")
+            .WithDescription("Retrieves a list of all shops.")
+            .WithTags("Shops");
+
+        api.MapGet("/shops/{id:int}", GetShopById)
+            .WithName("GetShopById")
+            .WithSummary("Get shop by ID")
+            .WithDescription("Retrieves detailed information of a shop by its unique identifier.")
+            .WithTags("Shops");
+
+        api.MapPost("/shops", AddShop)
+            .WithName("AddShop")
+            .WithSummary("Add a new shop")
+            .WithDescription("Creates a new shop entry.")
+            .WithTags("Shops");
+
+        api.MapPut("/shops/{id:int}", UpdateShop)
+            .WithName("UpdateShop")
+            .WithSummary("Update a shop")
+            .WithDescription("Updates the details of an existing shop by ID.")
+            .WithTags("Shops");
+
+        api.MapDelete("/shops/{id:int}", DeleteShop)
+            .WithName("DeleteShop")
+            .WithSummary("Delete a shop")
+            .WithDescription("Deletes a shop by its unique identifier.")
+            .WithTags("Shops");
+
+        return app;
+    }
+
+    public static async Task<Results<Ok<List<Shop>>, NotFound>> GetAllShops([AsParameters] CatalogServices services)
+    {
+        var shops = await services.Context.Shops.ToListAsync();
+        return shops.Any() ? TypedResults.Ok(shops) : TypedResults.NotFound();
+    }
+
+    public static async Task<Results<Ok<Shop>, NotFound>> GetShopById(int id, [AsParameters] CatalogServices services)
+    {
+        var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
+        return shop is not null ? TypedResults.Ok(shop) : TypedResults.NotFound();
+    }
+
+    public static async Task<Results<Created<Shop>, BadRequest<string>>> AddShop(
+        Shop shop, [AsParameters] CatalogServices services)
+    {
+        if (await services.Context.Shops.AnyAsync(s => s.Name == shop.Name))
+        {
+            return TypedResults.BadRequest($"A shop with the name '{shop.Name}' already exists.");
         }
 
-        public static async Task<Results<Ok<PaginatedItems<Shop>>, NotFound>> GetShops(
-            [AsParameters] PaginationRequest paginationRequest,
-            [AsParameters] CatalogServices services)
+        services.Context.Shops.Add(shop);
+        await services.Context.SaveChangesAsync();
+        return TypedResults.Created($"/shops/{shop.Id}", shop);
+    }
+
+    public static async Task<Results<Ok<Shop>, NotFound, BadRequest<string>>> UpdateShop(
+        int id, Shop updatedShop, [AsParameters] CatalogServices services)
+    {
+        var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
+        if (shop is null)
         {
-            var pageSize = paginationRequest.PageSize;
-            var pageIndex = paginationRequest.PageIndex;
-
-            var totalItems = await services.Context.Shops.LongCountAsync();
-
-            var itemsOnPage = await services.Context.Shops
-                .OrderBy(s => s.Name)
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
-                .ToListAsync();
-
-            if (!itemsOnPage.Any())
-            {
-                return TypedResults.NotFound();
-            }
-
-            return TypedResults.Ok(new PaginatedItems<Shop>(pageIndex, pageSize, totalItems, itemsOnPage));
+            return TypedResults.NotFound();
         }
 
-        public static async Task<Results<Ok<Shop>, NotFound>> GetShopById(
-            int id, [AsParameters] CatalogServices services)
+        // Update properties
+        shop.Name = updatedShop.Name;
+        shop.City = updatedShop.City;
+        shop.Address = updatedShop.Address;
+        shop.ContactNumber = updatedShop.ContactNumber;
+        shop.Owner = updatedShop.Owner;
+
+        await services.Context.SaveChangesAsync();
+        return TypedResults.Ok(shop);
+    }
+
+    public static async Task<Results<Ok<string>, NotFound>> DeleteShop(
+        int id, [AsParameters] CatalogServices services)
+    {
+        var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
+        if (shop is null)
         {
-            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
-            return shop is not null ? TypedResults.Ok(shop) : TypedResults.NotFound();
+            return TypedResults.NotFound();
         }
 
-        public static async Task<Results<Created<Shop>, BadRequest<string>>> AddShop(
-            Shop shop, [AsParameters] CatalogServices services)
-        {
-            if (string.IsNullOrWhiteSpace(shop.Name))
-            {
-                return TypedResults.BadRequest("Shop name is required.");
-            }
-
-            services.Context.Shops.Add(shop);
-            await services.Context.SaveChangesAsync();
-
-            return TypedResults.Created($"/shops/{shop.Id}", shop);
-        }
-
-        public static async Task<Results<Ok<Shop>, NotFound, BadRequest<string>>> UpdateShop(
-            int id, Shop updatedShop, [AsParameters] CatalogServices services)
-        {
-            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
-            if (shop is null)
-            {
-                return TypedResults.NotFound();
-            }
-
-            if (string.IsNullOrWhiteSpace(updatedShop.Name))
-            {
-                return TypedResults.BadRequest("Shop name is required.");
-            }
-
-            shop.Name = updatedShop.Name;
-            shop.City = updatedShop.City;
-            shop.Address = updatedShop.Address;
-            shop.ContactNumber = updatedShop.ContactNumber;
-            shop.Owner = updatedShop.Owner;
-
-            await services.Context.SaveChangesAsync();
-
-            return TypedResults.Ok(shop);
-        }
-
-        public static async Task<Results<Ok<string>, NotFound>> DeleteShop(
-            int id, [AsParameters] CatalogServices services)
-        {
-            var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
-            if (shop is null)
-            {
-                return TypedResults.NotFound();
-            }
-
-            services.Context.Shops.Remove(shop);
-            await services.Context.SaveChangesAsync();
-
-            return TypedResults.Ok($"Shop with ID {id} deleted.");
-        }
-
-        public static async Task<Results<Ok<PaginatedItems<ItemDto>>, NotFound>> GetShopProducts(
-            int shopId, [AsParameters] PaginationRequest paginationRequest,
-            [AsParameters] CatalogServices services)
-        {
-            var pageSize = paginationRequest.PageSize;
-            var pageIndex = paginationRequest.PageIndex;
-
-            var shopProducts = await services.Context.Items
-                .Where(p => p.ShopId == shopId)
-                .Select(s => new ItemDto (s.Id, s.Caption, s.Description, 
-                            s.CostPerGram, s.Weight, s.Size, 
-                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, 
-                            s.ShopId, s.Shop.Name,s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
-                            ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus))
-                .ToListAsync();
-
-            if (!shopProducts.Any())
-            {
-                return TypedResults.NotFound();
-            }
-
-            var totalItems = shopProducts.Count;
-
-            var itemsOnPage = shopProducts
-                .Skip(pageSize * pageIndex)
-                .Take(pageSize)
-                .ToList();
-
-            return TypedResults.Ok(new PaginatedItems<ItemDto>(pageIndex, pageSize, totalItems, itemsOnPage));
-        }
+        services.Context.Shops.Remove(shop);
+        await services.Context.SaveChangesAsync();
+        return TypedResults.Ok($"Shop with ID {id} deleted.");
     }
 }
