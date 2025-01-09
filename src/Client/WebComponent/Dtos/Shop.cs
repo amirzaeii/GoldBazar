@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebComponent.Dtos
+﻿namespace WebComponent.Dtos
 {
     public record Shop (int Id, string Name,string Address, string City, string ContactNo, string OwnerName)
     {

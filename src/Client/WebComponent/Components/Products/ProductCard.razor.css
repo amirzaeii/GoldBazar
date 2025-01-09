@@ -73,17 +73,17 @@
 
 /* Product Image Section */
 .product-image {
-    margin-top: 33px;
+    /* margin-top: 33px;
     height: 150px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; */
     overflow: hidden;
 }
 
     .product-image img {
         max-width: 100%;
-        max-height: 100%;
+        /* max-height: 100%; */
         object-fit: contain;
     }
 
