@@ -1,10 +1,11 @@
 [
     {
         "id": 1,
+        "caption": "Ring Italy 21",
         "weight": 15.4,
         "productType": "Ring",
         "material": "Gold",
-        "metal": "22KT Yellow Gold-Turkey",
+        "metal": "21KT Yellow Gold-Turkey",
         "size": 6,
         "occasion": "casual",
         "style": "men",
@@ -17,6 +18,7 @@
     },
     {
         "id": 2,
+        "caption": "Bracelet gucci 24",
         "weight": 17.1,
         "productType": "Bracelet",
         "material": "Gold",
@@ -33,10 +35,11 @@
     },
     {
         "id": 3,
+        "caption": "Ring turkey 21",
         "weight": 18.5,
         "productType": "Ring",
         "material": "Gold",
-        "metal": "22KT Yellow Gold-Turkey",
+        "metal": "21KT Yellow Gold-Turkey",
         "size": 7,
         "occasion": "daily",
         "style": "men",
@@ -48,10 +51,11 @@
     },
     {
         "id": 4,
+        "caption": "Bracelet turkey 21",
         "weight": 18.1,
         "productType": "Bracelet",
         "material": "Gold",
-        "metal": "22KT Yellow Gold-Turkey",
+        "metal": "21KT Yellow Gold-Turkey",
         "size": 12,
         "occasion": "daily",
         "style": "men",
@@ -63,10 +67,11 @@
     },
     {
         "id": 5,
+        "caption": "Bracelet turkey 21",
         "weight": 10.6,
         "productType": "Bracelet",
         "material": "Gold",
-        "metal": "22KT Yellow Gold-Turkey",
+        "metal": "21KT Yellow Gold-Turkey",
         "size": 9,
         "occasion": "casual",
         "style": "men",
@@ -78,6 +83,7 @@
     },
     {
         "id": 6,
+        "caption": "Necklace 18",
         "weight": 10.3,
         "productType": "Necklace",
         "material": "Gold",
@@ -93,10 +99,11 @@
     },
     {
         "id": 7,
+        "caption": "Necklace Iran 18",
         "weight": 8.6,
         "productType": "Necklace",
         "material": "Gold",
-        "metal": "18KT Yellow Gold-Turkey",
+        "metal": "18KT Yellow Gold-Local",
         "size": 0,
         "occasion": "daily",
         "style": "men",
@@ -108,6 +115,7 @@
     },
     {
         "id": 8,
+        "caption": "Necklace Dubai 18",
         "weight": 13.7,
         "productType": "Bracelet",
         "material": "Gold",
@@ -123,10 +131,11 @@
     },
     {
         "id": 9,
+        "caption": "Ring Dubai 18",
         "weight": 18.9,
         "productType": "Ring",
         "material": "Gold",
-        "metal": "18KT Yellow Gold-Dubai",
+        "metal": "21KT Yellow Gold-Dubai",
         "size": 10,
         "occasion": "casual",
         "style": "men",
@@ -138,6 +147,7 @@
     },
     {
         "id": 10,
+        "caption": "Necklace Dubai 24",
         "weight": 15.3,
         "productType": "Necklace",
         "material": "Gold",
@@ -153,6 +163,7 @@
     },
     {
         "id": 11,
+        "caption": "Bracelet 18",
         "weight": 5.7,
         "productType": "Bracelet",
         "material": "Gold",
@@ -168,6 +179,7 @@
     },
     {
         "id": 12,
+        "caption": "Necklace 21",
         "weight": 16.2,
         "productType": "Necklace",
         "material": "Gold",
@@ -183,10 +195,11 @@
     },
     {
         "id": 13,
+        "caption": "Ring 21",
         "weight": 11.1,
         "productType": "Ring",
         "material": "Gold",
-        "metal": "22KT Yellow Gold-Local",
+        "metal": "21KT Rose Gold-Local",
         "size": 5,
         "occasion": "casual",
         "style": "men",
@@ -198,6 +211,7 @@
     },
     {
         "id": 14,
+        "caption": "Bracelet 24",
         "weight": 6.2,
         "productType": "Bracelet",
         "material": "Gold",
@@ -213,6 +227,7 @@
     },
     {
         "id": 15,
+        "caption": "Bracelet 21 white",
         "weight": 6.9,
         "productType": "Bracelet",
         "material": "Gold",
@@ -228,10 +243,11 @@
     },
     {
         "id": 16,
+        "caption": "Anklet 21 Rose",
         "weight": 16.3,
         "productType": "Anklet",
         "material": "Gold",
-        "metal": "21KT Rose Gold-Turkey",
+        "metal": "21KT Rose Gold-Dubai",
         "size": 0,
         "occasion": "daily",
         "style": "women",
@@ -243,10 +259,11 @@
     },
     {
         "id": 17,
+        "caption": "Earring 18",
         "weight": 18.8,
         "productType": "Earring",
         "material": "Gold",
-        "metal": "18KT Rose Gold-Dubai",
+        "metal": "18KT Yellow Gold-Dubai",
         "size": 0,
         "occasion": "daily",
         "discount": 50,
@@ -259,10 +276,11 @@
     },
     {
         "id": 18,
+        "caption": "Earring 18 Iraqi",
         "weight": 19.9,
         "productType": "Earring",
         "material": "Gold",
-        "metal": "18KT Rose Gold-Local",
+        "metal": "18KT Yellow Gold-Local",
         "size": 0,
         "occasion": "daily",
         "style": "women",
@@ -274,6 +292,7 @@
     },
     {
         "id": 19,
+        "caption": "Ring 21 White",
         "weight": 14.6,
         "productType": "Ring",
         "material": "Gold",
@@ -289,6 +308,7 @@
     },
     {
         "id": 20,
+        "caption": "Anklet 21 White Dubai",
         "weight": 17.2,
         "productType": "Anklet",
         "material": "Gold",
@@ -304,6 +324,7 @@
     },
     {
         "id": 21,
+        "caption": "Earring 21",
         "weight": 6.3,
         "productType": "Earring",
         "material": "Gold",
@@ -319,6 +340,7 @@
     },
     {
         "id": 22,
+        "caption": "Necklace 21 Dubai",
         "weight": 19.6,
         "productType": "Necklace",
         "material": "Gold",
@@ -334,6 +356,7 @@
     },
     {
         "id": 23,
+        "caption": "Ring 18 Dubai",
         "weight": 14.2,
         "productType": "Ring",
         "material": "Gold",
@@ -349,6 +372,7 @@
     },
     {
         "id": 24,
+        "caption": "Necklace 21 Turkey",
         "weight": 5.2,
         "productType": "Necklace",
         "material": "Gold",
@@ -364,6 +388,7 @@
     },
     {
         "id": 25,
+        "caption": "Ring 21 White",
         "weight": 13.5,
         "productType": "Ring",
         "material": "Gold",
@@ -380,6 +405,7 @@
     },
     {
         "id": 26,
+        "caption": "Ring 21",
         "weight": 15.6,
         "productType": "Ring",
         "material": "Gold",
@@ -395,6 +421,7 @@
     },
     {
         "id": 27,
+        "caption": "Ring 21 Dubai",
         "weight": 16.8,
         "productType": "Ring",
         "material": "Gold",
@@ -410,6 +437,7 @@
     },
     {
         "id": 28,
+        "caption": "Necklace 18 White",
         "weight": 18.0,
         "productType": "Necklace",
         "material": "Gold",
@@ -425,6 +453,7 @@
     },
     {
         "id": 29,
+        "caption": "Anklet 18 Rose",
         "weight": 10.2,
         "productType": "Anklet",
         "material": "Gold",
@@ -440,6 +469,7 @@
     },
     {
         "id": 30,
+        "caption": "Necklace 21",
         "weight": 16.5,
         "productType": "Necklace",
         "material": "Gold",

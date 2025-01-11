@@ -85,6 +85,7 @@ public partial class CatalogContextSeed(
             var catalogItems = sourceItems.Select(source => new Item
             {
                 Id = source.id,
+                Caption = source.caption,
                 Description = source.description,
                 CostPerGram = source.costPerGram,
                 TypeId = productTypeIdsByName[source.productType],
@@ -110,6 +111,7 @@ public partial class CatalogContextSeed(
     private class CatalogSourceEntry
     {
         public int id { get; set; }
+        public string caption { get; set; }
         public decimal weight { get; set; }
         public int size { get; set; }
         public string productType { get; set; }
