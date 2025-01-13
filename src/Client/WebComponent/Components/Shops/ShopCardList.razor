@@ -1,0 +1,24 @@
+﻿@inject IShopService ShopService
+
+<div class="shop-grid">
+    @if (shopsResult is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var shop in shopsResult)
+        {
+            <ShopCard Shop="shop" />
+        }
+    }
+</div>
+
+@code {
+    IEnumerable<Shop>? shopsResult;
+
+    protected override async Task OnInitializedAsync()
+    {
+        shopsResult = await ShopService.GetAllShops();
+    }
+}

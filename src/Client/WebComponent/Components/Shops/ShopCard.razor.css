@@ -1,0 +1,124 @@
+﻿/*store*/
+.store {
+    margin: 12px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #ebad42;
+    background-color: #fffaf0;
+}
+
+.store_content {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) 2fr; /* Maintain horizontal layout */
+    gap: 24px;
+    align-items: center;
+}
+
+.store_logo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.store_logo-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    border: 1px solid #ebad42;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fff;
+}
+
+.store_logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.store_info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+}
+
+.store_name-container,
+.store_location {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.store_name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.store_location span {
+    font-size: 16px;
+    color: #666;
+}
+
+.rating {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+}
+
+    .rating svg {
+        width: 20px;
+        height: 20px;
+    }
+
+.rating-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid #ebad42;
+    background: #fffaf0;
+    font-size: 16px;
+}
+
+.rating-pill__value {
+    font-weight: 600;
+    color: #333;
+}
+
+.rating-pill__count {
+    color: #666;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .store_content {
+        grid-template-columns: 1fr 2fr; /* Keeps horizontal layout */
+        gap: 16px;
+    }
+
+    .store_logo-container {
+        width: 90px;
+        height: 90px; /* Reduce size for smaller screens */
+    }
+
+    .store_name {
+        font-size: 18px;
+    }
+
+    .store_location span {
+        font-size: 14px;
+    }
+
+    .rating-pill {
+        font-size: 14px;
+    }
+}
