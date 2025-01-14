@@ -1,7 +1,16 @@
 ﻿@page "/goldsmiths"
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
 
-<WebComponent.Components.Shops.ShopCardList></WebComponent.Components.Shops.ShopCardList>
+<WebComponent.Components.Shops.ShopsByCity DefaultCity="@SelectedCity" />
 
 @code {
+    private string? SelectedCity { get; set; }
 
+    protected override void OnInitialized()
+    {
+        // Extract the city parameter from the query string
+        var query = NavManager.ToAbsoluteUri(NavManager.Uri).Query;
+        SelectedCity = System.Web.HttpUtility.ParseQueryString(query).Get("city");
+    }
 }

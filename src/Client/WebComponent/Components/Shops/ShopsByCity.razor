@@ -1,0 +1,259 @@
+﻿@*@inject IShopService ShopService
+
+ <h3>Find Shops by City using drop down</h3>
+
+<div class="form-group">
+    <label for="citySelect">Select City:</label>
+    <select id="citySelect" @bind="City" class="form-control">
+        <option value="">-- Select a City --</option>
+        <option value="Sulaymaniyah">Sulaymaniyah</option>
+        <option value="Erbil">Erbil</option>
+        <option value="Kirkuk">Kirkuk</option>
+    </select>
+    <button @onclick="SearchShops" class="btn btn-primary mt-2" disabled="@(string.IsNullOrWhiteSpace(City))">Search</button>
+</div>
+
+@if (Loading)
+{
+    <p>Loading shops...</p>
+}
+else if (ErrorMessage is not null)
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+else if (Shops is not null && Shops.Any())
+{
+    <div class="shop-list">
+        @foreach (var shop in Shops)
+        {
+            <ShopCard Shop="shop" />
+        }
+    </div>
+}
+else if (Shops is not null && !Shops.Any())
+{
+    <p>No shops found in @City.</p>
+}
+
+@code {
+    [Parameter]
+    public string? DefaultCity { get; set; } // Allows the parent to pass a default city
+
+    private string City { get; set; } = string.Empty;
+    private List<Shop>? Shops { get; set; }
+    private bool Loading { get; set; } = false;
+    private string? ErrorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(DefaultCity))
+        {
+            City = DefaultCity;
+            await SearchShops();
+        }
+        else
+        {
+            await LoadAllShops();
+        }
+    }
+
+    private async Task LoadAllShops()
+    {
+        Loading = true;
+        try
+        {
+            Shops = (await ShopService.GetAllShops()).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to load shops: {ex.Message}";
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private async Task SearchShops()
+    {
+        if (string.IsNullOrWhiteSpace(City))
+        {
+            ErrorMessage = "Please select a city.";
+            Shops = null;
+            return;
+        }
+
+        ErrorMessage = null;
+        Loading = true;
+
+        try
+        {
+            var result = await ShopService.GetShopsByCity(City);
+            Shops = result.ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to load shops: {ex.Message}";
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+}
+ *@
+
+@inject IShopService ShopService
+
+<div class="form-group">
+    <div class="search-bar-container">
+        <div class="search-bar">
+            <input type="text"
+                   value="@City"
+                   @oninput="HandleInput"
+                   @onkeydown="HandleKeyDown"
+                   placeholder="Search..."
+                   class="form-control" />
+            <button @onclick="SearchShops" class="btn btn-primary">
+                <img src="assets/icons/search.png" alt="Search" />
+            </button>
+        </div>
+
+        @if (Suggestions.Any())
+        {
+            <ul class="suggestions-list">
+                @foreach (var suggestion in Suggestions)
+                {
+                    <li @onclick="() => SelectCity(suggestion)">@suggestion</li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+
+@if (Loading)
+{
+    <p>Loading shops...</p>
+}
+else if (ErrorMessage is not null)
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+else if (Shops is not null && Shops.Any())
+{
+    <div class="shop-list">
+        @foreach (var shop in Shops)
+        {
+            <ShopCard Shop="shop" />
+        }
+    </div>
+}
+else if (Shops is not null && !Shops.Any())
+{
+    <p>No shops found in @City.</p>
+}
+
+@code {
+    [Parameter]
+    public string? DefaultCity { get; set; }
+
+    private string City { get; set; } = string.Empty;
+    private List<Shop>? Shops { get; set; }
+    private List<string> Cities { get; set; } = new() { "Sulaymaniyah", "Erbil", "Kirkuk", "Baghdad", "Basra" }; // Predefined city list
+    private List<string> Suggestions { get; set; } = new(); // Filtered suggestions
+    private bool Loading { get; set; } = false;
+    private string? ErrorMessage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(DefaultCity))
+        {
+            City = DefaultCity;
+            await SearchShops();
+        }
+        else
+        {
+            await LoadAllShops();
+        }
+    }
+
+    private async Task LoadAllShops()
+    {
+        Loading = true;
+        try
+        {
+            Shops = (await ShopService.GetAllShops()).ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to load shops: {ex.Message}";
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private async Task SearchShops()
+    {
+        if (string.IsNullOrWhiteSpace(City))
+        {
+            ErrorMessage = "Please enter a city name.";
+            Shops = null;
+            return;
+        }
+
+        ErrorMessage = null;
+        Loading = true;
+
+        try
+        {
+            var result = await ShopService.GetShopsByCity(City);
+            Shops = result.ToList();
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Failed to load shops: {ex.Message}";
+        }
+        finally
+        {
+            Loading = false;
+        }
+    }
+
+    private void HandleInput(ChangeEventArgs e)
+    {
+        City = e.Value?.ToString() ?? string.Empty;
+        FilterSuggestions(); // Immediately update suggestions
+    }
+
+    private void FilterSuggestions()
+    {
+        if (string.IsNullOrWhiteSpace(City))
+        {
+            Suggestions.Clear();
+            return;
+        }
+
+        Suggestions = Cities
+            .Where(c => c.StartsWith(City, StringComparison.InvariantCultureIgnoreCase)) // Match if input starts with
+            .ToList();
+
+        Console.WriteLine($"Suggestions: {string.Join(", ", Suggestions)}"); // Debug output
+    }
+
+    private void SelectCity(string suggestion)
+    {
+        City = suggestion;
+        Suggestions.Clear();
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") // Trigger search on pressing Enter
+        {
+            await SearchShops();
+        }
+    }
+}

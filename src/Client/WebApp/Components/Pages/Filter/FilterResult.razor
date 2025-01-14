@@ -1,9 +1,7 @@
-﻿@page "/filters-result/{ItemTypeId:int?}"
+﻿@page "/filters-result"
 @using WebComponent.Components.Filter
-@inject ICatalogService CatalogService
-@inject NavigationManager Nav
-@rendermode InteractiveServer
-@attribute [StreamRendering]
+@inject NavigationManager Navigation
+@inject IFilterService FilterService
 
 <div class="container">
     <div class="search-bar-container">
@@ -21,8 +19,8 @@
                 <span>Filter</span>
                 <img src="assets/icons/filter.png" alt="Filter">
             </a>
-            </button>
-      
+        </button>
+
         <span class="divider"></span>
         <button class="sort-button" @onclick="ShowPopup">
             <span>Sort by</span>
@@ -57,57 +55,56 @@
                 </div>
             </div>
         }
-
     </div>
 </div>
 
-<div>
-    <!-- Conditional Rendering for Product List -->
-    @if (ItemTypeId > 0)
+<div class="product-grid">
+    @if (Products == null || !Products.Any())
     {
-        <div class="product-grid">
-            <ProductListByType ItemTypeId="ItemTypeId" />
-        </div>
-
-      
+        <p>No products found. Please apply some filters.</p>
     }
     else
     {
-       
+        <ProductListByFilter Products="Products" />
     }
-    
 </div>
 
 @code {
-    [Parameter]
-    public int ItemTypeId { get; set; }
-    //  private bool isPopupVisible = false;
+    private bool isPopupVisible = false;
+    private string selectedOption = "Latest"; // Default selected option
+    private List<CatalogItem> Products { get; set; } = new();
 
-    // private void ShowPopup()
-    // {
-    //     isPopupVisible = true;
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
 
-    // private void HidePopup()
-    // {
-    //     isPopupVisible = false;
-    // }
-        private bool isPopupVisible = false;
-
-        private void ShowPopup()
+        if (queryParameters.HasKeys())
         {
-            isPopupVisible = true;
+            var selectedFilters = new CompositeFilterDto
+                {
+                    Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                    Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                    Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                    Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
+                };
+
+            Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
         }
+    }
 
-        private void HidePopup()
-        {
-            isPopupVisible = false;
-        }
+    private void ShowPopup()
+    {
+        isPopupVisible = true;
+    }
 
-         private string selectedOption = "Latest"; // Default selected option
+    private void HidePopup()
+    {
+        isPopupVisible = false;
+    }
 
-         private void OnOptionChanged(string? option)
-          {
+    private void OnOptionChanged(string? option)
+    {
         if (!string.IsNullOrEmpty(option))
         {
             selectedOption = option;
@@ -116,4 +113,3 @@
         }
     }
 }
-

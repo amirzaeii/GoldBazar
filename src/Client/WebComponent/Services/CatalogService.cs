@@ -1,4 +1,6 @@
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using WebComponent.Dtos;
 
 namespace WebComponent.Services;
@@ -59,7 +61,7 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
     }
     public async Task<IEnumerable<CatalogItem>> GetDiscountedCatalogItems(int pageIndex, int pageSize)
     {
-        var uri = $"{remoteServiceBaseUrl}items/discounted?pageIndex={pageIndex}&pageSize={pageSize}";
+        var uri = $"{remoteServiceBaseUrl}items/discounted?";
 
         try
         {
@@ -72,5 +74,40 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
             return Array.Empty<CatalogItem>();
         }
     }
+    public async Task<IEnumerable<CatalogItem>> FilterCatalogItems(CompositeFilterDto filterDto)
+    {
+        var uri = $"{remoteServiceBaseUrl}item/filter";
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync(uri, filterDto);
+
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItem>>();
+            return result ?? Array.Empty<CatalogItem>();
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error fetching filtered catalog items: {ex.Message}");
+            return Array.Empty<CatalogItem>();
+        }
+    }
+
+    public async Task<IEnumerable<CatalogItem>> GetSimilarProducts(int typeId)
+    {
+        var uri = $"{remoteServiceBaseUrl}item/similar/{typeId}";
+
+        try
+        {
+            var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogItem>>(uri);
+            return result ?? Array.Empty<CatalogItem>();
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error fetching similar products: {ex.Message}");
+            return Array.Empty<CatalogItem>();
+        }
+    }
 
 }
+

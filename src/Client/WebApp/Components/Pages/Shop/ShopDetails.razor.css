@@ -1,0 +1,242 @@
+﻿/* Root variables for consistent theming */
+:root {
+    --primary-color: #6c5ce7;
+    --accent-color: #ff9900;
+    --text-primary: #333;
+    --text-secondary: #666;
+    --bg-main: #fff;
+    --spacing-base: 8px;
+}
+
+.app-bar {
+    padding: 8px;
+    display: flex;
+    position: relative;
+    justify-content: end;
+    align-items: end;
+}
+
+.header {
+    position: relative;
+    margin-bottom: clamp(16px, 4vw, 20px);
+}
+
+.bg-img {
+    width: 100%;
+    height: clamp(150px, 25vw, 200px);
+    object-fit: cover;
+    border-radius: clamp(12px, 2vw, 16px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.store-logo {
+    position: absolute;
+    bottom: clamp(-15px, -2vw, -20px);
+    right: clamp(10px, 2vw, 15px);
+    border-radius: clamp(16px, 3vw, 24px);
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    width: clamp(90px, 8vw, 90px);
+    height: clamp(90px, 8vw, 90px);
+    object-fit: cover;
+    border-radius: clamp(12px, 2vw, 16px);
+}
+
+.store-info {
+    margin-top: clamp(25px, 5vw, 40px);
+    text-align: right;
+    padding: 0 clamp(10px, 2vw, 15px);
+}
+
+.store-name {
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: bold;
+    margin-bottom: clamp(6px, 1.5vw, 8px);
+}
+
+.rating {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(2px, 1vw, 4px);
+    border-radius: 16px;
+    margin: 0 0 clamp(8px, 2vw, 12px);
+}
+
+.star {
+    color: #ffd700;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: clamp(4px, 1.5vw, 8px);
+    color: #666;
+    margin-bottom: clamp(8px, 2vw, 12px);
+    font-size: clamp(12px, 1.8vw, 14px);
+}
+
+.map-button {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(4px, 1.5vw, 8px);
+    background: #fff3e6;
+    color: #ff9900;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2.5vw, 16px);
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: clamp(16px, 3vw, 24px);
+    font-size: clamp(12px, 1.8vw, 14px);
+    transition: background-color 0.2s ease;
+}
+
+    .map-button:hover {
+        background: #ffe4cc;
+    }
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: clamp(6px, 1.5vw, 8px);
+    padding: clamp(6px, 1.5vw, 8px) 0;
+    margin-bottom: clamp(16px, 3vw, 24px);
+}
+
+.category {
+    background: #f0f0f0;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2.5vw, 16px);
+    border-radius: 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    font-size: clamp(12px, 1.8vw, 14px);
+    height: 40px;
+}
+
+    .category.active {
+        background-color: #6c5ce7;
+        color: white;
+    }
+
+
+.products {
+    display: grid;
+    gap: clamp(12px, 2vw, 16px);
+}
+
+.rating {
+    margin-top: 10px;
+}
+
+[dir="rtl"] .rating {
+    flex-direction: row-reverse;
+}
+
+.rating-pill {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 17px;
+    border: 1px solid #ebad42;
+    background: var(--bg-main);
+    font-size: 12px;
+    width: fit-content;
+}
+
+.rating-pill__value {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.rating-pill__count {
+    color: #a39898;
+    font-size: 10px;
+}
+
+.rating-pill__divider {
+    width: 1px;
+    height: 8px;
+    background-color: #a39898;
+}
+
+/* From Uiverse.io by amikambs */
+.rating:not(:checked) > input {
+    position: relative;
+    display: flex;
+    appearance: none;
+}
+
+.rating:not(:checked) > label {
+    float: right;
+    cursor: pointer;
+    font-size: 16px;
+    fill: #666;
+}
+
+    .rating:not(:checked) > label > svg {
+        fill: #666; /* Set default color for SVG */
+        transition: fill 0.3s ease; /* Add a transition effect */
+    }
+
+.rating > input:checked + label:hover,
+.rating > input:checked + label:hover ~ label,
+.rating > input:checked ~ label:hover,
+.rating > input:checked ~ label:hover ~ label,
+.rating > label:hover ~ input:checked ~ label {
+    fill: #e58e09;
+}
+
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label {
+    fill: #ff9e0b;
+}
+
+.rating > input:checked ~ label > svg {
+    fill: #ffa723; /* Set color for selected stars */
+}
+/* Media Queries for different screen sizes */
+@media (min-width: 768px) {
+    .products {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .products {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 767px) {
+    .products {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .categories {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* RTL Support */
+[dir="rtl"] .rating {
+    flex-direction: row-reverse;
+}
+
+/* Container for better layout control */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(10px, 2vw, 20px);
+}

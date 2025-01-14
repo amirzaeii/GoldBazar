@@ -4,6 +4,7 @@
 @inject IJSRuntime JS
 @layout EmptyLayout
 @rendermode InteractiveServer
+
 @if (FilterDictionary.Count == 0)
 {
     <p>Loading...</p>
@@ -15,7 +16,6 @@ else
         <span class="title">Sort and Filter</span>
     </div>
 
-
     <div class="container">
         <div class="left-column">
             @foreach (var filter in FilterDictionary)
@@ -26,15 +26,20 @@ else
             }
         </div>
 
+
         <div class="right-column">
             <div class="subcategories">
                 @if (SelectedFilter != null)
                 {
-                    @foreach (var subcategory in Subcategories[SelectedFilter])
+                    @foreach (var subcategoryItem in Subcategories[SelectedFilter])
                     {
                         <div class="subcategory">
-                            <input type="checkbox" id="@subcategory" value="@subcategory" />
-                            <label for="@subcategory">@subcategory</label>
+                            <input type="checkbox"
+                                   id="checkbox-@SelectedFilter-@subcategoryItem.Id"
+                                   value="@subcategoryItem.Id"
+                                   checked="@SelectedCheckboxes[SelectedFilter].Contains(subcategoryItem.Id)"
+                                   @onchange="(e) => ToggleCheckbox(SelectedFilter, subcategoryItem.Id)" />
+                            <label for="checkbox-@SelectedFilter-@subcategoryItem.Id">@subcategoryItem.Name</label>
                         </div>
                     }
                 }
@@ -44,69 +49,130 @@ else
 
     <div class="bottom-bar">
         <button class="submit" @onclick="Submit">Search</button>
-        <button class="clear-all" @onclick="ClearAll">Clear</button>
+        <button class="clear-all" @onclick="ClearAllCheckboxes">Clear</button>
     </div>
 }
 
 @code {
     Dictionary<string, string> FilterDictionary = new();
-    Dictionary<string, List<string>> Subcategories = new();
+    Dictionary<string, List<(int Id, string Name)>> Subcategories = new();
+    Dictionary<string, HashSet<int>> SelectedCheckboxes = new(); // Tracks selected IDs
     string SelectedFilter;
+    private List<CatalogItem> Products { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        // Populate Subcategories
         var materials = await FilterService.GetCatalogDataAsync("materials");
         var metals = await FilterService.GetCatalogDataAsync("metals");
         var occasions = await FilterService.GetCatalogDataAsync("occasions");
         var styles = await FilterService.GetCatalogDataAsync("styles");
 
-        Subcategories["Material"] = materials.Select(m => m.Name).ToList();
-        Subcategories["Metal"] = metals.Select(m => m.Name).ToList();
-        Subcategories["Occasion"] = occasions.Select(o => o.Name).ToList();
-        Subcategories["Style"] = styles.Select(s => s.Name).ToList();
+        Subcategories["Material"] = materials.Select(m => (m.Id, m.Name)).ToList();
+        Subcategories["Metal"] = metals.Select(m => (m.Id, m.Name)).ToList();
+        Subcategories["Occasion"] = occasions.Select(o => (o.Id, o.Name)).ToList();
+        Subcategories["Style"] = styles.Select(s => (s.Id, s.Name)).ToList();
 
         FilterDictionary["Material"] = "Materials";
         FilterDictionary["Metal"] = "Metals";
         FilterDictionary["Occasion"] = "Occasions";
         FilterDictionary["Style"] = "Styles";
-    }
 
-    private async Task ShowSubcategories(string filterKey)
-    {
-        SelectedFilter = filterKey;
-
-        var endpointMapping = new Dictionary<string, string>
+        // Initialize SelectedCheckboxes
+        foreach (var key in FilterDictionary.Keys)
         {
-            { "Material", "materials" },
-            { "Metal", "metals" },
-            { "Occasion", "occasions" },
-            { "Style", "styles" }
-        };
-
-        if (endpointMapping.TryGetValue(filterKey, out var endpoint))
-        {
-            var result = await FilterService.GetCatalogDataAsync(endpoint);
-            Subcategories[filterKey] = result.Select(item => item.Name).ToList();
+            SelectedCheckboxes[key] = new HashSet<int>();
         }
 
-        StateHasChanged();
+        // Parse query parameters and populate SelectedCheckboxes
+        if (queryParameters["Material"] != null)
+        {
+            SelectedCheckboxes["Material"] = new HashSet<int>(queryParameters["Material"].Split(',').Select(int.Parse));
+        }
+
+        if (queryParameters["Metal"] != null)
+        {
+            SelectedCheckboxes["Metal"] = new HashSet<int>(queryParameters["Metal"].Split(',').Select(int.Parse));
+        }
+
+        if (queryParameters["Occasion"] != null)
+        {
+            SelectedCheckboxes["Occasion"] = new HashSet<int>(queryParameters["Occasion"].Split(',').Select(int.Parse));
+        }
+
+        if (queryParameters["Style"] != null)
+        {
+            SelectedCheckboxes["Style"] = new HashSet<int>(queryParameters["Style"].Split(',').Select(int.Parse));
+        }
     }
 
-    async Task ClearAll()
+
+    private void ClearAllCheckboxes()
     {
-        // Only uncheck the checkboxes, do not clear subcategories
-        await JS.InvokeVoidAsync("clearCheckboxes");
+        if (!string.IsNullOrEmpty(SelectedFilter) && SelectedCheckboxes.ContainsKey(SelectedFilter))
+        {
+            SelectedCheckboxes[SelectedFilter].Clear();
+        }
+
+        StateHasChanged(); // Trigger re-render
     }
 
-    private void Submit(MouseEventArgs e)
+    private void ToggleCheckbox(string filterKey, int id)
     {
-        Console.WriteLine($"Searching for {SelectedFilter} items...");
+        if (SelectedCheckboxes.ContainsKey(filterKey))
+        {
+            if (SelectedCheckboxes[filterKey].Contains(id))
+            {
+                SelectedCheckboxes[filterKey].Remove(id);
+            }
+            else
+            {
+                SelectedCheckboxes[filterKey].Add(id);
+            }
+        }
     }
+    private void ShowSubcategories(string filterKey)
+    {
+        SelectedFilter = filterKey;
+        StateHasChanged(); // Trigger UI update
+    }
+
+    private void Submit()
+    {
+        var queryParameters = new List<string>();
+
+        if (SelectedCheckboxes["Material"].Any())
+        {
+            queryParameters.Add($"Material={string.Join(",", SelectedCheckboxes["Material"])}");
+        }
+
+        if (SelectedCheckboxes["Metal"].Any())
+        {
+            queryParameters.Add($"Metal={string.Join(",", SelectedCheckboxes["Metal"])}");
+        }
+
+        if (SelectedCheckboxes["Occasion"].Any())
+        {
+            queryParameters.Add($"Occasion={string.Join(",", SelectedCheckboxes["Occasion"])}");
+        }
+
+        if (SelectedCheckboxes["Style"].Any())
+        {
+            queryParameters.Add($"Style={string.Join(",", SelectedCheckboxes["Style"])}");
+        }
+
+        var queryString = string.Join("&", queryParameters);
+        var targetUrl = $"/filters-result?{queryString}";
+
+        Console.WriteLine($"Navigating to: {targetUrl}");
+
+        // Navigate to the FiltersResult page with the query string
+        Navigation.NavigateTo(targetUrl);
+    }
+
+
+
 }
-<script>
-    function clearCheckboxes() {
-        document.querySelectorAll('.subcategory input[type="checkbox"]').forEach(checkbox => {
-            checkbox.checked = false;
-        });
-    }
-</script>

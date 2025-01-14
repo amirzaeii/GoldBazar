@@ -9,4 +9,6 @@ public interface ICatalogService
     Task<IEnumerable<CatalogItemType>> GetTypes();
     Task<CatalogResult> GetCatalogItemsByType(int typeId, int pageIndex, int pageSize);
     Task<IEnumerable<CatalogItem>> GetDiscountedCatalogItems(int pageIndex, int pageSize);
+    Task<IEnumerable<CatalogItem>> FilterCatalogItems(CompositeFilterDto filterDto);
+    Task<IEnumerable<CatalogItem>> GetSimilarProducts(int typeId);
 }

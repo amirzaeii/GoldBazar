@@ -1,0 +1,41 @@
+﻿@inject IFilterService FilterService
+@inject NavigationManager Navigation
+
+<h3>Product List</h3>
+
+@if (Products == null || !Products.Any())
+{
+    <p>No products found.</p>
+}
+else
+{
+    <div class="product-grid">
+        @foreach (var product in Products)
+        {
+            <ProductCard Item="product" />
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public List<CatalogItem> Products { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
+
+        // Parse query parameters to create the filter DTO
+        var selectedFilters = new CompositeFilterDto
+            {
+                Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
+            };
+
+        // Fetch filtered products
+        Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
+    }
+}

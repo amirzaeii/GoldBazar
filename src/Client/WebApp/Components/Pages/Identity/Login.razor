@@ -1,0 +1,86 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject NavigationManager Nav
+
+<div class="container">
+    <h1>Log In</h1>
+
+    <form id="Login" @onsubmit="HandleSubmit">
+        <!-- Mobile Number -->
+        <div class="form-group">
+            <label>Enter Your Mobile Number</label>
+            <div class="input-group">
+                <input type="tel" placeholder="07**********" @bind="MobileNumber" />
+                <span class="country-code">+964</span>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <label>Enter Your Password</label>
+            <div class="input-group">
+                <input type="password" placeholder="*************" id="password" @bind="Password" />
+                <button type="button" class="password-toggle" @onclick="TogglePassword">
+                    <svg class="eye-icon" viewBox="0 0 24 24">
+                        <path d="M12 4C7 4 2.73 7.11 1 12C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12C21.27 7.11 17 4 12 4ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="forgot-password">
+            <button type="button" @onclick="NavigateToForgetPassword" class="link-button">Forgot your password?</button>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="login-btn">Log In</button>
+
+        <!-- Create Account -->
+        <button type="button" @onclick="NavigateToRegister" class="create-account">Don't have an account? Sign Up</button>
+
+        <!-- Divider -->
+        <div class="divider">OR</div>
+
+        <!-- Social Login -->
+        <div class="social-login">
+            <a href="#" class="social-btn">
+                Continue with Google
+                <img src="assets\Icons\googlelogo.svg" alt="Google" />
+            </a>
+            <a href="#" class="social-btn">
+                Continue with Apple
+                <img src="assets\Icons\applelogo.svg" alt="Apple" />
+            </a>
+        </div>
+    </form>
+</div>
+
+@code {
+    private string MobileNumber { get; set; }
+    private string Password { get; set; }
+
+    private void HandleSubmit()
+    {
+        // Simulate form submission logic and navigate to the homepage
+        Console.WriteLine($"Logging in with Mobile Number: {MobileNumber} and Password: {Password}");
+        Nav.NavigateTo("/");
+    }
+
+    private void TogglePassword()
+    {
+
+    }
+
+    private void NavigateToForgetPassword()
+    {
+        // Navigate to forget password page
+        Nav.NavigateTo("/forgetpass");
+    }
+
+    private void NavigateToRegister()
+    {
+        // Navigate to register page
+        Nav.NavigateTo("/register");
+    }
+}

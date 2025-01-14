@@ -1,5 +1,5 @@
 ﻿@inject IShopService ShopService
-
+<a href="/shop/@Shop.Id" class="">
 <div class="store">
     <div class="store_content">
         <div class="store_logo-section">
@@ -46,7 +46,7 @@
         </div>
     </div>
 </div>
-
+</a>
 @code {
-    [Parameter] public Shop? Shop { get; set; }
+    [Parameter] public Shop Shop { get; set; }
 }

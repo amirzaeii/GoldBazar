@@ -1,0 +1,154 @@
+﻿
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 16px;
+    }
+
+.input-group {
+    position: relative;
+    margin-bottom: 8px;
+}
+
+    .input-group input {
+        width: 100%;
+        height: 56px;
+        padding: 12px 16px;
+        border: 1px solid #ddd;
+        border-radius: 16px;
+        font-size: 20px;
+        text-align: right;
+        justify-content: center;
+    }
+
+    .input-group .country-code {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+    }
+
+.password-toggle {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+    .password-toggle svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: #666;
+        stroke-width: 2;
+    }
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 24px;
+}
+
+    .forgot-password a {
+        color: #6c5ce7;
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+.login-btn {
+    width: 100%;
+    height: 56px;
+    padding: 14px;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 32px;
+}
+
+    .login-btn:hover {
+        background-color: #5f4dd0;
+    }
+
+.divider {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #666;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    background-color: white;
+    cursor: pointer;
+    text-decoration: none;
+    height: 56px;
+    color: #333;
+}
+
+    .social-btn img {
+        width: 24px;
+        height: 24px;
+        margin-left: 12px;
+    }
+
+.create-account {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 16px;
+    }
+
+    .input-group input {
+        font-size: 20px;
+    }
+
+    .login-btn {
+        font-size: 18px;
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+p {
+    color: white;
+}

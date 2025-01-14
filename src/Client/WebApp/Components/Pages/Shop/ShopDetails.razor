@@ -1,0 +1,96 @@
+﻿@page "/shop/{id:int}"
+@inject IShopService ShopService
+@inject NavigationManager Nav
+
+@if (shop == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <!-- App Bar -->
+        <div class="app-bar">
+            <button class="header_back" >
+                <img src="assets/Icons/arrow.svg" class="icon" alt="Back">
+            </button>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <img src="assets/Image/bg.svg" alt="Store Banner" class="bg-img" />
+            <img src="assets/Image/avita.svg" alt="Avita Logo" class="store-logo profile-image" />
+        </div>
+
+        <!-- Store Info -->
+        <div class="store-info">
+            <h1 class="store-name">@shop.Name</h1>
+            <div class="rating">
+                <span class="star">★</span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="location">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>@shop.City</span>- <span>@shop.Address</span>
+            </div>
+            <a href="#" class="map-button">
+                <img src="assets/Icons/on-map.svg" alt="Map">
+                <span>View on Map</span>
+            </a>
+        </div>
+
+        <!-- Categories -->
+        <div class="categories">
+            @if (categories != null && categories.Any())
+            {
+                @foreach (var category in categories)
+                {
+                    <button class="category">@category.Name</button>
+                }
+            }
+            else
+            {
+                <p>Loading categories...</p>
+            }
+        </div>
+
+        <!-- Products -->
+        <div class="products">
+            @if (products != null && products.Any())
+            {
+                @foreach (var product in products)
+                {
+                    <ProductCard Item="product"></ProductCard>
+                }
+            }
+            else
+            {
+                <p>No products available.</p>
+            }
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    [Parameter] public CatalogItem Item { get; set; }
+    Shop? shop;
+    List<CatalogItemType>? categories;
+    List<CatalogItem>? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch shop details
+        shop = await ShopService.GetShopById(Id);
+
+        // Fetch shop categories
+        categories = (await ShopService.GetItemCategoriesByShopId(Id)).ToList();
+
+        // Fetch products by shop
+        products = (await ShopService.GetProductsByShopId(Id)).ToList();
+    }
+}

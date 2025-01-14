@@ -1,0 +1,46 @@
+﻿@page "/forgetpass"
+@inject NavigationManager Nav
+@rendermode InteractiveServer 
+<div class="container">
+    <header class="header">
+        <h1>Reset Password</h1>
+        <button class="back-button" @onclick="NavigateToLogin">
+            <img src="assets/Icons/arrow.svg" alt="Back to Login">
+        </button>
+    </header>
+
+    <img src="assets\Image\forgetpass.svg" alt="Reset Password Illustration" class="illustration">
+
+    <h2 class="title">Forgot your password?</h2>
+    <p class="description">No worries, please enter the mobile number associated with your account.</p>
+
+    <form id="GetOtp" @onsubmit="HandleSubmit">
+        <div class="form-group">
+            <label>Enter Your Mobile Number</label>
+            <div class="input-group">
+                <input type="tel" placeholder="07**********" @bind="MobileNumber" required />
+                <span class="country-code">+964</span>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-button">Get Code</button>
+    </form>
+</div>
+
+@code {
+    private string MobileNumber { get; set; }
+
+    private void HandleSubmit()
+    {
+        // Simulate submission logic
+        Console.WriteLine($"Sending OTP to: {MobileNumber}");
+        // Redirect or perform other actions
+        Nav.NavigateTo("/otpverification"); // Example: redirect to OTP verification page
+    }
+
+    private void NavigateToLogin()
+    {
+        // Navigate back to the login page
+        Nav.NavigateTo("/login");
+    }
+}

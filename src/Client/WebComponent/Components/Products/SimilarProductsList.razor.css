@@ -1,0 +1,156 @@
+/* Product Grid - Horizontal Scroll */
+.product-grid {
+    display: flex; /* Enable horizontal alignment */
+    flex-wrap: nowrap; /* Prevent wrapping to new lines */
+    gap: 16px; /* Space between cards */
+    padding: 20px; /* Padding around the grid */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    scroll-snap-type: x mandatory; /* Enable smooth snapping */
+    justify-content: flex-start; /* Align cards to the left */
+    align-items: stretch; /* Ensure cards are uniformly stretched */
+}
+
+    .product-grid::-webkit-scrollbar {
+        display: none; /* Hide the scrollbar for a cleaner look */
+    }
+
+/* Product Card Styling */
+.product-card {
+    flex: 0 0 auto; /* Prevent resizing of the cards */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+    height: auto; /* Maintain content aspect ratio */
+    width: 300px; /* Consistent card width */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #eee;
+    scroll-snap-align: start; /* Ensure cards snap properly */
+}
+
+    .product-card:hover {
+        transform: translateY(-5px); /* Slight hover effect */
+    }
+
+.badge-container {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space for badge if present */
+}
+
+.fav {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(108, 99, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .fav img {
+        width: 18px;
+        height: 18px;
+    }
+
+/* Offer Badge */
+.badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .badge img {
+        width: 18px;
+        height: 18px;
+    }
+
+.product-image {
+    overflow: hidden;
+}
+
+    .product-image img {
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+.product-info {
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #f0f0f0;
+}
+
+.product-title {
+    font-size: 15px;
+    color: #333;
+    margin: 6px 0;
+}
+
+.price-container {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    align-items: center;
+}
+
+.current-price {
+    font-size: 18px;
+    font-weight: bold;
+    color: #6c63ff;
+}
+
+.original-price {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.jeweler-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.jeweler-name {
+    font-size: 13px;
+    color: #484848;
+    background: rgba(108, 99, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 10px;
+    width: auto;
+    text-align: center;
+}
+
+/* Adjustments for medium-sized screens */
+@media screen and (max-width: 1024px) {
+    .product-card {
+        width: 260px; /* Smaller card size for tablets */
+    }
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    .product-card {
+        width: 240px; /* Adjust width for smaller tablets */
+    }
+}
+
+/* Adjustments for extra small screens */
+@media screen and (max-width: 480px) {
+    .product-card {
+        width: 220px; /* Compact width for mobile screens */
+    }
+}

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using WebComponent.Dtos;
 
 namespace WebComponent.Services
@@ -24,7 +19,12 @@ namespace WebComponent.Services
             var result = await httpClient.GetFromJsonAsync<Shop[]>(uri);
             return result ?? Array.Empty<Shop>();
         }
-
+        public async Task<IEnumerable<Shop>> GetShopsByCity(string city)
+        {
+            var uri = $"{remoteServiceBaseUrl}shops/city/{city}";
+            var result = await httpClient.GetFromJsonAsync<Shop[]>(uri);
+            return result ?? Array.Empty<Shop>();
+        }
         public async Task<HttpResponseMessage> AddShop(Shop shop)
         {
             var uri = $"{remoteServiceBaseUrl}shops";
@@ -41,6 +41,18 @@ namespace WebComponent.Services
         {
             var uri = $"{remoteServiceBaseUrl}shops/{id}";
             return await httpClient.DeleteAsync(uri);
+        }
+        public async Task<IEnumerable<CatalogItem>> GetProductsByShopId(int shopId)
+        {
+            var uri = $"{remoteServiceBaseUrl}shops/{shopId}/products";
+            var result = await httpClient.GetFromJsonAsync<CatalogItem[]>(uri);
+            return result ?? Array.Empty<CatalogItem>();
+        }
+        public async Task<IEnumerable<CatalogItemType>> GetItemCategoriesByShopId(int shopId)
+        {
+            var uri = $"{remoteServiceBaseUrl}shops/{shopId}/categories";
+            var result = await httpClient.GetFromJsonAsync<CatalogItemType[]>(uri);
+            return result ?? Array.Empty<CatalogItemType>();
         }
     }
 }

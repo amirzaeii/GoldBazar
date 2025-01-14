@@ -22,4 +22,8 @@
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Pages\Settings\" />
+  </ItemGroup>
+
 </Project>

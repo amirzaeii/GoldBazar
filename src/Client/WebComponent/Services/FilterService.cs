@@ -10,40 +10,6 @@ namespace WebComponent.Services
 {
     public class FilterService(HttpClient httpClient) : IFilterService
     {
-        //private readonly string remoteServiceBaseUrl = "api/catalogInfo/";
-
-        //// Get All Materials
-        //public async Task<IEnumerable<CatalogInfo>> GetAllMaterials()
-        //{
-        //    var uri = $"{remoteServiceBaseUrl}materials";
-        //    var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
-        //    return result ?? Array.Empty<CatalogInfo>();
-        //}
-
-        //// Get All Metals
-        //public async Task<IEnumerable<CatalogInfo>> GetAllMetals()
-        //{
-        //    var uri = $"{remoteServiceBaseUrl}metals";
-        //    var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
-        //    return result ?? Array.Empty<CatalogInfo>();
-        //}
-
-        //// Get All Occasions
-        //public async Task<IEnumerable<CatalogInfo>> GetAllOccasions()
-        //{
-        //    var uri = $"{remoteServiceBaseUrl}occasions";
-        //    var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
-        //    return result ?? Array.Empty<CatalogInfo>();
-        //}
-
-        //// Get All Styles
-        //public async Task<IEnumerable<CatalogInfo>> GetAllStyles()
-        //{
-        //    var uri = $"{remoteServiceBaseUrl}styles";
-        //    var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
-        //    return result ?? Array.Empty<CatalogInfo>();
-        //}
-
         private readonly string remoteServiceBaseUrl = "api/catalogInfo/";
 
         // Unified fetch method for all categories
@@ -53,6 +19,30 @@ namespace WebComponent.Services
             var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
             return result ?? Array.Empty<CatalogInfo>();
         }
+        public async Task<IEnumerable<CatalogItem>> FilterCatalogItemsAsync(CompositeFilterDto filterDto)
+        {
+            var uri = "api/catalog/item/filter";
+
+            try
+            {
+                // Send the DTO to the backend
+                var response = await httpClient.PostAsJsonAsync(uri, filterDto);
+
+                // Ensure the request was successful
+                response.EnsureSuccessStatusCode();
+
+                // Deserialize the response
+                var result = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItem>>();
+                return result ?? Array.Empty<CatalogItem>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in API call: {ex.Message}");
+                return Array.Empty<CatalogItem>();
+            }
+        }
+
     }
 }
+
 

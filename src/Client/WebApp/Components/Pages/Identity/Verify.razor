@@ -1,0 +1,86 @@
+﻿@page "/otpverification"
+@inject NavigationManager Nav
+
+<div class="container">
+    <header class="header">
+        <h1>Verification</h1>
+        <button class="back-button" @onclick="NavigateToForgetPassword">
+            <img src="assets/Icons/arrow.svg" alt="Back to Forget Password">
+        </button>
+    </header>
+
+    <img src="assets/Image/cuate.svg" alt="Verification Illustration" class="illustration">
+
+    <h2 class="title">Enter the OTP Code</h2>
+    <p class="phone-number">A 4-digit code was sent to your number<br>0770 123 456</p>
+
+    <form id="otpForm" @onsubmit="HandleOTPSubmit">
+        <div class="otp-container">
+            <input type="text" maxlength="1" class="otp-input" @bind="OTP1" pattern="[0-9]" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-input" @bind="OTP2" pattern="[0-9]" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-input" @bind="OTP3" pattern="[0-9]" inputmode="numeric" />
+            <input type="text" maxlength="1" class="otp-input" @bind="OTP4" pattern="[0-9]" inputmode="numeric" />
+        </div>
+
+        <button type="submit" class="submit-button">Verify</button>
+    </form>
+
+    <p class="timer">Resend code in (<span id="countdown">@TimerDisplay</span>)</p>
+</div>
+
+@code {
+    private string OTP1 { get; set; } = "";
+    private string OTP2 { get; set; } = "";
+    private string OTP3 { get; set; } = "";
+    private string OTP4 { get; set; } = "";
+    private int TimeLeft { get; set; } = 14; // Timer starts at 14 seconds
+    private string TimerDisplay => $"{TimeLeft / 60:00}:{TimeLeft % 60:00}";
+
+    protected override void OnInitialized()
+    {
+        StartTimer();
+    }
+
+    private void StartTimer()
+    {
+        var timer = new System.Timers.Timer(1000); // 1-second interval
+        timer.Elapsed += (sender, args) =>
+        {
+            if (TimeLeft > 0)
+            {
+                TimeLeft--;
+                InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                timer.Stop();
+            }
+        };
+        timer.Start();
+    }
+
+    private void NavigateToForgetPassword()
+    {
+        // Navigate back to the forget password page
+        Nav.NavigateTo("/forgetpass");
+    }
+
+    private void HandleOTPSubmit()
+    {
+        // Combine the OTP inputs
+        string enteredOTP = $"{OTP1}{OTP2}{OTP3}{OTP4}";
+        Console.WriteLine($"Entered OTP: {enteredOTP}");
+
+        // Verify OTP logic
+        if (enteredOTP == "1234") // Replace with actual OTP verification logic
+        {
+            Console.WriteLine("OTP Verified Successfully!");
+            Nav.NavigateTo("/resetpassword"); // Navigate to the password reset page
+        }
+        else
+        {
+            Console.WriteLine("Invalid OTP");
+            // Add any error handling logic here
+        }
+    }
+}

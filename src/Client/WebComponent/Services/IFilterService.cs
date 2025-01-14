@@ -10,10 +10,7 @@ namespace WebComponent.Services
     public interface IFilterService
     {
 
-        //Task<IEnumerable<CatalogInfo>> GetAllMaterials();
-        //Task<IEnumerable<CatalogInfo>> GetAllMetals();
-        //Task<IEnumerable<CatalogInfo>> GetAllOccasions();
-        //Task<IEnumerable<CatalogInfo>> GetAllStyles();
+        Task<IEnumerable<CatalogItem>> FilterCatalogItemsAsync(CompositeFilterDto filterDto);
         Task<IEnumerable<CatalogInfo>> GetCatalogDataAsync(string category);
     }
 }

@@ -16,7 +16,6 @@
 
 @code {
     IEnumerable<Shop>? shopsResult;
-
     protected override async Task OnInitializedAsync()
     {
         shopsResult = await ShopService.GetAllShops();

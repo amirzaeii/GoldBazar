@@ -70,12 +70,17 @@ public static class CatalogApi
             .WithSummary("Get list of similar products")
             .WithDescription("Get list of similar products")
             .WithTags("Items");
-     
-        api.MapGet("/item/filter", FilterByComposite)
-             .WithName("FilterByComposite")
-             .WithSummary("Filter catalog items by composite filter")
-             .WithDescription("Apply various filters to get a list of catalog items along with their corresponding shop details.")
-             .WithTags("Items");
+
+        //api.MapPost("/item/filter", FilterByComposite)
+        //     .WithName("FilterByComposite")
+        //     .WithSummary("Filter catalog items by composite filter")
+        //     .WithDescription("Apply various filters to get a list of catalog items along with their corresponding shop details.")
+        //     .WithTags("Items");
+        api.MapPost("/item/filter", FilterByComposite)
+    .WithName("FilterByComposite")
+    .WithSummary("Filter catalog items by composite filter")
+    .WithDescription("Apply various filters to get a list of catalog items along with their corresponding shop details.")
+    .WithTags("Items");
 
         api.MapGet("/items/discounted", GetDiscountedProducts)
           .WithName("GetDiscountedProducts")
@@ -234,15 +239,44 @@ public static class CatalogApi
     //    return TypedResults.Ok(discountedProducts);
     //}
 
-    public static async Task<Ok<List<Item>>> GetSimilarProducts(
-        int typeId, [AsParameters] CatalogServices services)
+    public static async Task<Ok<List<ItemDto>>> GetSimilarProducts(
+     int typeId, [AsParameters] CatalogServices services)
     {
         var similarProducts = await services.Context.Items
             .Where(p => p.TypeId == typeId)
+            .Include(p => p.Metal)
+            .Include(p => p.Material)
+            .Include(p => p.Shop)
+            .Include(p => p.Type)
+            .Select(p => new ItemDto(
+                p.Id,
+                p.Caption,
+                p.Description,
+                p.CostPerGram,
+                p.Weight,
+                p.Size,
+                p.TypeId,
+                p.Type.Name,
+                p.MetalId,
+                p.Metal.Name,
+                p.Metal.Karat,
+                p.ShopId,
+                p.Shop.Name,
+                p.Shop.City,
+                p.MaterialId,
+                p.Material.Name,
+                p.OccasionId,
+                p.Occassion.Name,
+                p.StyleId,
+                p.Style.Name,
+                p.Discount,
+                p.ActivityStatus
+            ))
             .ToListAsync();
 
         return TypedResults.Ok(similarProducts);
     }
+
 
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
@@ -328,105 +362,160 @@ public static class CatalogApi
 
         return discountedProducts.Any() ? TypedResults.Ok(discountedProducts) : TypedResults.BadRequest("No discounted products found.");
     }
-    //Added
+    ////Added
+    //public static async Task<Ok<List<ItemDto>>> FilterByComposite(
+    //   [AsParameters] CatalogServices services,
+    //   [Description("Composite filter for catalog items")][FromBody] CompositeFilterDto request)
+    //{
+    //    var products = services.Context.Items
+    //        .Include(p => p.Shop)
+    //        .Include(p => p.Material)
+    //        .Include(p => p.Metal)
+    //        .Include(p => p.Style)
+    //        .Include(p => p.Occassion)
+    //        .Include(p => p.Type)
+    //        .AsNoTracking()
+    //        .AsQueryable();
+
+    //    // Filter by weight range
+    //    if (request.MinWeight > 0 && request.MaxWeight > 0 && request.MinWeight <= request.MaxWeight)
+    //    {
+    //        products = products.Where(p => p.Weight >= request.MinWeight && p.Weight <= request.MaxWeight);
+    //    }
+
+    //    // Filter by product type
+    //    if ((request.ProductType ?? Array.Empty<int>()).Any())
+    //    {
+    //        products = products.Where(p => request.ProductType.Contains(p.TypeId));
+    //    }
+
+    //    // Filter by material
+    //    if ((request.Material ?? Array.Empty<int>()).Any())
+    //    {
+    //        products = products.Where(p => request.Material.Contains(p.MaterialId));
+    //    }
+
+    //    // Filter by metal
+    //    if ((request.Metal ?? Array.Empty<int>()).Any())
+    //    {
+    //        products = products.Where(p => request.Metal.Contains(p.MetalId));
+    //    }
+
+    //    // Filter by occasion
+    //    if ((request.Occasion ?? Array.Empty<int>()).Any())
+    //    {
+    //        products = products.Where(p => request.Occasion.Contains(p.OccasionId));
+    //    }
+
+    //    // Filter by style
+    //    if ((request.Style ?? Array.Empty<int>()).Any())
+    //    {
+    //        products = products.Where(p => request.Style.Contains(p.StyleId));
+    //    }
+
+    //    // Project and return results as DTOs
+    //    var filteredProducts = await products
+    //        .Select(p => new ItemDto(
+    //            p.Id,                           // int
+    //            p.Caption,                      // string
+    //            p.Description,                  // string
+    //            p.CostPerGram,                  // decimal
+    //            p.Weight,                       // decimal
+    //            p.Size,                         // int
+    //            p.TypeId,                       // int
+    //            p.Type.Name,                    // string
+    //            p.MetalId,                      // int
+    //            p.Metal.Name,                   // string
+    //            p.Metal.Karat,                  // decimal
+    //            p.ShopId,                       // int
+    //            p.Shop.Name,                    // string
+    //            p.Shop.City,                    // string (City comes here)
+    //            p.MaterialId,                   // int (MaterialId should follow)
+    //            p.Material.Name,                // string
+    //            p.OccasionId,                   // int
+    //            p.Occassion.Name,               // string
+    //            p.StyleId,                      // int
+    //            p.Style.Name,                   // string
+    //            p.Discount,                     // decimal
+    //            p.ActivityStatus                // bool (Status)
+    //        )).ToListAsync();
+
+    //    return TypedResults.Ok(filteredProducts);
+    //}
+
     public static async Task<Ok<List<ItemDto>>> FilterByComposite(
-        [AsParameters] CatalogServices services,
-        [Description("Composite filter for catalog items")][FromBody] CompositeFilterDto request)
+     [AsParameters] CatalogServices services,
+     [Description("Composite filter for catalog items")][FromBody] CompositeFilterDto request)
     {
         var products = services.Context.Items
-            .Include(p => p.Shop)
+            .Include(p => p.Material)
+            .Include(p => p.Metal)
+            .Include(p => p.Style)
+            .Include(p => p.Occassion)
+            .Include(p => p.Type)
             .AsNoTracking()
             .AsQueryable();
 
-        // Filter by weight range
+        // Apply dynamic filters
         if (request.MinWeight > 0 && request.MaxWeight > 0 && request.MinWeight <= request.MaxWeight)
         {
             products = products.Where(p => p.Weight >= request.MinWeight && p.Weight <= request.MaxWeight);
         }
 
-
-        if (request.ProductType.Any())
+        if ((request.ProductTypes ?? Array.Empty<int>()).Any())
         {
-            products = products.Where(p => request.ProductType.Contains(p.TypeId));
+            products = products.Where(p => request.ProductTypes.Contains(p.TypeId));
         }
 
-        if (request.Material.Any())
+        if ((request.Materials ?? Array.Empty<int>()).Any())
         {
-            products = products.Where(p => request.Material.Contains(p.MaterialId));
+            products = products.Where(p => request.Materials.Contains(p.MaterialId));
         }
 
-        if (request.Metal.Any())
+        if ((request.Metals ?? Array.Empty<int>()).Any())
         {
-            products = products.Where(p => request.Metal.Contains(p.MetalId));
+            products = products.Where(p => request.Metals.Contains(p.MetalId));
         }
 
-        //if (request..Any())
-        //{
-        //    products = products.Where(p => sizes.Contains(p.Size));
-        //}
-
-        if (request.Occasion.Any())
+        if ((request.Occasions ?? Array.Empty<int>()).Any())
         {
-            products = products.Where(p => request.Occasion.Contains(p.OccasionId));
+            products = products.Where(p => request.Occasions.Contains(p.OccasionId));
         }
 
-        if (request.Style.Any())
+        if ((request.Styles ?? Array.Empty<int>()).Any())
         {
-            products = products.Where(p => request.Style.Contains(p.StyleId));
+            products = products.Where(p => request.Styles.Contains(p.StyleId));
         }
-
-        if (request.ShopId.Any())
-        {
-            products = products.Where(p => request.ShopId.Contains(p.ShopId));
-        }
-
-      /*  var cities = ParseCommaSeparated(request.City);
-        if (cities.Any())
-        {
-            products = products.Where(p => cities.Contains(p.Shop.City, StringComparer.OrdinalIgnoreCase));
-        }*/
-
-        // Apply Sorting
-        //products = request.SortOrder.ToLower() == "desc"
-        //    ? products.OrderByDescending(p => EF.Property<object>(p, request.SortField))
-        //    : products.OrderBy(p => EF.Property<object>(p, request.SortField));
-
-        // Apply Pagination
-        products = products.Include(c => c.Material).Include(c => c.Metal).Include(c => c.Style).Include(c =>c.Occassion).Include(c => c.Type)
-            .Skip((request.PageIndex - 1) * request.PageSize)
-            .Take(request.PageSize);
 
         // Project and return results as DTOs
         var filteredProducts = await products
-          .Select(p => new ItemDto(
-              p.Id,                           // int
-              p.Caption,                      // string
-              p.Description,                  // string
-              p.CostPerGram,                  // decimal
-              p.Weight,                       // decimal
-              p.Size,                         // int
-              p.TypeId,                       // int
-              p.Type.Name,                    // string
-              p.MetalId,                      // int
-              p.Metal.Name,                   // string
-              p.Metal.Karat,                  // decimal
-              p.ShopId,                       // int
-              p.Shop.Name,                    // string
-              p.Shop.City,                    // string (City comes here)
-              p.MaterialId,                   // int (MaterialId should follow)
-              p.Material.Name,                // string
-              p.OccasionId,                   // int
-              p.Occassion.Name,               // string
-              p.StyleId,                      // int
-              p.Style.Name,                   // string
-              p.Discount,                     // decimal
-              p.ActivityStatus                // bool (Status)
-          )).ToListAsync();
+            .Select(p => new ItemDto(
+                p.Id,
+                p.Caption,
+                p.Description,
+                p.CostPerGram,
+                p.Weight,
+                p.Size,
+                p.TypeId,
+                p.Type.Name,
+                p.MetalId,
+                p.Metal.Name,
+                p.Metal.Karat,
+                0, // ShopId (removed, so set a default value)
+                string.Empty, // ShopName (removed, so set a default value)
+                string.Empty, // City (removed, so set a default value)
+                p.MaterialId,
+                p.Material.Name,
+                p.OccasionId,
+                p.Occassion.Name,
+                p.StyleId,
+                p.Style.Name, 
+                p.Discount,
+                p.ActivityStatus
+            )).ToListAsync();
 
         return TypedResults.Ok(filteredProducts);
     }
-
-
 
 
     private static string GetImageMimeTypeFromImageFileExtension(string extension) => extension switch
