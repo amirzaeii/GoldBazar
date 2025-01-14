@@ -23,19 +23,33 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        // Parse the query string from the current URI
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
 
-        // Parse query parameters to create the filter DTO
+        Console.WriteLine($"Query String: {uri.Query}");
+        foreach (var key in queryParameters.AllKeys)
+        {
+            Console.WriteLine($"Key: {key}, Value: {queryParameters[key]}");
+        }
+
+        // Construct the CompositeFilterDto
         var selectedFilters = new CompositeFilterDto
             {
+                MinWeight = 0,
+                MaxWeight = 0,
+                ProductType = queryParameters["ProductType"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
                 Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
                 Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
                 Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
+                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
             };
 
-        // Fetch filtered products
+        Console.WriteLine($"Filters: {System.Text.Json.JsonSerializer.Serialize(selectedFilters)}");
+
+        // Call the API and fetch filtered products
         Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
+
+        Console.WriteLine($"Fetched {Products.Count} products.");
     }
 }

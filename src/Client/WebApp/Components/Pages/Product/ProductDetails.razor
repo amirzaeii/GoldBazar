@@ -102,6 +102,7 @@ else
             </ul>
         </div>
         <SimilarProductsList TypeId="@item.TypeId" />
+        <WebComponent.Components.Shops.ShopProductsList ShopId="@item.ShopId" ExcludeProductId="@item.Id" />
     </main>
     <AddToCart Item="item" />
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,26 +23,24 @@ namespace WebComponent.Services
         public async Task<IEnumerable<CatalogItem>> FilterCatalogItemsAsync(CompositeFilterDto filterDto)
         {
             var uri = "api/catalog/item/filter";
-
             try
             {
-                // Send the DTO to the backend
+                Console.WriteLine($"Sending API Request: {System.Text.Json.JsonSerializer.Serialize(filterDto)}");
+
                 var response = await httpClient.PostAsJsonAsync(uri, filterDto);
 
-                // Ensure the request was successful
                 response.EnsureSuccessStatusCode();
 
-                // Deserialize the response
                 var result = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItem>>();
+                Console.WriteLine($"API Response: {System.Text.Json.JsonSerializer.Serialize(result)}");
                 return result ?? Array.Empty<CatalogItem>();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in API call: {ex.Message}");
+                Console.WriteLine($"Error calling API: {ex.Message}");
                 return Array.Empty<CatalogItem>();
             }
         }
-
     }
 }
 

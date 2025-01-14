@@ -1,8 +1,8 @@
-﻿@page "/filters-result"
+﻿@page "/filters-result/{ItemTypeId:int?}"
 @using WebComponent.Components.Filter
 @inject NavigationManager Navigation
 @inject IFilterService FilterService
-
+@inject ICatalogService CatalogService
 <div class="container">
     <div class="search-bar-container">
         <div class="search-bar">
@@ -57,15 +57,25 @@
         }
     </div>
 </div>
-
 <div class="product-grid">
-    @if (Products == null || !Products.Any())
+    <!-- Conditional Rendering for Product List -->
+    @if (ItemTypeId.HasValue && ItemTypeId > 0)
     {
-        <p>No products found. Please apply some filters.</p>
+        <div class="product-grid">
+            <ProductListByType ItemTypeId="ItemTypeId.Value" />
+        </div>
+    }
+    else if (Products != null && Products.Any())
+    {
+        <div class="product-grid">
+            <ProductListByFilter Products="Products" />
+        </div>
     }
     else
     {
-        <ProductListByFilter Products="Products" />
+        <div class="product-grid">
+            <p>No products found. Please apply some filters or select a category.</p>
+        </div>
     }
 </div>
 
@@ -73,6 +83,8 @@
     private bool isPopupVisible = false;
     private string selectedOption = "Latest"; // Default selected option
     private List<CatalogItem> Products { get; set; } = new();
+    [Parameter]
+    public int? ItemTypeId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

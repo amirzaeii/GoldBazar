@@ -52,14 +52,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Catalog.Infrastructure", "src\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj", "{453FFB04-2D5D-41A3-9725-893370C769D9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1534BD9-AE95-447E-8786-BBB9E77F484A}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-		.gitignore = .gitignore
-		global.json = global.json
-		Directory.Build.props = Directory.Build.props
-		nuget.config = nuget.config
-		Directory.Packages.props = Directory.Packages.props
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
