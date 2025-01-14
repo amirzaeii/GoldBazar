@@ -2,15 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="8.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
-    <PackageReference Include="Yarp.ReverseProxy" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris"/>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp"/>
+    <PackageReference Include="Yarp.ReverseProxy"/>
   </ItemGroup>
 
   <ItemGroup>
