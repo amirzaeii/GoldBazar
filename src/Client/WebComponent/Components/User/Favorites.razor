@@ -1,0 +1,76 @@
+﻿<div class="wishlist-header-container">
+    <h2 class="wishlist-header">@customer.Name's Wishlist</h2>
+    <button class="share-button">
+        <img src="assets/icons/share.png" alt="Share" />
+    </button>
+</div>
+<div class="wishlist-container">
+    @foreach (var product in customer.FavoriteProducts.ToList())
+    {
+        <div class="product-card">
+            <img src="@product.ImageUrl" alt="@product.Name" />
+            <div class="product-details">
+                <h3>@product.Name</h3>
+                <span class="price">@product.Price$</span>
+            </div>
+            <div class="actions">
+                <button class="remove-button" @onclick="() => RemoveFromWishlist(product)">
+                    <img src="assets/icons/cancel.png" alt="Remove" />
+                </button>
+                <button class="add-to-cart">
+                    <i class="fa fa-cart-plus"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    }
+</div>
+@code {
+    public class Customer
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public List<Product> FavoriteProducts { get; set; } = new List<Product>();
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string ImageUrl { get; set; }
+        public decimal Price { get; set; }
+    }
+
+    private Customer customer = new Customer
+        {
+            Id = 1,
+            Name = "Hana Hardy",
+            FavoriteProducts = new List<Product>
+        {
+            new Product
+            {
+                Id = 1,
+                Name = "Ring 1",
+                ImageUrl = "assets/Image/avita.svg",
+                Price = 12.79m
+            },
+            new Product
+            {
+                Id = 2,
+                Name = "Green Stone Pendant",
+                ImageUrl = "assets/Image/avita.svg",
+                Price = 14.99m
+            },
+            new Product
+            {
+                Id = 3,
+                Name = "Daily Earring",
+                ImageUrl = "assets/Image/avita.svg",
+                Price = 19.99m
+            }
+        }
+        };
+    private void RemoveFromWishlist(Product product)
+    {
+        customer.FavoriteProducts.Remove(product);
+    }
+}

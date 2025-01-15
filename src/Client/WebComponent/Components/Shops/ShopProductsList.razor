@@ -12,40 +12,25 @@ else if (!shopItems.Any())
 }
 else
 {
-    <div class="shop-products">
+    <div class="container">
+     <div>
         <h3 class="shop-products-title">
             More items from @goldsmithName
         </h3>
-        <div class="product-grid">
+    </div>
+    <div class="products">
+        @if (shopItems != null && shopItems.Any())
+        {
             @foreach (var product in shopItems)
             {
-                <a href="/product/@product.Id" class="product-card">
-                    <div class="badge-container">
-                        @if (product.Discount > 0)
-                        {
-                            <div class="badge">
-                                <img src="assets/Icons/offerFill.svg" alt="Discount">
-                            </div>
-                        }
-                    </div>
-                    <div class="product-image">
-                        <img src="@ImageProvider.GetProductImageUrl(product)" alt="@product.Caption" />
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">@product.Caption</h3>
-                        <div class="price-container">
-                            @if (product.Discount > 0)
-                            {
-                                <span class="original-price">@product.OldPrice.ToString("C")</span>
-                            }
-                            <span class="current-price">@product.Price.ToString("C")</span>
-                        </div>
-                        <div class="jeweler-container">
-                            <span class="jeweler-name">@goldsmithName</span>
-                        </div>
-                    </div>
-                </a>
+                <ProductCard Item="product"></ProductCard>
             }
+        }
+        else
+        {
+            <p>No products available.</p>
+        }
+
         </div>
     </div>
 }
