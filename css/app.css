@@ -113,10 +113,20 @@
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'trebuc';
+    src: url('/assets/font/trebuc.ttf') format('truetype'),
+        url('/assets/font/trebuc.otf') format('opentype'),
+        url('/assets/font/trebuc.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 
 body {
 
-    font-family: 'zain';
+    font-family: 'trebuc';
     background-color: var(--bg-main);
     color: var(--text-color);
     direction: rtl;
