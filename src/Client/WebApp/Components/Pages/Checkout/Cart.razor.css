@@ -188,7 +188,6 @@
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
     .checkout-btn:hover {
@@ -257,7 +256,7 @@
 
 /* Checkout Button */
 .checkout-btn {
-    background-color: #007bff;
+    background-color: #8d62f9;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -269,7 +268,7 @@
 }
 
     .checkout-btn:hover {
-        background-color: #0056b3;
+        background-color: #7a54e1;
     }
 
 /* Responsive Design */
