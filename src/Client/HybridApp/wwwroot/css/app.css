@@ -1,6 +1,25 @@
 ﻿/*#if (SampleContent)*/
+@font-face {
+    font-family: 'zain';
+    src: url('/assets/font/zain.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'trebuc';
+    src: url('/assets/font/trebuc.ttf') format('truetype'),
+        url('/assets/font/trebuc.otf') format('opentype'),
+        url('/assets/font/trebuc.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family:'trebuc';
 }
 
 a, .btn-link {
