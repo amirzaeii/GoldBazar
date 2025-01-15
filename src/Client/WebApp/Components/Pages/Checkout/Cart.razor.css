@@ -180,7 +180,7 @@
 }
 
 .checkout-btn {
-    background-color: #007bff;
+    background-color: #8d62f9;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -192,7 +192,7 @@
 }
 
     .checkout-btn:hover {
-        background-color: #0056b3;
+        background-color: #7a54e1;
     }
 
 /* Responsive Adjustments */

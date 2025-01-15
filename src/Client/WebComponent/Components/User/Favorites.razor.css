@@ -119,7 +119,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(to right, #a26cf7, #c150f4);
+    background-color: #8d62f9;
     color: #fff;
     border: none;
     width: 120px; /* Uniform width */
@@ -130,7 +130,7 @@
 }
 
     .add-to-cart:hover {
-        background: linear-gradient(to right, #c150f4, #a26cf7);
+        background-color: #7a54e1;
     }
 
 /* Remove Button */

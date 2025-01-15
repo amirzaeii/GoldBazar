@@ -1,0 +1,90 @@
+﻿@page "/profilesettings"
+@inherits LayoutComponentBase
+
+<div class="card" style="margin: 10px; margin-top: 24px;">
+    <div style="display: flex; justify-content: space-between; align-content: center;">
+        <h2 class="card-title">@CardTitle</h2>
+        <a href="@RedirectUrl">
+            <img src="@IconUrl" alt="Go to Profile" class="icon">
+        </a>
+    </div>
+    <div class="settings-group">
+        <label class="settings-label">ناوی تەواو</label>
+        <input type="text" class="settings-input" @bind="@FullName">
+    </div>
+
+    <div class="settings-group">
+        <label class="settings-label">ئیمەیڵ</label>
+        <input type="email" class="settings-input" @bind="@Email">
+    </div>
+    <div class="settings-group">
+        <label class="settings-label">ژمارەی مۆبایل</label>
+        <input type="text" style="direction: ltr;" class="settings-input" @bind="@PhoneNumber">
+    </div>
+    <div class="settings-group">
+        <label class="settings-label">ئاگادارکردنەوە لە نوێکارییەکان</label>
+        <div class="theme-switch">
+            <span>ئاگادارکردنەوە لە ڕێگەی ئیمەیڵەوە</span>
+            <label class="switch">
+                <input type="checkbox" @bind="@IsNotificationEnabled">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="card">
+        <h2 class="card-title">شوێنەکەم</h2>
+
+        <!-- Automatic Location -->
+        <div class="location-option">
+            <div class="radio-header">
+                <input type="radio" name="locationType" id="autoLocation" @bind="@IsAutoLocation">
+                <label for="autoLocation" class="settings-label">دیاریکردنی ناونیشان ئۆتۆماتیکی</label>
+            </div>
+            <div class="option-content">
+                <button class="settings-input" id="autoLocationBtn" @onclick="SetAutoLocation">
+                    <img src="@LocationIconUrl" alt="Location Icon" class="location-icon">
+                    شوێنەکەم لەسەر نەخشە
+                </button>
+            </div>
+        </div>
+
+        <!-- Manual Location -->
+        <div class="location-option">
+            <div class="radio-header">
+                <input type="radio" name="locationType" id="manualLocation" @bind="@IsManualLocation">
+                <label for="manualLocation" class="settings-label">دیاریکردنی شوێنەکەم بە شێوەی دەستی</label>
+            </div>
+            <div class="option-content @(IsManualLocation ? "" : "disabled")">
+                <div class="settings-group" style="margin-top: 16px;">
+                    <label class="settings-label">ناونیشانی تەواو</label>
+                    <input type="text" class="settings-input" @bind="@FullAddress" disabled="@(IsManualLocation ? null : true)">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@code {
+    [Parameter] public string CardTitle { get; set; } = "زانیارییەکانی هەژمارەکەم";
+    [Parameter] public string RedirectUrl { get; set; } = "profile.html";
+    [Parameter] public string IconUrl { get; set; } = "assets/Icons/arrow.svg";
+    [Parameter] public string LocationIconUrl { get; set; } = "assets/Icons/location.svg";
+
+    [Parameter] public string FullName { get; set; } = "کارزان خەلیل";
+    [Parameter] public string Email { get; set; } = "karza123@gmail.com";
+    [Parameter] public string PhoneNumber { get; set; } = "0770 432 6578";
+    [Parameter] public bool IsNotificationEnabled { get; set; } = true;
+
+    [Parameter] public bool IsAutoLocation { get; set; } = true;
+    [Parameter] public bool IsManualLocation { get; set; } = false;
+    [Parameter] public string FullAddress { get; set; } = "سلێمانی ، چەمچەماڵ ، گەڕەکی شەهیدان ، خانوی ژمارە ١٤٣";
+
+    private void SetAutoLocation()
+    {
+        // Logic to set the automatic location
+        Console.WriteLine("Auto-location triggered.");
+    }
+}
