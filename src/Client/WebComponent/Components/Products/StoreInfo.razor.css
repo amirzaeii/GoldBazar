@@ -1,19 +1,18 @@
 ﻿/*store*/
 .store {
     margin: 12px;
-    padding: 20px;
+    padding: 16px;
     border-radius: 12px;
     border: 1px solid #ebad42;
     background-color: #fffaf0;
 }
 
-.store_content {
+.store__content {
     display: grid;
-    grid-template-columns: minmax(100px, 1fr) 2fr; /* Maintain horizontal layout */
-    gap: 24px;
-    align-items: center;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: flex-start;
 }
-
 .store_logo-section {
     display: flex;
     flex-direction: column;
@@ -57,7 +56,7 @@
 .store_name {
     font-size: 20px;
     font-weight: 600;
-    color: #ff0000;
+    color: #333;
 }
 
 .store_location span {
