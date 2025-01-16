@@ -10,16 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.AppHost"/>
-    <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.RabbitMQ" />
     <PackageReference Include="Aspire.Hosting.Redis" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../Client/WebApp/WebApp.csproj" />
+    <ProjectReference Include="../Services/Basket.Api/Basket.Api.csproj" />
     <ProjectReference Include="../Services/BFF/Mobile.Bff/Mobile.Bff.csproj" />
     <ProjectReference Include="../Services/Catalog.Api/Catalog.Api.csproj" />
+    <ProjectReference Include="../Services/Identity.Api/Identity.Api.csproj" />
   </ItemGroup>
 
 </Project>

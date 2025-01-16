@@ -19,6 +19,7 @@
      <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
      <PackageVersion Include="Aspire.Redis" Version="$(AspireVersion)" />
      <packageVersion Include="Aspire.NpgSql" Version="$(AspireVersion)" />
+     <packageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
 
      <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
   <!-- OpenTelementry -->

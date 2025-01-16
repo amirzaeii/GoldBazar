@@ -125,11 +125,10 @@
 
 
 body {
-
     font-family: 'trebuc';
     background-color: var(--bg-main);
     color: var(--text-color);
-    direction: rtl;
+    
     /* height: 100%;
     overflow: hidden;
     position: fixed;

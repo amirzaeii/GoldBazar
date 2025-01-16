@@ -6,6 +6,15 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" />
+    <PackageReference Include="Aspire.StackExchange.Redis" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
+    <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Proto\basket.proto" GrpcServices="Server" />
+  </ItemGroup>
+  
 </Project>
