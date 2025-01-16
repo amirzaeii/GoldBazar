@@ -16,7 +16,7 @@ else
         <span class="title">Sort and Filter</span>
     </div>
 
-    <div class="container">
+    <div class="filter-wrapp">
         <div class="left-column">
             @foreach (var filter in FilterDictionary)
             {
@@ -49,7 +49,7 @@ else
 
     <div class="bottom-bar">
         <button class="submit" @onclick="Submit">Search</button>
-        <button class="clear-all" @onclick="ClearAllCheckboxes">Clear</button>
+        @* <button class="clear-all" @onclick="ClearAllCheckboxes">Clear</button> *@
     </div>
 }
 

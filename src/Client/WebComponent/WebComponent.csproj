@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
 
@@ -14,4 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
+  <ItemGroup>
+      <Protobuf Include="..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />
+    </ItemGroup>
 </Project>

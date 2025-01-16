@@ -1,17 +1,4 @@
-﻿/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Container */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-}
-
+﻿
 /* Header Styles */
 .header {
     text-align: center;

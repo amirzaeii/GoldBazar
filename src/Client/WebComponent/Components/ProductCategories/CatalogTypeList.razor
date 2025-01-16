@@ -2,7 +2,6 @@
 @inject IProductImageUrlProvider ImageProvider
 @inject NavigationManager Nav
 
-<div class="container">
     @if (catalogItemTypes == null)
     {
         <div class="spinner-border text-primary" role="status">
@@ -27,7 +26,6 @@
             </nav>
         </div>
     }
-</div>
 
 @code { 
     [Parameter]
