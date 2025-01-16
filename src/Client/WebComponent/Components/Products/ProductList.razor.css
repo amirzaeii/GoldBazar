@@ -16,7 +16,6 @@
 .product-grid::-webkit-scrollbar {
     display: none; /* Hide scrollbar */
 }
-
 @media screen and (max-width: 768px) {
     .product-grid {
         grid-template-columns: repeat(2, 1fr);
