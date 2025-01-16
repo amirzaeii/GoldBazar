@@ -15,23 +15,23 @@ var postgres = builder.AddPostgres("postgres")
     .WithLifetime(ContainerLifetime.Persistent);
 
 var catalogDb = postgres.AddDatabase("catalogdb");
-// var identityDb = postgres.AddDatabase("identitydb");
+var identityDb = postgres.AddDatabase("identitydb");
 // var orderDb = postgres.AddDatabase("orderingdb");
 // var webhooksDb = postgres.AddDatabase("webhooksdb");
 
 var launchProfileName = ShouldUseHttpForEndpoints() ? "http" : "https";
 
 // Services
-// var identityApi = builder.AddProject<Projects.Identity_API>("identity-api", launchProfileName)
-//     .WithExternalHttpEndpoints()
-//     .WithReference(identityDb);
+var identityApi = builder.AddProject<Projects.Identity_Api>("identity-api", launchProfileName)
+    .WithExternalHttpEndpoints()
+    .WithReference(identityDb);
 
-//var identityEndpoint = identityApi.GetEndpoint(launchProfileName);
+var identityEndpoint = identityApi.GetEndpoint(launchProfileName);
 
-// var basketApi = builder.AddProject<Projects.Basket_API>("basket-api")
-//     .WithReference(redis)
-//     .WithReference(rabbitMq).WaitFor(rabbitMq)
-//     .WithEnvironment("Identity__Url", identityEndpoint);
+ var basketApi = builder.AddProject<Projects.Basket_Api>("basket-api")
+     .WithReference(redis)
+     .WithReference(rabbitMq).WaitFor(rabbitMq)
+     .WithEnvironment("Identity__Url", identityEndpoint);
 
 var catalogApi = builder.AddProject<Projects.Catalog_Api>("catalog-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)

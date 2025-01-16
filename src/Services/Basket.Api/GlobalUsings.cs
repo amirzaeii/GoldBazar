@@ -1,0 +1,13 @@
+global using System.ComponentModel.DataAnnotations;
+global using System.Security.Claims;
+global using System.Text.Json;
+global using Grpc.Core;
+global using Microsoft.AspNetCore.Authorization;
+global using Basket.Api.Extensions;
+global using Basket.Api.Grpc;
+global using EventBus.Abstractions;
+global using EventBus.Events;
+global using GoldBazar.ServiceDefaults;
+global using StackExchange.Redis;
+global using Basket.Api.Model;
+global using Basket.Api.Repositories;
