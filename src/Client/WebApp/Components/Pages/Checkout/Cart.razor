@@ -39,12 +39,14 @@
             </div>
             <div class="price-note-container">
                 <label for="priceNote" class="price-note-label">Special Note</label>
-                <input type="text" id="priceNote" class="price-note-input" placeholder="Example: Please handle this carefully" @bind="PriceNote">
-                <button class="checkout-btn" @onclick="SubmitOrder">Place Order</button>
+                <input type="text" id="priceNote" class="price-note-input"
+                    placeholder="Example: Please handle this carefully" @bind="PriceNote">
             </div>
-        </div>
+            <button class="checkout-btn" @onclick="SubmitOrder">Place Order</button>
+
         </div>
     </div>
+</div>
 
 @code {
     public class Product
@@ -64,28 +66,28 @@
     private decimal TotalPrice => Products.Sum(p => p.Price * p.SelectedQuantity);
 
     private List<Product> Products { get; set; } = new List<Product>
-    {
-        new Product
-        {
-            Id = 1,
-            Title = "Earring",
-            ImageUrl = "assets/Image/avita.svg",
-            Price = 179m,
-            Karat = 21,
-            Weight = "4.5g",
-            Quantity = 34
-        },
-        new Product
-        {
-            Id = 2,
-            Title = "Ring",
-            ImageUrl = "assets/Image/avita.svg",
-            Price = 179m,
-            Karat = 21,
-            Weight = "4.5g",
-            Quantity = 34
-        }
-    };
+{
+new Product
+{
+Id = 1,
+Title = "Earring",
+ImageUrl = "assets/Image/avita.svg",
+Price = 179m,
+Karat = 21,
+Weight = "4.5g",
+Quantity = 34
+},
+new Product
+{
+Id = 2,
+Title = "Ring",
+ImageUrl = "assets/Image/avita.svg",
+Price = 179m,
+Karat = 21,
+Weight = "4.5g",
+Quantity = 34
+}
+};
 
     private void IncrementQuantity(int productId)
     {
