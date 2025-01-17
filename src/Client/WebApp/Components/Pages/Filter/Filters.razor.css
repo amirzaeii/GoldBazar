@@ -1,7 +1,4 @@
-﻿/* Reset and global styles */
-
-/* App Bar Styles */
-.app-bar {
+﻿.app-bar {
     position: sticky;
     top: 0;
     background: linear-gradient(135deg, #8060f4 0%, #6c47ff 100%);

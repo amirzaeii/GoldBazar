@@ -3,58 +3,59 @@
 @inject NavigationManager Navigation
 @inject IFilterService FilterService
 @inject ICatalogService CatalogService
-    <div class="search-bar-container">
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button type="submit">
-                <img src="assets/icons/search.png" alt="Search">
-            </button>
-        </div>
+@rendermode InteractiveServer
+<div class="search-bar-container">
+    <div class="search-bar">
+        <input type="text" placeholder="Search...">
+        <button type="submit">
+            <img src="assets/icons/search.png" alt="Search">
+        </button>
     </div>
+</div>
 
-    <div class="filter-sort-container">
-        <button class="filter-button">
-            <a href="/filters" class="filter-link">
-                <span>Filter</span>
-                <img src="assets/icons/filter.png" alt="Filter">
-            </a>
-        </button>
+<div class="filter-sort-container">
+    <button class="filter-button">
+        <a href="/filters" class="filter-link">
+            <span>Filter</span>
+            <img src="assets/icons/filter.png" alt="Filter">
+        </a>
+    </button>
 
-        <span class="divider"></span>
-        <button class="sort-button" @onclick="ShowPopup">
-            <span>Sort by</span>
-            <img src="assets/icons/sorting.png" alt="Sort">
-        </button>
-        @if (isPopupVisible)
-        {
-            <div class="overlay">
-                <div class="popup">
-                    <h2>Sort by</h2>
-                    <button class="close" @onclick="HidePopup">&times;</button>
-                    <div class="options">
-                        <label>
-                            <input type="radio" name="sort" value="Latest"
-                                   @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                                   checked="@(selectedOption == "Latest")" />
-                            Latest
-                        </label>
-                        <label>
-                            <input type="radio" name="sort" value="HighToLow"
-                                   @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                                   checked="@(selectedOption == "HighToLow")" />
-                            Price: High to Low
-                        </label>
-                        <label>
-                            <input type="radio" name="sort" value="LowToHigh"
-                                   @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                                   checked="@(selectedOption == "LowToHigh")" />
-                            Price: Low to High
-                        </label>
-                    </div>
+    <span class="divider"></span>
+    <button class="sort-button" @onclick="ShowPopup">
+        <span>Sort by</span>
+        <img src="assets/icons/sorting.png" alt="Sort">
+    </button>
+    @if (isPopupVisible)
+    {
+        <div class="overlay">
+            <div class="popup">
+                <h2>Sort by</h2>
+                <button class="close" @onclick="HidePopup">&times;</button>
+                <div class="options">
+                    <label>
+                        <input type="radio" name="sort" value="Latest"
+                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
+                               checked="@(selectedOption == "Latest")" />
+                        Latest
+                    </label>
+                    <label>
+                        <input type="radio" name="sort" value="HighToLow"
+                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
+                               checked="@(selectedOption == "HighToLow")" />
+                        Price: High to Low
+                    </label>
+                    <label>
+                        <input type="radio" name="sort" value="LowToHigh"
+                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
+                               checked="@(selectedOption == "LowToHigh")" />
+                        Price: Low to High
+                    </label>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
 <div class="product-grid">
     <!-- Conditional Rendering for Product List -->
     @if (ItemTypeId.HasValue && ItemTypeId > 0)
