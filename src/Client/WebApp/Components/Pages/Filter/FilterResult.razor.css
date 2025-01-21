@@ -1,6 +1,9 @@
-﻿a.filter-link {
-    color: black; /* Set text color to black */
-    text-decoration: none; /* Remove underline */
+﻿.filter-link {
+    font-size: 16px;
+    width: 80px;
+    justify-content: space-evenly;
+    display: flex;
+    color: black;
 }
 
     a.filter-link:hover {

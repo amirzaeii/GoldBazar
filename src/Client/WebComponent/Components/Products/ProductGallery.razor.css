@@ -10,19 +10,17 @@
 }
 
 .gallery_container {
-    width: 100%;
-    height: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .gallery_image {
-    max-height: 70%;
-    max-width: 90%;
+    max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
     display: block;
-    margin: auto;
 }
 
 .gallery-slider-container {

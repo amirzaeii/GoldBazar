@@ -14,11 +14,11 @@
 </div>
 
 <div class="filter-sort-container">
-    <button class="filter-button">
-        <a href="/filters" class="filter-link">
+    <button class="filter-button" @onclick="@(() => Navigation.NavigateTo("/filters"))">
+        <div class="filter-link">
             <span>Filter</span>
             <img src="assets/icons/filter.png" alt="Filter">
-        </a>
+        </div>
     </button>
 
     <span class="divider"></span>

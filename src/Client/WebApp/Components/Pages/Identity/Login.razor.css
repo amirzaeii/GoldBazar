@@ -58,16 +58,13 @@
         stroke-width: 2;
     }
 
-.forgot-password {
-    text-align: right;
-    margin-bottom: 24px;
+.link-button{
+    margin-bottom: 10px;
+    background: transparent;
+    border: none;
+    color: #6c5ce7;
 }
 
-    .forgot-password a {
-        color: #6c5ce7;
-        text-decoration: none;
-        font-size: 14px;
-    }
 
 .login-btn {
     width: 100%;
@@ -123,10 +120,12 @@
     }
 
 .create-account {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 18px;
+    width: 100%;
+    margin-bottom: 16px;
+    background: transparent;
+    border: none;
+    color: #6c5ce7;
+
 }
 
 @media (max-width: 480px) {
