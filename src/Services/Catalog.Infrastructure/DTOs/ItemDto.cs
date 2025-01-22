@@ -11,6 +11,7 @@ string TypeName,
 int MetalId,
 string MetalName,
 decimal KT,
+decimal Purity,
 int ShopId,
 string ShopName,
 string City,
@@ -24,6 +25,6 @@ decimal Discount,
 bool Status
 )
 {
-    public decimal Price { get; init; } = ((2625.0m/31.103m)* KT/1000 + CostPerGram - Discount) * Weight;
-    public decimal OldPrice { get; init; } = ((2625.0m/31.103m)* KT/1000 + CostPerGram) * Weight;
+    public decimal Price { get; init; } = (((2745m/31.103m)* Purity) + CostPerGram - Discount) * Weight;
+    public decimal OldPrice { get; init; } = (((2745m/31.103m)* Purity) + CostPerGram) * Weight;
 }
