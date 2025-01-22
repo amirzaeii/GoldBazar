@@ -15,7 +15,4 @@
   <ItemGroup>
       <Protobuf Include="..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />
     </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Pages\Settings\" />
-  </ItemGroup>
 </Project>

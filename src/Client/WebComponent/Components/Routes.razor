@@ -1,0 +1,8 @@
+﻿@using System.Runtime.Loader
+<Router AppAssembly="@GetType().Assembly" 
+        AdditionalAssemblies="@(AssemblyLoadContext.Default.Assemblies.Where(asm => asm.GetName().Name?.Contains("WebApp") is true))">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>    
+</Router>

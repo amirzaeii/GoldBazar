@@ -18,9 +18,4 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" />
   </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\share.png" />
-  </ItemGroup>
-
 </Project>
