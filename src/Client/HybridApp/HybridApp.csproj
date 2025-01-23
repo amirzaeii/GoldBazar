@@ -59,9 +59,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Http" />
         <PackageReference Include="Microsoft.Maui.Controls" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     </ItemGroup>
 
     <ItemGroup>

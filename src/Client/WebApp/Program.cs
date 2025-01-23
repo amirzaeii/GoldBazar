@@ -1,11 +1,11 @@
-using System.Reflection;
 using System.Runtime.Loader;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 // Add services to the container.
-builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+builder.Services.AddRazorComponents()
+.AddInteractiveServerComponents();
 
 builder.AddApplicationServices();
 // server interactive

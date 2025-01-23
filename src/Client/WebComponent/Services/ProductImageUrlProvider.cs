@@ -1,7 +1,4 @@
-using System;
-using WebComponent.Services;
-
-namespace WebApp.Services;
+namespace WebComponent.Services;
 
 public class ProductImageUrlProvider : IProductImageUrlProvider
 {
