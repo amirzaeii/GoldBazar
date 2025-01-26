@@ -11,11 +11,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <PackageReference Include="Microsoft.Extensions.Localization" />
   </ItemGroup>
   <ItemGroup>
       <Protobuf Include="..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />
     </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Pages\Settings\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
   </ItemGroup>
 </Project>

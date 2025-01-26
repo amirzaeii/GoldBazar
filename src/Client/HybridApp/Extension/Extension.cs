@@ -26,10 +26,8 @@ public static class Extensions
         //.AddAuthToken();
 
         builder.Services.AddHttpClient<IFilterService, FilterService>(o => o.BaseAddress = new("http://catalog-api"));
-            //.AddApiVersion(1.0);
+        //.AddApiVersion(1.0);
         //.AddAuthToken();
-
-
 
         builder.Services.AddHttpClient<IShopService, ShopService>(o => o.BaseAddress = new("http://catalog-api"));
 

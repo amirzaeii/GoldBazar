@@ -1,14 +1,10 @@
 ﻿@page "/profile"
 @inject NavigationManager Navigation
-
+@inject IStringLocalizer<Resource> localizer
 <div class="profile-page">
     <!-- Language Selector -->
-    <div class="language-selector">
-        <button class="language-tab @(selectedLanguage == "English" ? "active" : "")" @onclick="@(() => SetLanguage("English"))">English (EN)</button>
-        <button class="language-tab @(selectedLanguage == "Arabic" ? "active" : "")" @onclick="@(() => SetLanguage("Arabic"))">Arabic (ع)</button>
-        <button class="language-tab @(selectedLanguage == "Kurdish" ? "active" : "")" @onclick="@(() => SetLanguage("Kurdish"))">Kurdish (ک)</button>
-    </div>
-
+    <LanguageSelection></LanguageSelection>
+    <h2>@localizer["helloMessage"]</h2>
     <!-- Profile Info -->
     <div class="profile-info">
         <img src="/assets/Icons/profile.svg" alt="Profile Image" class="profile-img" />
@@ -58,10 +54,5 @@
 </div>
 
 @code {
-    private string selectedLanguage = "English"; // Default selected language
-
-    private void SetLanguage(string language)
-    {
-        selectedLanguage = language;
-    }
+   
 }
