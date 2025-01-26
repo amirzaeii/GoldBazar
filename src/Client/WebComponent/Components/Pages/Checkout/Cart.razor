@@ -1,0 +1,125 @@
+﻿@page "/cart"
+@layout NavLayout
+@rendermode InteractiveServer
+
+<div class="container">
+    <header class="header">
+        <h1>My Products</h1>
+    </header>
+    <div class="products">
+        <p class="goldsmith">@CurrentGoldsmith</p>
+
+        @foreach (var product in Products)
+        {
+            <div class="product-card">
+                <img src="@product.ImageUrl" alt="@product.Title" class="product-image">
+                <div class="product-details">
+                    <div class="name-price">
+                        <p class="product-title">@product.Title</p>
+                        <span class="product-price">@product.Price$</span>
+                    </div>
+                    <div class="product-specs">
+                        <span>Karat: @product.Karat</span>
+                        <span>Weight: @product.Weight</span>
+                        <span>Stock: @product.Quantity</span>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="decrement-btn" @onclick="() => DecrementQuantity(product.Id)">-</button>
+                        <span class="quantity">@product.SelectedQuantity</span>
+                        <button class="increment-btn" @onclick="() => IncrementQuantity(product.Id)">+</button>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="total-section">
+            <div class="total-price-container">
+                <span class="total-price-label">Total Price:</span>
+                <span class="total-price">@TotalPrice$</span>
+            </div>
+            <div class="price-note-container">
+                <label for="priceNote" class="price-note-label">Special Note</label>
+                <input type="text" id="priceNote" class="price-note-input"
+                    placeholder="Example: Please handle this carefully" @bind="PriceNote">
+            </div>
+            <button class="checkout-btn" @onclick="SubmitOrder">Place Order</button>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    public class Product
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string ImageUrl { get; set; }
+        public decimal Price { get; set; }
+        public int Karat { get; set; }
+        public string Weight { get; set; }
+        public int Quantity { get; set; }
+        public int SelectedQuantity { get; set; } = 1;
+    }
+
+    private string CurrentGoldsmith { get; set; } = "Sarzhin Jewelry";
+    private string PriceNote { get; set; } = string.Empty;
+    private decimal TotalPrice => Products.Sum(p => p.Price * p.SelectedQuantity);
+
+    private List<Product> Products { get; set; } = new List<Product>
+{
+new Product
+{
+Id = 1,
+Title = "Earring",
+ImageUrl = "assets/Image/avita.svg",
+Price = 179m,
+Karat = 21,
+Weight = "4.5g",
+Quantity = 34
+},
+new Product
+{
+Id = 2,
+Title = "Ring",
+ImageUrl = "assets/Image/avita.svg",
+Price = 179m,
+Karat = 21,
+Weight = "4.5g",
+Quantity = 34
+}
+};
+
+    private void IncrementQuantity(int productId)
+    {
+        var product = Products.FirstOrDefault(p => p.Id == productId);
+        if (product != null)
+        {
+            product.SelectedQuantity++;
+            StateHasChanged(); // Notify Blazor to re-render the UI
+        }
+    }
+
+    private void DecrementQuantity(int productId)
+    {
+        var product = Products.FirstOrDefault(p => p.Id == productId);
+        if (product != null)
+        {
+            if (product.SelectedQuantity > 1)
+            {
+                product.SelectedQuantity--;
+            }
+            else
+            {
+                Products.Remove(product); // Remove the product from the list
+            }
+            StateHasChanged(); // Notify Blazor to re-render the UI
+        }
+    }
+
+
+
+    private void SubmitOrder()
+    {
+        Console.WriteLine($"Order placed with total price: {TotalPrice}$ and note: {PriceNote}");
+    }
+}
