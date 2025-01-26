@@ -100,6 +100,7 @@ public static class ShopApi
                 p.MetalId,                      // int
                 p.Metal.Name,                   // string
                 p.Metal.Karat,                  // decimal
+                p.Metal.Purity,
                 p.ShopId,                       // int
                 p.Shop.Name,                    // string
                 p.Shop.City,                    // string

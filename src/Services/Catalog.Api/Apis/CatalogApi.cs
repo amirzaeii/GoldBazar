@@ -107,7 +107,7 @@ public static class CatalogApi
             .Take(pageSize)
             .Select(s => new ItemDto (s.Id, s.Caption, s.Description, 
                             s.CostPerGram, s.Weight, s.Size, 
-                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, 
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name,s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
                             ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).ToArrayAsync();
 
@@ -126,7 +126,7 @@ public static class CatalogApi
             .Where(i => i.Id == id)
              .Select(s => new ItemDto(s.Id, s.Caption, s.Description,
                             s.CostPerGram, s.Weight, s.Size,
-                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat,
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name, s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
                             , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).FirstOrDefaultAsync();
 
@@ -144,7 +144,7 @@ public static class CatalogApi
             .Where(i => i.TypeId == typeId)
              .Select(s => new ItemDto(s.Id, s.Caption, s.Description,
                             s.CostPerGram, s.Weight, s.Size,
-                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat,
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name, s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
                             , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).ToArrayAsync();
 
@@ -260,6 +260,7 @@ public static class CatalogApi
                 p.MetalId,
                 p.Metal.Name,
                 p.Metal.Karat,
+                p.Metal.Purity,
                 p.ShopId,
                 p.Shop.Name,
                 p.Shop.City,
@@ -346,6 +347,7 @@ public static class CatalogApi
                 p.MetalId,
                 p.Metal.Name,
                 p.Metal.Karat,
+                p.Metal.Purity,
                 p.ShopId,
                 p.Shop.Name,
                 p.Shop.City,
@@ -501,6 +503,7 @@ public static class CatalogApi
                 p.MetalId,
                 p.Metal.Name,
                 p.Metal.Karat,
+                p.Metal.Purity,
                 0, // ShopId (removed, so set a default value)
                 string.Empty, // ShopName (removed, so set a default value)
                 string.Empty, // City (removed, so set a default value)
