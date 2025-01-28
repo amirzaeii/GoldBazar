@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+    <link rel="stylesheet" href="style/global.css">
+    <link rel="stylesheet" href="style/kyc.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>دڵنیاکردنەوەی ناسنامە</h1>
+            <p id="stepDescription">تکایە زانیاریە کەسییەکانت بە وردی بنوسە</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+            <div class="step">4</div>
+        </div>
+
+        <!-- Step 1: Personal Info -->
+        <div class="form-step active" id="step1">
+            <div class="form-group">
+                <label>ناوی سیانی</label>
+                <input type="text" id="fullName" placeholder="کاروان سەلیم رەحمان">
+            </div>
+
+            <div class="form-group">
+                <label>ئیمەیڵەکەت بنووسە</label>
+                <input type="email" id="email" placeholder="abc12@gmail.com">
+            </div>
+
+            <div class="form-group">
+                <label>ژمارە مۆبایل</label>
+                <div class="phone-input">
+
+                    <input type="tel" id="phone" placeholder="171234567">
+                    <div class="phone-code">+964</div>
+                </div>
+            </div>
+            <button class="button" id="nextBtn" onclick="nextStep()">دواتر</button>
+
+        </div>
+
+        <!-- Step 2: ID Front -->
+        <div class="form-step" id="step2">
+            <div class="image-preview">
+                <img id="frontPreview" src="assets/Image/idcard-frontcard.svg" alt="ID Front Preview">
+
+            </div>
+
+            <p>تێبینی:</p>
+            <p class="notice">١- کامێراکەت پاکبکەوە تا وێنەکە ڕوونتربێت</p>
+            <p class="notice">٢- هەوڵبدە ئەو شوێنەی ناسنامەکەی لەسەرە سپی بێت</p>
+            <button class="camera-button" onclick="nextStep()">
+                گرتنی وێنە
+                <img src="assets/Icons/camera.svg" alt="">
+            </button>
+        </div>
+
+        <!-- Step 3: ID Back -->
+        <div class="form-step" id="step3">
+            <div class="image-preview">
+                <img id="backPreview" src="assets/Image/id card- back.svg" alt="ID Back Preview">
+            </div>
+            <p>تێبینی:</p>
+
+            <p class="notice">١- کامێراکەت پاکبکەوە تا وێنەکە ڕوونتربێت</p>
+            <p class="notice">٢- هەوڵبدە ئەو شوێنەی ناسنامەکەی لەسەرە سپی بێت</p>
+            <button class="camera-button" onclick="nextStep()">
+                گرتنی وێنە
+                <img src="assets/Icons/camera.svg" alt="">
+            </button>
+        </div>
+
+        <!-- Step 4: Selfie -->
+        <div class="form-step" id="step4">
+            <div class="image-preview">
+                <img id="selfiePreview" src="assets/Image/selfi.svg" alt="Selfie Preview">
+            </div>
+            <p>تێبینی:</p>
+            <p class="notice">١-دوورەکەوە لە بەکارهێنانی کڵاو و چاویلکە</p>
+            <p class="notice">٢- کامێراکەت پاکبکەوە تا وێنەکە ڕوونتربێت</p>
+
+            <button class="camera-button" onclick="nextStep()">
+                گرتنی وێنە
+                <img src="assets/Icons/camera.svg" alt="">
+            </button>
+        </div>
+
+        <!-- Success Screen -->
+        <div class="success-screen" id="success">
+            <img src="assets/Icons/done.svg" alt="">
+            <h3>بەسەرکەوتوویی خۆت تۆمارکرد</h3>
+            <br>
+            <h5>لە ماوەی ٢٤ کاتژمێر هەژمارەکەت پشتڕاست دەکرێتەوە</h5>
+
+            <button class="button" onclick="window.location.reload()" style="margin-top: 200px;">بەردەوامبوون</button>
+        </div>
+
+    </div>
+
+    <script >
+        let currentStep = 1;
+        const totalSteps = 4;
+        const descriptionTexts = {
+            1: "تکایە زانیاریە کەسییەکانت بە وردی بنوسە",
+            2: "تکایە وێنەی بەشی پێشەوەی ناسنامەکەت بگرە",
+            3: "تکایە وێنەی بەشی پشتەوەی ناسنامەکەت بگرە",
+            4: "تکایە وێنەکەی سێلفی بگرە"
+        };
+        // Add this JavaScript code right after your variables declaration
+        document.querySelectorAll('.step').forEach((step, index) => {
+            step.addEventListener('click', () => {
+                // Only allow going back to previous steps
+                if (index + 1 < currentStep) {
+                    currentStep = index + 1;
+                    updateSteps();
+                }
+            });
+        });
+        function updateSteps() {
+            // Update progress indicators
+            document.querySelectorAll('.step').forEach((step, index) => {
+                if (index + 1 <= currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        
+            // Update form steps visibility
+            document.querySelectorAll('.form-step').forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        
+            // Update description text
+            document.getElementById('stepDescription').textContent = descriptionTexts[currentStep];
+        
+            // Show/hide success screen
+            const successScreen = document.getElementById('success');
+            const nextButton = document.getElementById('nextBtn');
+            if (currentStep > totalSteps) {
+                successScreen.style.display = 'block';
+                nextButton.style.display = 'none';
+                document.querySelector('.progress-bar').style.display = 'none';
+                document.getElementById('stepDescription').style.display = 'none';
+            } else {
+                successScreen.style.display = 'none';
+                nextButton.style.display = 'block';
+            }
+        }
+        
+        function validateStep() {
+            if (currentStep === 1) {
+                const fullName = document.getElementById('fullName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                return fullName && email && phone;
+            }
+            // Add validation for other steps if needed
+            return true;
+        }
+        
+        function nextStep() {
+            if (true) {//validateStep()
+                if (currentStep <= totalSteps) {
+                    currentStep++;
+                    updateSteps();
+                }
+            } else {
+                alert('تکایە هەموو خانەکان پڕبکەوە');
+            }
+        }
+        
+        function captureImage(type) {
+            // Simulate image capture
+            const preview = document.getElementById(`${type}Preview`);
+            preview.src = '/api/placeholder/400/320';
+        }
+    </script>
+</body>
+
+</html>
