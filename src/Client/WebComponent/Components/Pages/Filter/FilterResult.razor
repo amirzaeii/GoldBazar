@@ -5,6 +5,7 @@
 @inject ICatalogService CatalogService
 @inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
+
 <div class="search-bar-container">
     <div class="search-bar">
         <input type="text" placeholder="@localizer["SearchLabel"]">
@@ -23,42 +24,15 @@
     </button>
 
     <span class="divider"></span>
-    <button class="sort-button" @onclick="ShowPopup">
-        <span>@localizer["SortByLabel"]</span>
-        <img src="assets/icons/sorting.png" alt="Sort">
-    </button>
-    @if (isPopupVisible)
-    {
-        <div class="overlay">
-            <div class="popup">
-                <h2>@localizer["SortByLabel"]</h2>
-                <button class="close" @onclick="HidePopup">&times;</button>
-                <div class="options">
-                    <label>
-                        <input type="radio" name="sort" value="Latest"
-                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                               checked="@(selectedOption == "Latest")" />
-                        @localizer["LatestLabel"]
-                    </label>
-                    <label>
-                        <input type="radio" name="sort" value="HighToLow"
-                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                               checked="@(selectedOption == "HighToLow")" />
-                        @localizer["PriceHighToLow"]
-                    </label>
-                    <label>
-                        <input type="radio" name="sort" value="LowToHigh"
-                               @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
-                               checked="@(selectedOption == "LowToHigh")" />
-                        @localizer["PriceLowToHigh"]
-                    </label>
-                </div>
-            </div>
-        </div>
-    }
+    
+    <select class="sort-dropdown" @onchange="(e) => OnOptionChanged(e.Value?.ToString())">
+        <option class="sort-option" value="Latest" selected="@(selectedOption == "Latest")">@localizer["SortByLabel"]</option>
+        <option class="sort-option" value="HighToLow" selected="@(selectedOption == "HighToLow")">@localizer["PriceHighToLow"]</option>
+        <option class="sort-option" value="LowToHigh" selected="@(selectedOption == "LowToHigh")">@localizer["PriceLowToHigh"]</option>
+    </select>
 </div>
+
 <div class="product-grid">
-    <!-- Conditional Rendering for Product List -->
     @if (ItemTypeId.HasValue && ItemTypeId > 0)
     {
         <div class="product-grid">
@@ -80,8 +54,7 @@
 </div>
 
 @code {
-    private bool isPopupVisible = false;
-    private string selectedOption = "Latest"; // Default selected option
+    private string selectedOption = "Latest";
     private List<CatalogItem> Products { get; set; } = new();
     [Parameter]
     public int? ItemTypeId { get; set; }
@@ -94,25 +67,15 @@
         if (queryParameters.HasKeys())
         {
             var selectedFilters = new CompositeFilterDto
-                {
-                    Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                    Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                    Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                    Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
-                };
+            {
+                Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
+            };
 
             Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
         }
-    }
-
-    private void ShowPopup()
-    {
-        isPopupVisible = true;
-    }
-
-    private void HidePopup()
-    {
-        isPopupVisible = false;
     }
 
     private void OnOptionChanged(string? option)
@@ -121,7 +84,6 @@
         {
             selectedOption = option;
             Console.WriteLine($"Selected option: {selectedOption}");
-            HidePopup(); // Optional: Close the popup after selecting an option
         }
     }
 }
