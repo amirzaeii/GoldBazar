@@ -1,5 +1,6 @@
-﻿<div class="wishlist-header-container">
-    <h2 class="wishlist-header">@customer.Name's Wishlist</h2>
+﻿@inject IStringLocalizer<Resource> localizer
+<div class="wishlist-header-container">
+    <h2 class="wishlist-header">@customer.Name@localizer["WishListHeader"]</h2>
     <button class="share-button">
         <img src="assets/icons/share.png" alt="Share" />
     </button>
@@ -18,7 +19,7 @@
                     <img src="assets/icons/cancel.png" alt="Remove" />
                 </button>
                 <button class="add-to-cart">
-                    <i class="fa fa-cart-plus"></i> Add to Cart
+                    <i class="fa fa-cart-plus"></i> @localizer["AddToCartLabel"]
                 </button>
             </div>
         </div>

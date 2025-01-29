@@ -61,11 +61,641 @@ namespace GoldBazar.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add to cart.
+        /// </summary>
+        public static string AddToCartLabel {
+            get {
+                return ResourceManager.GetString("AddToCartLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aesthetic.
+        /// </summary>
+        public static string AestheticLabel {
+            get {
+                return ResourceManager.GetString("AestheticLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Arrival.
+        /// </summary>
+        public static string ArrivalDateLabel {
+            get {
+                return ResourceManager.GetString("ArrivalDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back to Forget Password.
+        /// </summary>
+        public static string BackToForgetPassword {
+            get {
+                return ResourceManager.GetString("BackToForgetPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm your password.
+        /// </summary>
+        public static string ConfirmPasswordDesc {
+            get {
+                return ResourceManager.GetString("ConfirmPasswordDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Password.
+        /// </summary>
+        public static string ConfirmPasswordLabel {
+            get {
+                return ResourceManager.GetString("ConfirmPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue with Apple.
+        /// </summary>
+        public static string ContinueWithAppleLabel {
+            get {
+                return ResourceManager.GetString("ContinueWithAppleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Continue with Google.
+        /// </summary>
+        public static string ContinueWithGoogleLabel {
+            get {
+                return ResourceManager.GetString("ContinueWithGoogleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My current orders.
+        /// </summary>
+        public static string CurrentOrdersLabel {
+            get {
+                return ResourceManager.GetString("CurrentOrdersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A 4-digit code was sent to your number.
+        /// </summary>
+        public static string DigitCodeWasSentNotify {
+            get {
+                return ResourceManager.GetString("DigitCodeWasSentNotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No products found. Please apply some filters or select a category..
+        /// </summary>
+        public static string EmptyFilterWarningLabel {
+            get {
+                return ResourceManager.GetString("EmptyFilterWarningLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your email.
+        /// </summary>
+        public static string EnterEmailLabel {
+            get {
+                return ResourceManager.GetString("EnterEmailLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the OTP Code.
+        /// </summary>
+        public static string EnterOTPLabel {
+            get {
+                return ResourceManager.GetString("EnterOTPLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your password.
+        /// </summary>
+        public static string EnterPasswordLabel {
+            get {
+                return ResourceManager.GetString("EnterPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No worries, please enter the mobile number associated with your account..
+        /// </summary>
+        public static string EnterPhoneNumDesc {
+            get {
+                return ResourceManager.GetString("EnterPhoneNumDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your phone number.
+        /// </summary>
+        public static string EnterPhoneNumLabel {
+            get {
+                return ResourceManager.GetString("EnterPhoneNumLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Features.
+        /// </summary>
+        public static string FeaturesLabel {
+            get {
+                return ResourceManager.GetString("FeaturesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string FilterLabel {
+            get {
+                return ResourceManager.GetString("FilterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forgot your password?.
+        /// </summary>
+        public static string ForgotYourPasswordLabel {
+            get {
+                return ResourceManager.GetString("ForgotYourPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Code.
+        /// </summary>
+        public static string GetOTP {
+            get {
+                return ResourceManager.GetString("GetOTP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SayingHiToUser.
         /// </summary>
         public static string helloMessage {
             get {
                 return ResourceManager.GetString("helloMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latest.
+        /// </summary>
+        public static string LatestLabel {
+            get {
+                return ResourceManager.GetString("LatestLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Already have an account? Log in.
+        /// </summary>
+        public static string LoginDesc {
+            get {
+                return ResourceManager.GetString("LoginDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log in.
+        /// </summary>
+        public static string LogInHeader {
+            get {
+                return ResourceManager.GetString("LogInHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Change Password.
+        /// </summary>
+        public static string MenuSettingsChangePassword {
+            get {
+                return ResourceManager.GetString("MenuSettingsChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage profile.
+        /// </summary>
+        public static string MenuSettingsManageProfile {
+            get {
+                return ResourceManager.GetString("MenuSettingsManageProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notifications.
+        /// </summary>
+        public static string MenuSettingsNotifications {
+            get {
+                return ResourceManager.GetString("MenuSettingsNotifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Orders.
+        /// </summary>
+        public static string MenuSettingsOrders {
+            get {
+                return ResourceManager.GetString("MenuSettingsOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Private policy.
+        /// </summary>
+        public static string MenuSettingsPrivatePolicy {
+            get {
+                return ResourceManager.GetString("MenuSettingsPrivatePolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign out.
+        /// </summary>
+        public static string MenuSettingsSignOut {
+            get {
+                return ResourceManager.GetString("MenuSettingsSignOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metal.
+        /// </summary>
+        public static string MetalLabel {
+            get {
+                return ResourceManager.GetString("MetalLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metal Structure.
+        /// </summary>
+        public static string MetalPropertiesLabel {
+            get {
+                return ResourceManager.GetString("MetalPropertiesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More items from.
+        /// </summary>
+        public static string MoreItemsFromShopLabel {
+            get {
+                return ResourceManager.GetString("MoreItemsFromShopLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Cart.
+        /// </summary>
+        public static string MyCartHeader {
+            get {
+                return ResourceManager.GetString("MyCartHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        public static string NavAccount {
+            get {
+                return ResourceManager.GetString("NavAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categories.
+        /// </summary>
+        public static string NavCategories {
+            get {
+                return ResourceManager.GetString("NavCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string NavHome {
+            get {
+                return ResourceManager.GetString("NavHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jewlers.
+        /// </summary>
+        public static string NavJewlers {
+            get {
+                return ResourceManager.GetString("NavJewlers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offers.
+        /// </summary>
+        public static string NavOffers {
+            get {
+                return ResourceManager.GetString("NavOffers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No features available..
+        /// </summary>
+        public static string NoFeaturesLabel {
+            get {
+                return ResourceManager.GetString("NoFeaturesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No other items found.
+        /// </summary>
+        public static string NoMoreItemsFromShopLabel {
+            get {
+                return ResourceManager.GetString("NoMoreItemsFromShopLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No products found..
+        /// </summary>
+        public static string NoProductsFound {
+            get {
+                return ResourceManager.GetString("NoProductsFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No similar products found..
+        /// </summary>
+        public static string NoSimilarProductsLabel {
+            get {
+                return ResourceManager.GetString("NoSimilarProductsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Occasion.
+        /// </summary>
+        public static string OccasionLabel {
+            get {
+                return ResourceManager.GetString("OccasionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order date.
+        /// </summary>
+        public static string OrderDateLabel {
+            get {
+                return ResourceManager.GetString("OrderDateLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order Number.
+        /// </summary>
+        public static string OrderNoLabel {
+            get {
+                return ResourceManager.GetString("OrderNoLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OR.
+        /// </summary>
+        public static string ORLabel {
+            get {
+                return ResourceManager.GetString("ORLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My past orders.
+        /// </summary>
+        public static string PastOrdersLabel {
+            get {
+                return ResourceManager.GetString("PastOrdersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order.
+        /// </summary>
+        public static string PlaceOrderLabel {
+            get {
+                return ResourceManager.GetString("PlaceOrderLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price: High to Low.
+        /// </summary>
+        public static string PriceHighToLow {
+            get {
+                return ResourceManager.GetString("PriceHighToLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Price: Low to High.
+        /// </summary>
+        public static string PriceLowToHigh {
+            get {
+                return ResourceManager.GetString("PriceLowToHigh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to processing.
+        /// </summary>
+        public static string ProcessingStatusLabel {
+            get {
+                return ResourceManager.GetString("ProcessingStatusLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Purity.
+        /// </summary>
+        public static string PurityLabel {
+            get {
+                return ResourceManager.GetString("PurityLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend code in.
+        /// </summary>
+        public static string ResendCodeInLabel {
+            get {
+                return ResourceManager.GetString("ResendCodeInLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset Password.
+        /// </summary>
+        public static string ResetPasswordLabel {
+            get {
+                return ResourceManager.GetString("ResetPasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string SearchLabel {
+            get {
+                return ResourceManager.GetString("SearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shop.
+        /// </summary>
+        public static string ShopLabel {
+            get {
+                return ResourceManager.GetString("ShopLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account? Sign Up.
+        /// </summary>
+        public static string SignUpDesc {
+            get {
+                return ResourceManager.GetString("SignUpDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sign Up.
+        /// </summary>
+        public static string SignUpHeader {
+            get {
+                return ResourceManager.GetString("SignUpHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Similar Products.
+        /// </summary>
+        public static string SimilarProductsLabel {
+            get {
+                return ResourceManager.GetString("SimilarProductsLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort and Filter.
+        /// </summary>
+        public static string SortAndFilterLabel {
+            get {
+                return ResourceManager.GetString("SortAndFilterLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort by.
+        /// </summary>
+        public static string SortByLabel {
+            get {
+                return ResourceManager.GetString("SortByLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Special Note.
+        /// </summary>
+        public static string SpecialNoteLabel {
+            get {
+                return ResourceManager.GetString("SpecialNoteLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style.
+        /// </summary>
+        public static string StyleLabel {
+            get {
+                return ResourceManager.GetString("StyleLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Price.
+        /// </summary>
+        public static string TotalPriceLabel {
+            get {
+                return ResourceManager.GetString("TotalPriceLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string TypeLabel {
+            get {
+                return ResourceManager.GetString("TypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verification.
+        /// </summary>
+        public static string VerificationLabel {
+            get {
+                return ResourceManager.GetString("VerificationLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verify.
+        /// </summary>
+        public static string VerifyLabel {
+            get {
+                return ResourceManager.GetString("VerifyLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View on Map.
+        /// </summary>
+        public static string ViewOnMapLabel {
+            get {
+                return ResourceManager.GetString("ViewOnMapLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        public static string WeightLabel {
+            get {
+                return ResourceManager.GetString("WeightLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;s Wishlist.
+        /// </summary>
+        public static string WishListHeader {
+            get {
+                return ResourceManager.GetString("WishListHeader", resourceCulture);
             }
         }
     }

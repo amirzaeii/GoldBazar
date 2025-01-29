@@ -3,6 +3,7 @@
 @inject NavigationManager Navigation
 @inject IJSRuntime JS
 @layout EmptyLayout
+@inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
 
 @if (FilterDictionary.Count == 0)
@@ -13,7 +14,8 @@ else
 {
     <div class="app-bar">
         <button onclick="history.go(-1)"></button>
-        <span class="title">Sort and Filter</span>
+        <span class="title">
+            @localizer["SortAndFilterLabel"]</span>
     </div>
 
     <div class="filter-wrapp">

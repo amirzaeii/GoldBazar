@@ -117,7 +117,217 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LatestLabel" xml:space="preserve">
+    <value>تازەترین</value>
+  </data>
+  <data name="ArrivalDateLabel" xml:space="preserve">
+    <value>کاتی گەیشتن</value>
+  </data>
+  <data name="CurrentOrdersLabel" xml:space="preserve">
+    <value>داواکارییەکانی ئێستام</value>
+  </data>
+  <data name="EmptyFilterWarningLabel" xml:space="preserve">
+    <value>هیچ بەرهەمێک نەدۆزرایەوە. تکایە هەندێک فلتەر بەکاربهێنە یان جۆرێک هەڵبژێرە.</value>
+  </data>
+  <data name="FilterLabel" xml:space="preserve">
+    <value>فلتەر</value>
+  </data>
   <data name="helloMessage" xml:space="preserve">
     <value>سڵاو و بەخێربێن</value>
+  </data>
+  <data name="MyCartHeader" xml:space="preserve">
+    <value>بەرهەمەکانم</value>
+  </data>
+  <data name="OrderDateLabel" xml:space="preserve">
+    <value>بەرواری داواکردن:</value>
+  </data>
+  <data name="OrderNoLabel" xml:space="preserve">
+    <value>ژمارەی تایبەتی داواکاری:</value>
+  </data>
+  <data name="PastOrdersLabel" xml:space="preserve">
+    <value>داواکارییەکانی ڕابردووم</value>
+  </data>
+  <data name="PlaceOrderLabel" xml:space="preserve">
+    <value>داواکردن</value>
+  </data>
+  <data name="PriceHighToLow" xml:space="preserve">
+    <value>نرخ: بەرز بۆ نزم</value>
+  </data>
+  <data name="PriceLowToHigh" xml:space="preserve">
+    <value>نرخ: نزم بۆ بەرز</value>
+  </data>
+  <data name="ProcessingStatusLabel" xml:space="preserve">
+    <value>ئاماداکردن</value>
+  </data>
+  <data name="ShopLabel" xml:space="preserve">
+    <value>زێڕینگەر:</value>
+  </data>
+  <data name="SortByLabel" xml:space="preserve">
+    <value>ڕیزبەندی بەپێی</value>
+  </data>
+  <data name="SpecialNoteLabel" xml:space="preserve">
+    <value>تێبینی</value>
+  </data>
+  <data name="TotalPriceLabel" xml:space="preserve">
+    <value>کۆی گشتی نرخ:</value>
+  </data>
+  <data name="SearchLabel" xml:space="preserve">
+    <value>گەڕان</value>
+  </data>
+  <data name="SortAndFilterLabel" xml:space="preserve">
+    <value>ڕیزکردن و فلتەرکردن</value>
+  </data>
+  <data name="ResetPasswordLabel" xml:space="preserve">
+    <value>گۆڕینی وشەی نهێنی</value>
+  </data>
+  <data name="ForgotYourPasswordLabel" xml:space="preserve">
+    <value>وشەی نهێنی خۆت لەبیر کردووە؟</value>
+  </data>
+  <data name="EnterPhoneNumDesc" xml:space="preserve">
+    <value>خەمت نەبێت، تکایە ژمارەی مۆبایلی پەیوەست بە هەژمارەکەت داخڵ بکە.</value>
+  </data>
+  <data name="EnterPhoneNumLabel" xml:space="preserve">
+    <value>ژمارەی تەلەفۆنەکەت بنووسە</value>
+  </data>
+  <data name="GetOTP" xml:space="preserve">
+    <value>کۆد وەربگرە</value>
+  </data>
+  <data name="LogInHeader" xml:space="preserve">
+    <value>چوونەژوورەوە</value>
+  </data>
+  <data name="EnterPasswordLabel" xml:space="preserve">
+    <value>وشەی نهێنی بنووسە</value>
+  </data>
+  <data name="SignUpDesc" xml:space="preserve">
+    <value>ئەکاونتت نییە؟ خۆت تۆمار بکە</value>
+  </data>
+  <data name="ORLabel" xml:space="preserve">
+    <value>یان</value>
+  </data>
+  <data name="ContinueWithGoogleLabel" xml:space="preserve">
+    <value>بەردەوام بە لەگەڵ گووگڵ</value>
+  </data>
+  <data name="ContinueWithAppleLabel" xml:space="preserve">
+    <value>بەردەوام بە لەگەڵ ئەپڵ</value>
+  </data>
+  <data name="SignUpHeader" xml:space="preserve">
+    <value>خۆت تۆمار بکە</value>
+  </data>
+  <data name="EnterEmailLabel" xml:space="preserve">
+    <value>ئیمەیڵەکەت بنووسە</value>
+  </data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve">
+    <value> پشتڕاست بکەرەوە</value>
+  </data>
+  <data name="ConfirmPasswordDesc" xml:space="preserve">
+    <value>پاسۆردەکەت پشتڕاست بکەرەوە</value>
+  </data>
+  <data name="LoginDesc" xml:space="preserve">
+    <value>پێشتر ئەکاونتت هەیە؟ چوونەژوورەوە</value>
+  </data>
+  <data name="VerificationLabel" xml:space="preserve">
+    <value>پشتڕاستکردنەوە</value>
+  </data>
+  <data name="BackToForgetPassword" xml:space="preserve">
+    <value>گەڕانەوە بۆ لەبیرکردنی وشەی نهێنی</value>
+  </data>
+  <data name="DigitCodeWasSentNotify" xml:space="preserve">
+    <value>کۆدێکی ٤ ژمارەیی بۆ ژمارەکەت نێردراوە</value>
+  </data>
+  <data name="VerifyLabel" xml:space="preserve">
+    <value>پشتڕاستی بکەرەوە</value>
+  </data>
+  <data name="ResendCodeInLabel" xml:space="preserve">
+    <value>دووبارە کۆد بنێرە لە...</value>
+  </data>
+  <data name="EnterOTPLabel" xml:space="preserve">
+    <value>کۆدی OTP داخڵ بکە</value>
+  </data>
+  <data name="MetalLabel" xml:space="preserve">
+    <value>کانزا</value>
+  </data>
+  <data name="WeightLabel" xml:space="preserve">
+    <value>کێش</value>
+  </data>
+  <data name="PurityLabel" xml:space="preserve">
+    <value> خاوێنی</value>
+  </data>
+  <data name="MetalPropertiesLabel" xml:space="preserve">
+    <value>تایبەتمەندیەکانی کانزا</value>
+  </data>
+  <data name="AestheticLabel" xml:space="preserve">
+    <value>ڕواڵەت</value>
+  </data>
+  <data name="TypeLabel" xml:space="preserve">
+    <value>جۆر</value>
+  </data>
+  <data name="StyleLabel" xml:space="preserve">
+    <value>ستایڵ</value>
+  </data>
+  <data name="OccasionLabel" xml:space="preserve">
+    <value>بۆنە</value>
+  </data>
+  <data name="FeaturesLabel" xml:space="preserve">
+    <value>تایبتمەندیەکان</value>
+  </data>
+  <data name="NoFeaturesLabel" xml:space="preserve">
+    <value>هیچ تایبەتمەندییەکی بەردەست نییە.</value>
+  </data>
+  <data name="SimilarProductsLabel" xml:space="preserve">
+    <value>بەرهەمی هاوشێوە</value>
+  </data>
+  <data name="NoSimilarProductsLabel" xml:space="preserve">
+    <value>هیچ بەرهەمێکی هاوشێوە نەدۆزراوەتەوە.</value>
+  </data>
+  <data name="MoreItemsFromShopLabel" xml:space="preserve">
+    <value>بەرهەمی زیاتر لە</value>
+  </data>
+  <data name="NoMoreItemsFromShopLabel" xml:space="preserve">
+    <value>هیچ بەرهەمێکی تر نەدۆزراوەتەوە</value>
+  </data>
+  <data name="WishListHeader" xml:space="preserve">
+    <value>لیستی خواستەکانی </value>
+  </data>
+  <data name="AddToCartLabel" xml:space="preserve">
+    <value>زیادکردن بۆ سەبەتە</value>
+  </data>
+  <data name="NoProductsFound" xml:space="preserve">
+    <value>هیچ بەرهەمێک نەدۆزرایەوە.</value>
+  </data>
+  <data name="NavHome" xml:space="preserve">
+    <value>سەرەکی</value>
+  </data>
+  <data name="NavCategories" xml:space="preserve">
+    <value>جۆرەکان</value>
+  </data>
+  <data name="NavOffers" xml:space="preserve">
+    <value>ئۆفەرەکان</value>
+  </data>
+  <data name="NavJewlers" xml:space="preserve">
+    <value>پێشانگاکان</value>
+  </data>
+  <data name="NavAccount" xml:space="preserve">
+    <value>هەژمار</value>
+  </data>
+  <data name="MenuSettingsOrders" xml:space="preserve">
+    <value>داواکاری</value>
+  </data>
+  <data name="MenuSettingsManageProfile" xml:space="preserve">
+    <value>بەڕێوەبردنی پڕۆفایلی</value>
+  </data>
+  <data name="MenuSettingsNotifications" xml:space="preserve">
+    <value>ئاگادارییەکان</value>
+  </data>
+  <data name="MenuSettingsChangePassword" xml:space="preserve">
+    <value>گۆڕینی وشەی نهێنی</value>
+  </data>
+  <data name="MenuSettingsPrivatePolicy" xml:space="preserve">
+    <value> ڕێساکان</value>
+  </data>
+  <data name="MenuSettingsSignOut" xml:space="preserve">
+    <value>چوونە دەرەوە</value>
+  </data>
+  <data name="ViewOnMapLabel" xml:space="preserve">
+    <value>بینین لەسەر نەخشە</value>
   </data>
 </root>

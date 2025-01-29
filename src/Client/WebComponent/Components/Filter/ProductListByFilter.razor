@@ -1,11 +1,10 @@
 ﻿@inject IFilterService FilterService
 @inject NavigationManager Navigation
 
-<h3>Product List</h3>
-
+@inject IStringLocalizer<Resource> localizer
 @if (Products == null || !Products.Any())
 {
-    <p>No products found.</p>
+    <p>@localizer["NoProductsFound"]</p>
 }
 else
 {

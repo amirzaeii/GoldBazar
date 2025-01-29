@@ -1,10 +1,12 @@
 ﻿@page "/cart"
 @layout NavLayout
+@inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
 
 <div class="container">
     <header class="header">
-        <h1>My Products</h1>
+        <!--  <h1>@localizer[nameof(MyProductsHeader.Action)]</h1>-->
+        <h1>@localizer["MyCartHeader"]</h1>
     </header>
     <div class="products">
         <p class="goldsmith">@CurrentGoldsmith</p>
@@ -34,15 +36,15 @@
 
         <div class="total-section">
             <div class="total-price-container">
-                <span class="total-price-label">Total Price:</span>
+                <span class="total-price-label">@localizer["TotalPriceLabel"]</span>
                 <span class="total-price">@TotalPrice$</span>
             </div>
             <div class="price-note-container">
-                <label for="priceNote" class="price-note-label">Special Note</label>
+                <label for="priceNote" class="price-note-label">@localizer["SpecialNoteLabel"]</label>
                 <input type="text" id="priceNote" class="price-note-input"
                     placeholder="Example: Please handle this carefully" @bind="PriceNote">
             </div>
-            <button class="checkout-btn" @onclick="SubmitOrder">Place Order</button>
+            <button class="checkout-btn" @onclick="SubmitOrder">@localizer["PlaceOrderLabel"]</button>
 
         </div>
     </div>

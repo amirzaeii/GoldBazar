@@ -3,10 +3,11 @@
 @inject NavigationManager Navigation
 @inject IFilterService FilterService
 @inject ICatalogService CatalogService
+@inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
 <div class="search-bar-container">
     <div class="search-bar">
-        <input type="text" placeholder="Search...">
+        <input type="text" placeholder="@localizer["SearchLabel"]">
         <button type="submit">
             <img src="assets/icons/search.png" alt="Search">
         </button>
@@ -16,40 +17,40 @@
 <div class="filter-sort-container">
     <button class="filter-button" @onclick="@(() => Navigation.NavigateTo("/filters"))">
         <div class="filter-link">
-            <span>Filter</span>
+            <span>@localizer["FilterLabel"]</span>
             <img src="assets/icons/filter.png" alt="Filter">
         </div>
     </button>
 
     <span class="divider"></span>
     <button class="sort-button" @onclick="ShowPopup">
-        <span>Sort by</span>
+        <span>@localizer["SortByLabel"]</span>
         <img src="assets/icons/sorting.png" alt="Sort">
     </button>
     @if (isPopupVisible)
     {
         <div class="overlay">
             <div class="popup">
-                <h2>Sort by</h2>
+                <h2>@localizer["SortByLabel"]</h2>
                 <button class="close" @onclick="HidePopup">&times;</button>
                 <div class="options">
                     <label>
                         <input type="radio" name="sort" value="Latest"
                                @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
                                checked="@(selectedOption == "Latest")" />
-                        Latest
+                        @localizer["LatestLabel"]
                     </label>
                     <label>
                         <input type="radio" name="sort" value="HighToLow"
                                @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
                                checked="@(selectedOption == "HighToLow")" />
-                        Price: High to Low
+                        @localizer["PriceHighToLow"]
                     </label>
                     <label>
                         <input type="radio" name="sort" value="LowToHigh"
                                @onchange="(e) => OnOptionChanged(e.Value?.ToString())"
                                checked="@(selectedOption == "LowToHigh")" />
-                        Price: Low to High
+                        @localizer["PriceLowToHigh"]
                     </label>
                 </div>
             </div>
@@ -73,7 +74,7 @@
     else
     {
         <div class="product-grid">
-            <p>No products found. Please apply some filters or select a category.</p>
+            <p>@localizer["EmptyFilterWarningLabel"]</p>
         </div>
     }
 </div>

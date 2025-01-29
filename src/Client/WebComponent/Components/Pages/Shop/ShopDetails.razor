@@ -1,7 +1,7 @@
 ﻿@page "/shop/{id:int}"
 @inject IShopService ShopService
 @inject NavigationManager Nav
-
+@inject IStringLocalizer<Resource> localizer
 @if (shop == null)
 {
     <p>Loading...</p>
@@ -32,7 +32,7 @@ else
             </div>
             <a href="#" class="map-button">
                 <img src="assets/Icons/on-map.svg" alt="Map">
-                <span>View on Map</span>
+                <span>@localizer["ViewOnMapLabel"]</span>
             </a>
         </div>
 

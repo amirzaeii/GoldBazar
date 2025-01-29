@@ -1,9 +1,10 @@
 ﻿@page "/forgetpass"
 @inject NavigationManager Nav
+@inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer 
 <div class="container">
     <header class="header">
-        <h1>Reset Password</h1>
+        <h1>@localizer["ResetPasswordLabel"]</h1>
         <button class="back-button" @onclick="NavigateToLogin">
             <img src="assets/Icons/arrow.svg" alt="Back to Login">
         </button>
@@ -11,19 +12,19 @@
 
     <img src="assets\Image\forgetpass.svg" alt="Reset Password Illustration" class="illustration">
 
-    <h2 class="title">Forgot your password?</h2>
-    <p class="description">No worries, please enter the mobile number associated with your account.</p>
+    <h2 class="title">@localizer["ForgotYourPasswordLabel"]</h2>
+    <p class="description">@localizer["EnterPhoneNumDesc"]</p>
 
     <form id="GetOtp" @onsubmit="HandleSubmit">
         <div class="form-group">
-            <label>Enter Your Mobile Number</label>
+            <label>@localizer["EnterPhoneNumLabel"]</label>
             <div class="input-group">
                 <input type="tel" placeholder="07**********" @bind="MobileNumber" required />
                 <span class="country-code">+964</span>
             </div>
         </div>
 
-        <button type="submit" class="submit-button">Get Code</button>
+        <button type="submit" class="submit-button">@localizer["GetOTP"]</button>
     </form>
 </div>
 
