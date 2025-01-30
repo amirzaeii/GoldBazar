@@ -68,28 +68,28 @@
     private decimal TotalPrice => Products.Sum(p => p.Price * p.SelectedQuantity);
 
     private List<Product> Products { get; set; } = new List<Product>
-{
-new Product
-{
-Id = 1,
-Title = "Earring",
-ImageUrl = "assets/Image/avita.svg",
-Price = 179m,
-Karat = 21,
-Weight = "4.5g",
-Quantity = 34
-},
-new Product
-{
-Id = 2,
-Title = "Ring",
-ImageUrl = "assets/Image/avita.svg",
-Price = 179m,
-Karat = 21,
-Weight = "4.5g",
-Quantity = 34
-}
-};
+    {
+            new Product
+            {
+            Id = 1,
+            Title = "Earring",
+            ImageUrl = "_content/WebComponent/assets/Image/avita.svg",
+            Price = 179m,
+            Karat = 21,
+            Weight = "4.5g",
+            Quantity = 34
+            },
+            new Product
+            {
+            Id = 2,
+            Title = "Ring",
+            ImageUrl = "_content/WebComponent/assets/Image/avita.svg",
+            Price = 179m,
+            Karat = 21,
+            Weight = "4.5g",
+            Quantity = 34
+            }
+    };  
 
     private void IncrementQuantity(int productId)
     {

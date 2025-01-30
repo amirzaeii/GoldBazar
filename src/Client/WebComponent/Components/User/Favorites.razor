@@ -2,7 +2,7 @@
 <div class="wishlist-header-container">
     <h2 class="wishlist-header">@customer.Name@localizer["WishListHeader"]</h2>
     <button class="share-button">
-        <img src="assets/icons/share.png" alt="Share" />
+        <img src="_content/WebComponent/assets/icons/share.png" alt="Share" />
     </button>
 </div>
 <div class="wishlist-container">
@@ -16,7 +16,7 @@
             </div>
             <div class="actions">
                 <button class="remove-button" @onclick="() => RemoveFromWishlist(product)">
-                    <img src="assets/icons/cancel.png" alt="Remove" />
+                    <img src="_content/WebComponent/assets/icons/cancel.png" alt="Remove" />
                 </button>
                 <button class="add-to-cart">
                     <i class="fa fa-cart-plus"></i> @localizer["AddToCartLabel"]
@@ -51,21 +51,21 @@
             {
                 Id = 1,
                 Name = "Ring 1",
-                ImageUrl = "assets/Image/avita.svg",
+                ImageUrl = "_content/WebComponent/assets/Image/avita.svg",
                 Price = 12.79m
             },
             new Product
             {
                 Id = 2,
                 Name = "Green Stone Pendant",
-                ImageUrl = "assets/Image/avita.svg",
+                ImageUrl = "_content/WebComponent/assets/Image/avita.svg",
                 Price = 14.99m
             },
             new Product
             {
                 Id = 3,
                 Name = "Daily Earring",
-                ImageUrl = "assets/Image/avita.svg",
+                ImageUrl = "_content/WebComponent/assets/Image/avita.svg",
                 Price = 19.99m
             }
         }

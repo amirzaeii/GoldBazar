@@ -107,7 +107,7 @@
 
 @font-face {
     font-family: 'zain';
-    src: url('/assets/font/zain.ttf') format('truetype');
+    src: url('font/zain.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -115,9 +115,9 @@
 
 @font-face {
     font-family: 'trebuc';
-    src: url('/assets/font/trebuc.ttf') format('truetype'),
-        url('/assets/font/trebuc.otf') format('opentype'),
-        url('/assets/font/trebuc.woff') format('woff');
+    src: url('font/trebuc.ttf') format('truetype'),
+         url('font/trebuc.otf') format('opentype'),
+         url('font/trebuc.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
