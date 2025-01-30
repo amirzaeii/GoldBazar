@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
-using System.Reflection;
 
 namespace HybridApp;
 
@@ -69,6 +68,7 @@ public static class MauiProgram
 
 		var app =  builder.Build();
 
+        
 		return app;
 	}
 }
