@@ -4,7 +4,6 @@
 <div class="profile-page">
     <!-- Language Selector -->
     <LanguageSelection></LanguageSelection>
-    <h2>@localizer["helloMessage"]</h2>
     <!-- Profile Info -->
     <div class="profile-info">
         <img src="/assets/Icons/profile.svg" alt="Profile Image" class="profile-img" />
@@ -17,37 +16,37 @@
         <li class="menu-item">
             <a href="/orderhistory" class="menu-link">
                 <img src="/assets/Icons/order.svg" alt="Orders Icon" class="icon" />
-                Orders
+                @localizer["MenuSettingsOrders"]
             </a>
         </li>
         <li class="menu-item">
             <a href="/manageprofile" class="menu-link">
                 <img src="/assets/Icons/skills.png" alt="account Icon" class="icon" />
-                Manage profile
+                @localizer["MenuSettingsManageProfile"]
             </a>
         </li>
         <li class="menu-item">
             <a href="/notifications" class="menu-link">
                 <img src="/assets/Icons/notification.png" alt="Notifications Icon" class="icon" />
-                Notifications
+                @localizer["MenuSettingsNotifications"]
             </a>
         </li>
         <li class="menu-item">
             <a href="/change-password" class="menu-link">
                 <img src="/assets/Icons/lock.svg" alt="Change Password Icon" class="icon" />
-                Change Password
+                @localizer["MenuSettingsChangePassword"]
             </a>
         </li>
         <li class="menu-item">
             <a href="/language" class="menu-link">
                 <img src="/assets/Icons/policy.png" alt="policy Icon" class="icon" />
-                Private policy
+                @localizer["MenuSettingsPrivatePolicy"]
             </a>
         </li>
         <li class="menu-item">
             <a href="/signout" class="menu-link">
                 <img src="/assets/Icons/logout.png" alt="sign out Icon" class="icon" />
-                Sign out
+                @localizer["MenuSettingsSignOut"]
             </a>
         </li>
     </ul>

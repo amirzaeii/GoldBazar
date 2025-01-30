@@ -1,32 +1,33 @@
 ﻿@page "/register"
 @rendermode InteractiveServer
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 <div class="container">
-    <h1>Sign Up</h1>
+    <h1>@localizer["SignUpHeader"]</h1>
 
     <form id="signupForm">
         <!-- Mobile Number -->
         <div class="form-group">
-            <label>Mobile Number</label>
+            <label>@localizer["EnterPhoneNumLabel"]</label>
             <div class="input-group">
-                <input type="tel" value="171234578" placeholder="Enter your mobile number">
+                <input type="tel" value="171234578" placeholder="@localizer["EnterPhoneNumLabel"]">
                 <span class="country-code">+964</span>
             </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-            <label>Enter Your Email</label>
+            <label>@localizer["EnterEmailLabel"]</label>
             <div class="input-group">
-                <input type="email" value="abc12@gmail.com" placeholder="Enter your email">
+                <input type="email" value="abc12@gmail.com" placeholder="@localizer["EnterEmailLabel"]">
             </div>
         </div>
 
         <!-- Password -->
         <div class="form-group">
-            <label>Enter Password</label>
+            <label>@localizer["EnterPasswordLabel"]</label>
             <div class="input-group">
-                <input type="password" id="password" placeholder="Enter your password">
+                <input type="password" id="password" placeholder="@localizer["EnterPasswordLabel"]">
                 <button type="button" class="password-toggle" onclick="togglePassword('password')">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 4C7 4 2.73 7.11 1 12C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12C21.27 7.11 17 4 12 4ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" />
@@ -37,9 +38,9 @@
 
         <!-- Confirm Password -->
         <div class="form-group">
-            <label>Confirm Password</label>
+            <label>@localizer["ConfirmPasswordLabel"]</label>
             <div class="input-group">
-                <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                <input type="password" id="confirmPassword" placeholder="@localizer["ConfirmPasswordDesc"]">
                 <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 4C7 4 2.73 7.11 1 12C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12C21.27 7.11 17 4 12 4ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" />
@@ -49,28 +50,28 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-button">Sign Up</button>
+        <button type="submit" class="submit-button">@localizer["SignUpHeader"]</button>
 
         <!-- Divider -->
         <div class="divider">
-            <span>OR</span>
+            <span>@localizer["ORLabel"]</span>
         </div>
 
         <!-- Social Buttons -->
         <div class="social-buttons">
             <a href="#" class="social-button">
-                Continue with Google
+                @localizer["ContinueWithGoogleLabel"]
                 <img src="assets\Icons\googlelogo.svg" alt="Google">
             </a>
             <a href="#" class="social-button">
-                Continue with Apple
+                @localizer["ContinueWithAppleLabel"]
                 <img src="assets\Icons\applelogo.svg" alt="Apple">
             </a>
         </div>
 
         <!-- Login Link -->
         <div class="login-link">
-            <button type="button" @onclick="NavigateToLogin" class="login-link">Already have an account? Log in</button>
+            <button type="button" @onclick="NavigateToLogin" class="login-link">@localizer["LoginDesc"]</button>
         </div>
     </form>
 </div>

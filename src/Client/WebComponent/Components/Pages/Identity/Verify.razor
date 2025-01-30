@@ -1,18 +1,19 @@
 ﻿@page "/otpverification"
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 
 <div class="container">
     <header class="header">
-        <h1>Verification</h1>
+        <h1>@localizer["VerificationLabel"]</h1>
         <button class="back-button" @onclick="NavigateToForgetPassword">
-            <img src="assets/Icons/arrow.svg" alt="Back to Forget Password">
+            <img src="assets/Icons/arrow.svg" alt="@localizer["BackToForgetPassword"]">
         </button>
     </header>
 
     <img src="assets/Image/cuate.svg" alt="Verification Illustration" class="illustration">
 
-    <h2 class="title">Enter the OTP Code</h2>
-    <p class="phone-number">A 4-digit code was sent to your number<br>0770 123 456</p>
+    <h2 class="title">@localizer["EnterOTPLabel"]</h2>
+    <p class="phone-number">@localizer["DigitCodeWasSentNotify"]<br>0770 123 456</p>
 
     <form id="otpForm" @onsubmit="HandleOTPSubmit">
         <div class="otp-container">
@@ -22,10 +23,10 @@
             <input type="text" maxlength="1" class="otp-input" @bind="OTP4" pattern="[0-9]" inputmode="numeric" />
         </div>
 
-        <button type="submit" class="submit-button">Verify</button>
+        <button type="submit" class="submit-button">@localizer["VerifyLabel"]</button>
     </form>
 
-    <p class="timer">Resend code in (<span id="countdown">@TimerDisplay</span>)</p>
+    <p class="timer">@localizer["ResendCodeInLabel"] (<span id="countdown">@TimerDisplay</span>)</p>
 </div>
 
 @code {

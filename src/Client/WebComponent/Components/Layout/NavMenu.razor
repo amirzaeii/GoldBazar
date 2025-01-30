@@ -1,9 +1,10 @@
-﻿<nav class="bottom-nav">
+﻿@inject IStringLocalizer<Resource> localizer
+<nav class="bottom-nav">
     <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
         <div class="nav-content">
             <img src="/assets/Icons/applogo2.svg" class="icon-outline" alt="">
             <img src="/assets/Icons/applogo.svg" class="icon-fill" alt="">
-            <span>Home</span>
+            <span>@localizer["NavHome"]</span>
         </div>
     </NavLink>
 
@@ -11,7 +12,7 @@
         <div class="nav-content">
             <img src="/assets/Icons/category.svg" class="icon-outline" alt="">
             <img src="/assets/Icons/categoryFill.svg" class="icon-fill" alt="">
-            <span>Categories</span>
+            <span>@localizer["NavCategories"]</span>
         </div>
     </NavLink>
 
@@ -19,7 +20,7 @@
         <div class="nav-content">
             <img src="/assets/Icons/offer.svg" class="icon-outline" alt="">
             <img src="/assets/Icons/offerFill.svg" class="icon-fill" alt="">
-            <span>Offers</span>
+            <span>@localizer["NavOffers"]</span>
         </div>
     </NavLink>
 
@@ -27,7 +28,7 @@
         <div class="nav-content">
             <img src="/assets\Icons\shopfill.svg" class="icon-outline" alt="">
             <img src="/assets\Icons\shopnofill.svg" class="icon-fill" alt="">
-            <span>Jewlers</span>
+            <span>@localizer["NavJewlers"]</span>
         </div>
     </NavLink>
 
@@ -35,7 +36,7 @@
         <div class="nav-content">
             <img src="/assets/Icons/profile.svg" class="icon-outline" alt="">
             <img src="/assets/Icons/profileFill.svg" class="icon-fill" alt="">
-            <span>Account</span>
+            <span>@localizer["NavAccount"]</span>
         </div>
     </NavLink>
 </nav>

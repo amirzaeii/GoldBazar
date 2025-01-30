@@ -117,7 +117,287 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LatestLabel" xml:space="preserve">
+    <value>Latest</value>
+    <comment>Label that shows latest</comment>
+  </data>
+  <data name="ArrivalDateLabel" xml:space="preserve">
+    <value>Arrival</value>
+    <comment>Label displays Arrival</comment>
+  </data>
+  <data name="CurrentOrdersLabel" xml:space="preserve">
+    <value>My current orders</value>
+    <comment>Current orders label</comment>
+  </data>
+  <data name="EmptyFilterWarningLabel" xml:space="preserve">
+    <value>No products found. Please apply some filters or select a category.</value>
+    <comment>A label to tell the used to apply filters</comment>
+  </data>
+  <data name="FilterLabel" xml:space="preserve">
+    <value>Filter</value>
+    <comment>Label that displays Filter</comment>
+  </data>
   <data name="helloMessage" xml:space="preserve">
     <value>SayingHiToUser</value>
+  </data>
+  <data name="MyCartHeader" xml:space="preserve">
+    <value>My Cart</value>
+    <comment>A header that displays My products</comment>
+  </data>
+  <data name="OrderDateLabel" xml:space="preserve">
+    <value>Order date</value>
+    <comment>Label displays Order Date</comment>
+  </data>
+  <data name="OrderNoLabel" xml:space="preserve">
+    <value>Order Number</value>
+    <comment>The Order Number label</comment>
+  </data>
+  <data name="PastOrdersLabel" xml:space="preserve">
+    <value>My past orders</value>
+    <comment>my past orders label</comment>
+  </data>
+  <data name="PlaceOrderLabel" xml:space="preserve">
+    <value>Order</value>
+    <comment>Completing an order label</comment>
+  </data>
+  <data name="PriceHighToLow" xml:space="preserve">
+    <value>Price: High to Low</value>
+    <comment>Label that shows High to low option</comment>
+  </data>
+  <data name="PriceLowToHigh" xml:space="preserve">
+    <value>Price: Low to High</value>
+    <comment>Label that shows low to high</comment>
+  </data>
+  <data name="ProcessingStatusLabel" xml:space="preserve">
+    <value>processing</value>
+    <comment>Status label of processing</comment>
+  </data>
+  <data name="ShopLabel" xml:space="preserve">
+    <value>Shop</value>
+    <comment>The label dislays shop </comment>
+  </data>
+  <data name="SortByLabel" xml:space="preserve">
+    <value>Sort by</value>
+    <comment>Label that displays Sort by</comment>
+  </data>
+  <data name="SpecialNoteLabel" xml:space="preserve">
+    <value>Special Note</value>
+    <comment>Special Note label</comment>
+  </data>
+  <data name="TotalPriceLabel" xml:space="preserve">
+    <value>Total Price</value>
+    <comment>label of total price</comment>
+  </data>
+  <data name="SearchLabel" xml:space="preserve">
+    <value>Search</value>
+    <comment>A label that displays Search</comment>
+  </data>
+  <data name="SortAndFilterLabel" xml:space="preserve">
+    <value>Sort and Filter</value>
+    <comment>A label that shows Sort and Filter </comment>
+  </data>
+  <data name="ResetPasswordLabel" xml:space="preserve">
+    <value>Reset Password</value>
+    <comment>A label that displays Reset Password </comment>
+  </data>
+  <data name="ForgotYourPasswordLabel" xml:space="preserve">
+    <value>Forgot your password?</value>
+    <comment>Shows a question Forot your password</comment>
+  </data>
+  <data name="EnterPhoneNumDesc" xml:space="preserve">
+    <value>No worries, please enter the mobile number associated with your account.</value>
+    <comment>The label is used to guide user to enter their phone number</comment>
+  </data>
+  <data name="EnterPhoneNumLabel" xml:space="preserve">
+    <value>Enter your phone number</value>
+    <comment>The label to enter phone number</comment>
+  </data>
+  <data name="GetOTP" xml:space="preserve">
+    <value>Get Code</value>
+    <comment>Label that shows Get OTP code</comment>
+  </data>
+  <data name="LogInHeader" xml:space="preserve">
+    <value>Log in</value>
+    <comment>A header that displays Log in</comment>
+  </data>
+  <data name="EnterPasswordLabel" xml:space="preserve">
+    <value>Enter your password</value>
+    <comment>A label that tells the user to enter their password</comment>
+  </data>
+  <data name="SignUpDesc" xml:space="preserve">
+    <value>Don't have an account? Sign Up</value>
+    <comment>A description that shows Don't have an account? Sign Up</comment>
+  </data>
+  <data name="ORLabel" xml:space="preserve">
+    <value>OR</value>
+    <comment>A label that shows the word OR</comment>
+  </data>
+  <data name="ContinueWithGoogleLabel" xml:space="preserve">
+    <value>Continue with Google</value>
+    <comment>A label that shows Continue with Google</comment>
+  </data>
+  <data name="ContinueWithAppleLabel" xml:space="preserve">
+    <value>Continue with Apple</value>
+    <comment>A label that shows Continue with Apple</comment>
+  </data>
+  <data name="SignUpHeader" xml:space="preserve">
+    <value>Sign Up</value>
+    <comment>A header used to shows Sign Up</comment>
+  </data>
+  <data name="EnterEmailLabel" xml:space="preserve">
+    <value>Enter your email</value>
+    <comment>A label that tells the user to enter their email</comment>
+  </data>
+  <data name="ConfirmPasswordLabel" xml:space="preserve">
+    <value>Confirm Password</value>
+    <comment>A label that displays Confirm Password</comment>
+  </data>
+  <data name="ConfirmPasswordDesc" xml:space="preserve">
+    <value>Confirm your password</value>
+    <comment>A description that shows Confirm your password</comment>
+  </data>
+  <data name="LoginDesc" xml:space="preserve">
+    <value>Already have an account? Log in</value>
+    <comment>A description Already have an account? Log in</comment>
+  </data>
+  <data name="VerificationLabel" xml:space="preserve">
+    <value>Verification</value>
+    <comment>A label that displays Verification</comment>
+  </data>
+  <data name="BackToForgetPassword" xml:space="preserve">
+    <value>Back to Forget Password</value>
+    <comment>A label that shows Back to Forget Password</comment>
+  </data>
+  <data name="DigitCodeWasSentNotify" xml:space="preserve">
+    <value>A 4-digit code was sent to your number</value>
+    <comment>Notifies the user that A 4-digit code was sent to your number</comment>
+  </data>
+  <data name="VerifyLabel" xml:space="preserve">
+    <value>Verify</value>
+    <comment>A label that shows Verify</comment>
+  </data>
+  <data name="ResendCodeInLabel" xml:space="preserve">
+    <value>Resend code in</value>
+    <comment>A label that shows Resend code in</comment>
+  </data>
+  <data name="EnterOTPLabel" xml:space="preserve">
+    <value>Enter the OTP Code</value>
+    <comment>A label that shows Enter the OTP Code</comment>
+  </data>
+  <data name="MetalLabel" xml:space="preserve">
+    <value>Metal</value>
+    <comment>Label that displays the Metal</comment>
+  </data>
+  <data name="WeightLabel" xml:space="preserve">
+    <value>Weight</value>
+    <comment>Label that displays Weight</comment>
+  </data>
+  <data name="PurityLabel" xml:space="preserve">
+    <value>Purity</value>
+    <comment>A label that displays Purity</comment>
+  </data>
+  <data name="MetalPropertiesLabel" xml:space="preserve">
+    <value>Metal Structure</value>
+    <comment>Label that displays  Metal Structure</comment>
+  </data>
+  <data name="AestheticLabel" xml:space="preserve">
+    <value>Aesthetic</value>
+    <comment>Label that displayes Aesthetic</comment>
+  </data>
+  <data name="TypeLabel" xml:space="preserve">
+    <value>Type</value>
+    <comment>Label that displays Type</comment>
+  </data>
+  <data name="StyleLabel" xml:space="preserve">
+    <value>Style</value>
+    <comment>Label that displays  Style</comment>
+  </data>
+  <data name="OccasionLabel" xml:space="preserve">
+    <value>Occasion</value>
+    <comment>Label that displays Occasion</comment>
+  </data>
+  <data name="FeaturesLabel" xml:space="preserve">
+    <value>Features</value>
+    <comment>Label that displays Features</comment>
+  </data>
+  <data name="NoFeaturesLabel" xml:space="preserve">
+    <value>No features available.</value>
+    <comment>Label used to Notify that features are not available</comment>
+  </data>
+  <data name="SimilarProductsLabel" xml:space="preserve">
+    <value>Similar Products</value>
+    <comment>A label that displays Similar Products</comment>
+  </data>
+  <data name="NoSimilarProductsLabel" xml:space="preserve">
+    <value>No similar products found.</value>
+    <comment>Label that notifies No similar products found.</comment>
+  </data>
+  <data name="MoreItemsFromShopLabel" xml:space="preserve">
+    <value>More items from</value>
+    <comment>A label that displays More items from a shop</comment>
+  </data>
+  <data name="NoMoreItemsFromShopLabel" xml:space="preserve">
+    <value>No other items found</value>
+    <comment>Label that notifies user of not finding more items from a shop</comment>
+  </data>
+  <data name="WishListHeader" xml:space="preserve">
+    <value>'s Wishlist</value>
+    <comment>Shows a header consisting of Username's Wishlist</comment>
+  </data>
+  <data name="AddToCartLabel" xml:space="preserve">
+    <value>Add to cart</value>
+    <comment>Label that displays Add to cart</comment>
+  </data>
+  <data name="NoProductsFound" xml:space="preserve">
+    <value>No products found.</value>
+    <comment>A label that notifies No products found.</comment>
+  </data>
+  <data name="NavHome" xml:space="preserve">
+    <value>Home</value>
+    <comment>Nav Menu Property displays Home</comment>
+  </data>
+  <data name="NavCategories" xml:space="preserve">
+    <value>Categories</value>
+    <comment>Nav Menu property displays Categories</comment>
+  </data>
+  <data name="NavOffers" xml:space="preserve">
+    <value>Offers</value>
+    <comment>Nav Menu property that displays Offers</comment>
+  </data>
+  <data name="NavJewlers" xml:space="preserve">
+    <value>Jewlers</value>
+    <comment>Nav Menu property that displays Jewlers</comment>
+  </data>
+  <data name="NavAccount" xml:space="preserve">
+    <value>Account</value>
+    <comment>Nav Menu property that displays Account</comment>
+  </data>
+  <data name="MenuSettingsOrders" xml:space="preserve">
+    <value>Orders</value>
+    <comment>Value of profile menu displays Orders</comment>
+  </data>
+  <data name="MenuSettingsManageProfile" xml:space="preserve">
+    <value>Manage profile</value>
+    <comment>Property of profile menu displays Manage profile</comment>
+  </data>
+  <data name="MenuSettingsNotifications" xml:space="preserve">
+    <value>Notifications</value>
+    <comment>Property of profile menu displays Notifications</comment>
+  </data>
+  <data name="MenuSettingsChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+    <comment>Property of profile menu displays Change Password</comment>
+  </data>
+  <data name="MenuSettingsPrivatePolicy" xml:space="preserve">
+    <value>Private policy</value>
+    <comment>Property of profile settings displays Private policy</comment>
+  </data>
+  <data name="MenuSettingsSignOut" xml:space="preserve">
+    <value>Sign out</value>
+    <comment>Property of profile menu displays Sign out</comment>
+  </data>
+  <data name="ViewOnMapLabel" xml:space="preserve">
+    <value>View on Map</value>
+    <comment>Label that displays View on Map</comment>
   </data>
 </root>

@@ -1,10 +1,11 @@
 ﻿@inject ICatalogService CatalogService
 @inject IProductImageUrlProvider ImageProvider
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 @attribute [StreamRendering]
 
 <div class="similar-products">
-    <h3 class="section-title">Similar Products</h3>
+    <h3 class="section-title">@localizer["SimilarProductsLabel"]</h3>
     <div class="product-grid">
         @if (similarProducts == null)
         {
@@ -12,7 +13,7 @@
         }
         else if (!similarProducts.Any())
         {
-            <p>No similar products found.</p>
+            <p>@localizer["NoSimilarProductsLabel"]</p>
         }
         else
         {

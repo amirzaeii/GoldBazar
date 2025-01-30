@@ -104,7 +104,7 @@ else if (Shops is not null && !Shops.Any())
  *@
 
 @inject IShopService ShopService
-
+@inject IStringLocalizer<Resource> localizer
 <div class="form-group">
     <div class="search-bar-container">
         <div class="search-bar">
@@ -112,7 +112,7 @@ else if (Shops is not null && !Shops.Any())
                    value="@City"
                    @oninput="HandleInput"
                    @onkeydown="HandleKeyDown"
-                   placeholder="Search..."
+                   placeholder="@localizer["SearchLabel"]"
                    class="form-control" />
             <button @onclick="SearchShops" class="btn btn-primary">
                 <img src="assets/icons/search.png" alt="Search" />
@@ -151,7 +151,7 @@ else if (Shops is not null && Shops.Any())
 }
 else if (Shops is not null && !Shops.Any())
 {
-    <p>No shops found in @City.</p>
+   <!-- <p>No shops found in /@@City/.</p>-->
 }
 
 @code {

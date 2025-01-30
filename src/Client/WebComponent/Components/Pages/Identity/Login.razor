@@ -1,14 +1,15 @@
 ﻿@page "/login"
 @rendermode InteractiveServer
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 
 <div class="container">
-    <h1>Log In</h1>
+    <h1>@localizer["LogInHeader"]</h1>
 
     <form id="Login" @onsubmit="HandleSubmit">
         <!-- Mobile Number -->
         <div class="form-group">
-            <label>Enter Your Mobile Number</label>
+            <label>@localizer["EnterPhoneNumLabel"]</label>
             <div class="input-group">
                 <input type="tel" placeholder="07**********" @bind="MobileNumber" />
                 <span class="country-code">+964</span>
@@ -17,7 +18,7 @@
 
         <!-- Password -->
         <div class="form-group">
-            <label>Enter Your Password</label>
+            <label>@localizer["EnterPasswordLabel"]</label>
             <div class="input-group">
                 <input type="password" placeholder="*************" id="password" @bind="Password" />
                 <button type="button" class="password-toggle" @onclick="TogglePassword">
@@ -30,26 +31,26 @@
 
         <!-- Forgot Password -->
         <div class="forgot-password">
-            <button type="button" @onclick="NavigateToForgetPassword" class="link-button">Forgot your password?</button>
+            <button type="button" @onclick="NavigateToForgetPassword" class="link-button">@localizer["ForgotYourPasswordLabel"]</button>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="login-btn">Log In</button>
+        <button type="submit" class="login-btn"> @localizer["LogInHeader"]</button>
 
         <!-- Create Account -->
-        <button type="button" @onclick="NavigateToRegister" class="create-account">Don't have an account? Sign Up</button>
+        <button type="button" @onclick="NavigateToRegister" class="create-account">@localizer["SignUpDesc"]</button>
 
         <!-- Divider -->
-        <div class="divider">OR</div>
+        <div class="divider">@localizer["ORLabel"]</div>
 
         <!-- Social Login -->
         <div class="social-login">
             <a href="#" class="social-btn">
-                Continue with Google
+                @localizer["ContinueWithGoogleLabel"]
                 <img src="assets\Icons\googlelogo.svg" alt="Google" />
             </a>
             <a href="#" class="social-btn">
-                Continue with Apple
+                @localizer["ContinueWithAppleLabel"]
                 <img src="assets\Icons\applelogo.svg" alt="Apple" />
             </a>
         </div>
