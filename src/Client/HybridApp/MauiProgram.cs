@@ -56,7 +56,8 @@ public static class MauiProgram
             });
 #endif
         });
-
+        //localization
+        builder.Services.AddLocalization();
 		builder.AddApplicationServices();
 
 		builder.Services.AddMauiBlazorWebView();
