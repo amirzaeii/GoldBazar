@@ -2,13 +2,13 @@
 @inject IStringLocalizer<Resource> localizer
 <div class="container">
     <div class="order-section">
-        <h2 class="section-title">@localizer["CurrentOrdersLabel"]</h2>
+        <h2 class="section-title">@localizer[nameof(Resource.CurrentOrdersLabel)]</h2>
 
         @foreach (var order in CurrentOrders)
         {
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-number">@localizer["OrderNoLabel"] @order.OrderNumber</span>
+                    <span class="order-number">@localizer[nameof(Resource.OrderNoLabel)] @order.OrderNumber</span>
                     <span class="order-status @GetStatusClass(order.Status)">
                         @GetStatusText(order.Status)
                     </span>
@@ -16,19 +16,19 @@
                 <div class="order-body">
                     <div class="info-item">
                         <img src="_content/WebComponent/assets/Icons/shop.png" alt="Shop">
-                        <span>@localizer["ShopLabel"] @order.ShopName</span>
+                        <span>@localizer[nameof(Resource.ShopLabel)] @order.ShopName</span>
                     </div>
                     <div class="info-item">
                         <img src="_content/WebComponent/assets/Icons/calendar.png" alt="Order Date">
-                        <span>@localizer["OrderDateLabel"]@order.OrderDate</span>
+                        <span>@localizer[nameof(Resource.OrderDateLabel)]@order.OrderDate</span>
                     </div>
                     <div class="info-item">
                         <img src="_content/WebComponent/assets/Icons/delivery.png" alt="Arrival">
-                        <span>@localizer["ArrivalDateLabel"] @order.EstimatedArrival</span>
+                        <span>@localizer[nameof(Resource.ArrivalDateLabel)] @order.EstimatedArrival</span>
                     </div>
                     <div class="info-item">
                         <img src="_content/WebComponent/assets/Icons/dollar.png" alt="Price">
-                        <span>@localizer["TotalPriceLabel"] @order.TotalPrice</span>
+                        <span>@localizer[nameof(Resource.TotalPriceLabel)] @order.TotalPrice</span>
                     </div>
                 </div>
             </div>
@@ -37,13 +37,13 @@
 
     <!-- Past Orders Section -->
     <div class="order-section">
-        <h2 class="section-title">@localizer["PastOrdersLabel"]</h2>
+        <h2 class="section-title">@localizer[nameof(Resource.PastOrdersLabel)]</h2>
 
         @foreach (var order in PastOrders)
         {
             <div class="order-card">
                 <div class="order-header">
-                    <span class="order-number">@localizer["OrderNoLabel"]@order.OrderNumber</span>
+                    <span class="order-number">@localizer[nameof(Resource.OrderNoLabel)]@order.OrderNumber</span>
                     <span class="order-status @GetStatusClass(order.Status)">
                         @GetStatusText(order.Status)
                     </span>
@@ -51,7 +51,7 @@
                 <div class="order-body">
                     <div class="info-item">
                         <img src="_content/WebComponent/assets/Icons/calendar.png" alt="Order Date">
-                        <span>@localizer["ArrivalDateLabel"] @order.OrderDate</span>
+                        <span>@localizer[nameof(Resource.ArrivalDateLabel)] @order.OrderDate</span>
                     </div>
                 </div>
             </div>

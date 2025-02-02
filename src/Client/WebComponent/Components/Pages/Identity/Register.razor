@@ -3,23 +3,23 @@
 @inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 <div class="container">
-    <h1>@localizer["SignUpHeader"]</h1>
+    <h1>@localizer[nameof(Resource.SignUpHeader)]</h1>
 
     <form id="signupForm">
         <!-- Mobile Number -->
         <div class="form-group">
-            <label>@localizer["EnterPhoneNumLabel"]</label>
+            <label>@localizer[nameof(Resource.EnterPhoneNumLabel)]</label>
             <div class="input-group">
-                <input type="tel" value="171234578" placeholder="@localizer["EnterPhoneNumLabel"]">
+                <input type="tel" value="171234578" placeholder="@localizer[nameof(Resource.EnterPhoneNumLabel)]">
                 <span class="country-code">+964</span>
             </div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-            <label>@localizer["EnterEmailLabel"]</label>
+            <label>@localizer[nameof(Resource.EnterEmailLabel)]</label>
             <div class="input-group">
-                <input type="email" value="abc12@gmail.com" placeholder="@localizer["EnterEmailLabel"]">
+                <input type="email" value="abc12@gmail.com" placeholder="@localizer[nameof(Resource.EnterEmailLabel)]">
             </div>
         </div>
 
@@ -27,7 +27,7 @@
         <div class="form-group">
             <label>@localizer["EnterPasswordLabel"]</label>
             <div class="input-group">
-                <input type="password" id="password" placeholder="@localizer["EnterPasswordLabel"]">
+                <input type="password" id="password" placeholder="@localizer[nameof(Resource.EnterPasswordLabel)]">
                 <button type="button" class="password-toggle" onclick="togglePassword('password')">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 4C7 4 2.73 7.11 1 12C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12C21.27 7.11 17 4 12 4ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" />
@@ -38,9 +38,9 @@
 
         <!-- Confirm Password -->
         <div class="form-group">
-            <label>@localizer["ConfirmPasswordLabel"]</label>
+            <label>@localizer[nameof(Resource.ConfirmPasswordLabel)]</label>
             <div class="input-group">
-                <input type="password" id="confirmPassword" placeholder="@localizer["ConfirmPasswordDesc"]">
+                <input type="password" id="confirmPassword" placeholder="@localizer[nameof(Resource.ConfirmPasswordDesc)]">
                 <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 4C7 4 2.73 7.11 1 12C2.73 16.89 7 20 12 20C17 20 21.27 16.89 23 12C21.27 7.11 17 4 12 4ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" />
@@ -50,28 +50,28 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="submit-button">@localizer["SignUpHeader"]</button>
+        <button type="submit" class="submit-button">@localizer[nameof(Resource.SignUpHeader)]</button>
 
         <!-- Divider -->
         <div class="divider">
-            <span>@localizer["ORLabel"]</span>
+            <span>@localizer[nameof(Resource.ORLabel)]</span>
         </div>
 
         <!-- Social Buttons -->
         <div class="social-buttons">
             <a href="#" class="social-button">
-                @localizer["ContinueWithGoogleLabel"]
+                @localizer[nameof(Resource.ContinueWithGoogleLabel)]
                 <img src="assets\Icons\googlelogo.svg" alt="Google">
             </a>
             <a href="#" class="social-button">
-                @localizer["ContinueWithAppleLabel"]
+                @localizer[nameof(Resource.ContinueWithAppleLabel)]
                 <img src="assets\Icons\applelogo.svg" alt="Apple">
             </a>
         </div>
 
         <!-- Login Link -->
         <div class="login-link">
-            <button type="button" @onclick="NavigateToLogin" class="login-link">@localizer["LoginDesc"]</button>
+            <button type="button" @onclick="NavigateToLogin" class="login-link">@localizer[nameof(Resource.LoginDesc)]</button>
         </div>
     </form>
 </div>

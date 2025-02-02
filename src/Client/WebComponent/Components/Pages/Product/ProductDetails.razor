@@ -43,20 +43,20 @@ else
         <div class="specs-container">
             <div class="specs-grid">
                 <div class="spec-item">
-                    <div class="spec-item__label">@localizer["MetalLabel"]:</div>
+                    <div class="spec-item__label">@localizer[nameof(Resource.MetalLabel)]:</div>
                     <div class="spec-item__value">@item.MetalName</div>
                 </div>
                 <div class="spec-item">
-                    <div class="spec-item__label">@localizer["WeightLabel"]:</div>
+                    <div class="spec-item__label">@localizer[nameof(Resource.WeightLabel)]:</div>
                     <div class="spec-item__value">@item.Weight g</div>
                 </div>
                 <div class="spec-item">
-                    <div class="spec-item__label">@localizer["PurityLabel"]:</div>
+                    <div class="spec-item__label">@localizer[nameof(Resource.PurityLabel)]:</div>
                     <div class="spec-item__value">@item.KT carat</div>
                 </div>
             </div>
             <button class="action-button bold">
-                @localizer["MetalPropertiesLabel"]
+                @localizer[nameof(Resource.MetalPropertiesLabel)]
             </button>
         </div>
 
@@ -66,29 +66,29 @@ else
         <div class="details bold">
             <div class="details__header">
                 <img src="_content/WebComponent/assets/Icons/gold.svg" alt="Gold Icon">
-                <span class="details__title">@localizer["AestheticLabel"] </span>
+                <span class="details__title">@localizer[nameof(Resource.AestheticLabel)] </span>
             </div>
             <div class="details__grid">
                 <div class="details__item">
-                    <div class="details__label">@localizer["TypeLabel"]</div>
+                    <div class="details__label">@localizer[nameof(Resource.TypeLabel)]</div>
                     <div class="details__value">
                         <span>@item.TypeName</span>
                     </div>
                 </div>
                 <div class="details__item">
                     <div class="details__label">
-                        @localizer["StyleLabel"]</div>
+                        @localizer[nameof(Resource.StyleLabel)]</div>
                     <div class="details__value">@item.StyleName</div>
                 </div>
                 <div class="details__item">
-                    <div class="details__label">@localizer["OccasionLabel"]</div>
+                    <div class="details__label">@localizer[nameof(Resource.OccasionLabel)]</div>
                     <div class="details__value">@item.OccasionName</div>
                 </div>
             </div>
         </div>
 
         <div class="tab-container">
-            <h3 class="tab-title">@localizer["FeaturesLabel"]</h3>
+            <h3 class="tab-title">@localizer[nameof(Resource.FeaturesLabel)]</h3>
             <ul class="features-grid">
                 @if (!string.IsNullOrEmpty(item.Description))
                 {
@@ -99,7 +99,7 @@ else
                 }
                 else
                 {
-                    <p>@localizer["NoFeaturesLabel"]</p>
+                    <p>@localizer[nameof(Resource.NoFeaturesLabel)]</p>
                 }
             </ul>
         </div>

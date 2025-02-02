@@ -112,7 +112,7 @@ else if (Shops is not null && !Shops.Any())
                    value="@City"
                    @oninput="HandleInput"
                    @onkeydown="HandleKeyDown"
-                   placeholder="@localizer["SearchLabel"]"
+                   placeholder="@localizer[nameof(Resource.SearchLabel)]"
                    class="form-control" />
             <button @onclick="SearchShops" class="btn btn-primary">
                 <img src="_content/WebComponent/assets/icons/search.png" alt="Search" />

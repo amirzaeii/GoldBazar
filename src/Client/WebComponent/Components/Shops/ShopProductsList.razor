@@ -9,14 +9,14 @@
 }
 else if (!shopItems.Any())
 {
-    <p>@localizer["NoMoreItemsFromShopLabel"]</p>
+    <p>@localizer[nameof(Resource.NoMoreItemsFromShopLabel)]</p>
 }
 else
 {
     <div class="container">
      <div>
         <h3 class="shop-products-title">
-                @localizer["MoreItemsFromShopLabel"] @goldsmithName
+                @localizer[nameof(Resource.MoreItemsFromShopLabel)] @goldsmithName
         </h3>
     </div>
     <div class="products">

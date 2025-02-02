@@ -4,12 +4,12 @@
 @inject NavigationManager Nav
 
 <div class="container">
-    <h1>@localizer["LogInHeader"]</h1>
+    <h1>@localizer[nameof(Resource.LogInHeader)]</h1>
 
     <form id="Login" @onsubmit="HandleSubmit">
         <!-- Mobile Number -->
         <div class="form-group">
-            <label>@localizer["EnterPhoneNumLabel"]</label>
+            <label>@localizer[nameof(Resource.EnterPhoneNumLabel)]</label>
             <div class="input-group">
                 <input type="tel" placeholder="07**********" @bind="MobileNumber" />
                 <span class="country-code">+964</span>
@@ -18,7 +18,7 @@
 
         <!-- Password -->
         <div class="form-group">
-            <label>@localizer["EnterPasswordLabel"]</label>
+            <label>@localizer[nameof(Resource.EnterPasswordLabel)]</label>
             <div class="input-group">
                 <input type="password" placeholder="*************" id="password" @bind="Password" />
                 <button type="button" class="password-toggle" @onclick="TogglePassword">
@@ -31,26 +31,26 @@
 
         <!-- Forgot Password -->
         <div class="forgot-password">
-            <button type="button" @onclick="NavigateToForgetPassword" class="link-button">@localizer["ForgotYourPasswordLabel"]</button>
+            <button type="button" @onclick="NavigateToForgetPassword" class="link-button">@localizer[nameof(Resource.ForgotYourPasswordLabel)]</button>
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="login-btn"> @localizer["LogInHeader"]</button>
+        <button type="submit" class="login-btn"> @localizer[nameof(Resource.LogInHeader)]</button>
 
         <!-- Create Account -->
-        <button type="button" @onclick="NavigateToRegister" class="create-account">@localizer["SignUpDesc"]</button>
+        <button type="button" @onclick="NavigateToRegister" class="create-account">@localizer[nameof(Resource.SignUpDesc)]</button>
 
         <!-- Divider -->
-        <div class="divider">@localizer["ORLabel"]</div>
+        <div class="divider">@localizer[nameof(Resource.ORLabel)]</div>
 
         <!-- Social Login -->
         <div class="social-login">
             <a href="#" class="social-btn">
-                @localizer["ContinueWithGoogleLabel"]
+                @localizer[nameof(Resource.ContinueWithGoogleLabel)]
                 <img src="assets\Icons\googlelogo.svg" alt="Google" />
             </a>
             <a href="#" class="social-btn">
-                @localizer["ContinueWithAppleLabel"]
+                @localizer[nameof(Resource.ContinueWithAppleLabel)]
                 <img src="assets\Icons\applelogo.svg" alt="Apple" />
             </a>
         </div>

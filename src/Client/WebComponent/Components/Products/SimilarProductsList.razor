@@ -5,7 +5,7 @@
 @attribute [StreamRendering]
 
 <div class="similar-products">
-    <h3 class="section-title">@localizer["SimilarProductsLabel"]</h3>
+    <h3 class="section-title">@localizer[nameof(Resource.SimilarProductsLabel)]</h3>
     <div class="product-grid">
         @if (similarProducts == null)
         {
@@ -13,7 +13,7 @@
         }
         else if (!similarProducts.Any())
         {
-            <p>@localizer["NoSimilarProductsLabel"]</p>
+            <p>@localizer[nameof(Resource.NoSimilarProductsLabel)]</p>
         }
         else
         {

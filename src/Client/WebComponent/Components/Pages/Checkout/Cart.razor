@@ -6,7 +6,7 @@
 <div class="container">
     <header class="header">
         <!--  <h1>@localizer[nameof(MyProductsHeader.Action)]</h1>-->
-        <h1>@localizer["MyCartHeader"]</h1>
+        <h1>@localizer[nameof(Resource.MyCartHeader)]</h1>
     </header>
     <div class="products">
         <p class="goldsmith">@CurrentGoldsmith</p>
@@ -36,15 +36,15 @@
 
         <div class="total-section">
             <div class="total-price-container">
-                <span class="total-price-label">@localizer["TotalPriceLabel"]</span>
+                <span class="total-price-label">@localizer[nameof(Resource.TotalPriceLabel)]</span>
                 <span class="total-price">@TotalPrice$</span>
             </div>
             <div class="price-note-container">
-                <label for="priceNote" class="price-note-label">@localizer["SpecialNoteLabel"]</label>
+                <label for="priceNote" class="price-note-label">@localizer[nameof(Resource.SpecialNoteLabel)]</label>
                 <input type="text" id="priceNote" class="price-note-input"
                     placeholder="Example: Please handle this carefully" @bind="PriceNote">
             </div>
-            <button class="checkout-btn" @onclick="SubmitOrder">@localizer["PlaceOrderLabel"]</button>
+            <button class="checkout-btn" @onclick="SubmitOrder">@localizer[nameof(Resource.PlaceOrderLabel)]</button>
 
         </div>
     </div>

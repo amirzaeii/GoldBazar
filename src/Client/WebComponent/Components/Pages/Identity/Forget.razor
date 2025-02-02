@@ -4,7 +4,7 @@
 @rendermode InteractiveServer 
 <div class="container">
     <header class="header">
-        <h1>@localizer["ResetPasswordLabel"]</h1>
+        <h1>@localizer[nameof(Resource.ResetPasswordLabel)]</h1>
         <button class="back-button" @onclick="NavigateToLogin">
             <img src="_content/WebComponent/assets/Icons/arrow.svg" alt="Back to Login">
         </button>
@@ -12,19 +12,19 @@
 
     <img src="assets\Image\forgetpass.svg" alt="Reset Password Illustration" class="illustration">
 
-    <h2 class="title">@localizer["ForgotYourPasswordLabel"]</h2>
-    <p class="description">@localizer["EnterPhoneNumDesc"]</p>
+    <h2 class="title">@localizer[nameof(Resource.ForgotYourPasswordLabel)]</h2>
+    <p class="description">@localizer[nameof(Resource.EnterPhoneNumDesc)]</p>
 
     <form id="GetOtp" @onsubmit="HandleSubmit">
         <div class="form-group">
-            <label>@localizer["EnterPhoneNumLabel"]</label>
+            <label>@localizer[nameof(Resource.EnterPhoneNumLabel)]</label>
             <div class="input-group">
                 <input type="tel" placeholder="07**********" @bind="MobileNumber" required />
                 <span class="country-code">+964</span>
             </div>
         </div>
 
-        <button type="submit" class="submit-button">@localizer["GetOTP"]</button>
+        <button type="submit" class="submit-button">@localizer[nameof(Resource.GetOTP)]</button>
     </form>
 </div>
 

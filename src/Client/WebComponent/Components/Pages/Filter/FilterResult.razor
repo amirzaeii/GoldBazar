@@ -8,7 +8,7 @@
 
 <div class="search-bar-container">
     <div class="search-bar">
-        <input type="text" placeholder="@localizer["SearchLabel"]">
+        <input type="text" placeholder="@localizer[nameof(Resource.SearchLabel)]">
         <button type="submit">
             <img src="_content/WebComponent/assets/icons/search.png" alt="Search">
         </button>
@@ -18,7 +18,7 @@
 <div class="filter-sort-container">
     <button class="filter-button" @onclick="@(() => Navigation.NavigateTo("/filters"))">
         <div class="filter-link">
-            <span>@localizer["FilterLabel"]</span>
+            <span>@localizer[nameof(Resource.FilterLabel)]</span>
             <img src="_content/WebComponent/assets/icons/filter.png" alt="Filter">
         </div>
     </button>
@@ -26,9 +26,9 @@
     <span class="divider"></span>
     
     <select class="sort-dropdown" @onchange="(e) => OnOptionChanged(e.Value?.ToString())">
-        <option class="sort-option" value="Latest" selected="@(selectedOption == "Latest")">@localizer["SortByLabel"]</option>
-        <option class="sort-option" value="HighToLow" selected="@(selectedOption == "HighToLow")">@localizer["PriceHighToLow"]</option>
-        <option class="sort-option" value="LowToHigh" selected="@(selectedOption == "LowToHigh")">@localizer["PriceLowToHigh"]</option>
+        <option class="sort-option" value="Latest" selected="@(selectedOption == "Latest")">@localizer[nameof(Resource.SortByLabel)]</option>
+        <option class="sort-option" value="HighToLow" selected="@(selectedOption == "HighToLow")">@localizer[nameof(Resource.PriceHighToLow)]</option>
+        <option class="sort-option" value="LowToHigh" selected="@(selectedOption == "LowToHigh")">@localizer[nameof(Resource.PriceLowToHigh)]</option>
     </select>
 </div>
 
@@ -48,7 +48,7 @@
     else
     {
         <div class="product-grid">
-            <p>@localizer["EmptyFilterWarningLabel"]</p>
+            <p>@localizer[nameof(Resource.EmptyFilterWarningLabel)]</p>
         </div>
     }
 </div>

@@ -6,14 +6,14 @@
     <header class="header">
         <h1>@localizer["VerificationLabel"]</h1>
         <button class="back-button" @onclick="NavigateToForgetPassword">
-            <img src="_content/WebComponent/assets/Icons/arrow.svg" alt="@localizer["BackToForgetPassword"]">
+            <img src="_content/WebComponent/assets/Icons/arrow.svg" alt="@localizer[nameof(Resource.BackToForgetPassword)]">
         </button>
     </header>
 
     <img src="_content/WebComponent/assets/Image/cuate.svg" alt="Verification Illustration" class="illustration">
 
-    <h2 class="title">@localizer["EnterOTPLabel"]</h2>
-    <p class="phone-number">@localizer["DigitCodeWasSentNotify"]<br>0770 123 456</p>
+    <h2 class="title">@localizer[nameof(Resource.EnterOTPLabel)]</h2>
+    <p class="phone-number">@localizer[nameof(Resource.DigitCodeWasSentNotify)]<br>0770 123 456</p>
 
     <form id="otpForm" @onsubmit="HandleOTPSubmit">
         <div class="otp-container">
@@ -23,10 +23,10 @@
             <input type="text" maxlength="1" class="otp-input" @bind="OTP4" pattern="[0-9]" inputmode="numeric" />
         </div>
 
-        <button type="submit" class="submit-button">@localizer["VerifyLabel"]</button>
+        <button type="submit" class="submit-button">@localizer[nameof(Resource.VerifyLabel)]</button>
     </form>
 
-    <p class="timer">@localizer["ResendCodeInLabel"] (<span id="countdown">@TimerDisplay</span>)</p>
+    <p class="timer">@localizer[nameof(Resource.ResendCodeInLabel)] (<span id="countdown">@TimerDisplay</span>)</p>
 </div>
 
 @code {
