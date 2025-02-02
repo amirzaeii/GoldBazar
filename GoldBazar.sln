@@ -56,6 +56,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendorWebApp", "src\Client\VendorWebApp\VendorWebApp.csproj", "{8E53AFAF-2834-4994-A5C7-30348131A0F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,10 @@ Global
 		{453FFB04-2D5D-41A3-9725-893370C769D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{453FFB04-2D5D-41A3-9725-893370C769D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{453FFB04-2D5D-41A3-9725-893370C769D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E53AFAF-2834-4994-A5C7-30348131A0F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E53AFAF-2834-4994-A5C7-30348131A0F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E53AFAF-2834-4994-A5C7-30348131A0F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E53AFAF-2834-4994-A5C7-30348131A0F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,5 +155,6 @@ Global
 		{E402A0CF-CB08-4CB9-819D-7EBED6AABE2A} = {A8943DDE-A5CD-426D-8309-D1BA41107C46}
 		{5D6D79AB-B0E0-408C-B5DA-96F7230E6BED} = {1ED3EADF-CCE8-4B83-B137-B6185009DB25}
 		{453FFB04-2D5D-41A3-9725-893370C769D9} = {1861559E-3354-484E-8A8D-85E405EA1E5A}
+		{8E53AFAF-2834-4994-A5C7-30348131A0F1} = {A8943DDE-A5CD-426D-8309-D1BA41107C46}
 	EndGlobalSection
 EndGlobal
