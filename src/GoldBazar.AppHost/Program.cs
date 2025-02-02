@@ -76,6 +76,14 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(rabbitMq).WaitFor(rabbitMq);
     //.WithEnvironment("IdentityUrl", identityEndpoint);
 
+var vendorwebApp = builder.AddProject<Projects.VendorWebApp>("vendorwebapp", launchProfileName)
+    .WithExternalHttpEndpoints()
+    //.WithReference(basketApi)
+    .WithReference(catalogApi)
+    //.WithReference(orderingApi)
+    .WithReference(rabbitMq).WaitFor(rabbitMq);
+    //.WithEnvironment("IdentityUrl", identityEndpoint);
+
 // set to true if you want to use OpenAI
 bool useOpenAI = false;
 if (useOpenAI)
