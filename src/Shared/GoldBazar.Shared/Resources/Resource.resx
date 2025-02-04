@@ -400,4 +400,64 @@
     <value>View on Map</value>
     <comment>Label that displays View on Map</comment>
   </data>
+  <data name="NavInformation" xml:space="preserve">
+    <value>Information</value>
+    <comment>A GoldSmith app nav label that displays Information</comment>
+  </data>
+  <data name="NavOrders" xml:space="preserve">
+    <value>Orders</value>
+    <comment>A GoldSmith app nav label that displays Orders</comment>
+  </data>
+  <data name="StoryLabel" xml:space="preserve">
+    <value>Story</value>
+    <comment>A label that displays Story</comment>
+  </data>
+  <data name="AddProductLabel" xml:space="preserve">
+    <value>Add a product</value>
+    <comment>A label that displays Add a product</comment>
+  </data>
+  <data name="PricingLabel" xml:space="preserve">
+    <value>Pricing</value>
+    <comment>Label that shows pricing</comment>
+  </data>
+  <data name="MediaLabel" xml:space="preserve">
+    <value>Media</value>
+    <comment>Label that displays media</comment>
+  </data>
+  <data name="AddImagesLabel" xml:space="preserve">
+    <value>Add products images</value>
+    <comment>A label that displays Add products images</comment>
+  </data>
+  <data name="AddImagesDescription" xml:space="preserve">
+    <value>Add 4 images that show the product</value>
+    <comment>A description of the add image process</comment>
+  </data>
+  <data name="ProductTypeLabel" xml:space="preserve">
+    <value>Product Type</value>
+    <comment>A label that displays Product Type</comment>
+  </data>
+  <data name="ManufacturerLabel" xml:space="preserve">
+    <value>Manufacturer</value>
+    <comment>A label that displays Manufacturer</comment>
+  </data>
+  <data name="WeightInGramsLabel" xml:space="preserve">
+    <value>Weight (gm)</value>
+    <comment>A label that shows Weight gm</comment>
+  </data>
+  <data name="LengthInMillimetersLabel" xml:space="preserve">
+    <value>Length(mm)</value>
+    <comment>Label that displays Length(mm)</comment>
+  </data>
+  <data name="QuantityLabel" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>A label that displays Quantity</comment>
+  </data>
+  <data name="PricePerGramLabel" xml:space="preserve">
+    <value>Price(/gram)</value>
+    <comment>A label that displays Price(/gram)</comment>
+  </data>
+  <data name="SubmitLabel" xml:space="preserve">
+    <value>Submit</value>
+    <comment>A label that displays Submit</comment>
+  </data>
 </root>

@@ -25,8 +25,8 @@
 
     <span class="divider"></span>
     
-    <select class="sort-dropdown" @onchange="(e) => OnOptionChanged(e.Value?.ToString())">
-        <option class="sort-option" value="Latest" selected="@(selectedOption == "Latest")">@localizer[nameof(Resource.SortByLabel)]</option>
+    <select class="sort-dropdown" @onchange="(e) => OnOptionChanged(e.Value?.ToString())" >
+        <option class="sort-option" value="Latest" selected="@(selectedOption == "Latest")">@localizer[nameof(Resource.LatestLabel)]</option>
         <option class="sort-option" value="HighToLow" selected="@(selectedOption == "HighToLow")">@localizer[nameof(Resource.PriceHighToLow)]</option>
         <option class="sort-option" value="LowToHigh" selected="@(selectedOption == "LowToHigh")">@localizer[nameof(Resource.PriceLowToHigh)]</option>
     </select>

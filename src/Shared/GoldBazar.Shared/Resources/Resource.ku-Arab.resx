@@ -330,4 +330,49 @@
   <data name="ViewOnMapLabel" xml:space="preserve">
     <value>بینین لەسەر نەخشە</value>
   </data>
+  <data name="NavInformation" xml:space="preserve">
+    <value>زانیاریەکان</value>
+  </data>
+  <data name="NavOrders" xml:space="preserve">
+    <value>داواکاریەکان</value>
+  </data>
+  <data name="StoryLabel" xml:space="preserve">
+    <value>چیرۆکی ڕۆژانە</value>
+  </data>
+  <data name="AddProductLabel" xml:space="preserve">
+    <value>زیادکردنی بەرهەم</value>
+  </data>
+  <data name="PricingLabel" xml:space="preserve">
+    <value>نرخدانان</value>
+  </data>
+  <data name="MediaLabel" xml:space="preserve">
+    <value>میدیا</value>
+  </data>
+  <data name="AddImagesLabel" xml:space="preserve">
+    <value>وێنەی بەرهەمەکە زیاد بکە</value>
+  </data>
+  <data name="AddImagesDescription" xml:space="preserve">
+    <value>٤ وێنەی بەرهەمەکە زیاد بکە</value>
+  </data>
+  <data name="ProductTypeLabel" xml:space="preserve">
+    <value>جۆری بەرهەم</value>
+  </data>
+  <data name="ManufacturerLabel" xml:space="preserve">
+    <value>بەرهەمهێنەر</value>
+  </data>
+  <data name="WeightInGramsLabel" xml:space="preserve">
+    <value>کێش(گرام)</value>
+  </data>
+  <data name="LengthInMillimetersLabel" xml:space="preserve">
+    <value>درێژی(ملم)</value>
+  </data>
+  <data name="QuantityLabel" xml:space="preserve">
+    <value>بڕ</value>
+  </data>
+  <data name="PricePerGramLabel" xml:space="preserve">
+    <value>نرخ(/گرام)</value>
+  </data>
+  <data name="SubmitLabel" xml:space="preserve">
+    <value>پێشکەش بکە</value>
+  </data>
 </root>

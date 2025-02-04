@@ -1,0 +1,147 @@
+﻿@page "/add"
+@inject IStringLocalizer<Resource> localizer
+@rendermode InteractiveServer
+<div class="tabs-container">
+    <div class="tabs-header">@localizer[nameof(Resource.AddProductLabel)]</div>
+    <div class="tabs">
+        <div class="tab @((currentStep == 0) ? "active" : "")" @onclick="() => SetStep(0)">
+            @localizer[nameof(Resource.MediaLabel)]
+        </div>
+        <div class="tab @((currentStep == 1) ? "active" : "")" @onclick="() => SetStep(1)">
+            @localizer[nameof(Resource.FeaturesLabel)]
+        </div>
+        <div class="tab @((currentStep == 2) ? "active" : "")" @onclick="() => SetStep(2)">
+            @localizer[nameof(Resource.PricingLabel)]
+        </div>
+    </div>
+    <div class="tab-content">
+        @if (currentStep == 0)
+        {
+            <div class="media-upload-container">
+                <h3>@localizer[nameof(Resource.AddImagesLabel)]</h3>
+                <p>@localizer[nameof(Resource.AddImagesDescription)]</p>
+            </div>
+        }
+        else if (currentStep == 1)
+        {
+            <div class="features-container">
+                <div class="dropdown-group">
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.ProductTypeLabel)]</label>
+                        <select @bind="selectedType">
+                            @foreach (var type in ProductTypes)
+                            {
+                                <option value="@type">@type</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.MetalLabel)]</label>
+                        <select @bind="selectedMaterial">
+                            @foreach (var material in Materials)
+                            {
+                                <option value="@material">@material</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="dropdown-group">
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.StyleLabel)]</label>
+                        <select @bind="selectedWeight">
+                            @foreach (var weight in Weights)
+                            {
+                                <option value="@weight">@weight</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.ManufacturerLabel)]</label>
+                        <select @bind="selectedManufacturer">
+                            @foreach (var manufacturer in Manufacturers)
+                            {
+                                <option value="@manufacturer">@manufacturer</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.PurityLabel)]</label>
+                        <select @bind="selectedManufacturer">
+                            @foreach (var manufacturer in Manufacturers)
+                            {
+                                <option value="@manufacturer">@manufacturer</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="dropdown">
+                        <label>@localizer[nameof(Resource.OccasionLabel)]</label>
+                        <select @bind="selectedManufacturer">
+                            @foreach (var manufacturer in Manufacturers)
+                            {
+                                <option value="@manufacturer">@manufacturer</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="description-box">
+                    <label>@localizer[nameof(Resource.FeaturesLabel)]</label>
+                    <textarea @bind="description"></textarea>
+                </div>
+            </div>
+
+        }
+        else if (currentStep == 2)
+        {
+            <div class="pricing-container">
+                <div class="input-group">
+                    <div class="input-field">
+                        <label>@localizer[nameof(Resource.WeightInGramsLabel)]</label>
+                        <input type="number" @bind="weightInGrams" />
+                    </div>
+                    <div class="input-field">
+                        <label>@localizer[nameof(Resource.LengthInMillimetersLabel)]</label>
+                        <input type="number" @bind="lengthInMM" />
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="input-field">
+                        <label>@localizer[nameof(Resource.QuantityLabel)]</label>
+                        <input type="number" @bind="quantity" />
+                    </div>
+                    <div class="input-field">
+                        <label>@localizer[nameof(Resource.PricePerGramLabel)]</label>
+                        <input type="number" @bind="pricePerGram" />
+                    </div>
+                </div>
+                <button class="pricing-submit-button">@localizer[nameof(Resource.SubmitLabel)]</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private int currentStep = 0;
+
+    private void SetStep(int step)
+    {
+        currentStep = step;
+    }
+
+    private string selectedType;
+    private string selectedMaterial;
+    private string selectedWeight;
+    private string selectedManufacturer;
+    private string description;
+
+    private List<string> ProductTypes = new List<string> { "Ring", "Necklace", "Bracelet" };
+    private List<string> Materials = new List<string> { "Gold", "Silver", "Diamond" };
+    private List<string> Weights = new List<string> { "10g", "20g", "50g" };
+    private List<string> Manufacturers = new List<string> { "Dubai", "Turkey", "Local" };
+
+    private string weightInGrams;
+    private string lengthInMM;
+    private string quantity;
+    private string pricePerGram;
+
+
+}

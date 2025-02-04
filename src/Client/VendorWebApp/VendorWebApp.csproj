@@ -6,5 +6,6 @@
  <ItemGroup>
     <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
   </ItemGroup>
 </Project>
