@@ -2,7 +2,7 @@ using VendorWebApp.Components;
 using VendorWebApp.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.AddServiceDefaults();
 //localization
 builder.Services.AddLocalization();
 

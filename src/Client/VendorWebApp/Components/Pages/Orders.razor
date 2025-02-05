@@ -1,6 +1,21 @@
 ﻿@page "/"
 @inject ICatalogService catalogservice
 <h3>Orders</h3>
+    @if (catalogResult is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var product in catalogResult.Data)
+        {
+            <ProductCard Item="product" />
+            
+        }
+         <div class="page-links">
+               
+        </div>
+    }
 
 @code {
     const int PageSize = 40;
@@ -11,7 +26,7 @@
     [SupplyParameterFromQuery(Name = "type")]
     public int? ItemTypeId { get; set; }
 
-    CatalogResult? catalogResult;
+    CatalogResult catalogResult;
 
     static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
         => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
