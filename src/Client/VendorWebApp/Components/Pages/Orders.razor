@@ -1,6 +1,26 @@
 ﻿@page "/"
+@inject ICatalogService catalogservice
 <h3>Orders</h3>
 
 @code {
+    const int PageSize = 40;
+
+    [SupplyParameterFromQuery]
+    public int? Page { get; set; }
+
+    [SupplyParameterFromQuery(Name = "type")]
+    public int? ItemTypeId { get; set; }
+
+    CatalogResult? catalogResult;
+
+    static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
+        => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
+    protected override async Task OnInitializedAsync()
+    {
+        catalogResult = await catalogservice.GetCatalogItems(
+            Page.GetValueOrDefault(1) - 1,
+            PageSize,
+            ItemTypeId);
+    }
 
 }

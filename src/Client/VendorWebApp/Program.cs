@@ -1,9 +1,13 @@
 using VendorWebApp.Components;
+using VendorWebApp.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //localization
 builder.Services.AddLocalization();
+
+builder.AddApplicationServices();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
