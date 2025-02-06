@@ -19,7 +19,49 @@
         {
             <div class="media-upload-container">
                 <h3>@localizer[nameof(Resource.AddImagesLabel)]</h3>
-                <p>@localizer[nameof(Resource.AddImagesDescription)]</p>
+                <!-- Upload Tab -->
+                <div id="upload" class="tab-pane">
+
+                    <div class="upload-grid">
+                        <div class="upload-box" onclick="document.getElementById('fileInput1').click()">
+                            <input type="file" id="fileInput1" class="file-input" accept="image/*" style="display: none">
+                            <img id="preview1" class="preview-image"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
+                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+                        </div>
+                        <div class="upload-box" onclick="document.getElementById('fileInput2').click()">
+                            <input type="file" id="fileInput2" class="file-input" accept="image/*" style="display: none">
+                            <img id="preview2" class="preview-image"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
+                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+                        </div>
+                        <div class="upload-box" onclick="document.getElementById('fileInput3').click()">
+                            <input type="file" id="fileInput3" class="file-input" accept="image/*" style="display: none">
+                            <img id="preview3" class="preview-image"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
+                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+                        </div>
+                    </div>
+                                    @* <p>@localizer[nameof(Resource.AddImagesDescription)]</p> *@
+
+
+                    <!-- video upload -->
+                    <div class="lable-cont">
+                        @* <p class="title"> Upload a Video</p> *@
+                        <br>
+                        <br>
+                        <p class="subtitle">Upload a video of the prodeuct </p>
+                    </div>
+                    <div class="upload-grid">
+                        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                            <input type="file" id="fileInput" accept="video/*">
+                            <video id="videoPreview" class="video-preview"></video>
+                            <img src="Icons/play-add.svg" alt="Upload" class="upload-icon" id="uploadIcon">
+                            <img src="Icons/play-add.svg" alt="Play" class="play-icon" id="playIcon">
+                        </div>
+                    </div>
+                </div>
+
             </div>
         }
         else if (currentStep == 1)
