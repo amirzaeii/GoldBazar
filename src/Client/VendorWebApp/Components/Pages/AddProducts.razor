@@ -1,5 +1,16 @@
 ﻿@page "/add"
+@using System.Text.Json
+@using Catalog.Infrastructure
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Logging
+@using Microsoft.AspNetCore.Components.Forms
+@using System.IO
+@inject ILogger<AddProducts> Logger
+@inject IConfiguration config
+@inject ICatalogService CatalogService
 @inject IStringLocalizer<Resource> localizer
+@inject IWebHostEnvironment Environment
+@inject NavigationManager Nav
 @rendermode InteractiveServer
 <div class="tabs-container">
     <div class="tabs-header">@localizer[nameof(Resource.AddProductLabel)]</div>
@@ -15,153 +26,127 @@
         </div>
     </div>
     <div class="tab-content">
-        @if (currentStep == 0)
-        {
-            <div class="media-upload-container">
-                <h3>@localizer[nameof(Resource.AddImagesLabel)]</h3>
-                <!-- Upload Tab -->
-                <div id="upload" class="tab-pane">
+        <EditForm Model="@newItem" OnValidSubmit="CreateItem" Enhance>
+            <DataAnnotationsValidator />
+            @if (currentStep == 0)
+            {
+                <InputFile accept=".png,.jpg,.jpeg" OnChange="FileUploaded" />
+                @if (!string.IsNullOrEmpty(newItem.MainPhoto))
+                {
+                    <img src="@newItem.MainPhoto" alt="Product Image" />
+                }
 
-                    <div class="upload-grid">
-                        <div class="upload-box" onclick="document.getElementById('fileInput1').click()">
-                            <input type="file" id="fileInput1" class="file-input" accept="image/*" style="display: none">
-                            <img id="preview1" class="preview-image"
-                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
-                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+            }
+            else if (currentStep == 1)
+            {
+                <div class="features-container">
+                    <div class="dropdown-group">
+                        <div class="dropdown">
+                            <label>@localizer[nameof(Resource.ProductTypeLabel)]</label>
+                            <InputSelect @bind-Value="newItem.TypeId">
+                                @foreach (var type in ProductTypes)
+                                {
+                                    <option value="@type.Id">@type.Name</option>
+                                }
+                            </InputSelect>
+                            <div class="dropdown">
+                                <label>@localizer[nameof(Resource.MetalLabel)]</label>
+                                <InputSelect @bind-Value="newItem.MetalId">
+                                    @foreach (var metal in Metals)
+                                    {
+                                        <option value="@metal.Id">@metal.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
                         </div>
-                        <div class="upload-box" onclick="document.getElementById('fileInput2').click()">
-                            <input type="file" id="fileInput2" class="file-input" accept="image/*" style="display: none">
-                            <img id="preview2" class="preview-image"
-                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
-                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+                        <div class="dropdown-group">
+                            <div class="dropdown">
+                                <label>@localizer[nameof(Resource.StyleLabel)]</label>
+                                <InputSelect @bind-Value="newItem.StyleId">
+                                    @foreach (var style in Styles)
+                                    {
+                                        <option value="@style.Id">@style.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
+                            <div class="dropdown">
+                                <label>@localizer[nameof(Resource.OccasionLabel)]</label>
+                                <InputSelect @bind-Value="newItem.OccasionId">
+                                    @foreach (var occasion in Occasions)
+                                    {
+                                        <option value="@occasion.Id">@occasion.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
                         </div>
-                        <div class="upload-box" onclick="document.getElementById('fileInput3').click()">
-                            <input type="file" id="fileInput3" class="file-input" accept="image/*" style="display: none">
-                            <img id="preview3" class="preview-image"
-                                style="display: none; width: 100%; height: 100%; object-fit: cover; border-radius: 1rem;">
-                            <span class="upload-icon"><img src="Icons/add-image.svg" alt=""></span>
+                        <div class="dropdown-group">
+                            <div class="dropdown">
+                                <label>@localizer[nameof(Resource.MaterialLabel)]</label>
+                                <InputSelect @bind-Value="newItem.MaterialId">
+                                    @foreach (var material in Materials)
+                                    {
+                                        <option value="@material.Id">@material.Name</option>
+                                    }
+                                </InputSelect>
+                            </div>
                         </div>
-                    </div>
-                                    @* <p>@localizer[nameof(Resource.AddImagesDescription)]</p> *@
-
-
-                    <!-- video upload -->
-                    <div class="lable-cont">
-                        @* <p class="title"> Upload a Video</p> *@
-                        <br>
-                        <br>
-                        <p class="subtitle">Upload a video of the prodeuct </p>
-                    </div>
-                    <div class="upload-grid">
-                        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-                            <input type="file" id="fileInput" accept="video/*">
-                            <video id="videoPreview" class="video-preview"></video>
-                            <img src="Icons/play-add.svg" alt="Upload" class="upload-icon" id="uploadIcon">
-                            <img src="Icons/play-add.svg" alt="Play" class="play-icon" id="playIcon">
+                        <div class="description-box">
+                            <label>@localizer[nameof(Resource.CaptionLabel)]</label>
+                            <InputText type="text" @bind-Value="newItem.Caption"></InputText>
+                        </div>
+                        <div class="description-box">
+                            <label>@localizer[nameof(Resource.FeaturesLabel)]</label>
+                            <InputTextArea @bind-Value="newItem.Description"></InputTextArea>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        }
-        else if (currentStep == 1)
-        {
-            <div class="features-container">
-                <div class="dropdown-group">
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.ProductTypeLabel)]</label>
-                        <select @bind="selectedType">
-                            @foreach (var type in ProductTypes)
-                            {
-                                <option value="@type">@type</option>
-                            }
-                        </select>
+            }
+            else if (currentStep == 2)
+            {
+                <div class="pricing-container">
+                    <div class="input-group">
+                        <div class="input-field">
+                            <label>@localizer[nameof(Resource.WeightInGramsLabel)]</label>
+                            <InputNumber type="number" @bind-Value="newItem.Weight" />
+                            <ValidationMessage For="@(() => newItem.Weight)" />
+                        </div>
+                        <div class="input-field">
+                            <label>@localizer[nameof(Resource.LengthInMillimetersLabel)]</label>
+                            <InputNumber type="number" @bind-Value="newItem.Size" />
+                            <ValidationMessage For="@(() => newItem.Size)" />
+                        </div>
                     </div>
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.MetalLabel)]</label>
-                        <select @bind="selectedMaterial">
-                            @foreach (var material in Materials)
-                            {
-                                <option value="@material">@material</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="dropdown-group">
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.StyleLabel)]</label>
-                        <select @bind="selectedWeight">
-                            @foreach (var weight in Weights)
-                            {
-                                <option value="@weight">@weight</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.ManufacturerLabel)]</label>
-                        <select @bind="selectedManufacturer">
-                            @foreach (var manufacturer in Manufacturers)
-                            {
-                                <option value="@manufacturer">@manufacturer</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.PurityLabel)]</label>
-                        <select @bind="selectedManufacturer">
-                            @foreach (var manufacturer in Manufacturers)
-                            {
-                                <option value="@manufacturer">@manufacturer</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="dropdown">
-                        <label>@localizer[nameof(Resource.OccasionLabel)]</label>
-                        <select @bind="selectedManufacturer">
-                            @foreach (var manufacturer in Manufacturers)
-                            {
-                                <option value="@manufacturer">@manufacturer</option>
-                            }
-                        </select>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <label>@localizer[nameof(Resource.QuantityLabel)]</label>
+                            <InputNumber type="number" @bind-Value="newItem.Quantity" />
+                            <ValidationMessage For="@(() => newItem.Quantity)" />
+                        </div>
+                        <div class="input-field">
+                            <label>@localizer[nameof(Resource.PricePerGramLabel)]</label>
+                            <InputNumber type="number" @bind-Value="newItem.CostPerGram" />
+                            <ValidationMessage For="@(() => newItem.CostPerGram)" />
+                        </div>
+                        <div class="input-field">
+                            <label>@localizer[nameof(Resource.DiscountLabel)]</label>
+                            <InputNumber type="number" @bind-Value="newItem.Discount" />
+                            <ValidationMessage For="@(() => newItem.Discount)" />
+                        </div>
                     </div>
                 </div>
-                <div class="description-box">
-                    <label>@localizer[nameof(Resource.FeaturesLabel)]</label>
-                    <textarea @bind="description"></textarea>
-                </div>
-            </div>
-
-        }
-        else if (currentStep == 2)
-        {
-            <div class="pricing-container">
-                <div class="input-group">
-                    <div class="input-field">
-                        <label>@localizer[nameof(Resource.WeightInGramsLabel)]</label>
-                        <input type="number" @bind="weightInGrams" />
-                    </div>
-                    <div class="input-field">
-                        <label>@localizer[nameof(Resource.LengthInMillimetersLabel)]</label>
-                        <input type="number" @bind="lengthInMM" />
-                    </div>
-                </div>
-                <div class="input-group">
-                    <div class="input-field">
-                        <label>@localizer[nameof(Resource.QuantityLabel)]</label>
-                        <input type="number" @bind="quantity" />
-                    </div>
-                    <div class="input-field">
-                        <label>@localizer[nameof(Resource.PricePerGramLabel)]</label>
-                        <input type="number" @bind="pricePerGram" />
-                    </div>
-                </div>
-                <button class="pricing-submit-button">@localizer[nameof(Resource.SubmitLabel)]</button>
-            </div>
-        }
+                <button type="submit">  @localizer[nameof(Resource.SubmitLabel)]</button>
+            }
+            <ValidationSummary />
+        </EditForm>
     </div>
 </div>
-
 @code {
+    private List<IBrowserFile> loadedFiles = [];
+    private long maxFileSize = 1024 * 1024 * 3;
+    private int maxAllowedFiles = 3;
+    private IBrowserFile? file;
+    private List<string> errors;
+
     private int currentStep = 0;
 
     private void SetStep(int step)
@@ -169,21 +154,111 @@
         currentStep = step;
     }
 
-    private string selectedType;
-    private string selectedMaterial;
-    private string selectedWeight;
-    private string selectedManufacturer;
-    private string description;
+    Item newItem = new Item();
+    private List<DropdownItem> ProductTypes = new();
+    private List<DropdownItem> Metals = new();
+    private List<DropdownItem> Styles = new();
+    private List<DropdownItem> Occasions = new();
+    private List<DropdownItem> Materials = new();
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch all types
+        var allTypes = await CatalogService.GetTypes();
+        ProductTypes = allTypes.Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-    private List<string> ProductTypes = new List<string> { "Ring", "Necklace", "Bracelet" };
-    private List<string> Materials = new List<string> { "Gold", "Silver", "Diamond" };
-    private List<string> Weights = new List<string> { "10g", "20g", "50g" };
-    private List<string> Manufacturers = new List<string> { "Dubai", "Turkey", "Local" };
+        // Fetch and map other dropdown data
+        Metals = (await CatalogService.GetCatalogDataAsync("metals"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-    private string weightInGrams;
-    private string lengthInMM;
-    private string quantity;
-    private string pricePerGram;
+        Styles = (await CatalogService.GetCatalogDataAsync("styles"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
+        Occasions = (await CatalogService.GetCatalogDataAsync("occasions"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
+
+        Materials = (await CatalogService.GetCatalogDataAsync("materials"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
+    }
+
+    async Task CreateItem()
+    {
+        try
+        {
+            var success = await CatalogService.AddProduct(newItem);
+            if (success)
+            {
+                Console.WriteLine("Product added successfully.");
+                Nav.NavigateTo("/info");
+            }
+            else
+            {
+                Console.WriteLine("Failed to add product.");
+                // Handle failure (e.g., show an error message)
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+    [Inject]
+    private IWebHostEnvironment WebHostEnvironment { get; set; }
+
+    public string FileName { get; set; } = "";
+    public string ErrorMessage { get; set; } = "";
+    const int MAX_FILESIZE = 5000 * 1024;
+   public async Task FileUploaded(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var browserFile = e.File;
+            if (browserFile == null)
+            {
+                Console.WriteLine("No file selected.");
+                return;
+            }
+
+            var uploadPath = Path.Combine(WebHostEnvironment.ContentRootPath, "UserData", "Uploads");
+
+            // ✅ Ensure directory exists before saving
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+
+
+            // Ensure the directory exists
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            var fileExtension = Path.GetExtension(browserFile.Name).ToLower();
+            var fileName = $"{Guid.NewGuid()}{fileExtension}";
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            // Open stream with a max file size limit
+            await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+            await browserFile.OpenReadStream(10 * 1024 * 1024).CopyToAsync(fileStream);
+
+            // Validate file after writing
+            if (!File.Exists(filePath))
+            {
+                throw new Exception($"File was not saved correctly: {filePath}");
+            }
+
+            newItem.MainPhoto = $"/uploads/{fileName}";  
+            Console.WriteLine($"File uploaded successfully: {newItem.MainPhoto}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error uploading file: {ex.Message}");
+        }
+    } 
 
 }
+
+
+  
+

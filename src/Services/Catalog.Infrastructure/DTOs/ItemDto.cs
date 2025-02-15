@@ -22,7 +22,9 @@ string OccasionName,
 int StyleId,
 string StyleName,
 decimal Discount,
-bool Status
+bool Status,
+int Quantity,
+string Image
 )
 {
     public decimal Price { get; init; } = (((2745m/31.103m)* Purity) + CostPerGram - Discount) * Weight;

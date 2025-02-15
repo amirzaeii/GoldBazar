@@ -375,4 +375,22 @@
   <data name="SubmitLabel" xml:space="preserve">
     <value>پێشکەش بکە</value>
   </data>
+  <data name="CaptionLabel" xml:space="preserve">
+    <value>ناو</value>
+  </data>
+  <data name="DiscountLabel" xml:space="preserve">
+    <value>داشکاندن (%)</value>
+  </data>
+  <data name="MaterialLabel" xml:space="preserve">
+    <value>پێکاتە</value>
+  </data>
+  <data name="ClearFiltersLabel" xml:space="preserve">
+    <value>سڕینەوە</value>
+  </data>
+  <data name="MinWeightLabel" xml:space="preserve">
+    <value>کەمترین کێش</value>
+  </data>
+  <data name="MaxWeightLabel" xml:space="preserve">
+    <value>زۆرترین کێش</value>
+  </data>
 </root>

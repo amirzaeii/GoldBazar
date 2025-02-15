@@ -352,7 +352,7 @@
     <value>أضف صور المنتج</value>
   </data>
   <data name="AddImagesDescription" xml:space="preserve">
-    <value>٤ وێنەی بەرهەمەکە زیاد بکە</value>
+    <value>أضف 4 صور للمنتج</value>
   </data>
   <data name="ProductTypeLabel" xml:space="preserve">
     <value>نوع المنتج</value>
@@ -374,5 +374,23 @@
   </data>
   <data name="SubmitLabel" xml:space="preserve">
     <value>إرسال</value>
+  </data>
+  <data name="CaptionLabel" xml:space="preserve">
+    <value>اسم</value>
+  </data>
+  <data name="DiscountLabel" xml:space="preserve">
+    <value>تخفيض (٪)</value>
+  </data>
+  <data name="MaterialLabel" xml:space="preserve">
+    <value>مادة</value>
+  </data>
+  <data name="ClearFiltersLabel" xml:space="preserve">
+    <value>مسح</value>
+  </data>
+  <data name="MinWeightLabel" xml:space="preserve">
+    <value>الوزن الأدنى</value>
+  </data>
+  <data name="MaxWeightLabel" xml:space="preserve">
+    <value>الوزن الأقصى</value>
   </data>
 </root>

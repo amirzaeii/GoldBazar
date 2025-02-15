@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.Linq;
+
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,13 +47,13 @@ public static class CatalogApi
             .WithName("GetItemPicture")
             .WithSummary("Get catalog item picture")
             .WithDescription("Get the picture for a catalog item")
-            .WithTags("Items");  
+            .WithTags("Items");
 
         api.MapPost("/item", AddProduct)
-            .WithName("AddProduct")
-            .WithSummary("Create a item")
+            .WithName("addproduct")
+            .WithSummary("create a item")
             .WithDescription("reate a item")
-            .WithTags("Items");
+            .WithTags("items");
 
         api.MapPut("/item/{id}", UpdateProduct)
             .WithName("EditProduct")
@@ -109,7 +111,7 @@ public static class CatalogApi
                             s.CostPerGram, s.Weight, s.Size, 
                             s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name,s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
-                            ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).ToArrayAsync();
+                            ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus, s.Quantity, s.MainPhoto)).ToArrayAsync();
 
         return TypedResults.Ok(new PaginatedItems<ItemDto>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
@@ -128,7 +130,7 @@ public static class CatalogApi
                             s.CostPerGram, s.Weight, s.Size,
                             s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name, s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
-                            , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).FirstOrDefaultAsync();
+                            , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus, s.Quantity, s.MainPhoto)).FirstOrDefaultAsync();
 
         return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
     }
@@ -146,7 +148,7 @@ public static class CatalogApi
                             s.CostPerGram, s.Weight, s.Size,
                             s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
                             s.ShopId, s.Shop.Name, s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
-                            , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus)).ToArrayAsync();
+                            , s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus, s.Quantity, s.MainPhoto)).ToArrayAsync();
 
         return items is not null ? TypedResults.Ok(items) : TypedResults.NotFound();
     }
@@ -162,31 +164,6 @@ public static class CatalogApi
 
             return TypedResults.Ok(catalogItemTypes);
         }
-
-    public static async Task<Results<Created<ItemDto>, BadRequest<string>>> AddProduct(
-        ItemDto item, [AsParameters] CatalogServices services)
-    {
-        if (await services.Context.Items.AnyAsync(p => p.Id == item.Id))
-        {
-            return TypedResults.BadRequest($"A item with ID {item.Id} already exists.");
-        }
-
-        services.Context.Items.Add(new Item{ 
-            Caption = item.Caption,
-            ActivityStatus = item.Status,
-            Discount = item.Discount,
-            Weight = item.Weight,
-            TypeId = item.TypeId,
-            MaterialId = item.MaterialId,
-            MetalId = item.MetalId,
-            OccasionId = item.OccasionId,
-            StyleId = item.StyleId,
-            Description = item.Description
-        });
-        await services.Context.SaveChangesAsync();
-
-        return TypedResults.Created($"/item/{item.Id}", item);
-    }
 
     public static async Task<Results<Ok<Item>, NotFound>> UpdateProduct(
         int id, Item updatedProduct, [AsParameters] CatalogServices services)
@@ -271,7 +248,9 @@ public static class CatalogApi
                 p.StyleId,
                 p.Style.Name,
                 p.Discount,
-                p.ActivityStatus
+                p.ActivityStatus,
+                p.Quantity,
+                p.MainPhoto
             ))
             .ToListAsync();
 
@@ -358,7 +337,9 @@ public static class CatalogApi
                 p.StyleId,
                 p.Style.Name,
                 p.Discount,
-                p.ActivityStatus
+                p.ActivityStatus,
+                p.Quantity,
+                p.MainPhoto
             ))
             .ToListAsync();
 
@@ -443,11 +424,11 @@ public static class CatalogApi
     //        )).ToListAsync();
 
     //    return TypedResults.Ok(filteredProducts);
-    //}
+    
 
     public static async Task<Ok<List<ItemDto>>> FilterByComposite(
-     [AsParameters] CatalogServices services,
-     [Description("Composite filter for catalog items")][FromBody] CompositeFilterDto request)
+    [AsParameters] CatalogServices services,
+    [Description("Composite filter for catalog items")][FromBody] CompositeFilterDto request)
     {
         var products = services.Context.Items
             .Include(p => p.Material)
@@ -464,32 +445,31 @@ public static class CatalogApi
             products = products.Where(p => p.Weight >= request.MinWeight && p.Weight <= request.MaxWeight);
         }
 
-        if ((request.ProductTypes ?? Array.Empty<int>()).Any())
+        if (request.ProductTypes != null && request.ProductTypes.Any())
         {
             products = products.Where(p => request.ProductTypes.Contains(p.TypeId));
         }
 
-        if ((request.Materials ?? Array.Empty<int>()).Any())
+        if (request.Materials != null && request.Materials.Any())
         {
             products = products.Where(p => request.Materials.Contains(p.MaterialId));
         }
 
-        if ((request.Metals ?? Array.Empty<int>()).Any())
+        if (request.Metals != null && request.Metals.Any())
         {
             products = products.Where(p => request.Metals.Contains(p.MetalId));
         }
 
-        if ((request.Occasions ?? Array.Empty<int>()).Any())
+        if (request.Occasions != null && request.Occasions.Any())
         {
             products = products.Where(p => request.Occasions.Contains(p.OccasionId));
         }
 
-        if ((request.Styles ?? Array.Empty<int>()).Any())
+        if (request.Styles != null && request.Styles.Any())
         {
             products = products.Where(p => request.Styles.Contains(p.StyleId));
         }
 
-        // Project and return results as DTOs
         var filteredProducts = await products
             .Select(p => new ItemDto(
                 p.Id,
@@ -504,20 +484,104 @@ public static class CatalogApi
                 p.Metal.Name,
                 p.Metal.Karat,
                 p.Metal.Purity,
-                0, // ShopId (removed, so set a default value)
-                string.Empty, // ShopName (removed, so set a default value)
-                string.Empty, // City (removed, so set a default value)
+                0,
+                string.Empty,
+                string.Empty,
                 p.MaterialId,
                 p.Material.Name,
                 p.OccasionId,
                 p.Occassion.Name,
                 p.StyleId,
-                p.Style.Name, 
+                p.Style.Name,
                 p.Discount,
-                p.ActivityStatus
+                p.ActivityStatus,
+                p.Quantity,
+                p.MainPhoto
             )).ToListAsync();
 
         return TypedResults.Ok(filteredProducts);
+    }
+    public static async Task<Results<Created<ItemDto>, BadRequest<string>>> AddProduct(
+     [FromBody] ItemDto newItem, [AsParameters] CatalogServices services)
+    {
+        if (newItem.CostPerGram <= 0 || newItem.Weight <= 0 || newItem.Quantity <= 0)
+        {
+            return TypedResults.BadRequest("Cost, weight, and quantity must be greater than zero.");
+        }
+
+        // Fetch required data in a single query
+        var data = await services.Context.Metals
+            .Where(m => m.Id == newItem.MetalId)
+            .Select(m => new
+            {
+                Metal = m,
+                Shop = services.Context.Shops.FirstOrDefault(s => s.Id == newItem.ShopId),
+                MaxId = services.Context.Items.Max(i => (int?)i.Id) ?? 0
+            })
+            .FirstOrDefaultAsync();
+
+        if (data?.Metal == null)
+        {
+            return TypedResults.BadRequest("Invalid MetalId.");
+        }
+
+        // Assign ShopId if not found
+        var shopId = data.Shop?.Id ?? 101;
+        var newId = data.MaxId + 1;
+
+        var item = new Item
+        {
+            Id = newId,
+            Caption = newItem.Caption,
+            Description = newItem.Description,
+            CostPerGram = newItem.CostPerGram,
+            Weight = newItem.Weight,
+            Size = newItem.Size,
+            TypeId = newItem.TypeId,
+            MetalId = newItem.MetalId,
+            ShopId = shopId,
+            MaterialId = newItem.MaterialId,
+            OccasionId = newItem.OccasionId,
+            StyleId = newItem.StyleId,
+            Discount = newItem.Discount,
+            ActivityStatus = newItem.Status,
+            Quantity = newItem.Quantity,
+            MainPhoto = newItem.Image
+        };
+
+        services.Context.Items.Add(item);
+        await services.Context.SaveChangesAsync();
+
+        // Project ItemDto directly from item instance
+        var itemDto = new ItemDto(
+            item.Id,
+            item.Caption,
+            item.Description,
+            item.CostPerGram,
+            item.Weight,
+            item.Size,
+            item.TypeId,
+            newItem.TypeName, 
+            item.MetalId,
+            newItem.MetalName, 
+            newItem.KT,
+            newItem.Purity,
+            item.ShopId,
+            newItem.ShopName, 
+            newItem.City,
+            item.MaterialId,
+            newItem.MaterailName, 
+            item.OccasionId,
+            newItem.OccasionName,
+            item.StyleId,
+            newItem.StyleName,
+            item.Discount,
+            item.ActivityStatus,
+            item.Quantity,
+            item.MainPhoto
+        );
+
+        return TypedResults.Created($"/api/catalog/items/{item.Id}", itemDto);
     }
 
 

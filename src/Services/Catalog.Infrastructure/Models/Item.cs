@@ -52,4 +52,5 @@ public class Item
     public int Size { get; set; } // Optional or required, depending on business rules
     public string? MainPhoto { get; set; }
 
+
 }

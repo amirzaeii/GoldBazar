@@ -1,7 +1,6 @@
 ﻿@page "/filters-result/{ItemTypeId:int?}"
 @using WebComponent.Components.Filter
 @inject NavigationManager Navigation
-@inject IFilterService FilterService
 @inject ICatalogService CatalogService
 @inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
@@ -59,24 +58,6 @@
     [Parameter]
     public int? ItemTypeId { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
-
-        if (queryParameters.HasKeys())
-        {
-            var selectedFilters = new CompositeFilterDto
-            {
-                Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>()
-            };
-
-            Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
-        }
-    }
 
     private void OnOptionChanged(string? option)
     {

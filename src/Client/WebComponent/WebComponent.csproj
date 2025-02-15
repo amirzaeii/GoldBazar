@@ -20,6 +20,7 @@
     <Folder Include="Components\Pages\Settings\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
   </ItemGroup>
 </Project>

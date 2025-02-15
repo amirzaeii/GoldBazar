@@ -6,9 +6,14 @@
  <ItemGroup>
     <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="..\..\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
+    <ProjectReference Include="..\WebApp\WebApp.csproj" />
     <ProjectReference Include="..\WebComponent\WebComponent.csproj" />
      <PackageReference Include="Asp.Versioning.Http.Client" />
      <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" />
   </ItemGroup>
+ <ItemGroup>
+   <Folder Include="UserData\uploads\" />
+ </ItemGroup>
 </Project>

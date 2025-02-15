@@ -9,10 +9,6 @@ public static class Extensions
                     .AddApiVersion(1.0);
 
 
-        builder.Services.AddHttpClient<IFilterService, FilterService>(o => o.BaseAddress = new("https://localhost:7249"))
-                    .AddApiVersion(1.0);
-
-
         builder.Services.AddHttpClient<IShopService, ShopService>(o => o.BaseAddress = new("https://localhost:7249")).AddApiVersion(1.0);
 
 

@@ -111,7 +111,9 @@ public static class ShopApi
                 p.StyleId,                      // int
                 p.Style.Name,                   // string
                 p.Discount,                     // decimal
-                p.ActivityStatus                // bool
+                p.ActivityStatus,                // bool
+                p.Quantity,
+                p.MainPhoto
             ))
             .ToListAsync();
 

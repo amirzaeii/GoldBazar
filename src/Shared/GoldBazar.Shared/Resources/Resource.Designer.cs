@@ -124,6 +124,24 @@ namespace GoldBazar.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string CaptionLabel {
+            get {
+                return ResourceManager.GetString("CaptionLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        public static string ClearFiltersLabel {
+            get {
+                return ResourceManager.GetString("ClearFiltersLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm your password.
         /// </summary>
         public static string ConfirmPasswordDesc {
@@ -174,6 +192,15 @@ namespace GoldBazar.Shared.Resources {
         public static string DigitCodeWasSentNotify {
             get {
                 return ResourceManager.GetString("DigitCodeWasSentNotify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Discount (%).
+        /// </summary>
+        public static string DiscountLabel {
+            get {
+                return ResourceManager.GetString("DiscountLabel", resourceCulture);
             }
         }
         
@@ -322,6 +349,24 @@ namespace GoldBazar.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Material.
+        /// </summary>
+        public static string MaterialLabel {
+            get {
+                return ResourceManager.GetString("MaterialLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum Weight.
+        /// </summary>
+        public static string MaxWeightLabel {
+            get {
+                return ResourceManager.GetString("MaxWeightLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Media.
         /// </summary>
         public static string MediaLabel {
@@ -399,6 +444,15 @@ namespace GoldBazar.Shared.Resources {
         public static string MetalPropertiesLabel {
             get {
                 return ResourceManager.GetString("MetalPropertiesLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum Weight .
+        /// </summary>
+        public static string MinWeightLabel {
+            get {
+                return ResourceManager.GetString("MinWeightLabel", resourceCulture);
             }
         }
         

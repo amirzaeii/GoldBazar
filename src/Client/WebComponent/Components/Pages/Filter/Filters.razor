@@ -1,180 +1,158 @@
 ﻿@page "/filters"
-@inject IFilterService FilterService
+@using Catalog.Infrastructure
+@using Microsoft.AspNetCore.Components.Forms
 @inject NavigationManager Navigation
-@inject IJSRuntime JS
-@layout EmptyLayout
+@inject ICatalogService CatalogService
 @inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer
 
-@if (FilterDictionary.Count == 0)
-{
-    <p>Loading...</p>
-}
-else
-{
-    <div class="app-bar">
-        <button onclick="history.go(-1)"></button>
-        <span class="title">
-            @localizer[nameof(Resource.SortAndFilterLabel)]</span>
+<div class="form-header">
+    <h2>@localizer[nameof(Resource.SortAndFilterLabel)]</h2>
+</div>
+
+<EditForm Model="@SelectedFilters" OnValidSubmit="ApplyFilters">
+    <DataAnnotationsValidator />
+
+    <!-- Weight Inputs -->
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.MinWeightLabel)]</label>
+        <InputNumber @bind-Value="SelectedFilters.MinWeight" />
     </div>
 
-    <div class="filter-wrapp">
-        <div class="left-column">
-            @foreach (var filter in FilterDictionary)
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.MaxWeightLabel)]</label>
+        <InputNumber @bind-Value="SelectedFilters.MaxWeight" />
+    </div>
+
+    <!-- Dropdown Filters -->
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.MetalLabel)]</label>
+        <InputSelect @bind-Value="SelectedFilters.Metals" multiple class="form-control">
+            @foreach (var metal in Metals)
             {
-                <button class="category" @onclick="() => ShowSubcategories(filter.Key)">
-                    @filter.Value
-                </button>
+                <option value="@metal.Id">@metal.Name</option>
             }
-        </div>
-
-
-        <div class="right-column">
-            <div class="subcategories">
-                @if (SelectedFilter != null)
-                {
-                    @foreach (var subcategoryItem in Subcategories[SelectedFilter])
-                    {
-                        <div class="subcategory">
-                            <input type="checkbox"
-                                   id="checkbox-@SelectedFilter-@subcategoryItem.Id"
-                                   value="@subcategoryItem.Id"
-                                   checked="@SelectedCheckboxes[SelectedFilter].Contains(subcategoryItem.Id)"
-                                   @onchange="(e) => ToggleCheckbox(SelectedFilter, subcategoryItem.Id)" />
-                            <label for="checkbox-@SelectedFilter-@subcategoryItem.Id">@subcategoryItem.Name</label>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
+        </InputSelect>
     </div>
 
-    <div class="bottom-bar">
-        <button class="submit" @onclick="Submit">Search</button>
-        @* <button class="clear-all" @onclick="ClearAllCheckboxes">Clear</button> *@
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.StyleLabel)]</label>
+        <InputSelect @bind-Value="SelectedFilters.Styles" multiple class="form-control">
+            @foreach (var style in Styles)
+            {
+                <option value="@style.Id">@style.Name</option>
+            }
+        </InputSelect>
     </div>
-}
+
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.OccasionLabel)]</label>
+        <InputSelect @bind-Value="SelectedFilters.Occasions" multiple class="form-control">
+            @foreach (var occasion in Occasions)
+            {
+                <option value="@occasion.Id">@occasion.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-group">
+        <label>@localizer[nameof(Resource.MaterialLabel)]</label>
+        <InputSelect @bind-Value="SelectedFilters.Materials" multiple class="form-control">
+            @foreach (var material in Materials)
+            {
+                <option value="@material.Id">@material.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="apply-button">@localizer[nameof(Resource.SubmitLabel)]</button>
+        <button type="button" class="clear-button" @onclick="ClearFilters">@localizer[nameof(Resource.ClearFiltersLabel)]</button>
+    </div>
+</EditForm>
+
 
 @code {
-    Dictionary<string, string> FilterDictionary = new();
-    Dictionary<string, List<(int Id, string Name)>> Subcategories = new();
-    Dictionary<string, HashSet<int>> SelectedCheckboxes = new(); // Tracks selected IDs
-    string SelectedFilter;
-    private List<CatalogItem> Products { get; set; } = new();
+    private Dtos.CompositeFilterDto SelectedFilters = new Dtos.CompositeFilterDto();
+    private List<ItemDto> FilteredItems = new();
+
+    private List<DropdownItem> Materials = new();
+    private List<DropdownItem> Metals = new();
+    private List<DropdownItem> Occasions = new();
+    private List<DropdownItem> Styles = new();
 
     protected override async Task OnInitializedAsync()
     {
-        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
-        var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        // Fetch dropdown data
+        Metals = await GetDropdownData("metals");
+        Styles = await GetDropdownData("styles");
+        Occasions = await GetDropdownData("occasions");
+        Materials = await GetDropdownData("materials");
 
-        // Populate Subcategories
-        var materials = await FilterService.GetCatalogDataAsync("materials");
-        var metals = await FilterService.GetCatalogDataAsync("metals");
-        var occasions = await FilterService.GetCatalogDataAsync("occasions");
-        var styles = await FilterService.GetCatalogDataAsync("styles");
+        // Fetch and map other dropdown data
+        Metals = (await CatalogService.GetCatalogDataAsync("metals"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-        Subcategories["Material"] = materials.Select(m => (m.Id, m.Name)).ToList();
-        Subcategories["Metal"] = metals.Select(m => (m.Id, m.Name)).ToList();
-        Subcategories["Occasion"] = occasions.Select(o => (o.Id, o.Name)).ToList();
-        Subcategories["Style"] = styles.Select(s => (s.Id, s.Name)).ToList();
+        Styles = (await CatalogService.GetCatalogDataAsync("styles"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-        FilterDictionary["Material"] = "Materials";
-        FilterDictionary["Metal"] = "Metals";
-        FilterDictionary["Occasion"] = "Occasions";
-        FilterDictionary["Style"] = "Styles";
+        Occasions = (await CatalogService.GetCatalogDataAsync("occasions"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-        // Initialize SelectedCheckboxes
-        foreach (var key in FilterDictionary.Keys)
-        {
-            SelectedCheckboxes[key] = new HashSet<int>();
-        }
-
-        // Parse query parameters and populate SelectedCheckboxes
-        if (queryParameters["Material"] != null)
-        {
-            SelectedCheckboxes["Material"] = new HashSet<int>(queryParameters["Material"].Split(',').Select(int.Parse));
-        }
-
-        if (queryParameters["Metal"] != null)
-        {
-            SelectedCheckboxes["Metal"] = new HashSet<int>(queryParameters["Metal"].Split(',').Select(int.Parse));
-        }
-
-        if (queryParameters["Occasion"] != null)
-        {
-            SelectedCheckboxes["Occasion"] = new HashSet<int>(queryParameters["Occasion"].Split(',').Select(int.Parse));
-        }
-
-        if (queryParameters["Style"] != null)
-        {
-            SelectedCheckboxes["Style"] = new HashSet<int>(queryParameters["Style"].Split(',').Select(int.Parse));
-        }
+        Materials = (await CatalogService.GetCatalogDataAsync("materials"))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
     }
 
-
-    private void ClearAllCheckboxes()
+    private async Task<List<DropdownItem>> GetDropdownData(string type)
     {
-        if (!string.IsNullOrEmpty(SelectedFilter) && SelectedCheckboxes.ContainsKey(SelectedFilter))
-        {
-            SelectedCheckboxes[SelectedFilter].Clear();
-        }
-
-        StateHasChanged(); // Trigger re-render
+        return (await CatalogService.GetCatalogDataAsync(type))
+            .Select(x => new DropdownItem { Id = x.Id, Name = x.Name })
+            .ToList();
     }
 
-    private void ToggleCheckbox(string filterKey, int id)
+    private async Task ApplyFilters()
     {
-        if (SelectedCheckboxes.ContainsKey(filterKey))
+        try
         {
-            if (SelectedCheckboxes[filterKey].Contains(id))
-            {
-                SelectedCheckboxes[filterKey].Remove(id);
-            }
-            else
-            {
-                SelectedCheckboxes[filterKey].Add(id);
-            }
+            // Build the query string from the selected filters
+            var queryString = new System.Text.StringBuilder("?");
+
+            if (SelectedFilters.MinWeight > 0)
+                queryString.Append($"minWeight={SelectedFilters.MinWeight}&");
+
+            if (SelectedFilters.MaxWeight > 0)
+                queryString.Append($"maxWeight={SelectedFilters.MaxWeight}&");
+
+            if (SelectedFilters.Metals.Any())
+                queryString.Append($"metals={string.Join(",", SelectedFilters.Metals)}&");
+
+            if (SelectedFilters.Styles.Any())
+                queryString.Append($"styles={string.Join(",", SelectedFilters.Styles)}&");
+
+            if (SelectedFilters.Occasions.Any())
+                queryString.Append($"occasions={string.Join(",", SelectedFilters.Occasions)}&");
+
+            if (SelectedFilters.Materials.Any())
+                queryString.Append($"materials={string.Join(",", SelectedFilters.Materials)}&");
+
+            // Remove the trailing '&' or '?' if no filters are applied
+            if (queryString.Length > 1)
+                queryString.Length--; // Remove the last character
+
+            // Navigate to the list component's page with the query string
+            Navigation.NavigateTo($"/products{queryString}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error applying filters: {ex.Message}");
         }
     }
-    private void ShowSubcategories(string filterKey)
+
+    private void ClearFilters()
     {
-        SelectedFilter = filterKey;
-        StateHasChanged(); // Trigger UI update
+        // Reset the SelectedFilters object
+        SelectedFilters = new Dtos.CompositeFilterDto();
+        // Clear the FilteredItems list
+        FilteredItems.Clear();
     }
-
-    private void Submit()
-    {
-        var queryParameters = new List<string>();
-
-        if (SelectedCheckboxes["Material"].Any())
-        {
-            queryParameters.Add($"Material={string.Join(",", SelectedCheckboxes["Material"])}");
-        }
-
-        if (SelectedCheckboxes["Metal"].Any())
-        {
-            queryParameters.Add($"Metal={string.Join(",", SelectedCheckboxes["Metal"])}");
-        }
-
-        if (SelectedCheckboxes["Occasion"].Any())
-        {
-            queryParameters.Add($"Occasion={string.Join(",", SelectedCheckboxes["Occasion"])}");
-        }
-
-        if (SelectedCheckboxes["Style"].Any())
-        {
-            queryParameters.Add($"Style={string.Join(",", SelectedCheckboxes["Style"])}");
-        }
-
-        var queryString = string.Join("&", queryParameters);
-        var targetUrl = $"/filters-result?{queryString}";
-
-        Console.WriteLine($"Navigating to: {targetUrl}");
-
-        // Navigate to the FiltersResult page with the query string
-        Navigation.NavigateTo(targetUrl);
-    }
-
-
-
 }

@@ -1,7 +1,7 @@
-﻿@inject IFilterService FilterService
+﻿@inject ICatalogService CatalogService
 @inject NavigationManager Navigation
-
 @inject IStringLocalizer<Resource> localizer
+
 @if (Products == null || !Products.Any())
 {
     <p>@localizer["NoProductsFound"]</p>
@@ -17,8 +17,7 @@ else
 }
 
 @code {
-    [Parameter]
-    public List<CatalogItem> Products { get; set; } = new();
+    private List<CatalogItem> Products { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -26,29 +25,19 @@ else
         var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
         var queryParameters = System.Web.HttpUtility.ParseQueryString(uri.Query);
 
-        Console.WriteLine($"Query String: {uri.Query}");
-        foreach (var key in queryParameters.AllKeys)
-        {
-            Console.WriteLine($"Key: {key}, Value: {queryParameters[key]}");
-        }
-
-        // Construct the CompositeFilterDto
-        var selectedFilters = new CompositeFilterDto
+        // Create a CompositeFilterDto from the query parameters
+        var filters = new Dtos.CompositeFilterDto
             {
-                MinWeight = 0,
-                MaxWeight = 0,
-                ProductType = queryParameters["ProductType"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Material = queryParameters["Material"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Metal = queryParameters["Metal"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Occasion = queryParameters["Occasion"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
-                Style = queryParameters["Style"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                MinWeight = decimal.TryParse(queryParameters["minWeight"], out var minWeight) ? minWeight : 0,
+                MaxWeight = decimal.TryParse(queryParameters["maxWeight"], out var maxWeight) ? maxWeight : 0,
+                Metals = queryParameters["metals"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Styles = queryParameters["styles"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Occasions = queryParameters["occasions"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
+                Materials = queryParameters["materials"]?.Split(',').Select(int.Parse).ToList() ?? new List<int>(),
             };
 
-        Console.WriteLine($"Filters: {System.Text.Json.JsonSerializer.Serialize(selectedFilters)}");
-
-        // Call the API and fetch filtered products
-        Products = (await FilterService.FilterCatalogItemsAsync(selectedFilters)).ToList();
-
+        // Fetch the filtered products
+        Products = (await CatalogService.FilterByComposite(filters)).ToList();
         Console.WriteLine($"Fetched {Products.Count} products.");
     }
 }

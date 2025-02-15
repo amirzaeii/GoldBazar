@@ -27,7 +27,20 @@ public record CatalogItem(
     string ImageUrl,
     decimal Rating,
     int RatingCount,
+    int Quantity,
     CatalogItemType CatalogType);
 
 public record CatalogResult(int PageIndex, int PageSize, int Count, List<CatalogItem> Data);
 public record CatalogItemType(int Id, string Name);
+
+
+public class CompositeFilterDto
+{
+    public decimal MinWeight { get; set; }
+    public decimal MaxWeight { get; set; }
+    public List<int> Metals { get; set; } = new();
+    public List<int> Styles { get; set; } = new();
+    public List<int> Occasions { get; set; } = new();
+    public List<int> Materials { get; set; } = new();
+    public List<int> ProductTypes { get; set; } = new();
+}

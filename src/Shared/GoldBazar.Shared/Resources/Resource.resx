@@ -460,4 +460,28 @@
     <value>Submit</value>
     <comment>A label that displays Submit</comment>
   </data>
+  <data name="CaptionLabel" xml:space="preserve">
+    <value>Name</value>
+    <comment>A label that is used for name of product</comment>
+  </data>
+  <data name="DiscountLabel" xml:space="preserve">
+    <value>Discount (%)</value>
+    <comment>A label that shows discount</comment>
+  </data>
+  <data name="MaterialLabel" xml:space="preserve">
+    <value>Material</value>
+    <comment>A label that displays Material </comment>
+  </data>
+  <data name="ClearFiltersLabel" xml:space="preserve">
+    <value>Clear</value>
+    <comment>Label that displays Clear</comment>
+  </data>
+  <data name="MinWeightLabel" xml:space="preserve">
+    <value>Minimum Weight </value>
+    <comment>Label that displays Minimum Weight </comment>
+  </data>
+  <data name="MaxWeightLabel" xml:space="preserve">
+    <value>Maximum Weight</value>
+    <comment>Label that displays Maximum Weight</comment>
+  </data>
 </root>

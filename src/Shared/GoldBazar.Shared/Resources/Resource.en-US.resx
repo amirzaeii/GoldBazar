@@ -375,4 +375,22 @@
   <data name="SubmitLabel" xml:space="preserve">
     <value>Submit </value>
   </data>
+  <data name="CaptionLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DiscountLabel" xml:space="preserve">
+    <value>Discount (%)</value>
+  </data>
+  <data name="MaterialLabel" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="ClearFiltersLabel" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="MinWeightLabel" xml:space="preserve">
+    <value>Minimum Weight </value>
+  </data>
+  <data name="MaxWeightLabel" xml:space="preserve">
+    <value>Maximum Weight</value>
+  </data>
 </root>

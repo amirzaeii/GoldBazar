@@ -1,6 +1,9 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+
+using Catalog.Infrastructure;
+
 using WebComponent.Dtos;
 
 namespace WebComponent.Services;
@@ -74,24 +77,7 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
             return Array.Empty<CatalogItem>();
         }
     }
-    public async Task<IEnumerable<CatalogItem>> FilterCatalogItems(CompositeFilterDto filterDto)
-    {
-        var uri = $"{remoteServiceBaseUrl}item/filter";
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(uri, filterDto);
 
-            response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItem>>();
-            return result ?? Array.Empty<CatalogItem>();
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error fetching filtered catalog items: {ex.Message}");
-            return Array.Empty<CatalogItem>();
-        }
-    }
 
     public async Task<IEnumerable<CatalogItem>> GetSimilarProducts(int typeId)
     {
@@ -108,6 +94,53 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
             return Array.Empty<CatalogItem>();
         }
     }
+    public async Task<bool> AddProduct(Item newItem)
+    {
+        var uri = "api/catalog/item"; // Ensure this matches your API
 
+        try
+        {
+            Console.WriteLine($"Sending request to: {uri}");
+            Console.WriteLine($"Payload: {JsonSerializer.Serialize(newItem)}");
+
+            var response = await httpClient.PostAsJsonAsync(uri, newItem);
+
+            Console.WriteLine($"Response status: {response.StatusCode}");
+
+            response.EnsureSuccessStatusCode(); // Throws exception if not 2xx
+
+            return true;
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error adding new product: {ex.Message}");
+            return false;
+        }
+    }
+
+    public async Task<IEnumerable<CatalogInfo>> GetCatalogDataAsync(string category)
+    {
+        var uri = $"{remoteServiceBaseUrl}{category}";
+        var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
+        return result ?? Array.Empty<CatalogInfo>();
+    }
+
+    public async Task<IEnumerable<CatalogItem>> FilterByComposite(Dtos.CompositeFilterDto filterDto)
+    {
+        var uri = $"{remoteServiceBaseUrl}item/filter";
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync(uri, filterDto);
+            response.EnsureSuccessStatusCode();
+
+            var result = await response.Content.ReadFromJsonAsync<IEnumerable<CatalogItem>>();
+            return result ?? Array.Empty<CatalogItem>();
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error filtering catalog items: {ex.Message}");
+            return Array.Empty<CatalogItem>();
+        }
+    }
 }
 

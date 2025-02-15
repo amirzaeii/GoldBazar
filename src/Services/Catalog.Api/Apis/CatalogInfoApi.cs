@@ -6,7 +6,7 @@ public static class CatalogInfoApi
 {
     public static IEndpointRouteBuilder MapCatalogInfoApiV1(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("api/catalogInfo").HasApiVersion(1.0);
+        var api = app.MapGroup("api/catalog").HasApiVersion(1.0);
 
         // Material Endpoints
         api.MapGet("/materials", GetAllMaterials)
