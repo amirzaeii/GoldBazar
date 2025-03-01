@@ -1,0 +1,111 @@
+﻿@page "/filters"
+@using WebComponent.Commons
+@inject IStringLocalizer<Resource> Localizer
+@rendermode InteractiveServer
+
+<MudContainer Fixed="true" Class="mt-2">
+    <MudGrid>
+        <MudItem xs="12" Class="ma-2 ml-6">
+            <MudPaper Elevation="0" Class="d-flex justify-start">
+                <MudButton OnClick="NavigateToCategories" Variant="Variant.Filled" Color="Color.Default"
+                           EndIcon="@Icons.Material.Filled.ArrowRight">
+                    @Localizer[nameof(Resource.SortByLabel)]
+                </MudButton>
+            </MudPaper>
+            <MudDivider Class="mt-5"></MudDivider>
+        </MudItem>
+        <MudItem xs="12">
+            <MudPaper>
+                <MudTabs Outlined="true" Position="Position.Left" Rounded="true" Border="true"
+                         ApplyEffectsToContainer="true" Class="mt-1" PanelClass="pa-6">
+                    <MudTabPanel Text="@Localizer[nameof(Resource.ProductTypeLabel)]">
+                        <MudGrid>
+                            @foreach (CatalogItemType catalogItemType in CatalogTypes)
+                            {
+                                <MudItem xs="12" Class="pt-1">
+                                    <MudCheckBox
+                                        ValueChanged="(e) => OnCheckboxChange(e, catalogItemType.Id, FilterType.ProductType)"
+                                        T="bool"
+                                        Value="@IsChecked(catalogItemType.Id, FilterType.ProductType)"
+                                        Label="@catalogItemType.Name"/>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@Localizer[nameof(Resource.MaterialLabel)]">
+                        <MudGrid>
+                            @foreach (MaterialType material in MaterialTypes)
+                            {
+                                <MudItem xs="12" Class="pt-1">
+                                    <MudCheckBox
+                                        ValueChanged="(e) => OnCheckboxChange(e, material.Id, FilterType.Material)"
+                                        T="bool"
+                                        Value="@IsChecked(material.Id, FilterType.Material)"
+                                        Label="@material.Name"/>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@Localizer[nameof(Resource.MetalLabel)]">
+                        <MudGrid>
+                            @foreach (MetalType metalType in MetalTypes)
+                            {
+                                <MudItem xs="12" Class="pt-1">
+                                    <MudCheckBox
+                                        ValueChanged="(e) => OnCheckboxChange(e, metalType.Id, FilterType.Metal)"
+                                        T="bool"
+                                        Value="@IsChecked(metalType.Id, FilterType.Metal)"
+                                        Label="@metalType.Name"/>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@Localizer[nameof(Resource.OccasionLabel)]">
+                        <MudGrid>
+                            @foreach (OccasionType occasionType in OccasionTypes)
+                            {
+                                <MudItem xs="12" Class="pt-1">
+                                    <MudCheckBox
+                                        ValueChanged="(e) => OnCheckboxChange(e, occasionType.Id, FilterType.Occasion)"
+                                        T="bool"
+                                        Value="@IsChecked(occasionType.Id, FilterType.Occasion)"
+                                        Label="@occasionType.Name"/>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudTabPanel>
+                    <MudTabPanel Text="@Localizer[nameof(Resource.StyleLabel)]">
+                        <MudGrid>
+                            @foreach (StyleType styleType in StyleTypes)
+                            {
+                                <MudItem xs="12" Class="pt-1">
+                                    <MudCheckBox
+                                        ValueChanged="(e) => OnCheckboxChange(e, styleType.Id, FilterType.Style)"
+                                        T="bool"
+                                        Value="@IsChecked(styleType.Id, FilterType.Style)"
+                                        Label="@styleType.Name"/>
+                                </MudItem>
+                            }
+                        </MudGrid>
+                    </MudTabPanel>
+                </MudTabs>
+            </MudPaper>
+            <MudPaper Elevation="2" Class="pa-4 mt-2">
+                <MudGrid>
+                    <MudItem xs="1">
+                        <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="ClearAllFiltersAsync"
+                                   Class="pa-2">
+                            @Localizer[nameof(Resource.ClearFiltersLabel)]
+                        </MudButton>
+                    </MudItem>
+                    <MudItem xs="11">
+                        <MudButton Variant="Variant.Filled" FullWidth="true" Color="Color.Primary" OnClick="SaveFilter"
+                                   Class="pa-2">
+                            @Localizer[nameof(Resource.SortAndFilterLabel)]
+                        </MudButton>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

@@ -13,14 +13,14 @@
         {
             <ProductCard Item="product" />
         }
-        <div class="page-links">
-            @foreach (var pageIndex in GetVisiblePageIndexes(discountedProducts))
-            {
-                <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
-                    @pageIndex
-                </NavLink>
-            }
-        </div>
+    }
+</div>
+<div class="page-links">
+    @foreach (var pageIndex in GetVisiblePageIndexes(discountedProducts))
+    {
+        <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
+            @pageIndex
+        </NavLink>
     }
 </div>
 

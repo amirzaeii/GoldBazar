@@ -14,7 +14,7 @@
             <nav class="categories">
                 @foreach (var category in catalogItemTypes)
                 {
-                    <a href="/filters-result/@category.Id">
+                <a href="/categories/@category.Id">
                         <div class="category-item">
                             <div class="category-icon">
                                 <img src="@ImageProvider.GetTypeImageUrl(category)" alt="@category.Name">

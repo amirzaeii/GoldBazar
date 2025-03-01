@@ -2,26 +2,28 @@
 @inject NavigationManager Nav
 @attribute [StreamRendering]
 
-<div class="product-grid">
-    @if (catalogResult is null)
-    {
-        <p>Loading...</p>
-    }
-    else
-    {
-        @foreach (var product in catalogResult.Data)
+<div class="container">
+    <div class="product-grid">
+        @if (catalogResult is null)
         {
-            <ProductCard Item="product" />
-            
+            <p>Loading...</p>
         }
-         <div class="page-links">
+        else
+        {
+            @foreach (var product in catalogResult.Data)
+            {
+                <ProductCard Item="product"/>
+
+            }
+            <div class="page-links">
                 @foreach (var pageIndex in GetVisiblePageIndexes(catalogResult))
                 {
                     <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
                         @pageIndex</NavLink>
                 }
-        </div>
-    }
+            </div>
+        }
+    </div>
 </div>
 
 @code {

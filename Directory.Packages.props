@@ -21,8 +21,7 @@
     <packageVersion Include="Aspire.NpgSql" Version="$(AspireVersion)" />
     <packageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
-   
-
+    <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <!-- Microsoft.Extensions -->
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)" />
@@ -34,7 +33,7 @@
     <PackageVersion Include="Microsoft.Extensions.Options" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="$(MicrosoftExtensionsVersion)" />
-
+    <PackageVersion Include="MudBlazor" Version="7.16.0" />
     <!-- OpenTelementry -->
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
@@ -71,6 +70,5 @@
     <PackageVersion Include="Asp.Versioning.Http.Client" Version="8.1.0" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
-    
   </ItemGroup>
 </Project>

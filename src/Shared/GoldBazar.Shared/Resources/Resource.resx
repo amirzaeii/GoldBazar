@@ -484,4 +484,7 @@
     <value>Maximum Weight</value>
     <comment>Label that displays Maximum Weight</comment>
   </data>
+  <data name="Distinction" xml:space="preserve">
+      <value>Distinction</value>
+  </data>
 </root>
