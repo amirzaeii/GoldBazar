@@ -1,13 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="main">
-    <div class="content px-4">
-        <MudThemeProvider />
-        <MudPopoverProvider />
-        <MudDialogProvider />
-        <MudSnackbarProvider />
-        @Body
-    </div>
+<MudRTLProvider RightToLeft="true">
+    <MudThemeProvider/>
+    <div class="main">
+        <div class="content px-4">
+            @Body
+        </div>
 
-</div>
+    </div>
+</MudRTLProvider>
 

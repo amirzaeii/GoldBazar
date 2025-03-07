@@ -1,19 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <Header></Header>
-
-    <main class="content">
-        <article class="px-4">
-            <MudThemeProvider />
-            <MudPopoverProvider />
-            <MudDialogProvider />
-            <MudSnackbarProvider />
-            @Body
-        </article>
-    </main>
-    <div class="bottom-nav-wrapper">
-        <NavMenu/>
+<MudRTLProvider RightToLeft="IsRightToLeft">
+    <MudThemeProvider @bind-IsDarkMode="IsDarkMode" Theme="new MudTheme()"/>
+    <div class="page">
+        <Header></Header>
+        <main class="content">
+            <article class="px-4">
+                @Body
+            </article>
+        </main>
+        <div class="bottom-nav-wrapper">
+            <NavMenu/>
+        </div>
     </div>
-</div>
+</MudRTLProvider>
 

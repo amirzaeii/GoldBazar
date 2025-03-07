@@ -1,57 +1,38 @@
 ﻿@inject ICatalogService CatalogService
 @inject IProductImageUrlProvider ImageProvider
 @inject IShopService ShopService
-@inject IStringLocalizer<Resource> localizer
+@inject IStringLocalizer<Resource> Localizer
 
-@if (shopItems == null)
-{
-    <p>Loading items...</p>
-}
-else if (!shopItems.Any())
-{
-    <p>@localizer[nameof(Resource.NoMoreItemsFromShopLabel)]</p>
-}
-else
-{
-    <div class="container">
-     <div>
-        <h3 class="shop-products-title">
-                @localizer[nameof(Resource.MoreItemsFromShopLabel)] @goldsmithName
-        </h3>
-    </div>
-    <div class="products">
-        @if (shopItems != null && shopItems.Any())
-        {
-            @foreach (var product in shopItems)
-            {
-                <ProductCard Item="product"></ProductCard>
-            }
-        }
-        else
-        {
-            <p>No products available.</p>
-        }
-
-        </div>
-    </div>
-}
-
-@code {
-    [Parameter] public int ShopId { get; set; }
-    [Parameter] public int ExcludeProductId { get; set; }
-
-    List<CatalogItem>? shopItems;
-    string goldsmithName = "";
-
-    protected override async Task OnInitializedAsync()
+<MudContainer>
+    @if (_shopItems == null)
     {
-        // Fetch shop name
-        var shop = await ShopService.GetShopById(ShopId);
-        goldsmithName = shop?.Name ?? "Goldsmith";
-
-        // Fetch products from the shop, excluding the current product
-        shopItems = (await ShopService.GetProductsByShopId(ShopId))
-                    .Where(p => p.Id != ExcludeProductId)
-                    .ToList();
+        <p>Loading items...</p>
     }
-}
+    else if (!_shopItems.Any())
+    {
+        <p>@Localizer[nameof(Resource.NoMoreItemsFromShopLabel)]</p>
+    }
+    else
+    {
+        <div>
+            <h3 class="shop-products-title pa-3">
+                @Localizer[nameof(Resource.MoreItemsFromShopLabel)] @_goldsmithName
+            </h3>
+        </div>
+        <MudGrid Justify="Justify.Center">
+            @if (_shopItems != null && _shopItems.Any())
+            {
+                @foreach (var product in _shopItems)
+                {
+                    <MudItem xs="2">
+                        <ProductCard Item="product"></ProductCard>
+                    </MudItem>
+                }
+            }
+            else
+            {
+                <p>No products available.</p>
+            }
+        </MudGrid>
+    }
+</MudContainer>
