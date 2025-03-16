@@ -1,5 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+
+using WebComponent.Commons.Consts;
 using WebComponent.Dtos;
 using WebComponent.Services;
 
@@ -73,7 +75,7 @@ public partial class Categories
 
     private async Task LoadFilter()
     {
-        var filterJson = await LocalStorageService.GetItemAsync("compositeFilter");
+        var filterJson = await LocalStorageService.GetItemAsync(LocalStorageKeys.CompositeFilter);
         if (!string.IsNullOrEmpty(filterJson))
         {
             CompositeFilter = JsonSerializer.Deserialize<CompositeFilterDto>(filterJson) ?? new CompositeFilterDto();

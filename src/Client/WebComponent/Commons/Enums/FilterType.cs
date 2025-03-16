@@ -1,4 +1,4 @@
-namespace WebComponent.Commons;
+namespace WebComponent.Commons.Enums;
 
 public enum FilterType
 {

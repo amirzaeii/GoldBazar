@@ -1,0 +1,258 @@
+/* Sold items page styles */
+body {
+    background-color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    direction: rtl;
+    font-family: 'Zain', 'Roboto', Arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.sold-container {
+    width: 100%;
+    max-width: 768px;
+    background-color: #fff;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    margin-bottom: 10px;
+}
+
+.page-title {
+    font-size: 20px;
+    color: #333;
+    margin: 0;
+    font-weight: 500;
+}
+
+.nav-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: #333;
+}
+
+/* Search bar */
+.search-bar {
+    margin: 0 20px 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #F0F0FF;
+    border-radius: 30px;
+    padding: 5px;
+}
+
+.search-bar input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 15px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+}
+
+.search-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.search-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: #6C42EB;
+}
+
+/* Sold items list */
+.sold-list {
+    padding: 0 20px;
+}
+
+.sold-item {
+    display: flex;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+}
+
+.sold-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-left: 15px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sold-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sold-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sold-title {
+    font-size: 16px;
+    color: #333;
+    margin: 0 0 10px;
+    font-weight: 500;
+}
+
+.sold-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.sold-price {
+    font-weight: 600;
+    color: #333;
+}
+
+.price-value {
+    font-size: 16px;
+}
+
+.sold-quantity {
+    color: #666;
+    font-size: 14px;
+}
+
+.quantity-label {
+    margin-left: 5px;
+}
+
+.quantity-value {
+    font-weight: 500;
+}
+
+.sold-date {
+    display: flex;
+    align-items: center;
+    color: #888;
+    font-size: 13px;
+}
+
+.sold-date svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 5px;
+    stroke-width: 1.5;
+}
+
+/* Date divider */
+.date-divider {
+    display: flex;
+    justify-content: center;
+    margin: 15px 0 20px;
+    position: relative;
+}
+
+.date-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+}
+
+.date-divider span {
+    background-color: #fff;
+    padding: 0 15px;
+    font-size: 15px;
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .sold-image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .sold-title {
+        font-size: 14px;
+    }
+    
+    .price-value {
+        font-size: 14px;
+    }
+    
+    .sold-quantity {
+        font-size: 12px;
+    }
+    
+    .sold-date {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 768px) {
+    .page-title {
+        font-size: 26px;
+    }
+    
+    .sold-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .sold-title {
+        font-size: 18px;
+    }
+    
+    .price-value {
+        font-size: 18px;
+    }
+} 

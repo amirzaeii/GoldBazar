@@ -3,6 +3,8 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 
 using WebComponent.Commons;
+using WebComponent.Commons.Consts;
+using WebComponent.Commons.Enums;
 using WebComponent.Dtos;
 using WebComponent.Services;
 
@@ -122,13 +124,13 @@ public partial class Filters
     
     private async Task SaveFilter()
     {
-        await LocalStorageService.SetItemAsync("compositeFilter", JsonSerializer.Serialize(CompositeFilter));
+        await LocalStorageService.SetItemAsync(LocalStorageKeys.CompositeFilter, JsonSerializer.Serialize(CompositeFilter));
         NavigateToCategories();
     }
     
     private async Task LoadFilter()
     {
-        var filterJson = await LocalStorageService.GetItemAsync("compositeFilter");
+        var filterJson = await LocalStorageService.GetItemAsync(LocalStorageKeys.CompositeFilter);
         if (!string.IsNullOrEmpty(filterJson))
         {
             CompositeFilter = JsonSerializer.Deserialize<CompositeFilterDto>(filterJson) ?? new CompositeFilterDto();

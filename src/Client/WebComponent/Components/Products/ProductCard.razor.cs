@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 using WebComponent.Constants;
 using WebComponent.Dtos;
@@ -21,6 +20,14 @@ public partial class ProductCard : ComponentBase
 
     private void GoToProduct(int itemId)
     {
-        NavigationManager.NavigateTo($"{RouteConstants.PRODUCTS}{itemId}");
+        try
+        {
+            Console.WriteLine($"Navigating to product with ID: {itemId}");
+            NavigationManager.NavigateTo($"{RouteConstants.PRODUCTS}{itemId}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Navigation failed: {ex.Message}");
+        }
     }
 }
