@@ -1,5 +1,3 @@
-using Microsoft.Extensions.FileProviders;
-
 using VendorWebApp.Components;
 using VendorWebApp.Extension;
 
@@ -71,16 +69,6 @@ app.MapGet("Culture/Set", async (HttpContext context) =>
         context.Response.StatusCode = 500;
     }
 });
-app.UseStaticFiles();
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "UserData", "Uploads")), // Correct path
-    RequestPath = "/uploads", // This ensures files are accessible via /uploads/
-    ServeUnknownFileTypes = true, // Allows all file types (optional)
-    DefaultContentType = "image/png" // Ensures it serves images correctly
-});
-
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
