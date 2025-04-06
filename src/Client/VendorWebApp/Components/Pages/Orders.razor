@@ -1,42 +1,34 @@
-﻿@page "/"
-@using WebComponent.Components.Products
-@inject ICatalogService catalogservice
-<h3>Orders</h3>
-    @if (catalogResult is null)
-    {
-        <p>Loading...</p>
-    }
-    else
-    {
-        @foreach (var product in catalogResult.Data)
-        {
-            <ProductCard Item="product" />
-            
-        }
-         <div class="page-links">
-               
-        </div>
-    }
+﻿@page "/orders"
 
+<main class="main-content">
+    <div class="products-grid">
+        <RecentOrders 
+            Title="گوارەی گوڵی خۆر"
+            OldPrice="$199"
+            NewPrice="$179"
+            Quantity=1
+            Weight="4.5g"
+            Size="34"
+            Karat="21"
+                      User=" لانە نەوزاد"
+            Code="2342211"
+            Location="هەولێر"
+                      ImageUrl="Image/avita.svg" />
+
+        <RecentOrders Title="گوارەی پەپوولە"
+            OldPrice="$199"
+            NewPrice="$179"
+            Weight="4.5g"
+            Size="34"
+            Quantity=2
+            Karat="21"
+                      User=" لانە نەوزاد"
+            Code="2342211"
+            Location="هەولێر"
+            ImageUrl="Image/avita.svg" />
+    </div>
+</main>
 @code {
-    const int PageSize = 40;
-
-    [SupplyParameterFromQuery]
-    public int? Page { get; set; }
-
-    [SupplyParameterFromQuery(Name = "type")]
-    public int? ItemTypeId { get; set; }
-
-    CatalogResult catalogResult;
-
-    static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
-        => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
-    protected override async Task OnInitializedAsync()
-    {
-        catalogResult = await catalogservice.GetCatalogItems(
-            Page.GetValueOrDefault(1) - 1,
-            PageSize,
-            ItemTypeId);
-    }
 
 }
+

@@ -122,10 +122,12 @@
     font-style: normal;
     font-display: swap;
 }
-
+html {
+    font-family: Zain;
+}
 
 body {
-    font-family: 'trebuc';
+ font-family: Zain;
     background-color: var(--bg-main);
     color: var(--text-color);
     

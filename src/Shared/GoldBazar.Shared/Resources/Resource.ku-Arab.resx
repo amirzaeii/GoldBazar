@@ -379,7 +379,7 @@
     <value>ناو</value>
   </data>
   <data name="DiscountLabel" xml:space="preserve">
-    <value>داشکاندن (%)</value>
+    <value>داشکاندن </value>
   </data>
   <data name="MaterialLabel" xml:space="preserve">
     <value>پێکاتە</value>
@@ -392,5 +392,11 @@
   </data>
   <data name="MaxWeightLabel" xml:space="preserve">
     <value>زۆرترین کێش</value>
+  </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>کۆدەکەت داخڵ بکە</value>
+  </data>
+  <data name="DontHaveAnAccountVendor" xml:space="preserve">
+    <value>هەژمارت نییە؟پەیوەندیمان پێوە بکەن</value>
   </data>
 </root>

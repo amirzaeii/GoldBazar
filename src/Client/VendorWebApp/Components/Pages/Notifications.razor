@@ -1,0 +1,33 @@
+﻿@page "/nots"
+@inject NavigationManager Nav
+@using static VendorWebApp.Components.Reusable.RecentNotifications
+
+
+<div class="notifications-container">
+    <div class="header">
+        <h1 class="page-title">ئاگادارییەکان</h1>  
+        <button class="back-button" onclick="history.back()">
+            <img src="Icons/arrow.png" alt="Back" />
+        </button>
+       
+    </div>
+
+    <RecentNotifications Notifications="@notificationList" />
+</div>
+
+@code {
+    private List<NotificationItem> notificationList = new()
+    {
+        new NotificationItem
+        {
+            Title = "ئۆفەری سێ مانگی تەواوبوو ، پەیوەندی بکە بە گۆڵدبازارەوە بۆ نوێکردنەوەی ئۆفەرەکەت.",
+            Type = "urgent"
+        },
+        new NotificationItem
+        {
+            Title = "3 ڕۆژیتر ئۆفەری سێ مانگیت تەواودەبێت ، پەیوەندی بکە بە گۆڵدبازارەوە بۆ نوێکردنەوەی ئۆفەرەکەت.",
+            Type = "warning",
+            Date = new DateTime(2025, 4, 1)
+        }
+    };
+}

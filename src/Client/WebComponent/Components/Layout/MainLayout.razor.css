@@ -1,4 +1,7 @@
-
+.logo {
+    width: 300px;
+    height: auto;
+}
 .sidebar {
     width: 250px;
     background-color: var(--bg-main);

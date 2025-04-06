@@ -1,4 +1,4 @@
-﻿<LayoutView Layout="@typeof(MainLayout)">
+﻿@* <LayoutView Layout="@typeof(MainLayout)">
     <Router AppAssembly="@GetType().Assembly">             
             
         <Found Context="routeData">
@@ -14,3 +14,19 @@
         </Navigating>
     </Router>
 </LayoutView>
+ *@
+
+<Router AppAssembly="@GetType().Assembly">
+
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" />
+    </Found>
+    <NotFound>
+        <h1>404 - Not Found</h1>
+        <p>Sorry, there is nothing at this address.</p>
+    </NotFound>
+    <Navigating>
+
+        <p>loading...</p>
+    </Navigating>
+</Router>

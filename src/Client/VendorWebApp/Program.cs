@@ -10,7 +10,7 @@ builder.Services.AddLocalization();
 builder.AddApplicationServices();
 builder.Services.AddServerSideBlazor().AddHubOptions(options =>
 {
-    options.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10MB limit
+    options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
     options.ClientTimeoutInterval = TimeSpan.FromMinutes(5);
     options.HandshakeTimeout = TimeSpan.FromMinutes(2);
 });
@@ -75,10 +75,10 @@ app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "UserData", "Uploads")), // Correct path
-    RequestPath = "/uploads", // This ensures files are accessible via /uploads/
-    ServeUnknownFileTypes = true, // Allows all file types (optional)
-    DefaultContentType = "image/png" // Ensures it serves images correctly
+        Path.Combine(builder.Environment.ContentRootPath, "UserData", "Uploads")),
+    RequestPath = "/uploads",
+    ServeUnknownFileTypes = true,
+    DefaultContentType = "image/png"
 });
 
 
@@ -89,3 +89,4 @@ app.MapRazorComponents<App>()
 app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
 app.MapForwarder("/type-images/{id}", "http://catalog-api", "/api/catalog/types/{id}/pic");
 app.Run();
+

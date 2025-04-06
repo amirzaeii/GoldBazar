@@ -1,0 +1,45 @@
+﻿
+.notifications-container {
+    width: 100%;
+    max-width: 768px;
+    background-color: #fff;
+    min-height: 100vh;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    direction: rtl;
+    padding: 10px 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.page-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .page-title {
+        font-size: 26px;
+    }
+}
+
+
+.back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+    .back-button img {
+        width: 24px;
+        height: 24px;
+    }
+

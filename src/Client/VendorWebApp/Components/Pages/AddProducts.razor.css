@@ -1,22 +1,5 @@
-﻿/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-}
-
-.tabs-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 10px;
-    background-color: transparent;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.tabs-header {
-    font-size: 1.2rem;
+﻿.tabs-header {
+    font-size: 32px;
     margin-bottom: 15px;
     font-weight: bold;
     color: #333;
@@ -24,14 +7,15 @@ body {
 
 .tabs {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-between;
+    gap: 15px;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #fff;
-    overflow-x: auto; /* For mobile horizontal scrolling */
+    width: 100%;
+    max-width: 100%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .tab {
@@ -43,7 +27,7 @@ body {
     color: darkgrey;
     cursor: pointer;
     transition: all 0.3s ease;
-    white-space: nowrap; /* Prevent text wrapping */
+    white-space: nowrap;
 }
 
     .tab:hover {
@@ -53,17 +37,16 @@ body {
     .tab.active {
         background-color: #6200ea;
         color: #fff;
+        background: rgba(65, 65, 202, 0.96);
         border: 1px solid #6200ea;
     }
 
 .tab-content {
     padding: 20px;
-    font-size: 1rem;
-    background-color: #fff;
+    font-size: 18px;
     border-radius: 10px;
 }
 
-/* Media Upload Section */
 .media-upload-container {
     max-width: 600px;
     margin: 20px auto;
@@ -71,7 +54,6 @@ body {
     background: #fff;
     border-radius: 10px;
 }
-/* Image Upload Section */
 
 .upload-grid {
     display: grid;
@@ -92,13 +74,13 @@ body {
     transition: all 0.2s;
 }
 
-.upload-box.uploaded {
-    background: #4141CA;
-    border: none;
-    color: white;
-}
+    .upload-box.uploaded {
+        background: #4141CA;
+        border: none;
+        color: white;
+    }
 
-.upload-icon{
+.upload-icon {
     display: flex;
     height: 24px;
     width: 24px;
@@ -131,8 +113,6 @@ body {
     border: none;
     background: none;
 }
-
-/* video */
 
 .video-preview {
     width: 100%;
@@ -173,21 +153,6 @@ h3, h4 {
     margin-bottom: 20px;
 }
 
-.image-preview img {
-    max-width: 80px;
-    height: 80px;
-    object-fit: cover;
-    margin: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-video {
-    max-width: 100%;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
 .error-message {
     color: red;
     font-size: 0.9rem;
@@ -208,7 +173,6 @@ video {
         background-color: #3700b3;
     }
 
-/* Responsive Design */
 @media (max-width: 600px) {
     .tabs {
         gap: 10px;
@@ -230,7 +194,23 @@ video {
     }
 }
 
-/* Features css*/
+.modified valid {
+    outline: none;
+}
+
+.valid.modified:not([type="checkbox"]) {
+    outline: 1px solid red;
+}
+
+button, a, input, select, textarea {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    outline: none;
+    background-color: white;
+}
+
 .features-container {
     display: flex;
     flex-direction: column;
@@ -241,61 +221,73 @@ video {
 }
 
 .dropdown-group {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
-    gap: 20px;
+    width: 171;
+    height: 60;
+    min-width: 171px;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 10px;
+    background: var(--Colors-primary, rgba(255, 255, 255, 1));
+    box-shadow: 5px 5px 16.4px 0px rgba(118, 118, 118, 0.12);
 }
 
-.dropdown {
+.dropdown,
+.input-field {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-    .dropdown label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
+    .dropdown label,
+    .input-field label {
+        font-family: Zain;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 20px;
+        letter-spacing: 0.1px;
+        vertical-align: middle;
     }
 
-    .dropdown select {
+    .dropdown select,
+    .input-field input {
         padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        background: #f9f9f9;
+        border-radius: 6px;
+        font-size: 14px;
+        background: #fff;
+        transition: 0.3s ease-in-out;
     }
+
+        .dropdown select:focus,
+        .input-field input:focus {
+            border-color: #5A20FF;
+            outline: none;
+            box-shadow: 0 0 5px rgba(90, 32, 255, 0.5);
+        }
 
 .description-box {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    grid-column: span 2; /* Makes textarea span across two columns */
+    grid-column: span 2;
 }
-
-    .description-box label {
-        font-size: 14px;
-        font-weight: bold;
-        color: #333;
-    }
 
     .description-box textarea {
         padding: 10px;
         border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
+        border-radius: 6px;
+        font-size: 14px;
         min-height: 100px;
         resize: vertical;
+        transition: 0.3s ease-in-out;
     }
 
-/* Ensure two columns even on small screens */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     .dropdown-group {
-        grid-template-columns: repeat(2, 1fr); /* Fixed two columns */
+        grid-template-columns: 1fr;
     }
 }
 
-/* Pricing Tab Specific CSS */
 .pricing-container {
     display: flex;
     flex-direction: column;
@@ -303,46 +295,56 @@ video {
     padding: 20px;
     border-radius: 10px;
     max-width: 600px;
-    margin: 0 auto; /* Center the container */
+    margin: 0 auto;
+    Center the container
 }
 
 .input-group {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Two equal-width columns */
-    gap: 20px; /* Add spacing between inputs */
-    align-items: center; /* Align inputs and labels vertically */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: center;
 }
 
 .input-field {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    text-align: center; /* Center align labels */
+    text-align: center;
 }
 
     .input-field label {
         font-size: 14px;
         font-weight: bold;
-        color: #666; /* Softer color for labels */
+        color: #666;
+        font-family: Zain;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 20px;
+        letter-spacing: 0.1px;
+        text-align: right;
+        vertical-align: middle;
     }
 
     .input-field input {
         padding: 12px;
         border: 1px solid #ddd;
-        border-radius: 15px; /* Match the rounded style in the screenshot */
-        font-size: 16px;
+        border-radius: 15px;
+        Match the rounded style in the screenshot font-size: 16px;
         background: #fff;
         outline: none;
         transition: border-color 0.3s ease;
-        text-align: center; /* Center-align text inside inputs */
+        text-align: center;
+        Center-align text inside inputs
     }
 
         .input-field input:focus {
             border-color: #6200ea;
-            box-shadow: 0 0 5px rgba(98, 0, 234, 0.3); /* Subtle purple shadow on focus */
+            box-shadow: 0 0 5px rgba(98, 0, 234, 0.3);
+            Subtle purple shadow on focus
         }
 
-/* Submit button styling */
+Submit button styling
 .pricing-submit-button {
     padding: 12px 25px;
     background-color: #6200ea;
@@ -352,30 +354,142 @@ video {
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    align-self: center; /* Center align the button */
-    transition: background-color 0.3s ease;
-    margin-top: 20px; /* Add spacing above the button */
-    width: 200px; /* Fixed width for consistent appearance */
+    align-self: center;
+    Center align the button transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 200px;
 }
 
-    .pricing-submit-button:hover {
-        background-color: #3700b3;
-    }
+.pricing-submit-button:hover {
+    background-color: #3700b3;
+}
 
-/* Responsive Behavior */
 @media (max-width: 768px) {
     .input-group {
-        grid-template-columns: 1fr 1fr; /* Ensure two columns on medium screens */
+        grid-template-columns: 1fr 1fr;
+        Ensure two columns on medium screens
     }
 }
 
 @media (max-width: 500px) {
     .input-group {
-        grid-template-columns: 1fr; /* Stack inputs on small screens */
+        grid-template-columns: 1fr;
+        Stack inputs on small screens
     }
 
     .pricing-submit-button {
-        width: 100%; /* Full-width button on small screens */
+        width: 100%;
+        Full-width button on small screens
     }
 }
 
+.tabs-container {
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.input-field, .dropdown {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #F8F8F8;
+    font-size: 16px;
+    transition: 0.3s;
+    outline: none;
+}
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #5A42D1;
+        background: #fff;
+    }
+
+button {
+    width: 100%;
+    background: #5A42D1;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+    button:hover {
+        background: #432EB2;
+    }
+
+
+.image-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+    .image-upload-container input[type="file"] {
+        display: none;
+    }
+
+.upload-button {
+    width: 80px;
+    height: 80px;
+    background-color: #6464ff;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: relative;
+}
+
+    .upload-button:hover {
+        opacity: 0.85;
+    }
+
+
+.upload-placeholder {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+}
+
+.upload-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+    .upload-preview:hover {
+        transform: scale(1.05);
+    }

@@ -12,6 +12,8 @@
 @inject IWebHostEnvironment Environment
 @inject NavigationManager Nav
 @rendermode InteractiveServer
+@layout NavLayout
+
 <div class="tabs-container">
     <div class="tabs-header">@localizer[nameof(Resource.AddProductLabel)]</div>
     <div class="tabs">
@@ -30,12 +32,25 @@
             <DataAnnotationsValidator />
             @if (currentStep == 0)
             {
-                <InputFile accept=".png,.jpg,.jpeg" OnChange="FileUploaded" />
+                @* <InputFile accept=".png,.jpg,.jpeg" OnChange="FileUploaded" />
                 @if (!string.IsNullOrEmpty(newItem.MainPhoto))
                 {
                     <img src="@newItem.MainPhoto" alt="Product Image" />
-                }
-
+                } *@
+              <label>@localizer[nameof(Resource.AddImagesLabel)]</label>
+                    <div class="image-upload-container">
+                        <label class="upload-button">
+                            <input type="file" accept=".png,.jpg,.jpeg" onchange="FileUploaded" />
+                            @if (string.IsNullOrEmpty(newItem.MainPhoto))
+                            {
+                            <div class="upload-placeholder"><img src="Icons/add-image.svg" /></div>
+                        }
+                            else
+                            {
+                            <img src="@newItem.MainPhoto" alt="Product Image" class="upload-preview" />
+                            }
+                        </label>
+                    </div>
             }
             else if (currentStep == 1)
             {
@@ -139,7 +154,8 @@
             <ValidationSummary />
         </EditForm>
     </div>
-</div>
+    </div>
+
 @code {
     private List<IBrowserFile> loadedFiles = [];
     private long maxFileSize = 1024 * 1024 * 3;
@@ -162,11 +178,10 @@
     private List<DropdownItem> Materials = new();
     protected override async Task OnInitializedAsync()
     {
-        // Fetch all types
+
         var allTypes = await CatalogService.GetTypes();
         ProductTypes = allTypes.Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
-        // Fetch and map other dropdown data
         Metals = (await CatalogService.GetCatalogDataAsync("metals"))
             .Select(x => new DropdownItem { Id = x.Id, Name = x.Name }).ToList();
 
@@ -193,7 +208,7 @@
             else
             {
                 Console.WriteLine("Failed to add product.");
-                // Handle failure (e.g., show an error message)
+ 
             }
         }
         catch (Exception ex)
@@ -220,15 +235,12 @@
 
             var uploadPath = Path.Combine(WebHostEnvironment.ContentRootPath, "UserData", "Uploads");
 
-            // ✅ Ensure directory exists before saving
             if (!Directory.Exists(uploadPath))
             {
                 Directory.CreateDirectory(uploadPath);
             }
 
 
-
-            // Ensure the directory exists
             if (!Directory.Exists(uploadPath))
             {
                 Directory.CreateDirectory(uploadPath);
@@ -238,11 +250,9 @@
             var fileName = $"{Guid.NewGuid()}{fileExtension}";
             var filePath = Path.Combine(uploadPath, fileName);
 
-            // Open stream with a max file size limit
             await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
             await browserFile.OpenReadStream(10 * 1024 * 1024).CopyToAsync(fileStream);
 
-            // Validate file after writing
             if (!File.Exists(filePath))
             {
                 throw new Exception($"File was not saved correctly: {filePath}");

@@ -1,0 +1,50 @@
+﻿<div class="stat-card">
+    <div class="stat-header">
+        <div class="icon-section">
+            <div class="stat-icon @BgColor">
+                <img src="@IconPath" alt="icon" />
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Value))
+            {
+                <div class="stat-value @ValueColor">@Value</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(ChangePercent))
+            {
+                <div class="stat-change">
+                    ↑ @ChangePercent
+                </div>
+            }
+        </div>
+
+        <div class="stat-content">
+            <div class="stat-title">@Title</div>
+
+            @if (!string.IsNullOrWhiteSpace(Subtext))
+            {
+                <div class="stat-subtext">@Subtext</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(TimeText))
+            {
+                <div class="stat-subtext time">
+                    <img src="Icons/time.svg" alt="time" class="time-icon" />
+                    <span>@TimeText</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string Subtext { get; set; }
+    [Parameter] public string TimeText { get; set; }
+    [Parameter] public string IconPath { get; set; }
+    [Parameter] public string BgColor { get; set; }
+    [Parameter] public string ValueColor { get; set; }
+    [Parameter] public string ChangePercent { get; set; }
+}

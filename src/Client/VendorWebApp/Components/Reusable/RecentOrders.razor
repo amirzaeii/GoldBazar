@@ -1,0 +1,50 @@
+﻿<div class="order-card">
+    <div class="order-header">
+        <div class="order-left">
+            <div class="order-price-title">
+                <div class="price">
+                    <span class="new-price">@NewPrice</span>
+                    <span class="old-price">@OldPrice</span>
+                </div>
+                <div class="title">@Title</div>
+            </div>
+
+            <div class="info-grid">
+                <div>کێش: @Weight</div>
+                <div>قەبارە: @Size</div>
+                <div>بڕ: @Quantity دانە</div>
+                <div>عەیار: @Karat</div>
+                <div>کۆد: @Code</div>
+            </div>
+
+            <div class="seller-info">
+                <div>شوێن: @Location</div>
+                <div>کڕیار: @User</div>
+            </div>
+
+        </div>
+
+        <div class="order-img">
+            <img src="@ImageUrl" alt="product" />
+        </div>
+    </div>
+
+    <div class="order-actions">
+        <button class="btn btn-manifest">پرینتکردن</button>
+        <button class="btn btn-sell"><i class="fa-solid fa-scale-balanced"></i> فرۆشتن</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string User { get; set; } = "";
+    [Parameter] public int Quantity { get; set; } = 0;
+    [Parameter] public string OldPrice { get; set; } = "";
+    [Parameter] public string NewPrice { get; set; } = "";
+    [Parameter] public string Weight { get; set; } = "";
+    [Parameter] public string Size { get; set; } = "";
+    [Parameter] public string Karat { get; set; } = "";
+    [Parameter] public string Code { get; set; } = "";
+    [Parameter] public string Location { get; set; } = "";
+    [Parameter] public string ImageUrl { get; set; } = "";
+}
