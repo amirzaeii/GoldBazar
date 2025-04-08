@@ -31,6 +31,34 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
         var result = await httpClient.GetFromJsonAsync<CatalogItemType[]>(uri);
         return result!;
     }
+    
+    public async Task<IEnumerable<MaterialType>> GetMaterials()
+    {
+        var uri = $"{remoteServiceBaseUrl}materials";
+        var result = await httpClient.GetFromJsonAsync<MaterialType[]>(uri);
+        return result!;
+    }
+    
+    public async Task<IEnumerable<MetalType>> GetMetals()
+    {
+        var uri = $"{remoteServiceBaseUrl}metals";
+        var result = await httpClient.GetFromJsonAsync<MetalType[]>(uri);
+        return result!;
+    }
+    
+    public async Task<IEnumerable<OccasionType>> GetOccasions()
+    {
+        var uri = $"{remoteServiceBaseUrl}occasions";
+        var result = await httpClient.GetFromJsonAsync<OccasionType[]>(uri);
+        return result!;
+    }
+    
+    public async Task<IEnumerable<StyleType>> GetStyles()
+    {
+        var uri = $"{remoteServiceBaseUrl}styles";
+        var result = await httpClient.GetFromJsonAsync<StyleType[]>(uri);
+        return result!;
+    }
 
     private static string GetAllCatalogItemsUri(string baseUri, int pageIndex, int pageSize, int? type)
     {

@@ -1,35 +1,11 @@
 ﻿@inject NavigationManager Navigation
 @rendermode InteractiveServer
 <div class="language-selector">
-    <select @bind="Culture">
-        <option value="en-US">English (EN)</option>
-        <option value="ar-IQ">Arabic (ع)</option>
-        <option value="ku-Arab">Kurdish (ک)</option>
-    </select>
+    <MudSelect T="CultureInfo" @bind-Value="Culture" Label="Select language" Placeholder="Please Select" Class="pa-4"
+               AdornmentIcon="@Icons.Material.Filled.Language" AdornmentColor="Color.Default">
+        @foreach (var culture in _cultures)
+        {
+            <MudSelectItem Value="@culture">@culture.DisplayName</MudSelectItem>
+        }
+    </MudSelect>
 </div>
-@code
-{
-    protected override void OnInitialized()
-    {
-        Culture = CultureInfo.CurrentCulture;
-    }
-
-    private CultureInfo Culture
-    {
-        get
-        {
-            return CultureInfo.CurrentCulture;
-        }
-        set
-        {
-            if (CultureInfo.CurrentCulture != value)
-            {
-                var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-                var cultureEscaped = Uri.EscapeDataString(value.Name);
-                var uriEscaped = Uri.EscapeDataString(uri);
-
-                Navigation.NavigateTo($"Culture/Set?culture={cultureEscaped}&redirectUri={uriEscaped}", forceLoad: true);
-            }
-        }
-    }
-}

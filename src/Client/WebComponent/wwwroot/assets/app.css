@@ -103,6 +103,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'zain', serif;
 }
 
 @font-face {
@@ -186,4 +187,11 @@ button, a, input, select, textarea {
 button{
     font-family: 'zain';
 
+}
+
+.product-card .truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }

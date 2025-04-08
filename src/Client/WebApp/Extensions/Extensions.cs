@@ -1,8 +1,13 @@
+using Blazored.LocalStorage;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.IdentityModel.JsonWebTokens;
+
+using MudBlazor.Services;
+
 using WebComponent.Services;
 
 namespace WebApp.Extensions;
@@ -11,6 +16,12 @@ public static class Extensions
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
       //  builder.AddAuthenticationServices();
+      
+      
+      builder.Services.AddMudServices();
+      builder.Services.AddBlazoredLocalStorage();
+      
+      builder.Services.AddScoped<LocalStorageService>();
 
         builder.AddRabbitMqEventBus("EventBus")
                .AddEventBusSubscriptions();

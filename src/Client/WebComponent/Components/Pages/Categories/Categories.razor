@@ -1,0 +1,43 @@
+﻿@page "/categories/{ItemTypeId:int?}"
+@using WebComponent.Constants
+
+@inject IStringLocalizer<Resource> Localizer
+@rendermode InteractiveServer
+
+<MudContainer Fixed="true" Class="mt-2">
+    <MudGrid>
+        <MudItem xs="12" Class="ma-2 ml-6">
+            <MudPaper Elevation="0" Class="d-flex justify-space-between">
+                <MudButton Href="@RouteConstants.FILTERS" Variant="Variant.Filled" Color="Color.Default" EndIcon="@Icons.Material.Filled.ArrowRight">
+                    @Localizer[nameof(Resource.Distinction)]
+                </MudButton>
+                <MudButton Href="@RouteConstants.HOME" Variant="Variant.Filled" Color="Color.Default" EndIcon="@Icons.Material.Filled.ArrowBack">
+                    @Localizer[nameof(Resource.NavHome)]
+                </MudButton>
+            </MudPaper>
+            <MudDivider Class="mt-5"></MudDivider>
+        </MudItem>
+        <MudItem xs="12" Class="d-flex justify-center pt-1">
+            <MudPaper Class="pa-2" Elevation="0">
+                <MudPaper Elevation="0" Class="pa-2 d-flex align-content-center">
+                    <MudText Typo="Typo.button">@Localizer[nameof(Resource.SortByLabel)]</MudText>
+                    <MudIcon Icon="@Icons.Material.Rounded.ImportExport" Color="Color.Default"/>
+                </MudPaper>
+                <MudChipSet T="string" SelectionMode="SelectionMode.SingleSelection" SelectedValueChanged="SetSortBy"
+                            CheckMark="true" Variant="Variant.Text" Color="Color.Info" Class="pl-5">
+                    <MudChip Text="@(Localizer[nameof(Resource.PriceHighToLow)])" Value="@("PriceHighToLow")"/>
+                    <MudChip Text="@(Localizer[nameof(Resource.PriceLowToHigh)])" Value="@("PriceLowToHigh")"/>
+                    <MudChip Text="@(Localizer[nameof(Resource.LatestLabel)])" Value="@("LatestLabel")"/>
+                </MudChipSet>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid>
+        <MudItem xs="12">
+            <div class="product-grid">
+                <ProductList ShowPagination="true"></ProductList>
+            </div>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

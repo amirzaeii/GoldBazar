@@ -484,6 +484,9 @@
     <value>Maximum Weight</value>
     <comment>Label that displays Maximum Weight</comment>
   </data>
+  <data name="Distinction" xml:space="preserve">
+      <value>Distinction</value>
+  </data>
   <data name="EnterCode" xml:space="preserve">
     <value>Enter your code</value>
     <comment>A label that asks the user to enter their code</comment>

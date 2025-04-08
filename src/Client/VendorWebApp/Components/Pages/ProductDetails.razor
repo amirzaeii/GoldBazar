@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>گوارەی عەیارە 21 - Gold Bazar</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/product-details.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="product-container">
+        <!-- Header with navigation buttons -->
+        <div class="header">
+            <button class="nav-button notifications-button" onclick="window.location.href='notifications.html'">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+            </button>
+            
+            <img src="icons/offer.svg" alt="">
+
+            <button class="nav-button back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Product image slider -->
+        <div class="product-slider">
+            <div class="slider-container">
+                <button class="slider-nav prev-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6C42EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </button>
+                
+                <div class="slider-image">
+                    <img src="images/gwara1.png" alt="گوارەی عەیارە 21" id="productImage">
+                </div>
+                
+                <button class="slider-nav next-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#6C42EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Slider pagination dots -->
+            <div class="slider-pagination">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot active"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <!-- Product details -->
+        <div class="product-details">
+            <div class="product-header">
+                
+                <h1 class="product-title">گوارەی عەیارە 21</h1>
+
+                <div class="product-price">
+                    <span class="current-price">$179</span>
+                    <span class="original-price">$189</span>
+                </div>
+
+            </div>
+
+            <!-- Product specifications -->
+            <div class="product-specs">
+                <div class="remain-box" id="remainBox">
+                    <h3 class="spec-title">ماوە</h3>
+                    <p class="spec-value">6 دانە</p>
+                </div>
+                <div class="sold-box">
+                    <h3 class="spec-title">فرۆشراو</h3>
+                    <p class="spec-value">20 دانە</p>
+                </div>
+            </div>
+
+            <!-- Product price calculation -->
+            <div class="price-calculation">
+                <p class="calc-text">دەستکەوت لەم پارچەیە</p>
+                <p class="calc-price">3,590 دۆلار</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quantity Modal -->
+    <div class="quantity-modal" id="quantityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">بڕی ماوە</h2>
+                <button class="close-button" id="closeModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 24 Karat Section -->
+                <div class="quantity-section">
+                    <div class="quantity-header">
+                        <div class="karat-badge">عەیارەی 24</div>
+                    </div>
+                    <div class="quantity-table">
+                        <div class="table-header">
+                            <div class="header-cell">بڕ</div>
+                            <div class="header-cell">قەبارە</div>
+                        </div>
+                        <div class="table-row" data-size="34">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">34</div>
+                        </div>
+                        <div class="table-row" data-size="36">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="4" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                        <div class="table-row" data-size="37">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="3" min="0">
+                            </div>
+                            <div class="table-cell">37</div>
+                        </div>
+                        <div class="table-row" data-size="38">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">38</div>
+                        </div>
+                        <div class="table-row" data-size="36-2">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 22 Karat Section -->
+                <div class="quantity-section">
+                    <div class="quantity-header">
+                        <div class="karat-badge">عەیارەی 22</div>
+                    </div>
+                    <div class="quantity-table">
+                        <div class="table-header">
+                            <div class="header-cell">بڕ</div>
+                            <div class="header-cell">قەبارە</div>
+                        </div>
+                        <div class="table-row" data-size="34">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">34</div>
+                        </div>
+                        <div class="table-row" data-size="36">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="4" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                        <div class="table-row" data-size="37">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="3" min="0">
+                            </div>
+                            <div class="table-cell">37</div>
+                        </div>
+                        <div class="table-row" data-size="38">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">38</div>
+                        </div>
+                        <div class="table-row" data-size="36-2">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 21 Karat Section -->
+                <div class="quantity-section">
+                    <div class="quantity-header">
+                        <div class="karat-badge">عەیارەی 21</div>
+                    </div>
+                    <div class="quantity-table">
+                        <div class="table-header">
+                            <div class="header-cell">بڕ</div>
+                            <div class="header-cell">قەبارە</div>
+                        </div>
+                        <div class="table-row" data-size="34">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">34</div>
+                        </div>
+                        <div class="table-row" data-size="36">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="4" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                        <div class="table-row" data-size="37">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="3" min="0">
+                            </div>
+                            <div class="table-cell">37</div>
+                        </div>
+                        <div class="table-row" data-size="38">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">38</div>
+                        </div>
+                        <div class="table-row" data-size="36-2">
+                            <div class="table-cell quantity-cell">
+                                <input type="number" class="quantity-input" value="1" min="0">
+                            </div>
+                            <div class="table-cell">36</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Select Button -->
+            <div class="modal-footer">
+                <button class="select-button" id="selectButton">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    جێبەجێکردن
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/product-details.js"></script>
+</body>
+</html> 

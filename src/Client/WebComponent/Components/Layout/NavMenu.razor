@@ -1,42 +1,43 @@
-﻿@inject IStringLocalizer<Resource> localizer
+﻿@using WebComponent.Constants
+@inject IStringLocalizer<Resource> Localizer
 <nav class="bottom-nav">
-    <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
+    <NavLink href="@RouteConstants.HOME" class="nav-item" Match="NavLinkMatch.All">
         <div class="nav-content">
             <img src="_content/WebComponent/assets/Icons/applogo2.svg" class="icon-outline" alt="">
             <img src="_content/WebComponent/assets/Icons/applogo.svg" class="icon-fill" alt="">
-            <span>@localizer[nameof(Resource.NavHome)]</span>
+            <span>@Localizer[nameof(Resource.NavHome)]</span>
         </div>
     </NavLink>
 
-    <NavLink href="/filters-result" class="nav-item">
+    <NavLink href="@RouteConstants.CATEGORIES" class="nav-item">
         <div class="nav-content">
             <img src="_content/WebComponent/assets/Icons/category.svg" class="icon-outline" alt="">
             <img src="_content/WebComponent/assets/Icons/categoryFill.svg" class="icon-fill" alt="">
-            <span>@localizer[nameof(Resource.NavCategories)]</span>
+            <span>@Localizer[nameof(Resource.NavCategories)]</span>
         </div>
     </NavLink>
 
-    <NavLink href="/offers" class="nav-item">
+    <NavLink href="@RouteConstants.OFFERS" class="nav-item">
         <div class="nav-content">
             <img src="_content/WebComponent/assets/Icons/offer.svg" class="icon-outline" alt="">
             <img src="_content/WebComponent/assets/Icons/offerFill.svg" class="icon-fill" alt="">
-            <span>@localizer[nameof(Resource.NavOffers)]</span>
+            <span>@Localizer[nameof(Resource.NavOffers)]</span>
         </div>
     </NavLink>
 
-    <NavLink href="/goldsmiths" class="nav-item">
+    <NavLink href="@RouteConstants.GOLDSMITHS" class="nav-item">
         <div class="nav-content">
             <img src="_content/WebComponent/assets/Icons/shopfill.svg" class="icon-outline" alt="">
             <img src="_content/WebComponent/assets/Icons/shopnofill.svg" class="icon-fill" alt="">
-            <span>@localizer[nameof(Resource.NavJewlers)]</span>
+            <span>@Localizer[nameof(Resource.NavJewlers)]</span>
         </div>
     </NavLink>
 
-    <NavLink href="/profile" class="nav-item">
+    <NavLink href="@RouteConstants.PROFILE" class="nav-item">
         <div class="nav-content">
             <img src="_content/WebComponent/assets/Icons/profile.svg" class="icon-outline" alt="">
             <img src="_content/WebComponent/assets/Icons/profileFill.svg" class="icon-fill" alt="">
-            <span>@localizer[nameof(Resource.NavAccount)]</span>
+            <span>@Localizer[nameof(Resource.NavAccount)]</span>
         </div>
     </NavLink>
 </nav>

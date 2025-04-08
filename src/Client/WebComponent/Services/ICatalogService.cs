@@ -15,4 +15,8 @@ public interface ICatalogService
     Task<bool> AddProduct(Item newItem);
     Task<IEnumerable<CatalogInfo>> GetCatalogDataAsync(string category);
     Task<IEnumerable<CatalogItem>> FilterByComposite(Dtos.CompositeFilterDto filterDto);
+    Task<IEnumerable<MaterialType>> GetMaterials();
+    Task<IEnumerable<MetalType>> GetMetals();
+    Task<IEnumerable<OccasionType>> GetOccasions();
+    Task<IEnumerable<StyleType>> GetStyles();
 }

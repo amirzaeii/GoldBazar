@@ -1,48 +1,38 @@
-﻿@inject ICatalogService CatalogService﻿
+﻿@using WebComponent.Constants
+@inject ICatalogService CatalogService
 @inject NavigationManager Nav
+@inject IStringLocalizer<Resource> Localizer
 @attribute [StreamRendering]
 
-<div class="product-grid">
-    @if (catalogResult is null)
+<MudGrid>
+    @if (!_catalogResult.Data.Any())
     {
-        <p>Loading...</p>
+        <MudItem xs="12">
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+        </MudItem>
     }
     else
     {
-        @foreach (var product in catalogResult.Data)
-        {
-            <ProductCard Item="product" />
-            
-        }
-         <div class="page-links">
-                @foreach (var pageIndex in GetVisiblePageIndexes(catalogResult))
+        <MudItem xs="12">
+            <div class="product-grid">
+                @foreach (var product in _catalogResult.Data)
                 {
-                    @* <NavLink ActiveClass="active-page" Match="@NavLinkMatch.All" href="@Nav.GetUriWithQueryParameter("page", pageIndex == 1 ? null : pageIndex)">
-                        @pageIndex</NavLink> *@
+                    <ProductCard Item="product"/>
                 }
-        </div>
+            </div>
+        </MudItem>
+        <MudItem xs="12">
+            <div class="page-links d-flex justify-center mud-width-full">
+                @if (ShowPagination)
+                {
+                    <MudPagination bind-Selected="CurrentPage" Variant="Variant.Outlined" Count="GetVisiblePageIndexes(_catalogResult)"
+                                   SelectedChanged="PageChanged"/>
+                }
+                else
+                {
+                    <MudButton Href="@RouteConstants.CATEGORIES" FullWidth="true">@(Localizer[nameof(Resource.MoreItemsFromShopLabel)])</MudButton>
+                }
+            </div>
+        </MudItem>
     }
-</div>
-
-@code {
-     const int PageSize = 40;
-
-    [SupplyParameterFromQuery]
-    public int? Page { get; set; }
-
-    [SupplyParameterFromQuery(Name = "type")]
-    public int? ItemTypeId { get; set; }
-
-    CatalogResult? catalogResult;
-
-    static IEnumerable<int> GetVisiblePageIndexes(CatalogResult result)
-        => Enumerable.Range(1, (int)Math.Ceiling(1.0 * result.Count / PageSize));
-    protected override async Task OnInitializedAsync()
-    {
-        catalogResult = await CatalogService.GetCatalogItems(
-            Page.GetValueOrDefault(1) - 1,
-            PageSize,
-            ItemTypeId);
-    }
-
-}
+</MudGrid>

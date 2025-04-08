@@ -17,8 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <PackageReference Include="Microsoft.Extensions.Localization" />
+    <PackageReference Include="MudBlazor" />
   </ItemGroup>
   <ItemGroup>
       <Protobuf Include="..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />

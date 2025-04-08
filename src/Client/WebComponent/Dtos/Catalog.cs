@@ -32,6 +32,10 @@ public record CatalogItem(
 
 public record CatalogResult(int PageIndex, int PageSize, int Count, List<CatalogItem> Data);
 public record CatalogItemType(int Id, string Name);
+public record MaterialType(int Id, string Name);
+public record MetalType(int Id, string Name, int manufacture, int kt, double purity);
+public record OccasionType(int Id, string Name);
+public record StyleType(int Id, string Name);
 
 
 public class CompositeFilterDto
