@@ -26,11 +26,24 @@
     </div>
     </div>
 </body>
-
 <script>
     let slideIndex = 0;
     let touchStartX = 0;
     let touchEndX = 0;
+    let autoSlideInterval;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        showSlides();
+        autoSlideInterval = setInterval(() => {
+            slideIndex++;
+            if (slideIndex >= document.getElementsByClassName("carousel-slide").length) {
+                clearInterval(autoSlideInterval);
+                window.location.href = "/home";
+            } else {
+                showSlides();
+            }
+        }, 2000);
+    });
 
     function startTouch(event) {
         touchStartX = event.touches ? event.touches[0].clientX : event.clientX;
@@ -49,14 +62,16 @@
         } else if (diff < -50) {
             slideIndex--;
         } else {
-            return; 
+            return;
         }
 
+        resetAutoSlide(); 
         showSlides();
     }
 
     function currentSlide(n) {
         slideIndex = n;
+        resetAutoSlide(); 
         showSlides();
     }
 
@@ -66,21 +81,32 @@
 
         if (slides.length === 0) return;
 
-        // Reset slideIndex if out of bounds
         if (slideIndex >= slides.length) slideIndex = 0;
         if (slideIndex < 0) slideIndex = slides.length - 1;
 
-        // Hide all slides and remove active class from dots
         for (let i = 0; i < slides.length; i++) {
             slides[i].style.display = "none";
             dots[i].classList.remove("active");
         }
 
-        // Show the selected slide
         slides[slideIndex].style.display = "block";
         dots[slideIndex].classList.add("active");
     }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+            slideIndex++;
+            if (slideIndex >= document.getElementsByClassName("carousel-slide").length) {
+                clearInterval(autoSlideInterval);
+                window.location.href = "/home";
+            } else {
+                showSlides();
+            }
+        }, 2000);
+    }
 </script>
+
 
 @code {
     private List<CarouselSlide> Slides { get; set; } = new()
@@ -95,4 +121,5 @@
         public string ImageUrl { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
+   
 }

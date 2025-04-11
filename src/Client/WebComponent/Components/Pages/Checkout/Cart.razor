@@ -97,7 +97,7 @@
         if (product != null)
         {
             product.SelectedQuantity++;
-            StateHasChanged(); // Notify Blazor to re-render the UI
+            StateHasChanged(); 
         }
     }
 
@@ -112,9 +112,9 @@
             }
             else
             {
-                Products.Remove(product); // Remove the product from the list
+                Products.Remove(product); 
             }
-            StateHasChanged(); // Notify Blazor to re-render the UI
+            StateHasChanged(); 
         }
     }
 

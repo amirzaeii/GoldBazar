@@ -10,7 +10,7 @@
 
     protected override void OnInitialized()
     {
-        // Extract the city parameter from the query string
+     
         var query = NavManager.ToAbsoluteUri(NavManager.Uri).Query;
         SelectedCity = System.Web.HttpUtility.ParseQueryString(query).Get("city");
     }

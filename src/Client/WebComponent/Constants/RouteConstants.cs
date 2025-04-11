@@ -2,7 +2,7 @@ namespace WebComponent.Constants;
 
 public static class RouteConstants
 {
-    public const string HOME = "/";
+    public const string HOME = "/home";
     public const string CATEGORIES = "/categories";
     public const string OFFERS = "/offers";
     public const string GOLDSMITHS = "/goldsmiths";
