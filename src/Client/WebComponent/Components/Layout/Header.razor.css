@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: clamp(10px, 2vw, 20px) 3vw;
+    padding: clamp(10px, 1vw, 8px) 3vw;
     background-color: var(--bg-main);
     box-shadow: var(--shadow-md);
 }
@@ -17,7 +17,7 @@
 }
 
 .logo {
-    height: 40px;
+    height: 90px;
 }
 
 /* Right Section - Icons */

@@ -8,7 +8,7 @@ builder.Services.AddLocalization();
 builder.AddApplicationServices();
 builder.Services.AddServerSideBlazor().AddHubOptions(options =>
 {
-    options.MaximumReceiveMessageSize = 10 * 1024 * 1024; // 10MB limit
+    options.MaximumReceiveMessageSize = 10 * 1024 * 1024;
     options.ClientTimeoutInterval = TimeSpan.FromMinutes(5);
     options.HandshakeTimeout = TimeSpan.FromMinutes(2);
 });
@@ -77,3 +77,4 @@ app.MapRazorComponents<App>()
 app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
 app.MapForwarder("/type-images/{id}", "http://catalog-api", "/api/catalog/types/{id}/pic");
 app.Run();
+

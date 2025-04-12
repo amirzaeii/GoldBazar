@@ -4,6 +4,13 @@
     <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Components\Pages\Settings\**" />
+    <Content Remove="Components\Pages\Settings\**" />
+    <EmbeddedResource Remove="Components\Pages\Settings\**" />
+    <None Remove="Components\Pages\Settings\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -25,5 +32,22 @@
     <ProjectReference Include="..\..\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
      <ProjectReference Include="..\..\Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Components\Layout\EmptyLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Layout\Header.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Layout\MainLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Layout\NavLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Components\Layout\NavMenu.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
 </Project>

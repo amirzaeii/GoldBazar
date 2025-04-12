@@ -1,5 +1,6 @@
 ﻿@page "/forgetpass"
 @inject NavigationManager Nav
+@layout EmptyLayout
 @inject IStringLocalizer<Resource> localizer
 @rendermode InteractiveServer 
 <div class="container">
@@ -33,15 +34,12 @@
 
     private void HandleSubmit()
     {
-        // Simulate submission logic
         Console.WriteLine($"Sending OTP to: {MobileNumber}");
-        // Redirect or perform other actions
-        Nav.NavigateTo("/otpverification"); // Example: redirect to OTP verification page
+        Nav.NavigateTo("/otpverification"); 
     }
 
     private void NavigateToLogin()
     {
-        // Navigate back to the login page
         Nav.NavigateTo("/login");
     }
 }

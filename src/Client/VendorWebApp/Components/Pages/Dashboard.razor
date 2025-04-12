@@ -1,0 +1,92 @@
+﻿@page "/"
+<main class="dashboard">
+    <div class="stats-grid">
+        <StatCard Title="نرخی ئاڵتون"
+                  Subtext="بۆ ئۆنسەیەک ئاڵتون" 
+                  Value="@Stats.GoldPrice"
+                  IconPath="Icons/gold.svg"
+                  BgColor="bg-yellow"
+                  ValueColor="yellow" />
+
+        <StatCard Title="فرۆشراو"
+                  Value="@Stats.TotalSales"
+                  Subtext="@Stats.SalesSubtext"
+                  TimeText="@Stats.SalesTime"
+                  IconPath="Icons/mony.svg"
+                  BgColor="bg-green"
+                  ValueColor="green" />
+
+        <StatCard Title="بەڕێکراو"
+                  Value="@Stats.TotalReturns"
+                  Subtext="@Stats.ReturnsSubtext"
+                  TimeText="@Stats.ReturnsTime"
+                  IconPath="Icons/bag.svg"
+                  BgColor="bg-purple"
+                  ValueColor="purple" />
+
+        <StatCard Title="کڕیارەکانم"
+                  Value="@Stats.CustomerCount"
+                  IconPath="Icons/cust.svg"
+                  BgColor="bg-pink"
+                  ValueColor="pink" />
+    </div>
+
+        <RecentActivity Activities="RecentActivities" />
+
+
+
+
+</main>
+
+@code {
+    private GoldsmithStat Stats = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+      
+        Stats = await GetGoldsmithStatsAsync();
+    }
+
+    private Task<GoldsmithStat> GetGoldsmithStatsAsync()
+    {
+       
+        return Task.FromResult(new GoldsmithStat
+            {
+                GoldPrice = "2.790$",
+                TotalSales = "$1980",
+                SalesSubtext = "10 پارچە فرۆشراوە",
+                SalesTime = "لە ١٠ ڕۆژی ڕابردوودا",
+                TotalReturns = "$340",
+                ReturnsSubtext = "4 پارچەی ڕەتکراوە",
+                ReturnsTime = "لە ١٠ ڕۆژی ڕابردوودا",
+                CustomerCount = "4"
+            });
+    }
+
+    private List<RecentActivity.RecentActivityModel> RecentActivities = new()
+    {
+        new() { Price = "354$", Date = "2024 / 12 / 11", Name = "ملوانکەی ئاڵتون", Code = "3464" },
+        new() { Price = "874$", Date = "2024 / 12 / 2", Name = "گوارە", Code = "398" },
+        new() { Price = "256$", Date = "2024 / 12 / 1", Name = "مستیله", Code = "564" },
+    };
+
+    public class RecentActivityModel
+    {
+        public string Price { get; set; }
+        public string Date { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+    }
+
+    public class GoldsmithStat
+    {
+        public string GoldPrice { get; set; }
+        public string TotalSales { get; set; }
+        public string SalesSubtext { get; set; }
+        public string SalesTime { get; set; }
+        public string TotalReturns { get; set; }
+        public string ReturnsSubtext { get; set; }
+        public string ReturnsTime { get; set; }
+        public string CustomerCount { get; set; }
+    }
+}

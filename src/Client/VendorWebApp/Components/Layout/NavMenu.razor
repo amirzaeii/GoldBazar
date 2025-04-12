@@ -2,15 +2,14 @@
 @inject NavigationManager Nav
 @rendermode InteractiveServer
 <nav class="bottom-nav">
-    <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
+    <NavLink href="/orders" class="nav-item" Match="NavLinkMatch.All">
         <div class="nav-content">
             <img src="Icons\doc.svg" class="icon-outline" alt="">
             <img src="Icons\doc-fill.svg" class="icon-fill" alt="">
             <span>@localizer[nameof(Resource.NavOrders)]</span>
         </div>
     </NavLink>
-
-    <!-- Center Button: No navigation, only triggers popup -->
+  
     <div class="nav-item center-button" @onclick="ShowPopup">
         <div class="icon-plus">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" class="svg-plus">
@@ -18,7 +17,7 @@
             </svg>
         </div>
     </div>
-    <!-- Popup -->
+
     @if (IsPopupVisible)
     {
         <div class="popup-overlay" @onclick="HidePopup">
@@ -28,7 +27,7 @@
             </div>
         </div>
     }
-    <NavLink href="/info" class="nav-item">
+    <NavLink href="/" class="nav-item" Match="NavLinkMatch.All">
         <div class="nav-content">
             <img src="Icons\category.svg" class="icon-outline" alt="">
             <img src="Icons\categoryFill.svg" class="icon-fill" alt="">

@@ -1,0 +1,125 @@
+﻿@page "/first"
+@inject IJSRuntime JS
+@layout EmptyLayout
+
+<body>
+<div class="slider-container" onmousedown="startTouch(event)" onmouseup="endTouch(event)" ontouchstart="startTouch(event)" ontouchend="endTouch(event)">
+    <div class="slider">
+        @foreach (var (slide, index) in Slides.Select((slide, index) => (slide, index)))
+        {
+            <div class="carousel-slide" id="slide-@index" style="@(index == 0 ? "display: block;" : "display: none;")">
+                <img src="@slide.ImageUrl" class="carousel-image">
+                <div class="carousel-caption">
+                    <p>@slide.Description</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="carousel-dots">
+        @foreach (var index in Enumerable.Range(0, Slides.Count))
+        {
+            <span class="dot @(index == 0 ? "active" : "")"
+                  id="dot-@index"
+                  onclick="currentSlide(@index)"></span>
+        }
+    </div>
+    </div>
+</body>
+<script>
+    let slideIndex = 0;
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let autoSlideInterval;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        showSlides();
+        autoSlideInterval = setInterval(() => {
+            slideIndex++;
+            if (slideIndex >= document.getElementsByClassName("carousel-slide").length) {
+                clearInterval(autoSlideInterval);
+                window.location.href = "/home";
+            } else {
+                showSlides();
+            }
+        }, 2000);
+    });
+
+    function startTouch(event) {
+        touchStartX = event.touches ? event.touches[0].clientX : event.clientX;
+    }
+
+    function endTouch(event) {
+        touchEndX = event.changedTouches ? event.changedTouches[0].clientX : event.clientX;
+        handleSwipe();
+    }
+
+    function handleSwipe() {
+        let diff = touchStartX - touchEndX;
+
+        if (diff > 50) {
+            slideIndex++;
+        } else if (diff < -50) {
+            slideIndex--;
+        } else {
+            return;
+        }
+
+        resetAutoSlide(); 
+        showSlides();
+    }
+
+    function currentSlide(n) {
+        slideIndex = n;
+        resetAutoSlide(); 
+        showSlides();
+    }
+
+    function showSlides() {
+        let slides = document.getElementsByClassName("carousel-slide");
+        let dots = document.getElementsByClassName("dot");
+
+        if (slides.length === 0) return;
+
+        if (slideIndex >= slides.length) slideIndex = 0;
+        if (slideIndex < 0) slideIndex = slides.length - 1;
+
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+            dots[i].classList.remove("active");
+        }
+
+        slides[slideIndex].style.display = "block";
+        dots[slideIndex].classList.add("active");
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = setInterval(() => {
+            slideIndex++;
+            if (slideIndex >= document.getElementsByClassName("carousel-slide").length) {
+                clearInterval(autoSlideInterval);
+                window.location.href = "/home";
+            } else {
+                showSlides();
+            }
+        }, 2000);
+    }
+</script>
+
+
+@code {
+    private List<CarouselSlide> Slides { get; set; } = new()
+    {
+        new CarouselSlide { ImageUrl = "_content/WebComponent/assets/Image/iraq.svg", Description = "یەکەمین و گەورەترین بازاڕی ئۆنلاینی ئاڵتون و زێڕ لە عێراق" },
+        new CarouselSlide { ImageUrl = "_content/WebComponent/assets/Image/box.svg", Description = "گەیاندنی خێرا و دڵنیا بۆ هەموو شوێنێک" },
+        new CarouselSlide { ImageUrl = "_content/WebComponent/assets/Image/prop.svg", Description = "نرخی ڕۆژانەی ئاڵتون و باشترین ئۆفەرەکان لەلای ئێمەیە" }
+    };
+
+    public class CarouselSlide
+    {
+        public string ImageUrl { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+   
+}

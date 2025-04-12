@@ -493,4 +493,12 @@
     <value>Checkout</value>
     <comment/>
   </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>Enter your code</value>
+    <comment>A label that asks the user to enter their code</comment>
+  </data>
+  <data name="DontHaveAnAccountVendor" xml:space="preserve">
+    <value>Don't have an account?Contact us</value>
+    <comment>A label that displays Don't have an account?Contact us</comment>
+  </data>
 </root>

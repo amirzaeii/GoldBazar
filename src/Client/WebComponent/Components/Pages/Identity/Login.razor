@@ -7,7 +7,6 @@
     <h1>@localizer[nameof(Resource.LogInHeader)]</h1>
 
     <form id="Login" @onsubmit="HandleSubmit">
-        <!-- Mobile Number -->
         <div class="form-group">
             <label>@localizer[nameof(Resource.EnterPhoneNumLabel)]</label>
             <div class="input-group">
@@ -16,7 +15,6 @@
             </div>
         </div>
 
-        <!-- Password -->
         <div class="form-group">
             <label>@localizer[nameof(Resource.EnterPasswordLabel)]</label>
             <div class="input-group">
@@ -29,21 +27,16 @@
             </div>
         </div>
 
-        <!-- Forgot Password -->
         <div class="forgot-password">
             <button type="button" @onclick="NavigateToForgetPassword" class="link-button">@localizer[nameof(Resource.ForgotYourPasswordLabel)]</button>
         </div>
 
-        <!-- Submit Button -->
         <button type="submit" class="login-btn"> @localizer[nameof(Resource.LogInHeader)]</button>
 
-        <!-- Create Account -->
         <button type="button" @onclick="NavigateToRegister" class="create-account">@localizer[nameof(Resource.SignUpDesc)]</button>
 
-        <!-- Divider -->
         <div class="divider">@localizer[nameof(Resource.ORLabel)]</div>
 
-        <!-- Social Login -->
         <div class="social-login">
             <a href="#" class="social-btn">
                 @localizer[nameof(Resource.ContinueWithGoogleLabel)]
@@ -63,7 +56,6 @@
 
     private void HandleSubmit()
     {
-        // Simulate form submission logic and navigate to the homepage
         Console.WriteLine($"Logging in with Mobile Number: {MobileNumber} and Password: {Password}");
         Nav.NavigateTo("/");
     }
@@ -75,13 +67,11 @@
 
     private void NavigateToForgetPassword()
     {
-        // Navigate to forget password page
         Nav.NavigateTo("/forgetpass");
     }
 
     private void NavigateToRegister()
     {
-        // Navigate to register page
         Nav.NavigateTo("/register");
     }
 }

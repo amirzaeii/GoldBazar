@@ -1,0 +1,154 @@
+﻿.stat-card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 400px;
+    height: fit-content;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+.stat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.icon-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 70px;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 0.2rem;
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    display: flex;
+}
+
+    .stat-icon img {
+        width: 24px;
+        height: 24px;
+    }
+
+.stat-change {
+    font-size: 0.85rem;
+    color: #10b981;
+    font-weight: 500;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    text-align: right;
+}
+
+.stat-title {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #111827;
+}
+
+.stat-inline {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.stat-value {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.stat-subtext {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+    .stat-subtext.time {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.85rem;
+        color: #9ca3af;
+    }
+
+        .stat-subtext.time img {
+            width: 14px;
+            height: 14px;
+        }
+
+/* === COLORS === */
+.yellow {
+    color: #f59e0b;
+}
+
+.green {
+    color: #10b981;
+}
+
+.purple {
+    color: #8b5cf6;
+}
+
+.pink {
+    color: #ec4899;
+}
+
+.bg-yellow {
+    background-color: #fef3c7;
+}
+
+.bg-green {
+    background-color: #d1fae5;
+}
+
+.bg-purple {
+    background-color: #ede9fe;
+}
+
+.bg-pink {
+    background-color: #fce7f3;
+}
+
+/* === Grid Layout === */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+@media (min-width: 640px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

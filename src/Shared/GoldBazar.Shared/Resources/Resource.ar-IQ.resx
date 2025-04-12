@@ -379,7 +379,7 @@
     <value>اسم</value>
   </data>
   <data name="DiscountLabel" xml:space="preserve">
-    <value>تخفيض (٪)</value>
+    <value>تخفيض</value>
   </data>
   <data name="MaterialLabel" xml:space="preserve">
     <value>مادة</value>
@@ -392,5 +392,11 @@
   </data>
   <data name="MaxWeightLabel" xml:space="preserve">
     <value>الوزن الأقصى</value>
+  </data>
+  <data name="EnterCode" xml:space="preserve">
+    <value>أدخل الكود الخاص بك</value>
+  </data>
+  <data name="DontHaveAnAccountVendor" xml:space="preserve">
+    <value>ليس لديك حساب؟اتصل بنا</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿@page "/user/settings"
+@page "/user/settings"
 @inherits LayoutComponentBase
 
 <div class="card" style="margin: 10px; margin-top: 24px;">
@@ -37,7 +37,6 @@
     <div class="card">
         <h2 class="card-title">شوێنەکەم</h2>
 
-        <!-- Automatic Location -->
         <div class="location-option">
             <div class="radio-header">
                 <input type="radio" name="locationType" id="autoLocation" @bind="@IsAutoLocation">
@@ -51,7 +50,6 @@
             </div>
         </div>
 
-        <!-- Manual Location -->
         <div class="location-option">
             <div class="radio-header">
                 <input type="radio" name="locationType" id="manualLocation" @bind="@IsManualLocation">
@@ -84,7 +82,6 @@
 
     private void SetAutoLocation()
     {
-        // Logic to set the automatic location
         Console.WriteLine("Auto-location triggered.");
     }
 }

@@ -213,11 +213,29 @@ namespace GoldBazar.Shared.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have an account?Contact us.
+        /// </summary>
+        public static string DontHaveAnAccountVendor {
+            get {
+                return ResourceManager.GetString("DontHaveAnAccountVendor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No products found. Please apply some filters or select a category..
         /// </summary>
         public static string EmptyFilterWarningLabel {
             get {
                 return ResourceManager.GetString("EmptyFilterWarningLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter your code.
+        /// </summary>
+        public static string EnterCode {
+            get {
+                return ResourceManager.GetString("EnterCode", resourceCulture);
             }
         }
         
