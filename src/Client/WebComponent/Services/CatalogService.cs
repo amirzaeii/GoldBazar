@@ -1,22 +1,24 @@
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-
 using Catalog.Infrastructure;
-
 using WebComponent.Dtos;
-
 namespace WebComponent.Services;
-
 
 public class CatalogService(HttpClient httpClient) : ICatalogService
 {
     private readonly string remoteServiceBaseUrl = "api/catalog/";
 
-    public Task<CatalogItem?> GetCatalogItem(int id)
+    public async Task<CatalogItem> GetCatalogItem(int id)
     {
         var uri = $"{remoteServiceBaseUrl}items/{id}";
-        return httpClient.GetFromJsonAsync<CatalogItem>(uri);
+        var result =  await httpClient.GetFromJsonAsync<CatalogItem>(uri);
+        return result!;
+    }
+    public async Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids)
+    {
+        var uri = $"{remoteServiceBaseUrl}items/by?ids={string.Join("&ids=", ids)}";
+        var result = await httpClient.GetFromJsonAsync<List<CatalogItem>>(uri);
+        return result!;
     }
     public async Task<CatalogResult> GetCatalogItems(int pageIndex, int pageSize, int? type)
     {
@@ -75,11 +77,9 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
         items ??= Array.Empty<CatalogItem>();
 
         var paginatedItems = items
-    .Skip(pageIndex * pageSize)
-    .Take(pageSize)
-    .ToList();
-
-
+        .Skip(pageIndex * pageSize)
+        .Take(pageSize)
+        .ToList();
         // Wrap in CatalogResult
         var result = new CatalogResult(
             pageIndex,

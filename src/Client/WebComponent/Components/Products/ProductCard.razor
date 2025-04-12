@@ -1,41 +1,36 @@
 ﻿@inject IProductImageUrlProvider ImageProvider
 
-<div class="product-card rounded-xl">
-    <MudCard>
-        <MudCardHeader>
-            <MudGrid>
-                <MudItem xs="6" Class="d-flex justify-start">
-                    @if (Item.Discount > 0)
-                    {
-                        <div class="d-flex justify-start">
-                            <img src="_content/WebComponent/assets/Icons/offerFill.svg" alt="Discount">
-                        </div>
-                    }
-                </MudItem>
-                <MudItem xs="6" Class="d-flex justify-end">
-                    <div class="d-flex justify-start rounded-xl" style="@($"background-color:{Colors.DeepPurple.Lighten5};color: white;")">
-                        <img src="_content/WebComponent/assets/Icons/Heart.svg" alt="Like">
-                    </div>
-                </MudItem>
-            </MudGrid>
-        </MudCardHeader>
-        <MudCardMedia Image="@GetImage()" Height="200"/>
-        <MudDivider Class="pa-2"/>
-        <MudCardContent Class="pa-1">
-            <MudText Class="truncate" Typo="Typo.h6">@Item.Caption</MudText>
-        </MudCardContent>
-        <MudCardContent>
+@if (Item == null){
+
+}
+else{
+<a href="/product/@Item.Id" class="product-card">
+    <div class="badge-container">
+        @if (Item.Discount > 0)
+        {
+            <div class="badge">
+                <img src="_content/WebComponent/assets/Icons/offerFill.svg" alt="Discount">
+            </div>
+        }
+    </div>
+
+    <div class="product-image">
+        <img src="@ImageProvider.GetProductImageUrl(Item)" alt="@Item.Caption">
+    </div>
+
+    <div class="product-info">
+        <h3 class="product-title">@Item.Caption</h3>
+        <div class="price-row">
             @if (Item.Discount > 0)
             {
-                <MudText Typo="Typo.body2"><del>@Item.OldPrice.ToString("C")</del> <b>@Item.Price.ToString("C")</b></MudText>
+                <span class="original-price">@Item.OldPrice.ToString("C")</span>
             }
-            else
-            {
-                <MudText Typo="Typo.body2"><b>@Item.Price.ToString("C")</b></MudText>
-            }
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton OnClick="(_) => GoToProduct(Item.Id)" Variant="Variant.Filled" DropShadow="false" Color="Color.Default" Class="rounded-xl" FullWidth="true">@Item.ShopName</MudButton>
-        </MudCardActions>
-    </MudCard>
-</div>
+            <span class="current-price">@Item.Price.ToString("C")</span>
+        </div>
+        <div class="jeweler-container">
+            <span class="jeweler-name">@Item.ShopName</span>
+        </div>
+    </div>
+</a>
+
+}

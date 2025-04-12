@@ -16,7 +16,7 @@ var postgres = builder.AddPostgres("postgres")
 
 var catalogDb = postgres.AddDatabase("catalogdb");
 var identityDb = postgres.AddDatabase("identitydb");
-// var orderDb = postgres.AddDatabase("orderingdb");
+var orderDb = postgres.AddDatabase("orderingdb");
 // var webhooksDb = postgres.AddDatabase("webhooksdb");
 
 var launchProfileName = ShouldUseHttpForEndpoints() ? "http" : "https";
@@ -37,16 +37,16 @@ var catalogApi = builder.AddProject<Projects.Catalog_Api>("catalog-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(catalogDb);
 
-// var orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
-//     .WithReference(rabbitMq).WaitFor(rabbitMq)
-//     .WithReference(orderDb).WaitFor(orderDb)
-//     .WithHttpHealthCheck("/health")
-//     .WithEnvironment("Identity__Url", identityEndpoint);
+var orderingApi = builder.AddProject<Projects.Ordering_Api>("ordering-api")
+    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithReference(orderDb).WaitFor(orderDb)
+    .WithHttpHealthCheck("/health")
+    .WithEnvironment("Identity__Url", identityEndpoint);
 
-// builder.AddProject<Projects.OrderProcessor>("order-processor")
-//     .WithReference(rabbitMq).WaitFor(rabbitMq)
-//     .WithReference(orderDb)
-//     .WaitFor(orderingApi); // wait for the orderingApi to be ready because that contains the EF migrations
+builder.AddProject<Projects.Order_Processor>("order-processor")
+    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithReference(orderDb)
+    .WaitFor(orderingApi); // wait for the orderingApi to be ready because that contains the EF migrations
 
 // builder.AddProject<Projects.PaymentProcessor>("payment-processor")
 //     .WithReference(rabbitMq).WaitFor(rabbitMq);
@@ -58,10 +58,10 @@ var catalogApi = builder.AddProject<Projects.Catalog_Api>("catalog-api")
 
 // Reverse proxies
 builder.AddProject<Projects.Mobile_Bff>("mobile-bff")
-    .WithReference(catalogApi);
-    // .WithReference(orderingApi)
-    // .WithReference(basketApi)
-    // .WithReference(identityApi);
+    .WithReference(catalogApi)
+    .WithReference(orderingApi)
+    .WithReference(basketApi)
+    .WithReference(identityApi);
 
 // Apps
 // var webhooksClient = builder.AddProject<Projects.WebhookClient>("webhooksclient", launchProfileName)
@@ -70,37 +70,36 @@ builder.AddProject<Projects.Mobile_Bff>("mobile-bff")
 
 var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithExternalHttpEndpoints()
-    //.WithReference(basketApi)
-    .WithReference(catalogApi)
-    //.WithReference(orderingApi)
-    .WithReference(rabbitMq).WaitFor(rabbitMq);
-    //.WithEnvironment("IdentityUrl", identityEndpoint);
+    .WithReference(basketApi)
+    .WithReference(catalogApi)    
+    .WithReference(orderingApi)
+    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithEnvironment("IdentityUrl", identityEndpoint);
 
 var vendorwebApp = builder.AddProject<Projects.VendorWebApp>("vendorwebapp", launchProfileName)
     .WithExternalHttpEndpoints()
-    //.WithReference(basketApi)
     .WithReference(catalogApi)
-    //.WithReference(orderingApi)
-    .WithReference(rabbitMq).WaitFor(rabbitMq);
-    //.WithEnvironment("IdentityUrl", identityEndpoint);
+    .WithReference(orderingApi)
+    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithEnvironment("IdentityUrl", identityEndpoint);
 
 // set to true if you want to use OpenAI
-bool useOpenAI = false;
-if (useOpenAI)
-{
-    builder.AddOpenAI(catalogApi, webApp);
-}
+// bool useOpenAI = false;
+// if (useOpenAI)
+// {
+//     builder.AddOpenAI(catalogApi, webApp);
+// }
 
 // Wire up the callback urls (self referencing)
 webApp.WithEnvironment("CallBackUrl", webApp.GetEndpoint(launchProfileName));
 //webhooksClient.WithEnvironment("CallBackUrl", webhooksClient.GetEndpoint(launchProfileName));
 
 // Identity has a reference to all of the apps for callback urls, this is a cyclic reference
-// identityApi.WithEnvironment("BasketApiClient", basketApi.GetEndpoint("http"))
-//            .WithEnvironment("OrderingApiClient", orderingApi.GetEndpoint("http"))
-//            .WithEnvironment("WebhooksApiClient", webHooksApi.GetEndpoint("http"))
-//            .WithEnvironment("WebhooksWebClient", webhooksClient.GetEndpoint(launchProfileName))
-//            .WithEnvironment("WebAppClient", webApp.GetEndpoint(launchProfileName));
+identityApi.WithEnvironment("BasketApiClient", basketApi.GetEndpoint("http"))
+           .WithEnvironment("OrderingApiClient", orderingApi.GetEndpoint("http"))
+        //    .WithEnvironment("WebhooksApiClient", webHooksApi.GetEndpoint("http"))
+        //    .WithEnvironment("WebhooksWebClient", webhooksClient.GetEndpoint(launchProfileName))
+           .WithEnvironment("WebAppClient", webApp.GetEndpoint(launchProfileName));
 
 builder.Build().Run();
 

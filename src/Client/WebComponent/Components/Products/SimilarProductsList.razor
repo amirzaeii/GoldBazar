@@ -1,26 +1,37 @@
-﻿@inject ICatalogService CatalogService
+﻿@inject CatalogService CatalogService
 @inject IProductImageUrlProvider ImageProvider
-@inject IStringLocalizer<Resource> Localizer
+@inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 @attribute [StreamRendering]
 
-<MudContainer>
-    <div class="similar-products">
-        <h3 class="section-title">@Localizer[nameof(Resource.SimilarProductsLabel)]</h3>
-        <MudGrid Justify="Justify.Center" Spacing="5">
-            @if (!_similarProducts.Any())
+<div class="similar-products">
+    <h3 class="section-title">@localizer[nameof(Resource.SimilarProductsLabel)]</h3>
+    <div class="product-grid">
+        @if (similarProducts == null)
+        {
+            <p>Loading...</p>
+        }
+        else if (!similarProducts.Any())
+        {
+            <p>@localizer[nameof(Resource.NoSimilarProductsLabel)]</p>
+        }
+        else
+        {
+            @foreach (var product in similarProducts)
             {
-                <p>@Localizer[nameof(Resource.NoSimilarProductsLabel)]</p>
+               <ProductCard Item="product" />
             }
-            else
-            {
-                foreach (var product in _similarProducts)
-                {
-                    <MudItem>
-                        <ProductCard Item="product"></ProductCard>
-                    </MudItem>
-                }
-            }
-        </MudGrid>
+        }
     </div>
-</MudContainer>
+</div>
+
+@code {
+    [Parameter] public int TypeId { get; set; }
+
+    private IEnumerable<CatalogItem> similarProducts = Enumerable.Empty<CatalogItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        similarProducts = await CatalogService.GetSimilarProducts(TypeId);
+    }
+}

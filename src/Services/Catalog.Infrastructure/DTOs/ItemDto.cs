@@ -27,6 +27,6 @@ int Quantity,
 string Image
 )
 {
-    public decimal Price { get; init; } = (((2745m/31.103m)* Purity) + CostPerGram - Discount) * Weight;
-    public decimal OldPrice { get; init; } = (((2745m/31.103m)* Purity) + CostPerGram) * Weight;
+    public decimal Price { get; init; } = (((2945m/31.103m)* Purity) + CostPerGram - Discount) * Weight;
+    public decimal OldPrice { get; init; } = (((2945m/31.103m)* Purity) + CostPerGram) * Weight;
 }

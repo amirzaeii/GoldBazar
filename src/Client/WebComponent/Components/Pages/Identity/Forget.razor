@@ -15,14 +15,14 @@
     <h2 class="title">@localizer[nameof(Resource.ForgotYourPasswordLabel)]</h2>
     <p class="description">@localizer[nameof(Resource.EnterPhoneNumDesc)]</p>
 
-    <form id="GetOtp" @onsubmit="HandleSubmit">
+    <form id="" @onsubmit="HandleSubmit">
         <div class="form-group">
             <label>@localizer[nameof(Resource.EnterPhoneNumLabel)]</label>
             <div class="input-group">
                 <input type="tel" placeholder="07**********" @bind="MobileNumber" required />
                 <span class="country-code">+964</span>
             </div>
-        </div>
+        </div>GetOtp
 
         <button type="submit" class="submit-button">@localizer[nameof(Resource.GetOTP)]</button>
     </form>

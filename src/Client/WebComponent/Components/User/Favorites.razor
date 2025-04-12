@@ -1,9 +1,6 @@
 ﻿@inject IStringLocalizer<Resource> localizer
 <div class="wishlist-header-container">
     <h2 class="wishlist-header">@customer.Name@localizer[nameof(Resource.WishListHeader)]</h2>
-    <button class="share-button">
-        <img src="_content/WebComponent/assets/icons/share.png" alt="Share" />
-    </button>
 </div>
 <div class="wishlist-container">
     @foreach (var product in customer.FavoriteProducts.ToList())

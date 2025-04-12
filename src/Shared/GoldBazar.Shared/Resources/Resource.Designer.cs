@@ -895,5 +895,13 @@ namespace GoldBazar.Shared.Resources {
                 return ResourceManager.GetString("WishListHeader", resourceCulture);
             }
         }
+         /// <summary>
+        ///   Looks up a localized string similar to &apos;s Wishlist.
+        /// </summary>
+        public static string CheckoutLabel {
+            get {
+                return ResourceManager.GetString("CheckoutLabel", resourceCulture);
+            }
+        }
     }
 }

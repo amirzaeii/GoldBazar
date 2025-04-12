@@ -1,9 +1,11 @@
 ﻿@page "/product/{id:int}"
-@inject ICatalogService CatalogService
+@using System.Net.Http
+@using Microsoft.AspNetCore.Components.Forms
+@inject CatalogService CatalogService
+@inject BasketState BasketState
 @inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 @layout EmptyLayout
-
 
 @if (item == null)
 {
@@ -11,17 +13,19 @@
 }
 else
 {
-    <header class="header">
+    @* <header class="header">
             <button class="header_back" onclick="history.go(-1)">
                 <img src="_content/WebComponent/assets/Icons/left.svg" alt="Back">
             </button>
         <h1 class="header_title">@item.Caption</h1>
-
-    </header>
+    </header> *@
     <main>
         <ProductGallery ItemId="item.Id" />
         <section class="product-info2">
             <div class="product-info_header">
+                <div class="price">
+                    @item.Caption
+                </div>
                 <div class="price">
                     @if (item.Discount > 0)
                     {
@@ -55,13 +59,15 @@ else
                     <div class="spec-item__value">@item.KT carat</div>
                 </div>
             </div>
-            <button class="action-button bold">
-                @localizer[nameof(Resource.MetalPropertiesLabel)]
-            </button>
+              <form class="add-to-cart" method="post" @formname="add-to-cart" @onsubmit="@AddToCartAsync" data-enhance="@isLoggedIn">
+                <AntiforgeryToken />
+                <button class="action-button bold" type="submit">
+                    @localizer[nameof(Resource.AddToCartLabel)]
+                </button>
+            </form>
         </div>
 
         <StoreInfo ShopId="@item.ShopId" />
-
 
         <div class="details bold">
             <div class="details__header">
@@ -106,17 +112,45 @@ else
         <SimilarProductsList TypeId="@item.TypeId" />
         <WebComponent.Components.Shops.ShopProductsList ShopId="@item.ShopId" ExcludeProductId="@item.Id" />
     </main>
-    <AddToCart Item="item" />
 }
 
 
 @code {
-    [Parameter] public int Id { get; set; }
+    [Parameter] 
+    public int Id { get; set; }
     CatalogItem? item;
+    private int numInCart;
+    private bool isLoggedIn = true;
+    private bool notFound;
+
+    [Parameter]
+    public int ItemId { get; set; }
+
+    [CascadingParameter]
+    public HttpContent? HttpContext { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         item = await CatalogService.GetCatalogItem(Id);
+    }
+    private async Task AddToCartAsync()
+    {
+        if (!isLoggedIn)
+        {
+            Nav.NavigateTo("/login");
+            return;
+        }
+
+        if (item is not null)
+        {
+            await BasketState.AddAsync(item);
+            await UpdateNumInCartAsync();
+        }
+    }
+    private async Task UpdateNumInCartAsync()
+    {
+        var items = await BasketState.GetBasketItemsAsync();
+        numInCart = items.FirstOrDefault(row => row.ProductId == ItemId)?.Quantity ?? 0;
     }
 }
 
