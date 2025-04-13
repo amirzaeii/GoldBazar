@@ -1,0 +1,297 @@
+﻿@page "/delivered"
+@using System.Globalization
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject NavigationManager Navigation
+<link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<header class="max-w-7xl mx-auto mb-6">
+    <div class="header">
+        <button class="back-button" @onclick="GoToDashboard">
+            <img src="back.svg" alt="Back">
+        </button>
+        <h1 class="page-title">Deliver Section</h1>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs flex mt-6">
+        <button class="tab @(ActiveTab == "ActiveDeliveries" ? "active" : "")" @onclick='() => ChangeTab("ActiveDeliveries")'>Active Deliveries</button>
+        <button class="tab @(ActiveTab == "DeliveryPersonnel" ? "active" : "")" @onclick='() => ChangeTab("DeliveryPersonnel")'>Delivery Personnel</button>
+    </div>
+</header>
+
+<!-- Active Deliveries Section -->
+@if (ActiveTab == "ActiveDeliveries")
+{
+    <section class="max-w-7xl mx-auto mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach (var delivery in ActiveDeliveries)
+            {
+                <div class="bg-white rounded-xl p-6 shadow-sm card-transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-semibold text-lg">@delivery.Id</h3>
+                            <p class="text-gray-600">@delivery.Recipient</p>
+                        </div>
+                        <span class="status-badge px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                            @delivery.Status
+                        </span>
+                    </div>
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-map-marker-alt w-5"></i>
+                            <p class="text-sm ml-2">@delivery.Location</p>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-clock w-5"></i>
+                            <p class="text-sm ml-2">Take At: @delivery.Time</p>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-box w-5"></i>
+                            <p class="text-sm ml-2">@delivery.ItemCount items • @delivery.Price.ToString("C", CultureInfo.InvariantCulture)</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                        <button class="text-blue-500 hover:text-blue-600 transition-colors" @onclick="() => MarkAsDelivered(delivery.Id)">
+                            <i class="fas fa-check-circle mr-1"></i> Mark Delivered
+                        </button>
+                        <div class="flex space-x-2">
+                            <button class="p-2 text-gray-600 hover:text-blue-500 transition-colors">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="p-2 text-gray-600 hover:text-red-500 transition-colors" @onclick="() => RemoveDelivery(delivery.Id)">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+@if (ActiveTab == "DeliveryPersonnel")
+{
+    <section class="max-w-7xl mx-auto mb-8">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800">Delivery Personnel</h2>
+                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>Add New
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="w-full min-w-[800px]">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4">ID</th>
+                            <th class="px-6 py-4">Name</th>
+                            <th class="px-6 py-4">Phone</th>
+                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Active Orders</th>
+                            <th class="px-6 py-4">Total Delivered</th>
+                            <th class="px-6 py-4">Rating</th>
+                            <th class="px-6 py-4">Actions</th> 
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        @foreach (var personnel in DeliveryPersonnel)
+                        {
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">@personnel.Id</td>
+                                <td class="px-6 py-4 flex items-center">
+                                    <img class="h-8 w-8 rounded-full mr-3" src="@personnel.ImageUrl" alt="Delivery Personnel">
+                                    @personnel.Name
+                                </td>
+                                <td class="px-6 py-4">@personnel.Phone</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                        @personnel.Status
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4">@personnel.ActiveOrders</td>
+                                <td class="px-6 py-4">@personnel.TotalDelivered</td>
+                                <td class="px-6 py-4 text-yellow-500 flex items-center">
+                                    @personnel.Rating
+                                    <i class="fas fa-star ml-1"></i>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex space-x-3">
+                                        <button class="text-gray-600 hover:text-blue-500 transition-colors" @onclick="() => EditPersonnel(personnel.Id)">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-600 hover:text-red-500 transition-colors" @onclick="() => DeletePersonnel(personnel.Id)">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> 
+            </div> 
+        </div> 
+    </section> 
+}
+<section class="max-w-7xl mx-auto">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">Completed Deliveries</h2>
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="table-container">
+            <table class="w-full min-w-[800px]">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4">Delivery ID</th>
+                        <th class="px-6 py-4">Recipient</th>
+                        <th class="px-6 py-4">Address</th>
+                        <th class="px-6 py-4">Date</th>
+                        <th class="px-6 py-4">Amount</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach (var delivery in CompletedDeliveries)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">@delivery.Id</td>
+                            <td class="px-6 py-4">@delivery.Recipient</td>
+                            <td class="px-6 py-4">@delivery.Address</td>
+                            <td class="px-6 py-4">@delivery.Date.ToString("MMM dd, yyyy")</td>
+                            <td class="px-6 py-4 font-semibold">@delivery.Amount.ToString("C", CultureInfo.InvariantCulture)</td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                    Delivered
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <button class="text-gray-600 hover:text-blue-500 transition-colors">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="flex items-center justify-between px-6 py-4 bg-gray-50">
+            <p class="text-sm text-gray-600">
+                Showing @(CurrentPage * PageSize + 1)-@((CurrentPage + 1) * PageSize) of @TotalDeliveries deliveries
+            </p>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 rounded bg-white border border-gray-200 text-gray-600 hover:border-blue-500 transition-colors"
+                        @onclick="PreviousPage" disabled="@(CurrentPage == 0)">
+                    Previous
+                </button>
+                <button class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                        @onclick="NextPage" disabled="@(CurrentPage >= TotalPages - 1)">
+                    Next
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    private string ActiveTab = "ActiveDeliveries";
+
+    private List<DeliveryInfo> ActiveDeliveries = new()
+    {
+        new() { Id = "#DEL-001", Recipient = "Karwan Saed", Location = "Slemany, Sarshaqam", Time = "2:30 PM", ItemCount = 2, Price = 145.00, Status = "In Progress" },
+        new() { Id = "#DEL-002", Recipient = "Rebwar Aram", Location = "Slemany, Sarshaqam", Time = "3:00 PM", ItemCount = 1, Price = 90.00, Status = "In Progress" },
+    };
+
+    private void ChangeTab(string tab) => ActiveTab = tab;
+
+    private void MarkAsDelivered(string id)
+    {
+        ActiveDeliveries.RemoveAll(d => d.Id == id);
+    }
+
+    private void RemoveDelivery(string id)
+    {
+        ActiveDeliveries.RemoveAll(d => d.Id == id);
+    }
+
+    private void GoToDashboard()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    public class DeliveryInfo
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Recipient { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public string Time { get; set; } = string.Empty;
+        public int ItemCount { get; set; }
+        public double Price { get; set; }
+        public string Status { get; set; } = string.Empty;
+    }
+    private void EditPersonnel(string id)
+    {
+        Console.WriteLine($"Edit personnel with ID: {id}");
+  
+    }
+
+    private void DeletePersonnel(string id)
+    {
+        Console.WriteLine($"Delete personnel with ID: {id}");
+        DeliveryPersonnel.RemoveAll(p => p.Id == id);
+    }
+
+    private List<PersonnelInfo> DeliveryPersonnel = new()
+    {
+        new() { Id = "#DG001", Name = "Rebwar Karim", Phone = "+964 770-123-3456", Status = "Active", ActiveOrders = 3, TotalDelivered = 145, Rating = 4.8, ImageUrl = "https://randomuser.me/api/portraits/men/1.jpg" },
+        new() { Id = "#DG002", Name = "Dana Rzagar", Phone = "+964 770-456-7890", Status = "Active", ActiveOrders = 2, TotalDelivered = 100, Rating = 4.5, ImageUrl = "https://randomuser.me/api/portraits/men/2.jpg" },
+        new() { Id = "#DG003", Name = "Ali Jasm", Phone = "+964 770-654-3210", Status = "Active", ActiveOrders = 1, TotalDelivered = 75, Rating = 4.7, ImageUrl = "https://randomuser.me/api/portraits/men/3.jpg" }
+    };
+
+    public class PersonnelInfo
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public int ActiveOrders { get; set; }
+        public int TotalDelivered { get; set; }
+        public double Rating { get; set; }
+        public string ImageUrl { get; set; } = string.Empty;
+    }
+    private int CurrentPage = 0;
+    private const int PageSize = 10;
+    private int TotalDeliveries => CompletedDeliveries.Count;
+    private int TotalPages => (int)Math.Ceiling((double)TotalDeliveries / PageSize);
+
+    private List<CompletedDeliveryInfo> CompletedDeliveries = new()
+    {
+        new() { Id = "#DEL-001", Recipient = "John Smith", Address = "123 Main St, New York", Date = new DateTime(2025, 2, 13), Amount = 45.00 },
+        new() { Id = "#DEL-002", Recipient = "Alice Doe", Address = "456 Oak St, LA", Date = new DateTime(2025, 2, 10), Amount = 78.50 },
+        new() { Id = "#DEL-003", Recipient = "Michael Brown", Address = "789 Pine St, Chicago", Date = new DateTime(2025, 1, 25), Amount = 32.00 }
+    };
+
+    private void PreviousPage()
+    {
+        if (CurrentPage > 0)
+            CurrentPage--;
+    }
+
+    private void NextPage()
+    {
+        if (CurrentPage < TotalPages - 1)
+            CurrentPage++;
+    }
+
+    public class CompletedDeliveryInfo
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Recipient { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public double Amount { get; set; }
+    }
+}

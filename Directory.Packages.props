@@ -28,7 +28,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.1.0" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftExtensionsVersion)" />
@@ -37,6 +37,8 @@
     <PackageVersion Include="Microsoft.Extensions.Localization" Version="$(MicrosoftExtensionsVersion)" />
     <PackageVersion Include="MudBlazor" Version="7.16.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="$(MicrosoftExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
     <!-- OpenTelementry -->
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
@@ -69,7 +71,7 @@
     <PackageVersion Include="Grpc.Tools" Version="2.68.1" PrivateAssets="All" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <!-- Web UI-->
-    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="9.0.2" />
     <PackageVersion Include="Asp.Versioning.Http.Client" Version="8.1.0" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />

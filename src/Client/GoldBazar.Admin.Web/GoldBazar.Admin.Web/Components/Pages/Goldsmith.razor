@@ -1,0 +1,170 @@
+﻿@page "/goldsmith"
+@layout EmptyLayout
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<!-- Page Header -->
+<div class="header">
+    <button class="back-button" onclick="history.go(-1)">
+        <img src="back.svg" alt="">
+    </button>
+    <h1 class="page-title">Gold Smiths</h1>
+</div>
+
+<!-- Search & Filter Section -->
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="Search for, Code, name..">
+        <img src="search.svg" alt="">
+        <button class="filter-button" @onclick="ShowFilterPopup">
+            <img src="filter.svg" alt=""> Filter
+        </button>
+    </div>
+
+    <div class="filter-sort-container">
+        <div class="sort-options">
+            @foreach (var sort in new[] { "Newest", "Oldest", "Most Rate", "Most Order" })
+            {
+                <button class="sort-option @(ActiveSort == sort ? "active" : "")" @onclick="() => SetSort(sort)">@sort</button>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Goldsmith Cards Grid -->
+<div class="grid-container">
+    @foreach (var shop in Shops)
+    {
+        <div class="card @(ExpandedCards.ContainsKey(shop.Id) && ExpandedCards[shop.Id] ? "expanded" : "")">
+            <div class="card-header">
+                <div class="rating">
+                    <p class="rate-num">3</p>
+                    <img src="star.svg" class="star">
+                </div>
+                <span class="status-badge">@shop.Status</span>
+                <button class="eye-button" @onclick="() => ToggleDetails(shop.Id)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </button>
+            </div>
+            <div class="card-content">
+                <img src="@shop.Logo" alt="@shop.Name" class="logo">
+                <h3 class="shop-name">@shop.Name</h3>
+                <p class="phone">@shop.Phone</p>
+            </div>
+            <div class="details" style="display: @(ExpandedCards.ContainsKey(shop.Id) && ExpandedCards[shop.Id] ? "block" : "none")">
+                <p>
+                    Location: @shop.Location<br>
+                    Join Date: @shop.JoinDate<br>
+                    Expiration Date: @shop.ExpirationDate<br>
+                    Product Sold: @shop.ProductSold
+                </p>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Filter Popup -->
+@if (IsFilterPopupVisible)
+{
+    <div class="overlay" @onclick="CloseFilterPopup">
+        <div class="filter-popup" @onclick="StopPropagation">
+            <div class="popup-header">
+                <h2>Filter Options</h2>
+                <button class="close-button" @onclick="CloseFilterPopup">&times;</button>
+            </div>
+
+            <!-- Offer Section -->
+            <div class="filter-section">
+                <h3 class="filter-section-title">Offer</h3>
+                <div class="filter-options">
+                    @foreach (var offer in OfferFilters)
+                    {
+                        <button class="filter-chip @(SelectedOfferFilters.Contains(offer) ? "selected" : "")"
+                                @onclick="() => ToggleOfferFilter(offer)">
+                            @offer
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="reset-button" @onclick="ResetFilters">Reset</button>
+                <button class="apply-button" @onclick="ApplyFilters">Apply</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<ShopData> Shops = new List<ShopData>
+    {
+        new ShopData { Id = 1, Name = "Avita Jewelry", Phone = "0750 1234567", Logo = "avita.svg", Status = "1 month offer", Location = "Slemany", JoinDate = "2/2/2025", ExpirationDate = "2/3/2025", ProductSold = 20 },
+        new ShopData { Id = 2, Name = "Divine Jewelry", Phone = "0750 1234567", Logo = "avita.svg", Status = "Expired", Location = "Slemany", JoinDate = "2/2/2025", ExpirationDate = "2/3/2025", ProductSold = 20 }
+    };
+
+    private Dictionary<int, bool> ExpandedCards = new();
+    private string ActiveSort = "Newest";
+    private bool IsFilterPopupVisible = false;
+
+    // Offer Filter Data
+    private List<string> OfferFilters = new()
+    {
+        "Expired",
+        "1 week to expire",
+        "1 day to offer expire",
+        "Soon offer expire"
+    };
+
+    private HashSet<string> SelectedOfferFilters = new();
+
+    private void SetSort(string sortType) => ActiveSort = sortType;
+    private void ToggleDetails(int shopId)
+    {
+        if (ExpandedCards.ContainsKey(shopId))
+            ExpandedCards[shopId] = !ExpandedCards[shopId];
+        else
+            ExpandedCards[shopId] = true;
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void ShowFilterPopup() => IsFilterPopupVisible = true;
+    private void CloseFilterPopup() => IsFilterPopupVisible = false;
+    private void StopPropagation(MouseEventArgs e) { } // Prevents click outside from closing modal
+
+    private void ToggleOfferFilter(string offer)
+    {
+        if (SelectedOfferFilters.Contains(offer))
+            SelectedOfferFilters.Remove(offer);
+        else
+            SelectedOfferFilters.Add(offer);
+    }
+
+    private void ResetFilters()
+    {
+        SelectedOfferFilters.Clear();
+        Console.WriteLine("Filters reset.");
+    }
+
+    private void ApplyFilters()
+    {
+        Console.WriteLine("Filters applied: " + string.Join(", ", SelectedOfferFilters));
+        CloseFilterPopup();
+    }
+
+    private class ShopData
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public string Logo { get; set; }
+        public string Status { get; set; }
+        public string Location { get; set; }
+        public string JoinDate { get; set; }
+        public string ExpirationDate { get; set; }
+        public int ProductSold { get; set; }
+    }
+}

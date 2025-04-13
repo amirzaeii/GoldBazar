@@ -83,6 +83,12 @@ var vendorwebApp = builder.AddProject<Projects.VendorWebApp>("vendorwebapp", lau
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
+var gbadmin = builder.AddProject<Projects.GoldBazar_Admin_Web>("gbadminweb", launchProfileName)
+    .WithExternalHttpEndpoints()
+    .WithReference(catalogApi)    
+    .WithReference(orderingApi)
+    .WithReference(rabbitMq).WaitFor(rabbitMq);
+
 // set to true if you want to use OpenAI
 // bool useOpenAI = false;
 // if (useOpenAI)

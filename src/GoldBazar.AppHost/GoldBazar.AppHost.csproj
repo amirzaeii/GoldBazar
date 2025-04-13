@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Client/GoldBazar.Admin.Web/GoldBazar.Admin.Web/GoldBazar.Admin.Web.csproj" />
     <ProjectReference Include="../Client/VendorWebApp/VendorWebApp.csproj" />
     <ProjectReference Include="../Client/WebApp/WebApp.csproj" />
     <ProjectReference Include="../Services/Basket.Api/Basket.Api.csproj" />

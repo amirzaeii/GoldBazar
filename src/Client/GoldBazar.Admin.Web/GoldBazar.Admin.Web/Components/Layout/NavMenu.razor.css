@@ -1,0 +1,88 @@
+﻿.container {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    margin: 16px 0 40px 80px;
+    border-radius: 100px;
+    padding: 1rem;
+    background-color: var(--white-transparent);
+}
+
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1rem;
+    border-radius: 50px;  Pill shape 
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    min-width: 40px;
+    text-decoration: none;  Remove underline 
+    color: var(--text-secondary);  Default text color 
+}
+
+ 
+    .nav-item.active {
+        background-color: var(--nav-active-bg);  Background for active item 
+        color: var(--primary);  Match text color to primary 
+        font-weight: 500;
+        border-radius: 50px;  Ensures pill shape 
+        padding: 0.9rem 1.5rem;  Slightly larger padding for better look 
+        transition: all 0.3s ease-in-out;
+    }
+
+    .nav-item:hover {
+        background-color: var(--nav-hover);
+        color: var(--primary);
+    }
+
+
+.nav-content {
+    display: flex;  Side-by-side layout 
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+.icon-fill {
+    display: none;  Hide filled icon initially 
+}
+
+.icon-outline {
+    display: block;  Show outlined icon by default 
+}
+
+
+.nav-item.active .icon-fill {
+    display: block;
+}
+
+.nav-item.active .icon-outline {
+    display: none;
+}
+
+
+.nav-label {
+    font-size: 0.9rem;
+    display: none; 
+    white-space: nowrap;
+    transition: all 0.3s ease-in-out;
+    color: mediumpurple;
+}
+
+
+.nav-item.active .nav-label {
+    display: block; 
+}
