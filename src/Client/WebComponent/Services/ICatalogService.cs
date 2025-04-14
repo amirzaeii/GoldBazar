@@ -1,12 +1,11 @@
 using Catalog.Infrastructure;
-
 using WebComponent.Dtos;
-
 namespace WebComponent.Services;
 
 public interface ICatalogService
 {
-    Task<CatalogItem?> GetCatalogItem(int id);
+    Task<CatalogItem> GetCatalogItem(int id);
+    Task<IEnumerable<CatalogItem>> GetCatalogItems(IEnumerable<int> ids);
     Task<CatalogResult> GetCatalogItems(int pageIndex, int pageSize, int? type);
     Task<IEnumerable<CatalogItemType>> GetTypes();
     Task<CatalogResult> GetCatalogItemsByType(int typeId, int pageIndex, int pageSize);

@@ -13,7 +13,7 @@ namespace WebComponent.Components.Pages.Categories;
 public partial class Filters
 {
     [Inject] 
-    protected ICatalogService CatalogService { get; set; }
+    protected CatalogService CatalogService { get; set; }
     [Inject] 
     public LocalStorageService LocalStorageService { get; set; }
 

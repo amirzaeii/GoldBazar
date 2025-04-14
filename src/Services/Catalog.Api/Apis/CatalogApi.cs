@@ -17,7 +17,13 @@ public static class CatalogApi
             .WithSummary("List of products")
             .WithDescription("Get a paginated list of products in the catalog.")
             .WithTags("Items");
-        
+
+        api.MapGet("/items/by", GetItemsByIds)
+            .WithName("BatchGetItems")
+            .WithSummary("Batch get catalog items")
+            .WithDescription("Get multiple items from the catalog")
+            .WithTags("Items");
+
         api.MapGet("/types", GetCatalogTypeList)
             .WithName("cCtalog Type List")
             .WithSummary("List of catalog types")
@@ -115,7 +121,18 @@ public static class CatalogApi
 
         return TypedResults.Ok(new PaginatedItems<ItemDto>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
-
+    public static async Task<Ok<List<ItemDto>>> GetItemsByIds(
+        [AsParameters] CatalogServices services,
+        [Description("List of ids for catalog items to return")] int[] ids)
+    {
+        var items = await services.Context.Items.Where(item => ids.Any(a => a == item.Id))
+         .Select(s => new ItemDto (s.Id, s.Caption, s.Description, 
+                            s.CostPerGram, s.Weight, s.Size, 
+                            s.TypeId, s.Type.Name, s.MetalId, s.Metal.Name, s.Metal.Karat, s.Metal.Purity,
+                            s.ShopId, s.Shop.Name,s.Shop.City, s.MaterialId, s.Material.Name, s.OccasionId, s.Occassion.Name
+                            ,s.StyleId, s.Style.Name, s.Discount, s.ActivityStatus, s.Quantity, s.MainPhoto)).ToListAsync();
+        return TypedResults.Ok(items);
+    }
     public static async Task<Results<Ok<ItemDto>, NotFound>> GetCatalogItemById(
         int id, [AsParameters] CatalogServices services)
     {

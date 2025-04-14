@@ -10,7 +10,7 @@ public partial class Offers
     const int PageSize = 10;
 
     [Inject] 
-    protected ICatalogService CatalogService { get; set; }
+    protected CatalogService CatalogService { get; set; }
 
     protected int CurrentPage { get; set; } = 1;
 

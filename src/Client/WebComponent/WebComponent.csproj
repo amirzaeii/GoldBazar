@@ -18,16 +18,20 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" />
+    <PackageReference Include="Google.Protobuf" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
     <PackageReference Include="Microsoft.Extensions.Localization" />
     <PackageReference Include="MudBlazor" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" />
+    <PackageReference Include="Grpc.Tools" />
   </ItemGroup>
   <ItemGroup>
-      <Protobuf Include="..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />
-    </ItemGroup>
+      <Protobuf Include="..\..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />    
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Services\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
+     <ProjectReference Include="..\..\Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Components\Layout\EmptyLayout.razor">

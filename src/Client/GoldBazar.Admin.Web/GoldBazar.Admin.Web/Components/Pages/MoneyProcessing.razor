@@ -1,0 +1,148 @@
+﻿@page "/moneyProcess"
+@using System.Globalization
+@rendermode InteractiveServer
+@layout EmptyLayout
+@inject NavigationManager Navigation
+
+<div class="header">
+    <button class="back-button" @onclick="GoToDashboard">
+        <img src="back.svg" alt="Back">
+    </button>
+    <h1 class="page-title">Money Process</h1>
+</div>
+
+<div class="stats-grid">
+    @foreach (var stat in Stats)
+    {
+        <div class="stat-card">
+            <div class="stat-title">@stat.Title</div>
+            <div class="stat-value">@stat.Value</div>
+            <div class="stat-change">@stat.Change</div>
+        </div>
+    }
+</div>
+
+<div class="orders-card">
+    <h2 class="orders-title">Recent Orders</h2>
+    <div class="table-container">
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Goldsmith</th>
+                    <th>Total Sales</th>
+                    <th>Status</th>
+                    <th>Products</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Orders)
+                {
+                    <tr>
+                        <td>@order.GoldsmithName</td>
+                        <td>@order.TotalSales.ToString("C", CultureInfo.InvariantCulture)</td>
+                        <td>
+                            <span class="status @(order.IsPaid ? "status-paid" : "status-pending")">
+                                @(order.IsPaid ? "Paid" : "Pending")
+                            </span>
+                        </td>
+                        <td>
+                            <button class="view-products-btn" @onclick="() => ToggleProducts(order)">
+                                @(SelectedGoldsmith == order ? "Hide Products" : "View Products")
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@if (SelectedGoldsmith != null)
+{
+    <ProductDisplay Goldsmith="@SelectedGoldsmith" OnClose="CloseProducts" />
+}
+
+
+@code {
+    private List<Stat> Stats = new()
+    {
+        new Stat { Title = "Total Sales", Value = "$247,850", Change = "+12.5% this month" },
+        new Stat { Title = "Pending Payments", Value = "$35,420", Change = "24 orders pending" },
+        new Stat { Title = "Active Goldsmiths", Value = "86", Change = "+5 this week" },
+        new Stat { Title = "Products Sold", Value = "324", Change = "Updated 5 mins ago" }
+    };
+
+    private List<Order> Orders = new()
+    {
+        new Order
+        {
+            GoldsmithName = "Golden Crown Ltd",
+            TotalSales = 12450,
+            IsPaid = true,
+            Products = new List<Product>
+            {
+                new Product { Name = "Diamond Necklace", Price = 5200, Date = DateTime.Parse("2025-02-12"), IsPaid = true },
+                new Product { Name = "Gold Bracelet", Price = 3800, Date = DateTime.Parse("2025-02-12"), IsPaid = true }
+            }
+        },
+        new Order
+        {
+            GoldsmithName = "Silver Star Crafts",
+            TotalSales = 8750,
+            IsPaid = false,
+            Products = new List<Product>
+            {
+                new Product { Name = "Silver Pendant", Price = 2800, Date = DateTime.Parse("2025-02-11"), IsPaid = false },
+                new Product { Name = "Pearl Earrings", Price = 3200, Date = DateTime.Parse("2025-02-11"), IsPaid = false }
+            }
+        }
+    };
+
+    private Order? SelectedGoldsmith = null;
+
+    private void ToggleProducts(Order order)
+    {
+        if (SelectedGoldsmith == order)
+        {
+            SelectedGoldsmith = null; // Deselect
+        }
+        else
+        {
+            SelectedGoldsmith = Orders.FirstOrDefault(o => o.GoldsmithName == order.GoldsmithName);
+        }
+    }
+
+
+    private void CloseProducts()
+    {
+        SelectedGoldsmith = null;
+    }
+
+    private void GoToDashboard()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+    public class Order
+    {
+        public string GoldsmithName { get; set; }
+        public double TotalSales { get; set; }
+        public bool IsPaid { get; set; }
+        public List<Product> Products { get; set; } = new();
+    }
+
+    public class Product
+    {
+        public string Name { get; set; }
+        public double Price { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsPaid { get; set; }
+    }
+
+    public class Stat
+    {
+        public string Title { get; set; }
+        public string Value { get; set; }
+        public string Change { get; set; }
+    }
+}

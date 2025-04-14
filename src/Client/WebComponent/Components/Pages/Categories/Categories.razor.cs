@@ -10,7 +10,7 @@ namespace WebComponent.Components.Pages.Categories;
 public partial class Categories
 {
     [Inject] 
-    protected ICatalogService CatalogService { get; set; }
+    protected CatalogService CatalogService { get; set; }
     [Inject]
     protected LocalStorageService LocalStorageService { get; set; }
     [Parameter] 

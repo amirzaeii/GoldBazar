@@ -1,4 +1,3 @@
-
 using System.Diagnostics.CodeAnalysis;
 
 namespace Basket.Api.Grpc;
@@ -10,7 +9,8 @@ public class BasketService(
     [AllowAnonymous]
     public override async Task<CustomerBasketResponse> GetBasket(GetBasketRequest request, ServerCallContext context)
     {
-        var userId = context.GetUserIdentity();
+        //var userId = context.GetUserIdentity();
+        var userId = "1";
         if (string.IsNullOrEmpty(userId))
         {
             return new();
@@ -33,7 +33,8 @@ public class BasketService(
 
     public override async Task<CustomerBasketResponse> UpdateBasket(UpdateBasketRequest request, ServerCallContext context)
     {
-        var userId = context.GetUserIdentity();
+        //var userId = context.GetUserIdentity();
+        var userId = "1";
         if (string.IsNullOrEmpty(userId))
         {
             ThrowNotAuthenticated();
@@ -56,7 +57,8 @@ public class BasketService(
 
     public override async Task<DeleteBasketResponse> DeleteBasket(DeleteBasketRequest request, ServerCallContext context)
     {
-        var userId = context.GetUserIdentity();
+        //var userId = context.GetUserIdentity();
+        var userId = "1";
         if (string.IsNullOrEmpty(userId))
         {
             ThrowNotAuthenticated();

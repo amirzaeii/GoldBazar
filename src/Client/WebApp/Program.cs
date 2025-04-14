@@ -8,7 +8,7 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.AddApplicationServices();
+builder.AddWebApplicationServices();
 
 var app = builder.Build();
 //Localization purposes

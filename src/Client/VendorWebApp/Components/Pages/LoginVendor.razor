@@ -1,4 +1,5 @@
 ﻿@page "/login"
+@using VendorWebApp.Components.Layout
 @layout EmptyLayout
 @inject NavigationManager Nav
 @inject IStringLocalizer<Resource> localizer
@@ -55,7 +56,7 @@
         Console.WriteLine($"Login attempt: {Username}, {Password}");
 
         await JS.InvokeVoidAsync("alert", "Login successful!");
-        Nav.NavigateTo("/home"); // Or wherever you want to go
+        Nav.NavigateTo("/"); // Or wherever you want to go
     }
 
     [Inject]

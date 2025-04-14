@@ -17,12 +17,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Client/GoldBazar.Admin.Web/GoldBazar.Admin.Web/GoldBazar.Admin.Web.csproj" />
     <ProjectReference Include="../Client/VendorWebApp/VendorWebApp.csproj" />
     <ProjectReference Include="../Client/WebApp/WebApp.csproj" />
     <ProjectReference Include="../Services/Basket.Api/Basket.Api.csproj" />
     <ProjectReference Include="../Services/BFF/Mobile.Bff/Mobile.Bff.csproj" />
     <ProjectReference Include="../Services/Catalog.Api/Catalog.Api.csproj" />
     <ProjectReference Include="../Services/Identity.Api/Identity.Api.csproj" />
+    <ProjectReference Include="../Services/Order.Processor/Order.Processor.csproj" />
+    <ProjectReference Include="../Services/Ordering.Api/Ordering.Api.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,34 +1,65 @@
-﻿@page "/orders"
+@page "/orders"
+@using WebComponent.Components.Pages.Users
+@using WebComponent.Components.Products
+@inject CatalogService catalogservice
+@inject IProductImageUrlProvider ImageProvider
+@using Microsoft.AspNetCore.Components.Sections
+@inject IStringLocalizer<Resource> localizer
+@attribute [StreamRendering]
+@inject OrderingService OrderingService
 
-<main class="main-content">
-    <div class="products-grid">
-        <RecentOrders 
-            Title="گوارەی گوڵی خۆر"
-            OldPrice="$199"
-            NewPrice="$179"
-            Quantity=1
-            Weight="4.5g"
-            Size="34"
-            Karat="21"
-                      User=" لانە نەوزاد"
-            Code="2342211"
-            Location="هەولێر"
-                      ImageUrl="Image/avita.svg" />
+<PageTitle>Orders</PageTitle>
+<SectionContent SectionName="page-header-title">Orders</SectionContent>
+<OrderRefreshOnStatusChange />
 
-        <RecentOrders Title="گوارەی پەپوولە"
-            OldPrice="$199"
-            NewPrice="$179"
-            Weight="4.5g"
-            Size="34"
-            Quantity=2
-            Karat="21"
-                      User=" لانە نەوزاد"
-            Code="2342211"
-            Location="هەولێر"
-            ImageUrl="Image/avita.svg" />
-    </div>
-</main>
+<div class="container">
+    <div class="order-section">
+    @if (orders is null)
+    {
+        <p>Loading...</p>
+    }
+    else if (orders.Length == 0)
+    {
+        <p>You haven't yet placed any orders.</p>
+    }
+    else
+    {
+      foreach (var order in orders)
+            {
+                <div class="order-card">
+                    <div class="order-header">
+                        <span class="order-number">@localizer[nameof(Resource.OrderNoLabel)] @order.OrderNumber</span>
+                        <span class="order-status @order.Status.ToLower()">
+                            @order.Status
+                        </span>
+                    </div>
+                    <div class="order-body">
+                        <div class="info-item">
+                            <img src="_content/WebComponent/assets/Icons/user.png" alt="Order Date">
+                            <span>user 1</span>
+                        </div>
+                         <div class="info-item">
+                            <img src="_content/WebComponent/assets/Icons/calendar.png" alt="Order Date">
+                            <span>@localizer[nameof(Resource.OrderDateLabel)]@order.Date</span>
+                        </div>
+                        <div class="info-item">
+                            <img src="_content/WebComponent/assets/Icons/dollar.png" alt="Price">
+                            <span>@localizer[nameof(Resource.TotalPriceLabel)] @order.Total.ToString("0.00")</span>
+                        </div>
+                    </div>
+                </div>
+            }
+    }        
+
+   </div>
+</div>
+
 @code {
+    private OrderRecord[]? orders;
 
+    protected override async Task OnInitializedAsync()
+    {
+        orders = await OrderingService.GetOrders();
+    }
 }
 
