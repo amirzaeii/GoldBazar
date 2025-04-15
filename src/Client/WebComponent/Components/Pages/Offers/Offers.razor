@@ -1,31 +1,8 @@
 ﻿@page "/offers"
+@layout MainLayout
 
 <MudGrid>
-    @if (!IsLoaded)
-    {
-        <MudItem xs="12">
-            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
-        </MudItem>
-    }
-    else
-    {
-        <MudItem xs="12">
-            <div class="product-grid">
-                @foreach (var product in _catalogResult.Data)
-                {
-                    <ProductCard Item="product"/>
-                }
-            </div>
-        </MudItem>
-        <MudItem xs="12">
-            <div class="page-links d-flex justify-center mud-width-full">
-                @if (_catalogResult.Data.Count > 0)
-                {
-                    <MudPagination bind-Selected="CurrentPage" Variant="Variant.Outlined"
-                                   Count="GetVisiblePageIndexes(_catalogResult)"
-                                   SelectedChanged="PageChanged"/>
-                }
-            </div>
-        </MudItem>
-    }
+    <MudItem xs="12">
+        <WebComponent.Components.Products.ProductListByOffer />
+    </MudItem>
 </MudGrid>

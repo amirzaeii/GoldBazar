@@ -46,7 +46,11 @@ public static class Extensions
          builder.Services.AddHttpClient<OrderingService>(o => o.BaseAddress = new("http://ordering-api"))
              .AddApiVersion(1.0);
         //     .AddAuthToken();
-    }    
+
+        builder.Services.AddHttpClient<ICatalogService, CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
+    .AddApiVersion(1.0);
+
+    }
 
     public static void AddAuthenticationServices(this IHostApplicationBuilder builder)
     {
