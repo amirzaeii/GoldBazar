@@ -2,13 +2,15 @@ using GoldBazar.Admin.Web.Components;
 using GoldBazar.Admin.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.AddBasicServiceDefaults();
+builder.AddServiceDefaults();
+
+builder.AddApplicationServices();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
-builder.AddApplicationServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

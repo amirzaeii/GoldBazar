@@ -1,5 +1,12 @@
 ﻿@page "/"
-@inject NavigationManager Nav
+@inject CatalogService catalogservice
+@inject IProductImageUrlProvider ImageProvider
+@using GoldBazar.Shared.Resources
+@using Microsoft.AspNetCore.Components.Sections
+@using Microsoft.Extensions.Localization
+@using WebComponent.Services
+@attribute [StreamRendering]
+@inject OrderingService OrderingService
 @rendermode InteractiveServer
 
 <StatsGrid />
@@ -11,45 +18,42 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
                 <th>Code</th>
-                <th>Quantity</th>
-                <th>Delivery Price</th>
+                 <th>Code</th>
                 <th>Total Price</th>
                 <th>Date</th>
-                <th>Location</th>
-                <th>Phone Number</th>
-                <th>Note</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var order in orders)
+            @if(orders == null || orders.Length == 0)
             {
                 <tr>
-                    <td>@order.Id</td>
-                    <td>
-                        <button class="trigger-button text-blue-500 underline" @onclick="() => OpenOrderDetailsPopup(order.Id)">
-                            @order.Name
-                        </button>
-                    </td>
-
-                    <td>@order.Code</td>
-                    <td>@order.Quantity</td>
-                    <td>@order.DeliveryPrice</td>
-                    <td class="delivery-price">@order.TotalPrice</td>
-                    <td>@order.Date</td>
-                    <td class="location-cell">
-                        <i data-lucide="map-pin" size="14"></i> @order.Location
-                    </td>
-                    <td class="phone-cell">@order.PhoneNumber</td>
-                    <td>@order.Note</td>
-                    <td class="action-cell">
-                        <button class="trigger-button" @onclick="() => OpenPopup(order)">
-                            <img src="sendfill.svg" alt="Send" class="h-6 w-6">
-                        </button>
-                    </td>
+                    <td colspan="10" class="text-center">No orders available</td>
                 </tr>
+            }
+            else
+            {
+                foreach (var order in orders)
+                {
+                    <tr>
+                        <td>@order.OrderNumber</td>
+                        <td>
+                            <button class="trigger-button text-blue-500 underline" @onclick="() => OpenOrderDetailsPopup(order.OrderNumber)">
+                                Details
+                            </button>
+                        </td>
+
+                        <td>@order.Status</td>
+                        <td class="delivery-price">@order.Total</td>
+                        <td>@order.Date</td>
+                        <td class="action-cell">
+                            <button class="trigger-button" @onclick="() => OpenPopup()">
+                                <img src="sendfill.svg" alt="Send" class="h-6 w-6">
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -75,7 +79,7 @@
             </div>
 
             <div class="modal-footer">
-                <button @onclick="AssignDelivery">Deliver</button>
+                <button>Deliver</button>
             </div>
         </div>
     </div>
@@ -83,7 +87,7 @@
 
 @if (IsOrderDetailsPopupOpen)
 {
-    <div class="modal-overlay">
+  <div class="modal-overlay">
         <div class="modal-container">
             <div class="modal-header">
                 <h3>Order Details</h3>
@@ -96,21 +100,26 @@
                         <tr>
                             <th class="text-left p-2">#</th>
                             <th class="text-left p-2">Product</th>
-                            <th class="text-left p-2">Code</th>
-                            <th class="text-left p-2">Price</th>
                             <th class="text-left p-2">Qty</th>
+                            <th class="text-left p-2">Price</th>                            
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in SelectedOrderDetails)
-                        {
-                            <tr>
-                                <td class="p-2">@item.Id</td>
-                                <td class="p-2">@item.Product</td>
-                                <td class="p-2">@item.Code</td>
-                                <td class="p-2">@item.Price</td>
-                                <td class="p-2">@item.Quantity</td>
-                            </tr>
+                        @if(order == null){ <p>loading...</p>}
+                        else{
+                            foreach (var item in order.OrderItems)
+                            {
+                                <tr>
+                                    <td>
+                                         <div class="product-image">
+                                            <img height="100" width="100" src="@ImageProvider.GetProductImageUrl(item.ProductId)">
+                                         </div>
+                                    </td>
+                                    <td class="p-2">@item.ProductName</td>
+                                    <td class="p-2">@item.Units</td>
+                                    <td class="p-2">@item.UnitPrice.ToString("0.00")</td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
@@ -123,82 +132,37 @@
 
 @code {
     private bool IsOrderDetailsPopupOpen = false;
-    private List<OrderDetail> SelectedOrderDetails = new();
-    private DeliveryPerson DeliveryPersonnel = new();
-    private List<Order> orders = new()
-    {
-        new Order { Id = 1, Name = "Ring bracelet", Code = "1234", Quantity = 2, DeliveryPrice = 103.44m, TotalPrice = "1240$", Date = "2/1/2025", Location = "Germany - Berlin", PhoneNumber = "770-2345657", Note = "Call me before sending" },
-        new Order { Id = 2, Name = "Ring bracelet", Code = "1234", Quantity = 2, DeliveryPrice = 103.44m, TotalPrice = "1240$", Date = "2/1/2025", Location = "Germany - Berlin", PhoneNumber = "770-2345657", Note = "Call me before sending" }
-    };
-    private List<OrderDetail> OrderDetails = new()
-    {
-        new() { Id = 1, OrderId = 1, Product = "Ring", Code = "2344", Price = "210$", Quantity = 1 },
-        new() { Id = 2, OrderId = 1, Product = "Earing", Code = "1224", Price = "345$", Quantity = 2 },
-        new() { Id = 3, OrderId = 2, Product = "ring", Code = "5642", Price = "123$", Quantity = 2 },
-        new() { Id = 4, OrderId = 2, Product = "Pendant", Code = "1234", Price = "456$", Quantity = 4 }
-    };
-    private void CloseOrderDetailsPopup()
-    {
-        IsOrderDetailsPopupOpen = false;
-    }
-    public class OrderDetail
-    {
-        public int Id { get; set; }
-        public int OrderId { get; set; }
-        public string Product { get; set; }
-        public string Code { get; set; }
-        public string Price { get; set; }
-        public int Quantity { get; set; }
-    }
-    public class Order
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Code { get; set; }
-        public int Quantity { get; set; }
-        public decimal DeliveryPrice { get; set; }
-        public string TotalPrice { get; set; }
-        public string Date { get; set; }
-        public string Location { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Note { get; set; }
-    }
     private bool IsPopupOpen = false;
-    private Order SelectedOrder = new();
-
-    private List<Order> Orders = new()
+    private DeliveryPerson DeliveryPersonnel = new();
+   
+    private OrderRecord[]? orders;
+    private OrderDto? order;
+    protected override async Task OnInitializedAsync()
     {
-        new() { Id = 1, Name = "Ring bracelet", Code = "1234", Quantity = 2, DeliveryPrice = 103.44m, TotalPrice = "$1240", Date = "2/1/2025", Location = "Germany - Berlin", PhoneNumber = "770-2345657", Note = "Call me before sending" },
-        new() { Id = 2, Name = "Ring bracelet", Code = "1234", Quantity = 2, DeliveryPrice = 103.44m, TotalPrice = "$1240", Date = "2/1/2025", Location = "Germany - Berlin", PhoneNumber = "770-2345657", Note = "Call me before sending" }
-    };
-
-    private void OpenPopup(Order order)
+        orders = await OrderingService.GetOrders();
+    }
+     private async void OpenOrderDetailsPopup(int orderNumber)
     {
-        SelectedOrder = order;
-        DeliveryPersonnel = new();
+        IsOrderDetailsPopupOpen = true;
+        order = await OrderingService.GetOrders(orderNumber);
+    }
+    private void OpenPopup()
+    {
         IsPopupOpen = true;
     }
-
     private void ClosePopup()
     {
         IsPopupOpen = false;
     }
-
-    private void AssignDelivery()
+    private void CloseOrderDetailsPopup()
     {
-        IsPopupOpen = false;
+        IsOrderDetailsPopupOpen = false;
     }
-
     public class DeliveryPerson
     {
         public string Name { get; set; } = "";
         public string PhoneNumber { get; set; } = "";
         public string CarNumber { get; set; } = "";
-    }
-    private void OpenOrderDetailsPopup(int orderId)
-    {
-        SelectedOrderDetails = OrderDetails.Where(d => d.OrderId == orderId).ToList();
-        IsOrderDetailsPopupOpen = true;
     }
 
 }

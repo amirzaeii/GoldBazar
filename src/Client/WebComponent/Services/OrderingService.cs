@@ -10,6 +10,10 @@ public class OrderingService(HttpClient httpClient)
     {
         return httpClient.GetFromJsonAsync<OrderRecord[]>(remoteServiceBaseUrl)!;
     }
+    public Task<OrderDto> GetOrders(int orderId)
+    {
+        return httpClient.GetFromJsonAsync<OrderDto>(remoteServiceBaseUrl+ orderId)!;
+    }
 
     public Task CreateOrder(CreateOrderRequest request, Guid requestId)
     {
@@ -26,3 +30,16 @@ public record OrderRecord(
     string Status,
     decimal Total);
 
+public record OrderDto(
+    int OrderNumber,
+    DateTime Date,
+    string Status,
+    decimal Total,
+    OrderDetailDto[] OrderItems);
+
+public record OrderDetailDto(
+    int ProductId,
+    string ProductName,
+    int Units,
+    decimal UnitPrice,
+    string PictureUrl);

@@ -146,6 +146,7 @@ else
             await BasketState.AddAsync(item);
             await UpdateNumInCartAsync();
         }
+         Nav.NavigateTo("/cart");
     }
     private async Task UpdateNumInCartAsync()
     {

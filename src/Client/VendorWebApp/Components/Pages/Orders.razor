@@ -7,6 +7,7 @@
 @inject IStringLocalizer<Resource> localizer
 @attribute [StreamRendering]
 @inject OrderingService OrderingService
+@rendermode InteractiveServer
 
 <PageTitle>Orders</PageTitle>
 <SectionContent SectionName="page-header-title">Orders</SectionContent>
@@ -47,19 +48,87 @@
                             <span>@localizer[nameof(Resource.TotalPriceLabel)] @order.Total.ToString("0.00")</span>
                         </div>
                     </div>
+                    <div>
+                        <h5>Order Detail</h5>
+                         <button style="background-color:#845dec;color:white;width:100%" @onclick="() => OpenPopup(order.OrderNumber)">
+                            Details
+                        </button>
+                        <hr/>
+                          <button style="background-color:green;color:white;width:100%">
+                            Approve
+                        </button>
+                    </div>
                 </div>
+            
             }
     }        
 
+@if (IsOrderDetailsPopupOpen)
+{
+    <div class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Order Details</h3>
+                <button class="modal-close" @onclick="CloseOrderDetailsPopup">✖</button>
+            </div>
+
+            <div class="modal-body">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="text-left p-2">#</th>
+                            <th class="text-left p-2">Product</th>
+                            <th class="text-left p-2">Qty</th>
+                            <th class="text-left p-2">Price</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(order == null){ <p>loading...</p>}
+                        else{
+                            foreach (var item in order.OrderItems)
+                            {
+                                <tr>
+                                    <td>
+                                         <div class="product-image">
+                                            <img height="100" width="100" src="@ImageProvider.GetProductImageUrl(item.ProductId)">
+                                         </div>
+                                    </td>
+                                    <td class="p-2">@item.ProductName</td>
+                                    <td class="p-2">@item.Units</td>
+                                    <td class="p-2">@item.UnitPrice.ToString("0.00")</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
    </div>
 </div>
 
 @code {
     private OrderRecord[]? orders;
-
+    private OrderDto? order;
+    bool IsOrderDetailsPopupOpen;
     protected override async Task OnInitializedAsync()
     {
         orders = await OrderingService.GetOrders();
+    }
+     private async void OpenPopup(int orderNumber)
+    {
+        IsOrderDetailsPopupOpen = true;
+        order = await OrderingService.GetOrders(orderNumber);
+    }
+
+    private void ClosePopup()
+    {
+        IsOrderDetailsPopupOpen = false;
+    }
+    private void CloseOrderDetailsPopup()
+    {
+        IsOrderDetailsPopupOpen = false;
     }
 }
 

@@ -27,6 +27,7 @@ public class OrderQueries(OrderingContext context)
             OrderItems = order.OrderItems.Select(oi => new Orderitem
             {
                 ProductName = oi.ProductName,
+                ProductId = oi.ProductId,
                 Units = oi.Units,
                 UnitPrice = (double)oi.UnitPrice,
                 PictureUrl = oi.PictureUrl
