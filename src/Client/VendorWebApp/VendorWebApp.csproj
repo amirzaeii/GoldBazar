@@ -13,7 +13,4 @@
     <PackageReference Include="Asp.Versioning.Http.Client" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" />
   </ItemGroup>
- <ItemGroup>
-   <Folder Include="UserData\uploads\" />
- </ItemGroup>
 </Project>
