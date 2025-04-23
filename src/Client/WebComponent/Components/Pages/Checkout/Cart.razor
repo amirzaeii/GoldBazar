@@ -1,92 +1,169 @@
 ﻿@page "/cart"
 @layout MainLayout
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Components.Forms
+@using System.Threading
 @inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 @inject BasketState Basket
 @inject IProductImageUrlProvider ImageProvider
-@attribute [StreamRendering]
+@inject ICatalogService CatalogService
 
 <div class="container">
     <header class="header">
-        <!--  <h1>@localizer[nameof(MyProductsHeader.Action)]</h1>-->
         <h1>@localizer[nameof(Resource.MyCartHeader)]</h1>
     </header>
-    @if(basketItems == null){
 
+    @if (basketItems == null)
+    {
+        <p>Loading your cart…</p>
     }
-    else{    
-            <div class="products">
-                @foreach (var product in basketItems)
-                {
-                    var quantity = CurrentOrPendingQuantity(product.ProductId, product.Quantity);
-                    <div class="product-card">
-                        <img src="@ImageProvider.GetProductImageUrl(product.ProductId)" alt="@product.ProductName" class="product-image">
-                        <div class="product-details">
-                            <div class="name-price">
-                                <p class="product-title">@product.ProductName</p>
-                                <span class="product-price">@product.UnitPrice.ToString("C")</span>
-                            </div>
-                            <div class="quantity-controls">
-                                  <form method="post" data-enhance>
-                                        <input type="hidden" name="_handler" value="update-cart" />
-                                        <AntiforgeryToken />
-                                        <input aria-label="product quantity" type="number" name="UpdateQuantityValue" value="@quantity" min="0" />
-                                        <button type="submit" 
-                                                class="button"
-                                                name="UpdateQuantityId" 
-                                                value="@product.ProductId">
-                                            Update
-                                        </button>                                        
-                                    </form>
+    else if (!basketItems.Any())
+    {
+        <p>Your cart is empty.</p>
+    }
+    else
+    {
+        @foreach (var storeGroup in basketItems.GroupBy(x => x.StoreName))
+        {
+            
+            <div class="outer-container">
+                <!-- Store header -->
+                <h2 class="store-header">@storeGroup.Key</h2>
+                <hr class="store-divider" />
+                <div class="products">
+                    @foreach (var item in storeGroup)
+                    {
+                        <div class="product-card" @key="item.ProductId">
+                            <img class="product-image"
+                                 src="@ImageProvider.GetProductImageUrl(item.ProductId)"
+                                 alt="@item.ProductName" />
+
+                            <div class="product-details">
+                                <div class="name-price">
+                                    <p class="product-title">@item.ProductName</p>
+                                    <span class="product-price">@item.UnitPrice.ToString("C")</span>
+                                </div>
+                               @*  <div class="quantity-controls">
+                                    <input type="number"
+                                           min="0"
+                                           @bind="item.Quantity"
+                                           @bind:event="onchange" />
+                                </div> *@
+                                <div class="quantity-controls">
+                                    <button type="button"
+                                            class="decrement-btn"
+                                            @onclick="() => item.Quantity = Math.Max(item.Quantity - 1, 0)">
+                                        <img src="_content/WebComponent/assets/Icons/bin.svg" />
+                                    </button>
+
+                                    <input type="number"
+                                           min="0"
+                                           @bind="item.Quantity"
+                                           @bind:event="onchange" />
+
+                                    <button type="button"
+                                            class="increment-btn"
+                                            @onclick="() => item.Quantity++">
+                                        <img src="_content/WebComponent/assets/Icons/inc.svg" />
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
 
+                @* Per-store total + checkout *@
                 <div class="total-section">
                     <div class="total-price-container">
-                        <span class="total-price-label">@localizer[nameof(Resource.TotalPriceLabel)]</span>
-                        <span class="total-price">@TotalPrice!.Value.ToString("C")</span>
+                        <span class="total-price-label">Total:</span>
+                        <span class="total-price">@storeGroup.Sum(i => i.Quantity * i.UnitPrice).ToString("C")</span>
                     </div>
-                    <div>
-                        <a href="/checkout" 
-                           style="display:block;text-align:center;width:100%; background-color: #0d11e5; color: white;">
-                            @localizer[nameof(Resource.CheckoutLabel)]
-                        </a>
-                    </div>                  
+                    <a class="checkout-button"
+                       href="/checkout?store=@Uri.EscapeDataString(storeGroup.Key)">
+                        <img src="_content/WebComponent/assets/Icons/cartwhite.svg"
+                             alt="Cart"
+                             class="checkout-icon" />
+                        Checkout
+                    </a>
+
                 </div>
-            </div>       
+
+            </div>
+        }
+
     }
-     </div>
-     <form @formname="update-cart" @onsubmit="@UpdateQuantityAsync"></form>
+</div>
+
 @code {
-    private IReadOnlyCollection<BasketItem>? basketItems;
+    private List<BasketItem>? basketItems;
+    private decimal TotalPrice
+      => basketItems?.Sum(i => i.Quantity * i.UnitPrice) ?? 0m;
 
-    [SupplyParameterFromForm]
-    public int? UpdateQuantityId { get; set; }
+    // For per-item debounce
+    private readonly Dictionary<int, CancellationTokenSource> _debounceTokens =
+      new();
 
-    [SupplyParameterFromForm]
-    public int? UpdateQuantityValue { get; set; }
-    
     protected override async Task OnInitializedAsync()
     {
-        basketItems = await Basket.GetBasketItemsAsync();
-    }   
-    private decimal? TotalPrice => basketItems?.Sum(i => i.Quantity * i.UnitPrice);
-    private decimal? TotalQuantity => basketItems?.Sum(i => i.Quantity);
-    // While an update post is in process, we want to show the pending quantity, not the one
-    // that is committed to the cart (otherwise the UI briefly shows the old data)
-    private int CurrentOrPendingQuantity(int productId, int cartQuantity)
-        => UpdateQuantityId.GetValueOrDefault(-1) == productId
-        ? UpdateQuantityValue!.Value
-        : cartQuantity;
+        // initial fetch
+        var items = (await Basket.GetBasketItemsAsync()).ToList();
 
-    private async Task UpdateQuantityAsync()
+        // load store names (unchanged)…
+        var ids = items.Select(i => i.ProductId).Distinct();
+        var cats = await CatalogService.GetCatalogItems(ids);
+        var lookup = cats.ToDictionary(c => c.Id, c => c.ShopName);
+        items.ForEach(i =>
+            i.StoreName = lookup.GetValueOrDefault(i.ProductId, "Unknown Store")
+        );
+
+        // wire up inline setter callback **with zero-removal**:
+        items.ForEach(item =>
+            item.OnQuantityChanged = (bi, qty) =>
+            {
+                if (qty == 0)
+                {
+                    // remove from the local list
+                    basketItems?.Remove(bi);
+                }
+
+                // always re-render immediately
+                StateHasChanged();
+
+                // then persist (adds/removes server-side) after debounce
+                DebouncePersist(bi.ProductId, qty);
+            }
+        );
+
+        basketItems = items;
+    }
+
+
+    private void DebouncePersist(int productId, int newQty)
     {
-        var id = UpdateQuantityId!.Value;
-        var quantity = UpdateQuantityValue!.Value;
-        await Basket.SetQuantityAsync(id, quantity);
-        basketItems = await Basket.GetBasketItemsAsync();
+        if (_debounceTokens.TryGetValue(productId, out var oldCts))
+        {
+            oldCts.Cancel();
+            oldCts.Dispose();
+        }
+
+        var cts = new CancellationTokenSource();
+        _debounceTokens[productId] = cts;
+
+        _ = PersistAfterDelay(productId, newQty, cts.Token);
+    }
+
+    private async Task PersistAfterDelay(int productId, int newQty, CancellationToken token)
+    {
+        try
+        {
+            await Task.Delay(500, token);
+            await Basket.SetQuantityAsync(productId, newQty);
+        }
+        catch (TaskCanceledException)
+        {
+            // expected if user changes again within debounce window
+        }
     }
 }

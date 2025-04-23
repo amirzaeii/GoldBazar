@@ -11,6 +11,28 @@
         color: #333;
     }
 
+.outer-container {
+    background-color: #fff; 
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden; 
+}
+
+/* if you want to constrain width & center */
+.outer-container {
+    max-width: 640px;
+    margin: 1rem auto;
+}
+
+.store-divider {
+    border: none; 
+    height: 1px; 
+    background-color: #DDD; 
+    margin: 0.5rem 0 1rem;
+}
+
 /* Goldsmith Title */
 .goldsmith {
     font-size: 18px;
@@ -24,18 +46,18 @@
     gap: 15px;
     align-items: center;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 0.5px solid #ddd;
     border-radius: 12px;
-    padding: 15px;
+    padding: 10px;
     margin-bottom: 15px;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Product Image */
 .product-image {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    object-fit: fill;
     border-radius: 8px;
     border: 1px solid #ddd;
 }
@@ -49,19 +71,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin: 10px;
+ 
+
 }
 
 .product-title {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 500;
     color: #333;
+    margin-right:2px;
 }
 
 .product-price {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
     color: #333;
+    font-weight: bold;
+    margin: 10px;
 }
 
 /* Product Specs */
@@ -77,109 +103,87 @@
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem; 
 }
 
-.increment-btn, .decrement-btn {
-    width: 30px;
-    height: 30px;
-    background-color: #f5f5f5;
+.decrement-btn, .increment-btn {
     border: none;
-    border-radius: 50%;
     font-size: 18px;
-    color: #333;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-    .increment-btn:hover, .decrement-btn:hover {
-        background-color: #e0e0e0;
+
+.quantity-controls input[type=number] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    width: 40px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin: 0;
+}
+    /* Hide WebKit spinners */
+    .quantity-controls input[type=number]::-webkit-outer-spin-button,
+    .quantity-controls input[type=number]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 
-.quantity {
-    font-size: 16px;
-    font-weight: bold;
+/* Hide Firefox spinners */
+.quantity-controls input[type=number] {
+    -moz-appearance: textfield;
 }
 
-/* Total Section */
+
+/* Container for each store’s total + button */
 .total-section {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Total Section */
-.total-section {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Total Price */
-.total-price-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 20px;
-    gap: 5px;
-}
-
-.total-price-label {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-.total-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Price Note */
-.price-note-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 1rem;
+    margin-top: 1rem;
 }
 
-.price-note-label {
-    display: block;
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
+/* Left side: “Total Price:” and the amount */
+.total-price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 0.25rem;
 }
 
-.price-note-input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
-    color: #666;
+.total-price-label {
+    font-family: Zain;
+    font-weight: 250;
+    font-size: 19px;
 }
 
-.checkout-btn {
-    background-color: #8d62f9;
+.total-price {
+    font-family: Zain;
+    font-weight: 700;
+    font-size: 24px;
+    color: black;
+}
+
+.checkout-button {
+    display: inline-flex; 
+    align-items: center; 
+    gap: 0.5rem; 
+    background: linear-gradient(90deg, #4C46E3 0%, #004FD6 100%);
     color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 0.75rem 2rem;
+    border-radius: 24px;
+    text-decoration: none;
+    font-weight: 500;
 }
-
-    .checkout-btn:hover {
-        background-color: #7a54e1;
-    }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
