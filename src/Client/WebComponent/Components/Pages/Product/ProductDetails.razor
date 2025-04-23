@@ -6,7 +6,10 @@
 @inject IStringLocalizer<Resource> localizer
 @inject NavigationManager Nav
 @layout MainLayout
+@inject IJSRuntime JS
+@implements IDisposable
 
+<main class="product-page-container">
 @if (item == null)
 {
     <p>Loading...</p>
@@ -19,7 +22,8 @@ else
             </button>
         <h1 class="header_title">@item.Caption</h1>
     </header> *@
-    <main>
+
+    <div>
         <ProductGallery ItemId="item.Id" />
         <section class="product-info2">
             <div class="product-info_header">
@@ -111,10 +115,10 @@ else
         </div>
         <SimilarProductsList TypeId="@item.TypeId" />
         <WebComponent.Components.Shops.ShopProductsList ShopId="@item.ShopId" ExcludeProductId="@item.Id" />
-    </main>
+    </div>
+
 }
-
-
+</main>
 @code {
     [Parameter] 
     public int Id { get; set; }
@@ -122,17 +126,43 @@ else
     private int numInCart;
     private bool isLoggedIn = true;
     private bool notFound;
-
     [Parameter]
     public int ItemId { get; set; }
-
     [CascadingParameter]
     public HttpContent? HttpContext { get; set; }
 
-    protected override async Task OnInitializedAsync()
+
+    //scroll
+    protected override async Task OnParametersSetAsync()
     {
         item = await CatalogService.GetCatalogItem(Id);
     }
+
+    protected override void OnInitialized()
+    {
+        Nav.LocationChanged += OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+    {
+        if (e.Location.Contains("/product/"))
+        {
+     
+            await JS.InvokeVoidAsync("window.scrollTo", 0, 0);
+        }
+    }
+
+    public void Dispose()
+    {
+        Nav.LocationChanged -= OnLocationChanged;
+    }
+
+    //scroll
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     item = await CatalogService.GetCatalogItem(Id);
+    // }
     private async Task AddToCartAsync()
     {
         if (!isLoggedIn)
@@ -153,5 +183,6 @@ else
         var items = await BasketState.GetBasketItemsAsync();
         numInCart = items.FirstOrDefault(row => row.ProductId == ItemId)?.Quantity ?? 0;
     }
-}
 
+
+}

@@ -21,4 +21,6 @@ public class Shop
     [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Contact number must be a valid international phone number.")]
     public string ContactNumber { get; set; } = default!;
     public string Owner { get; set; } = default!;
+    //public string ImageUrl { get; set; } = default!;
+    //public bool Status { get; set; } = default!;
 }

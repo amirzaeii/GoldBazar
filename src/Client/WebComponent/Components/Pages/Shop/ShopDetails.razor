@@ -71,13 +71,11 @@ else
     List<CatalogItemType>? categories;
     List<CatalogItem>? products;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-
         shop = await ShopService.GetShopById(Id);
-
         categories = (await ShopService.GetItemCategoriesByShopId(Id)).ToList();
-
         products = (await ShopService.GetProductsByShopId(Id)).ToList();
     }
+
 }

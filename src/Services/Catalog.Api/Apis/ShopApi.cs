@@ -126,11 +126,11 @@ public static class ShopApi
     int id, [AsParameters] CatalogServices services)
     {
         var categories = await services.Context.Items
-            .Where(p => p.ShopId == id) // Filter by ShopId
-            .Select(p => p.Type)        // Select the Type (category)
-            .Distinct()                 // Ensure no duplicates
-            .Select(t => new TypeDto(t.Name, t.Id, t.Photo)) // Map to DTO
-            .ToListAsync();
+    .Where(p => p.ShopId == id)
+    .GroupBy(p => new { p.Type.Id, p.Type.Name, p.Type.Photo })
+    .Select(g => new TypeDto(g.Key.Name, g.Key.Id, g.Key.Photo))
+    .ToListAsync();
+
 
         return categories.Any()
             ? TypedResults.Ok(categories)

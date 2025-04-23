@@ -23,7 +23,6 @@ public record CatalogItem(
     bool Status,
     decimal Price,
     decimal OldPrice,
-    //Added
     string ImageUrl,
     decimal Rating,
     int RatingCount,

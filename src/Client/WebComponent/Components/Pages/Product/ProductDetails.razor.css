@@ -1,6 +1,17 @@
 ﻿main {
-    padding-bottom: 80px; /* Leaves space for the fixed bar */
+    padding-bottom: 180px;
+    margin-top:5px;
 }
+.product-page-container {
+    height: calc(100vh - 100px); /* subtract fixed header height */
+    overflow-y: auto;
+}
+
+/* restore normal page scrolling */
+html, body {
+    overflow: auto;
+}
+
 .header {
     position: fixed; /* Force it to stay at the top */
     top: 0;

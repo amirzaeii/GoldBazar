@@ -53,6 +53,8 @@ public class BasketState(
         _cachedBasket = null;
         await basketService.UpdateBasketAsync(items);
         await NotifyChangeSubscribersAsync();
+        //counter
+        if (OnChange != null) await OnChange.Invoke();
     }
 
     public async Task SetQuantityAsync(int productId, int quantity)
@@ -72,6 +74,8 @@ public class BasketState(
             _cachedBasket = null;
             await basketService.UpdateBasketAsync(existingItems.Select(i => new BasketQuantity(i.ProductId, i.Quantity)).ToList());
             await NotifyChangeSubscribersAsync();
+            //counter
+            if (OnChange != null) await OnChange.Invoke();
         }
     }
 
@@ -153,6 +157,10 @@ public class BasketState(
         public Task NotifyAsync() => Callback.InvokeAsync();
         public void Dispose() => Owner._changeSubscriptions.Remove(this);
     }
+
+    //counter 
+    public event Func<Task>? OnChange;
+
 }
 
 public record CreateOrderRequest(
