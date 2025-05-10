@@ -1,0 +1,107 @@
+:root {
+  /* Brand Colors */
+  --primary-color: #6246EA;
+  --primary-light: #f9f8ff;
+  --primary-dark: #4834D4;
+  --secondary-color: #000000;
+  --secondary-light: #FFE5CC;
+  --gold: #FFD700;
+  --gold-light: #FFF5CC;
+  --gold-dark: #B8860B;
+  
+  /* Semantic Colors */
+  --success-color: #2ECC71;
+  --success-light: #E7FAE7;
+  --success-dark: #1EA557;
+  --danger-color: #E74C3C;
+  --danger-light: #FEE2E2;
+  --danger-dark: #DC2626;
+  --warning-color: #F1C40F;
+  --warning-light: #FEF3C7;
+  --warning-dark: #D97706;
+  --info-color: #3498DB;
+  --info-light: #E6F4FF;
+  --info-dark: #2563EB;
+  --order-color: #6246EA;
+  --order-light: #ddd6ff;
+  --order-dark: #3c23bc;
+  
+  /* Background Colors */
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F7FF;
+  --bg-light: #F3F4F6;
+  --bg-dark: #1F2937;
+  --bg-purple: #F3F0FF;
+  --bg-gold: #FFF8E6;
+  
+  /* Text Colors */
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-muted: #989898;
+  --text-light: #E5E7EB;
+  --text-white: #FFFFFF;
+  --text-gold: #B8860B;
+  
+  /* Border Colors */
+  --border-color: #E5E7EB;
+  --border-light: #F3F4F6;
+  --border-dark: #D1D5DB;
+  --border-gold: #FFD700;
+  
+  /* Spacing */
+  --spacing-2xs: 0.25rem;
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  /* Border Radius */
+  --border-radius-none: 0;
+  --border-radius-sm: 0.375rem;
+  --border-radius-md: 0.5rem;
+  --border-radius-lg: 0.75rem;
+  --border-radius-xl: 1rem;
+  --border-radius-full: 9999px;
+  
+  /* Font Sizes */
+  --font-size-2xs: 0.625rem;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  
+  /* Z-index */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  
+  /* Status Colors */
+  --status-active: var(--success-color);
+  --status-pending: var(--warning-color);
+  --status-expired: var(--danger-color);
+} 

@@ -1,3 +1,4 @@
+
 namespace Catalog.Api.Extensions;
 public static class Extensions
 {
@@ -11,18 +12,27 @@ public static class Extensions
             });
         });
 
-        // REVIEW: This is done for development ease but shouldn't be here in production
-        builder.Services.AddMigration<CatalogContext, CatalogContextSeed>();
+        //REVIEW: This is done for development ease but shouldn't be here in production
+        if(builder.Environment.IsDevelopment())
+        {
+           builder.Services.AddMigration<CatalogContext, CatalogDevelopmentContextSeed>();
+        }
+        else
+        {
+            builder.Services.AddMigration<CatalogContext, CatalogContextSeed>();
+        }
+       
 
         // Add the integration services that consume the DbContext
         builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();
 
         builder.Services.AddTransient<ICatalogIntegrationEventService, CatalogIntegrationEventService>();
 
-        builder.AddRabbitMqEventBus("eventbus")
+        builder.AddRabbitMqEventBus("gb-eventbus")
                .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
                .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
+        builder.Services.AddScoped<IStorageService, LocalStorageService>();
         // builder.Services.AddOptions<CatalogOptions>()
         //     .BindConfiguration(nameof(CatalogOptions));
 

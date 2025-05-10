@@ -11,10 +11,7 @@ public class OrderingContext : DbContext, IUnitOfWork
 {
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
-    public DbSet<PaymentMethod> Payments { get; set; }
     public DbSet<Buyer> Buyers { get; set; }
-    public DbSet<CardType> CardTypes { get; set; }
-
     private readonly IMediator _mediator;
     private IDbContextTransaction _currentTransaction;
 
@@ -34,12 +31,10 @@ public class OrderingContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasDefaultSchema("ordering");
+        //modelBuilder.HasDefaultSchema("ordering");
         modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new PaymentMethodEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new OrderItemEntityTypeConfiguration());
-        modelBuilder.ApplyConfiguration(new CardTypeEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new BuyerEntityTypeConfiguration());
         modelBuilder.UseIntegrationEventLogs();
     }

@@ -1,18 +1,10 @@
 ﻿@page "/add"
-@using System.Text.Json
-@using Catalog.Infrastructure
-@using Microsoft.AspNetCore.Hosting
-@using Microsoft.Extensions.Logging
-@using Microsoft.AspNetCore.Components.Forms
-@using System.IO
 @inject ILogger<AddProducts> Logger
-@inject IConfiguration config
 @inject CatalogService CatalogService
 @inject IStringLocalizer<Resource> localizer
-@inject IWebHostEnvironment Environment
 @inject NavigationManager Nav
-@rendermode InteractiveServer
 @layout NavLayout
+@rendermode InteractiveServer
 
 <div class="tabs-container">
     <div class="tabs-header">@localizer[nameof(Resource.AddProductLabel)]</div>
@@ -32,22 +24,18 @@
             <DataAnnotationsValidator />
             @if (currentStep == 0)
             {
-                @* <InputFile accept=".png,.jpg,.jpeg" OnChange="FileUploaded" />
-                @if (!string.IsNullOrEmpty(newItem.MainPhoto))
-                {
-                    <img src="@newItem.MainPhoto" alt="Product Image" />
-                } *@
               <label>@localizer[nameof(Resource.AddImagesLabel)]</label>
                     <div class="image-upload-container">
                         <label class="upload-button">
-                            <input type="file" accept=".png,.jpg,.jpeg" onchange="FileUploaded" />
+                            <InputFile OnChange="UploadFile" multiple accept=".png,.jpg,.jpeg"/>
+
                             @if (string.IsNullOrEmpty(newItem.MainPhoto))
                             {
-                            <div class="upload-placeholder"><img src="Icons/add-image.svg" /></div>
-                        }
+                                <div class="upload-placeholder"><img src="Icons/add-image.svg" /></div>
+                            }
                             else
                             {
-                            <img src="@newItem.MainPhoto" alt="Product Image" class="upload-preview" />
+                                <img src="@newItem.MainPhoto" alt="Product Image" class="upload-preview" />
                             }
                         </label>
                     </div>
@@ -157,7 +145,7 @@
     </div>
 
 @code {
-    private List<IBrowserFile> loadedFiles = [];
+     
     private long maxFileSize = 1024 * 1024 * 3;
     private int maxAllowedFiles = 3;
     private IBrowserFile? file;
@@ -170,7 +158,7 @@
         currentStep = step;
     }
 
-    Item newItem = new Item();
+    CatalogItem newItem = new CatalogItem();
     private List<DropdownItem> ProductTypes = new();
     private List<DropdownItem> Metals = new();
     private List<DropdownItem> Styles = new();
@@ -216,57 +204,17 @@
             Console.WriteLine($"Error: {ex.Message}");
         }
     }
-    [Inject]
-    private IWebHostEnvironment WebHostEnvironment { get; set; }
 
-    public string FileName { get; set; } = "";
-    public string ErrorMessage { get; set; } = "";
-    const int MAX_FILESIZE = 5000 * 1024;
-   public async Task FileUploaded(InputFileChangeEventArgs e)
+    private async Task UploadFile(InputFileChangeEventArgs e)
     {
-        try
+        if (e.File == null)
         {
-            var browserFile = e.File;
-            if (browserFile == null)
-            {
-                Console.WriteLine("No file selected.");
-                return;
-            }
-
-            var uploadPath = Path.Combine(WebHostEnvironment.ContentRootPath, "UserData", "Uploads");
-
-            if (!Directory.Exists(uploadPath))
-            {
-                Directory.CreateDirectory(uploadPath);
-            }
-
-
-            if (!Directory.Exists(uploadPath))
-            {
-                Directory.CreateDirectory(uploadPath);
-            }
-
-            var fileExtension = Path.GetExtension(browserFile.Name).ToLower();
-            var fileName = $"{Guid.NewGuid()}{fileExtension}";
-            var filePath = Path.Combine(uploadPath, fileName);
-
-            await using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
-            await browserFile.OpenReadStream(10 * 1024 * 1024).CopyToAsync(fileStream);
-
-            if (!File.Exists(filePath))
-            {
-                throw new Exception($"File was not saved correctly: {filePath}");
-            }
-
-            newItem.MainPhoto = $"/uploads/{fileName}";  
-            Console.WriteLine($"File uploaded successfully: {newItem.MainPhoto}");
+            return;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error uploading file: {ex.Message}");
-        }
-    } 
 
+        var response = await CatalogService.UploadProductImage(e.File);
+        newItem.MainPhoto = response.Replace('"',' ').Trim();
+    }
 }
 
 

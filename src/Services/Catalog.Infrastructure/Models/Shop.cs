@@ -1,26 +1,34 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Catalog.Infrastructure;
+using System.ComponentModel.DataAnnotations.Schema;
+namespace Catalog.Infrastructure.Models;
 
 public class Shop
 {
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Name is required.")]
-    [StringLength(255, ErrorMessage = "Name cannot exceed 100 characters.")]
+    [StringLength(255, ErrorMessage = "Name cannot exceed 255 characters.")]
     public string Name { get; set; } = default!;
+    public int CityId { get; set; } 
 
-    [Required(ErrorMessage = "City is required.")]
-    [StringLength(50, ErrorMessage = "City name cannot exceed 50 characters.")]
-    public string City { get; set; } = default!;
+    [ForeignKey("CityId")]
+    public City City { get; set; } = default!;
 
     [Required(ErrorMessage = "Address is required.")]
     [StringLength(1000, ErrorMessage = "Address cannot exceed 1000 characters.")]
     public string Address { get; set; } = default!;
 
     [Required(ErrorMessage = "Contact number is required.")]
-    [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Contact number must be a valid international phone number.")]
     public string ContactNumber { get; set; } = default!;
+
+    [StringLength(255, ErrorMessage = "Owner cannot exceed 255 characters.")]
     public string Owner { get; set; } = default!;
-    //public string ImageUrl { get; set; } = default!;
-    //public bool Status { get; set; } = default!;
+    public string Logo { get; set; } = default!;
+    public string Banner { get; set; } = default!;
+    public string? Description { get; set; }
+    public int Status { get; set; } = default!;
+    public string? Instagram { get; set; }
+    public string? Tiktok { get; set; }
+    public string? Snapchat { get; set; }
+    public string? Facebook { get; set; }
 }

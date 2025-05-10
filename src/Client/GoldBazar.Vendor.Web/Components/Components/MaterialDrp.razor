@@ -1,0 +1,26 @@
+﻿@inject CatalogService CatalogService
+
+@if(materials == null)
+{
+    <MudSkeleton/>
+}
+else
+{
+    <MudSelect @bind-Value="Item.MaterialId" Label="Select Material" T="int" Disabled="@Disabled">
+        @foreach (var cat in materials)
+        {
+            <MudSelectItem Value="@cat.Id">@cat.Name</MudSelectItem>
+        }
+    </MudSelect>
+}
+
+
+@code{
+    [Parameter] public ItemDTO Item { get; set; } // Default value
+    [Parameter] public bool Disabled { get; set; } = false; // Default label
+    private MaterialDTO[] materials = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        materials = await CatalogService.GetMaterials();
+    }
+}    

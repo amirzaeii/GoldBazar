@@ -1,0 +1,25 @@
+﻿@inject CatalogService CatalogService
+
+@if(manufactures == null)
+{
+    <MudSkeleton/>
+}
+else
+{
+    <MudSelect @bind-Value="Item.ManufactureId" Label="Select Manufacture" T="int">
+        @foreach (var cat in manufactures)
+        {
+            <MudSelectItem Value="@cat.Id">@cat.Name</MudSelectItem>
+        }
+    </MudSelect>
+}
+
+
+@code{
+    [Parameter] public ItemDTO Item  { get; set; } // Default value
+    private ManufactureDTO[] manufactures = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        manufactures = await CatalogService.GetManufactures();
+    }
+}    

@@ -1,0 +1,43 @@
+﻿@page "/modifyitem"
+@page "/modifyitem/{productId:int}"
+@inject CatalogService CatalogService
+@rendermode InteractiveServer
+
+<PageTitle>Modify Product</PageTitle>
+<div>
+    <MudPopoverProvider />
+    <MudTabs Centered="true" Color="Color.Primary">
+        <MudTabPanel Text="Media">
+            <ProductUploadImage Files="_images"/>
+        </MudTabPanel>
+        <MudTabPanel Text="Specifications">
+            <ProductSpecification Item="_item" />
+        </MudTabPanel>
+        <MudTabPanel Text="Pricing">
+            <ProductPricing Item="_item" OnSave="HandleSave"/>
+        </MudTabPanel>
+    </MudTabs>
+</div>
+
+@code{
+    [Parameter] public int productId { get; set; } = 0;
+    private ItemDTO _item = new ItemDTO();
+    private IList<FileUploadDTO> _images = new List<FileUploadDTO>();
+    protected override async Task OnInitializedAsync()
+    {
+        if (productId > 0)
+        {
+            _item = await CatalogService.GetCatalogItem(productId);
+        }
+        else{
+            _item = new ItemDTO()
+            {
+                Id = 0
+            };
+        }
+    }
+    private void HandleSave(ItemDTO item)
+    {
+        Console.WriteLine($"Saved product: {item.Caption}");
+    }
+}

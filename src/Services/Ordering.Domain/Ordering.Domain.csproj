@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Events/OrderStatusChangedToAwaitingValidateFromGBDomainEvent" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" />
   </ItemGroup>
 

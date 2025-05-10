@@ -1,6 +1,7 @@
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Catalog.Infrastructure;
+using Microsoft.AspNetCore.Components.Forms;
 using WebComponent.Dtos;
 namespace WebComponent.Services;
 
@@ -122,7 +123,7 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
             return Array.Empty<CatalogItem>();
         }
     }
-    public async Task<bool> AddProduct(Item newItem)
+    public async Task<bool> AddProduct(CatalogItem newItem)
     {
         var uri = "api/catalog/item"; // Ensure this matches your API
 
@@ -143,6 +144,33 @@ public class CatalogService(HttpClient httpClient) : ICatalogService
         {
             Console.WriteLine($"Error adding new product: {ex.Message}");
             return false;
+        }
+    }
+     public async Task<string> UploadProductImage(IBrowserFile? file)
+    {
+        var uri = "api/catalog/item/pic"; // Ensure this matches your API
+
+        try
+        {
+            var content = new MultipartFormDataContent();
+            var streamContent = new StreamContent(file.OpenReadStream(10 * 1024 * 1024)); // Limit stream size if needed
+            streamContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+
+            content.Add(streamContent, "file", file.Name);
+            Console.WriteLine($"Sending request to: {uri}");
+
+            var response = await httpClient.PostAsync(uri, content);
+
+            Console.WriteLine($"Response status: {response.StatusCode}");
+
+            response.EnsureSuccessStatusCode(); // Throws exception if not 2xx
+
+            return await response.Content.ReadAsStringAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Error adding upload image: {ex.Message}");
+            return "default.jpg";
         }
     }
 

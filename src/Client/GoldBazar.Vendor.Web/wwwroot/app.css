@@ -1,0 +1,32 @@
+    /* Main CSS file that imports all shared components */
+ /* Import shared styles */
+ @import url('./styles/shared/reset.css');
+ @import url('./styles/shared/animations.css');
+ @import url('./styles/shared/variables.css');
+ /* @import url('./shared/components.css'); */
+ @import url('./styles/shared/typography.css');
+ @import url('./styles/shared/tables.css');
+ @import url('./styles/shared/spacing.css');
+ @import url('./styles/shared/buttons.css');
+ @import url('./styles/shared/cards.css');
+ @import url('./styles/shared/forms.css');
+ @import url('./styles/shared/dropdown.css');
+ @import url('./styles/shared/lists.css');
+ @import url('./styles/shared/layout.css');
+ @import url('./styles/shared/uploads.css');
+ @import url('./styles/shared/utilities.css');
+ @import url('./styles/shared/responsive.css');
+ @import url('./styles/shared/navigations.css');
+ @import url('./styles/shared/modals.css');
+ @import url('./styles/shared/product-card.css');
+    /* Custom styles specific to pages can be added here */ 
+
+    @font-face {
+        font-family: 'rabar';
+        src: url('../styles/fonts/rabar.ttf') format('truetype');
+    }
+    
+    * {
+        font-family: 'rabar';
+    }
+    

@@ -1,4 +1,5 @@
 using Catalog.Api.Apis;
+using Catalog.Api.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddServiceDefaults();

@@ -1,4 +1,4 @@
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.IntegrationEvents;
 
 public interface ICatalogIntegrationEventService
 {

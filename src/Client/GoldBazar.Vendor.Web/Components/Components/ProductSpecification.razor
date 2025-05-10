@@ -1,0 +1,44 @@
+﻿ <MudContainer Class="pa-5 mt-10">
+     <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <div class="mt-5">
+                    <MaterialDrp Item="@Item" Disabled="true"/>
+                </div>   
+                <div class="mt-5">
+                     <MetalDrp Item="@Item" Disabled="false"/>
+                </div>   
+                <div class="mt-5">
+                    <MudTextField Label="Caption" @bind-Value=Item.Caption Required="true" RequiredError="Caption is required!" />
+                </div>
+                <div class="d-flex p-4">
+                    <MudRadioGroup T="int" Required="true" RequiredError="type is required!" @bind-Value="Item.TypeId" >
+                        <MudRadio Value="1">Women</MudRadio>
+                        <MudRadio Value="2">Men</MudRadio>
+                        <MudRadio Value="3">Kids</MudRadio>
+                    </MudRadioGroup>
+                </div>
+                <div class="mt-5">
+                    <CategoryDrp Item="@Item" />
+                </div>                
+                <div class="mt-5">
+                    <StyleDrp Item="@Item" />
+                </div>
+                <div class="mt-5">
+                    <OccasionDrp Item="@Item" />
+                </div>
+                <div class="mt-5">
+                      <MudTextField @ref="multilineReference" T="string" Label="Description" Lines="3" Variant="Variant.Outlined" @bind-Value="Item.Description" />
+                </div>
+            </MudForm>   
+        </MudPaper>
+ </MudContainer>
+
+ @code{
+    [EditorRequired]
+    [Parameter]
+    public ItemDTO Item { get; set; }
+    MudForm form;
+    bool success;
+    string[] errors = { };
+    private MudTextField<string> multilineReference;
+ }   

@@ -1,0 +1,85 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+ <div class="row g-2">
+            <!-- Price Change Card -->
+            <div class="col-12">
+                <div class="gold-card">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="section-title">Gold Price</h2>
+                        <span class="success-text">↑ 2.5%</span>
+                    </div>
+                    <div class="text-gold">Per Ounce: $2,790</div>
+                </div>
+            </div>
+
+            <!-- Sales Stats -->
+            <div class="col-12">
+                <div class="stat-card">
+                    <div class="d-flex flex-column  w-100" >
+                        <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                            <div class="stat-label text-base">Sold</div>
+                            <img src="icons/sold-square.svg" alt="sales">
+                         </div>
+                         
+                         <div class="stat-content">
+                             <div class="stat-value">$1980</div>
+                             <div class="text-xs text-secondary">In the last 10 days</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Returns Stats -->
+            <div class="col-12">
+                <div class="stat-card">
+                    <div class="d-flex flex-column  w-100" >
+                        <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                            <div class="stat-label text-base">Sent</div>
+                            <img src="icons/send-square.svg" alt="returns">
+                         </div>
+                         
+                         <div class="stat-content">
+                             <div class="stat-value">10 items</div>
+                             <div class="text-xs text-secondary">In the last 4 days</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buyers Stats -->
+            <div class="col-12">
+                <div class="stat-card">
+                    <div class="d-flex flex-column  w-100" >
+                        <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                            <div class="stat-label text-base">Customers</div>
+                            <img src="icons/users-square.svg" alt="customers">
+                         </div>
+                         
+                         <div class="stat-content">
+                             <div class="stat-value">20 customers</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Orders -->
+
+            <div class="col-12">
+                <div class="stat-card" onclick="window.location.href='orders.html'">
+                    <div class="d-flex flex-column  w-100" >
+                        <div class="d-flex flex-row justify-content-between align-items-center w-100">
+                            <div class="stat-label text-base">New Orders</div>
+                            <img src="icons/time-square.svg" alt="neworders">
+                         </div>
+                         
+                         <div class="stat-content">
+                             <div class="stat-value">10 orders</div>
+                             <div class="text-xs text-secondary">In the last 10 days</div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>

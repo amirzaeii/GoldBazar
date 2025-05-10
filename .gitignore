@@ -401,3 +401,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 .codegpt
+src/Services/Catalog.Api/wwwroot/uploads/types/*
+src/Services/Catalog.Api/wwwroot/uploads/items/*

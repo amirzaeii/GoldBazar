@@ -18,10 +18,12 @@ public class OrderQueries(OrderingContext context)
             Date = order.OrderDate,
             Description = order.Description,
             City = order.Address.City,
-            Country = order.Address.Country,
-            State = order.Address.State,
             Street = order.Address.Street,
-            Zipcode = order.Address.ZipCode,
+            District = order.Address.District,
+            Tel = order.Address.Tel,
+            Home = order.Address.Home,
+            ShopId = order.ShopId,
+            ShopName = order.ShopName,
             Status = order.OrderStatus.ToString(),
             Total = order.GetTotal(),
             OrderItems = order.OrderItems.Select(oi => new Orderitem
@@ -49,6 +51,4 @@ public class OrderQueries(OrderingContext context)
             .ToListAsync();
     } 
     
-    public async Task<IEnumerable<CardType>> GetCardTypesAsync() => 
-        await context.CardTypes.Select(c=> new CardType { Id = c.Id, Name = c.Name }).ToListAsync();
 }

@@ -20,15 +20,6 @@ class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
             .HasConversion<string>()
             .HasMaxLength(30);
 
-        orderConfiguration
-            .Property(o => o.PaymentId)
-            .HasColumnName("PaymentMethodId");
-
-        orderConfiguration.HasOne<PaymentMethod>()
-            .WithMany()
-            .HasForeignKey(o => o.PaymentId)
-            .OnDelete(DeleteBehavior.Restrict);
-
         orderConfiguration.HasOne(o => o.Buyer)
             .WithMany()
             .HasForeignKey(o => o.BuyerId);

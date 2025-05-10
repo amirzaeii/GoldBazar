@@ -1,4 +1,5 @@
-﻿using Ordering.Api.Infrastructure;
+﻿using Ordering.Api.Application.DomainEventHandlers;
+using Ordering.Api.Infrastructure;
 
 internal static class Extensions
 {
@@ -18,14 +19,12 @@ internal static class Extensions
         });
         builder.EnrichNpgsqlDbContext<OrderingContext>();
 
-        services.AddMigration<OrderingContext, OrderingContextSeed>();
-
         // Add the integration services that consume the DbContext
         services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<OrderingContext>>();
 
         services.AddTransient<IOrderingIntegrationEventService, OrderingIntegrationEventService>();
 
-        builder.AddRabbitMqEventBus("eventbus")
+        builder.AddRabbitMqEventBus("gb-eventbus")
                .AddEventBusSubscriptions();
 
         services.AddHttpContextAccessor();
@@ -42,10 +41,13 @@ internal static class Extensions
         });
 
         // Register the command validators for the validator behavior (validators based on FluentValidation library)
-        services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
+        services.AddSingleton<IValidator<CancelOrderByBuyerCommand>, CancelOrderByBuyerCommandValidator>();
+        services.AddSingleton<IValidator<CancelOrderByVendorCommand>, CancelOrderByVendorCommandValidator>();
+        services.AddSingleton<IValidator<CancelOrderByGBCommand>, CancelOrderByGBCommandValidator>();
         services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
         services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
-        services.AddSingleton<IValidator<ShipOrderCommand>, ShipOrderCommandValidator>();
+        services.AddSingleton<IValidator<ShippedOrderCommand>, ShippedOrderCommandValidator>();
+        services.AddSingleton<IValidator<SetShippingOrderStatusCommand>, ShippingOrderCommandValidator>();
 
         services.AddScoped<IOrderQueries, OrderQueries>();
         services.AddScoped<IBuyerRepository, BuyerRepository>();
@@ -55,10 +57,12 @@ internal static class Extensions
 
     private static void AddEventBusSubscriptions(this IEventBusBuilder eventBus)
     {
-        eventBus.AddSubscription<GracePeriodConfirmedIntegrationEvent, GracePeriodConfirmedIntegrationEventHandler>();
-        eventBus.AddSubscription<OrderStockConfirmedIntegrationEvent, OrderStockConfirmedIntegrationEventHandler>();
-        eventBus.AddSubscription<OrderStockRejectedIntegrationEvent, OrderStockRejectedIntegrationEventHandler>();
-        eventBus.AddSubscription<OrderPaymentFailedIntegrationEvent, OrderPaymentFailedIntegrationEventHandler>();
-        eventBus.AddSubscription<OrderPaymentSucceededIntegrationEvent, OrderPaymentSucceededIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToAwaitingValidationFromVendorIntegrationEvent, OrderStatusChangedToAwaitingValidationFromVendorIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToAwaitingValidationFromGBIntegrationEvent, OrderStatusChangedToAwaitingValidationFromGBIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToCancelledByBuyerIntegrationEvent, OrderStatusChangedToCancelledByBuyerIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToCancelledByVendorIntegrationEvent, OrderStatusChangedToCancelledByVendorIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToCancelledByGBIntegrationEvent, OrderStatusChangedToCancelledByGBIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToShippedIntegrationEvent, OrderStatusChangedToShippedIntegrationEventHandler>();
+        eventBus.AddSubscription<OrderStatusChangedToShippingIntegrationEvent, OrderStatusChangedToShippingIntegrationEventHandler>();
     }
 }

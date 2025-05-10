@@ -1,0 +1,25 @@
+﻿@inject CatalogService CatalogService
+
+@if(categories == null)
+{
+    <MudSkeleton/>
+}
+else
+{
+    <MudSelect @bind-Value="Item.CategoryId" Label="Select Category" T="int">
+        @foreach (var cat in categories)
+        {
+            <MudSelectItem Value="@cat.Id">@cat.Name</MudSelectItem>
+        }
+    </MudSelect>
+}
+
+
+@code{
+    [Parameter] public  ItemDTO Item  { get; set; } // Default value
+    private ItemCategoryDTO[] categories = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CatalogService.GetItemCatergories();
+    }
+}    

@@ -1,0 +1,22 @@
+﻿@inject CatalogService CatalogService
+@if(styles == null)
+{
+    <MudSkeleton/>
+}
+else
+{
+    <MudSelect @bind-Value="Item.StyleId" Label="Select Style" T="int">
+        @foreach (var style in styles)
+        {
+            <MudSelectItem Value="@style.Id">@style.Name</MudSelectItem>
+        }
+    </MudSelect>
+}
+@code{
+    [Parameter] public  ItemDTO Item  { get; set; } // Default value
+    private StyleDTO[] styles = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        styles = await CatalogService.GetStyles();
+    }
+}    

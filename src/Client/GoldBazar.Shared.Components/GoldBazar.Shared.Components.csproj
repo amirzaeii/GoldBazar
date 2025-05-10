@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <PackageReference Include="Google.Protobuf" />
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" />
+    <PackageReference Include="Grpc.Tools" />
+    <PackageReference Include="Asp.Versioning.Http.Client" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components/" />
+    <Folder Include="wwwroot/" />
+  </ItemGroup>
+  <ItemGroup>
+      <Protobuf Include="..\..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />    
+  </ItemGroup>
+
+</Project>

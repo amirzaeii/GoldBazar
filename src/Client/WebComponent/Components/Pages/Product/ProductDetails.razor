@@ -33,7 +33,7 @@ else
                 <div class="price">
                     @if (item.Discount > 0)
                     {
-                        <span class="price_original">@item.OldPrice.ToString("C")</span>
+                        <span class="price_original">@item..ToString("C")</span>
                     }
                     <span class="price_current">
                         @((item.Price > 0) ? item.Price.ToString("C") : "N/A")
@@ -41,10 +41,10 @@ else
                 </div>
 
                 <div class="rating-pill">
-                    <span class="rating-pill__value">@item.Rating</span>
+                    <span class="rating-pill__value"></span>
                     <img src="_content/WebComponent/assets/Icons/star.svg" alt="Star" class="rating_stars">
                     <span class="rating-pill__divider">|</span>
-                    <span class="rating-pill__count">@item.RatingCount</span>
+                    <span class="rating-pill__count"></span>
                 </div>
             </div>
         </section>

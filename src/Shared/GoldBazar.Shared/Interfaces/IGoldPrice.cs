@@ -5,6 +5,6 @@ namespace GoldBazar.Shared.Interfaces;
 
 public interface IGoldPrice
 {
-    Task<HaremAltinResponse> GetLivePricesAsync();
+   // Task<HaremAltinResponse> GetLivePricesAsync();
     decimal CalculatePrice(decimal weight, decimal cost, int karat, decimal transferCost);
 }

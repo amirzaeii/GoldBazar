@@ -1,4 +1,3 @@
-using Catalog.Infrastructure;
 using WebComponent.Dtos;
 namespace WebComponent.Services;
 
@@ -11,7 +10,7 @@ public interface ICatalogService
     Task<CatalogResult> GetCatalogItemsByType(int typeId, int pageIndex, int pageSize);
     Task<IEnumerable<CatalogItem>> GetDiscountedCatalogItems(int pageIndex, int pageSize);
     Task<IEnumerable<CatalogItem>> GetSimilarProducts(int typeId);
-    Task<bool> AddProduct(Item newItem);
+    Task<bool> AddProduct(CatalogItem newItem);
     Task<IEnumerable<CatalogInfo>> GetCatalogDataAsync(string category);
     Task<IEnumerable<CatalogItem>> FilterByComposite(Dtos.CompositeFilterDto filterDto);
     Task<IEnumerable<MaterialType>> GetMaterials();

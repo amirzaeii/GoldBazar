@@ -1,11 +1,10 @@
 ﻿global using System.Data;
 global using MediatR;
 global using Microsoft.EntityFrameworkCore;
-global using Microsoft.EntityFrameworkCore.Design;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Microsoft.EntityFrameworkCore.Storage;
-global using Ordering.Domain.Models.Buyers;
-global using Ordering.Domain.Models.Order;
+global using Ordering.Domain.Models;
+global using Ordering.Domain.Contracts;
 global using Ordering.Domain.Exceptions;
 global using Ordering.Domain.SeedWork;
 global using Ordering.Infrastructure.EntityConfigurations;

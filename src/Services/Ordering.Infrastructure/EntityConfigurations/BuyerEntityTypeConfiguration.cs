@@ -17,8 +17,5 @@ class BuyerEntityTypeConfiguration
 
         buyerConfiguration.HasIndex("IdentityGuid")
             .IsUnique(true);
-
-        buyerConfiguration.HasMany(b => b.PaymentMethods)
-            .WithOne();
     }
 }

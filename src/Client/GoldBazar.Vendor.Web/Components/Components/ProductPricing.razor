@@ -1,0 +1,48 @@
+﻿ <MudContainer Class="pa-5 mt-10">
+     <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <div class="mt-5">
+                    <MudTextField Label="Weight" @bind-Value="Item.Weight" Required="true" RequiredError="Weight is required!" Adornment="Adornment.End" AdornmentText="gram" AdornmentColor="Color.Info"/>
+                </div>
+                <div class="mt-5">
+                    <MudTextField Label="Cost" @bind-Value=Item.CostPerGram Required="true" RequiredError="Cost is required!" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"/>
+                </div>
+                <div class="mt-5">
+                    <ManufactureDrp Item="@Item" />
+                </div>
+                <div class="mt-5">
+                    <MudTextField Label="Discount" @bind-Value="Item.Discount" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"/>
+                </div>
+                <div class="mt-5">
+                    <MudTextField Label="Validation Change Price" @bind-Value="Item.ChangePriceRange" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"/>
+                </div>
+                <div class="mt-5">
+                    <MudTextField Label="Stock" @bind-Value="Item.Quantity" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"/>
+                </div>
+                <div class="mt-5">
+                    <MudTextField T="decimal" Disabled="true" Label="finish price" Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" AdornmentColor="Color.Warning"></MudTextField>
+                </div>
+                <div class="mt-5">
+                    <MudButton Variant="Variant.Filled" OnClick="Save" Color="Color.Primary" FullWidth="true">Submit</MudButton>
+                </div>
+            </MudForm>   
+        </MudPaper>
+ </MudContainer>
+
+  @code{
+    [Parameter]
+    [EditorRequired]
+    public ItemDTO Item { get; set; }
+    
+    [Parameter]
+    [EditorRequired]
+    public EventCallback<ItemDTO> OnSave { get; set; }
+
+    private async Task Save()
+    {
+        await OnSave.InvokeAsync(Item);
+    }
+    MudForm form;
+    bool success;
+    string[] errors = { };
+ }   

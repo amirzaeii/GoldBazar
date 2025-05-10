@@ -1,5 +1,4 @@
-
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.Services;
 public class CatalogServices(
     CatalogContext context,
     //IOptions<CatalogOptions> options,

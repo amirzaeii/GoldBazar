@@ -1,4 +1,4 @@
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.IntegrationEvents;
 public sealed class CatalogIntegrationEventService(ILogger<CatalogIntegrationEventService> logger,
     IEventBus eventBus,
     CatalogContext catalogContext,

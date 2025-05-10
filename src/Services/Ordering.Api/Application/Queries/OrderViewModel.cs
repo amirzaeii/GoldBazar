@@ -13,12 +13,15 @@ public record Order
 {
     public int OrderNumber { get; init; }
     public DateTime Date { get; init; }
+    public int ShopId { get; init; }
+    public string ShopName { get; set; }
     public string Status { get; init; }
     public string Description { get; init; }
     public string Street { get; init; }
     public string City { get; init; }
-    public string State { get; init; }
-    public string Zipcode { get; init; }
+    public string District { get; init; }
+    public string Tel { get; init; }
+    public string Home { get; init; }
     public string Country { get; init; }
     public List<Orderitem> OrderItems { get; set; }
     public decimal Total { get; set; }
@@ -30,10 +33,4 @@ public record OrderSummary
     public DateTime Date { get; init; }
     public string Status { get; init; }
     public double Total { get; init; }
-}
-
-public record CardType
-{
-    public int Id { get; init; }
-    public string Name { get; init; }
 }

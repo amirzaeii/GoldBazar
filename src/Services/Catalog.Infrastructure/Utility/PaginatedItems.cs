@@ -1,4 +1,4 @@
-namespace Catalog.Infrastructure;
+namespace Catalog.Infrastructure.Utility;
 public class PaginatedItems<TEntity>(int pageIndex, int pageSize, long count, IEnumerable<TEntity> data) where TEntity : class
 {
     public int PageIndex { get; } = pageIndex;

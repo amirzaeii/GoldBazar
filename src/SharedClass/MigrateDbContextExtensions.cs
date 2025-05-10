@@ -1,7 +1,5 @@
-﻿using System.Diagnostics;
-
-using Microsoft.Extensions.Hosting;
-
+﻿using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 namespace Microsoft.AspNetCore.Hosting;
 
 public static class MigrateDbContextExtensions

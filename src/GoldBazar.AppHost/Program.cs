@@ -4,13 +4,14 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddForwardedHeaders();
 
-var redis = builder.AddRedis("redis");
-var rabbitMq = builder.AddRabbitMQ("eventbus")
-    .WithLifetime(ContainerLifetime.Persistent);
+var redis = builder.AddRedis("gb-redis");
+var rabbitMq = builder.AddRabbitMQ("gb-eventbus")
+    .WithLifetime(ContainerLifetime.Persistent)    
+    .WithManagementPlugin();
 
-var postgres = builder.AddPostgres("postgres")
+var postgres = builder.AddPostgres("gb-database")
     //.WithImage("ankane/pgvector")
-    .WithPgAdmin()
+    //.WithPgAdmin()
     .WithImageTag("latest")
     .WithLifetime(ContainerLifetime.Persistent);
 
@@ -30,11 +31,13 @@ var identityEndpoint = identityApi.GetEndpoint(launchProfileName);
 
  var basketApi = builder.AddProject<Projects.Basket_Api>("basket-api")
      .WithReference(redis)
-     .WithReference(rabbitMq).WaitFor(rabbitMq)
+     .WithReference(rabbitMq)
+     .WaitFor(rabbitMq)
      .WithEnvironment("Identity__Url", identityEndpoint);
 
 var catalogApi = builder.AddProject<Projects.Catalog_Api>("catalog-api")
-    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithReference(rabbitMq)
+    .WaitFor(rabbitMq)
     .WithReference(catalogDb);
 
 var orderingApi = builder.AddProject<Projects.Ordering_Api>("ordering-api")
@@ -44,7 +47,8 @@ var orderingApi = builder.AddProject<Projects.Ordering_Api>("ordering-api")
     .WithEnvironment("Identity__Url", identityEndpoint);
 
 builder.AddProject<Projects.Order_Processor>("order-processor")
-    .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithReference(rabbitMq)
+    .WaitFor(rabbitMq)
     .WithReference(orderDb)
     .WaitFor(orderingApi); // wait for the orderingApi to be ready because that contains the EF migrations
 
@@ -68,7 +72,7 @@ builder.AddProject<Projects.Mobile_Bff>("mobile-bff")
 //     .WithReference(webHooksApi)
 //     .WithEnvironment("IdentityUrl", identityEndpoint);
 
-var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
+var clientWebApp = builder.AddProject<Projects.GoldBazar_Client_Web>("gb-client-web", launchProfileName)
     .WithExternalHttpEndpoints()
     .WithReference(basketApi)
     .WithReference(catalogApi)    
@@ -76,14 +80,14 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
-var vendorwebApp = builder.AddProject<Projects.VendorWebApp>("vendorwebapp", launchProfileName)
+var vendorWebApp = builder.AddProject<Projects.GoldBazar_Vendor_Web>("gb-vendor-web", launchProfileName)
     .WithExternalHttpEndpoints()
     .WithReference(catalogApi)
     .WithReference(orderingApi)
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
-var gbadmin = builder.AddProject<Projects.GoldBazar_Admin_Web>("gbadminweb", launchProfileName)
+var adminwebApp = builder.AddProject<Projects.GoldBazar_Admin_Web>("gb-admin-web", launchProfileName)
     .WithExternalHttpEndpoints()
     .WithReference(catalogApi)    
     .WithReference(orderingApi)
@@ -97,7 +101,7 @@ var gbadmin = builder.AddProject<Projects.GoldBazar_Admin_Web>("gbadminweb", lau
 // }
 
 // Wire up the callback urls (self referencing)
-webApp.WithEnvironment("CallBackUrl", webApp.GetEndpoint(launchProfileName));
+clientWebApp.WithEnvironment("CallBackUrl", clientWebApp.GetEndpoint(launchProfileName));
 //webhooksClient.WithEnvironment("CallBackUrl", webhooksClient.GetEndpoint(launchProfileName));
 
 // Identity has a reference to all of the apps for callback urls, this is a cyclic reference
@@ -105,7 +109,7 @@ identityApi.WithEnvironment("BasketApiClient", basketApi.GetEndpoint("http"))
            .WithEnvironment("OrderingApiClient", orderingApi.GetEndpoint("http"))
         //    .WithEnvironment("WebhooksApiClient", webHooksApi.GetEndpoint("http"))
         //    .WithEnvironment("WebhooksWebClient", webhooksClient.GetEndpoint(launchProfileName))
-           .WithEnvironment("WebAppClient", webApp.GetEndpoint(launchProfileName));
+           .WithEnvironment("WebAppClient", clientWebApp.GetEndpoint(launchProfileName));
 
 builder.Build().Run();
 

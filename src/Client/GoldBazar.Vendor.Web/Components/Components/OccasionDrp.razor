@@ -1,0 +1,23 @@
+﻿@inject CatalogService CatalogService
+@if(occasions == null)
+{
+    <MudSkeleton/>
+}
+else
+{
+    <MudSelect @bind-Value="Item.OccasionId" Label="Select Occasion" T="int">        
+        @foreach (var occ in occasions)
+        {
+            <MudSelectItem Value="@occ.Id">@occ.Name</MudSelectItem>
+        }
+    </MudSelect>
+}
+@code{
+    [Parameter] public  ItemDTO Item { get; set; }// Default value
+    private OccasionDTO[] occasions = default!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        occasions = await CatalogService.GetOccasions();
+    }
+}    

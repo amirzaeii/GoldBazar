@@ -17,8 +17,7 @@ namespace Ordering.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ordering")
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -30,9 +29,6 @@ namespace Ordering.Infrastructure.Migrations
                 .IncrementsBy(10);
 
             modelBuilder.HasSequence("orderseq")
-                .IncrementsBy(10);
-
-            modelBuilder.HasSequence("paymentseq")
                 .IncrementsBy(10);
 
             modelBuilder.Entity("IntegrationEventLogEF.IntegrationEventLogEntry", b =>
@@ -63,10 +59,10 @@ namespace Ordering.Infrastructure.Migrations
 
                     b.HasKey("EventId");
 
-                    b.ToTable("IntegrationEventLog", "ordering");
+                    b.ToTable("IntegrationEventLog", (string)null);
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Buyers.Buyer", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.Buyer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -88,72 +84,10 @@ namespace Ordering.Infrastructure.Migrations
                     b.HasIndex("IdentityGuid")
                         .IsUnique();
 
-                    b.ToTable("buyers", "ordering");
+                    b.ToTable("buyers", (string)null);
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Buyers.CardType", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("cardtypes", "ordering");
-                });
-
-            modelBuilder.Entity("Ordering.Domain.Models.Buyers.PaymentMethod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseHiLo(b.Property<int>("Id"), "paymentseq");
-
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("_alias")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("Alias");
-
-                    b.Property<string>("_cardHolderName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("CardHolderName");
-
-                    b.Property<string>("_cardNumber")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
-                        .HasColumnName("CardNumber");
-
-                    b.Property<int>("_cardTypeId")
-                        .HasColumnType("integer")
-                        .HasColumnName("CardTypeId");
-
-                    b.Property<DateTime>("_expiration")
-                        .HasMaxLength(25)
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("Expiration");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuyerId");
-
-                    b.HasIndex("_cardTypeId");
-
-                    b.ToTable("paymentmethods", "ordering");
-                });
-
-            modelBuilder.Entity("Ordering.Domain.Models.Order.Order", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,19 +110,23 @@ namespace Ordering.Infrastructure.Migrations
                         .HasColumnType("character varying(30)");
 
                     b.Property<int?>("PaymentId")
-                        .HasColumnType("integer")
-                        .HasColumnName("PaymentMethodId");
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ShopName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BuyerId");
 
-                    b.HasIndex("PaymentId");
-
-                    b.ToTable("orders", "ordering");
+                    b.ToTable("orders", (string)null);
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Order.OrderItem", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,7 +160,7 @@ namespace Ordering.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("orderItems", "ordering");
+                    b.ToTable("orderItems", (string)null);
                 });
 
             modelBuilder.Entity("Ordering.Infrastructure.Idempotency.ClientRequest", b =>
@@ -240,38 +178,16 @@ namespace Ordering.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("requests", "ordering");
+                    b.ToTable("requests", (string)null);
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Buyers.PaymentMethod", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.Order", b =>
                 {
-                    b.HasOne("Ordering.Domain.Models.Buyers.Buyer", null)
-                        .WithMany("PaymentMethods")
-                        .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ordering.Domain.Models.Buyers.CardType", "CardType")
-                        .WithMany()
-                        .HasForeignKey("_cardTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CardType");
-                });
-
-            modelBuilder.Entity("Ordering.Domain.Models.Order.Order", b =>
-                {
-                    b.HasOne("Ordering.Domain.Models.Buyers.Buyer", "Buyer")
+                    b.HasOne("Ordering.Domain.Models.Buyer", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId");
 
-                    b.HasOne("Ordering.Domain.Models.Buyers.PaymentMethod", null)
-                        .WithMany()
-                        .HasForeignKey("PaymentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.OwnsOne("Ordering.Domain.Models.Order.Address", "Address", b1 =>
+                    b.OwnsOne("Ordering.Domain.Models.Address", "Address", b1 =>
                         {
                             b1.Property<int>("OrderId")
                                 .HasColumnType("integer");
@@ -280,11 +196,15 @@ namespace Ordering.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("Country")
+                            b1.Property<string>("District")
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("State")
+                            b1.Property<string>("Home")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Location")
                                 .IsRequired()
                                 .HasColumnType("text");
 
@@ -292,13 +212,13 @@ namespace Ordering.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text");
 
-                            b1.Property<string>("ZipCode")
+                            b1.Property<string>("Tel")
                                 .IsRequired()
                                 .HasColumnType("text");
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("orders", "ordering");
+                            b1.ToTable("orders");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -310,21 +230,16 @@ namespace Ordering.Infrastructure.Migrations
                     b.Navigation("Buyer");
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Order.OrderItem", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.OrderItem", b =>
                 {
-                    b.HasOne("Ordering.Domain.Models.Order.Order", null)
+                    b.HasOne("Ordering.Domain.Models.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Ordering.Domain.Models.Buyers.Buyer", b =>
-                {
-                    b.Navigation("PaymentMethods");
-                });
-
-            modelBuilder.Entity("Ordering.Domain.Models.Order.Order", b =>
+            modelBuilder.Entity("Ordering.Domain.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });

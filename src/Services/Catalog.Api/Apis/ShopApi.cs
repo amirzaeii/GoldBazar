@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using GoldBazar.Shared.DTOs;
+
+using Microsoft.AspNetCore.Http.HttpResults;
 namespace Catalog.Api;
 
 public static class ShopApi
@@ -70,15 +72,15 @@ public static class ShopApi
         return shop is not null ? TypedResults.Ok(shop) : TypedResults.NotFound();
     }
     public static async Task<Results<Ok<List<Shop>>, NotFound>> GetShopsByCity(
-     string city, [AsParameters] CatalogServices services)
+     int cityId, [AsParameters] CatalogServices services)
     {
         var shops = await services.Context.Shops
-            .Where(s => s.City == city)
+            .Where(s => s.CityId == cityId)
             .ToListAsync();
 
         return shops.Any() ? TypedResults.Ok(shops) : TypedResults.NotFound();
     }
-    public static async Task<Results<Ok<List<ItemDto>>, NotFound>> GetProductsByShopId(
+    public static async Task<Results<Ok<List<ItemDTO>>, NotFound>> GetProductsByShopId(
     int id, [AsParameters] CatalogServices services)
     {
         var products = await services.Context.Items
@@ -86,35 +88,36 @@ public static class ShopApi
             .Include(p => p.Material)
             .Include(p => p.Type)
             .Include(p => p.Occassion)
+            .Include(p => p.Manufacture)
             .Include(p => p.Style)
             .Where(p => p.ShopId == id)
-            .Select(p => new ItemDto(
-                p.Id,                           // int
-                p.Caption,                      // string
-                p.Description,                  // string
-                p.CostPerGram,                  // decimal
-                p.Weight,                       // decimal
-                p.Size,                         // int
-                p.TypeId,                       // int
-                p.Type.Name,                    // string
-                p.MetalId,                      // int
-                p.Metal.Name,                   // string
-                p.Metal.Karat,                  // decimal
-                p.Metal.Purity,
-                p.ShopId,                       // int
-                p.Shop.Name,                    // string
-                p.Shop.City,                    // string
-                p.MaterialId,                   // int
-                p.Material.Name,                // string
-                p.OccasionId,                   // int
-                p.Occassion.Name,               // string
-                p.StyleId,                      // int
-                p.Style.Name,                   // string
-                p.Discount,                     // decimal
-                p.ActivityStatus,                // bool
-                p.Quantity,
-                p.MainPhoto
-            ))
+            .Select(s => new ItemDTO {
+                            Id = s.Id,
+                            Caption = s.Caption,
+                            Description = s.Description,
+                            CostPerGram = s.CostPerGram,
+                            Weight = s.Weight,
+                            Size = s.Size,
+                            CategoryId = s.CategoryId,
+                            CategoryName = s.Category.Name,
+                            MetalId = s.MetalId,
+                            MetalName = s.Metal.Name,
+                            KT = s.Manufacture.Karat,
+                            Purity = s.Manufacture.Purity,
+                            ShopId = s.ShopId,
+                            ShopName = s.Shop.Name,
+                            City = s.Shop.City.Name,
+                            MaterialId = s.MaterialId,
+                            MaterialName = s.Material.Name,
+                            OccasionId = s.OccasionId,
+                            OccasionName = s.Occassion.Name,
+                            StyleId = s.StyleId,
+                            StyleName = s.Style.Name,
+                            Discount = s.Discount,
+                            Status = s.Status,
+                            Quantity = s.AvailableStock, 
+                            MainPhoto = s.MainPhoto
+            })
             .ToListAsync();
 
         return products.Any()
@@ -122,13 +125,38 @@ public static class ShopApi
             : TypedResults.NotFound();
     }
 
-    public static async Task<Results<Ok<List<TypeDto>>, NotFound>> GetItemCategoriesByShopId(
+    public static async Task<Results<Ok<List<ItemDTO>>, NotFound>> GetItemCategoriesByShopId(
     int id, [AsParameters] CatalogServices services)
     {
         var categories = await services.Context.Items
-    .Where(p => p.ShopId == id)
-    .GroupBy(p => new { p.Type.Id, p.Type.Name, p.Type.Photo })
-    .Select(g => new TypeDto(g.Key.Name, g.Key.Id, g.Key.Photo))
+        .Where(p => p.ShopId == id)
+        .Select(s => new ItemDTO {
+                            Id = s.Id,
+                            Caption = s.Caption,
+                            Description = s.Description,
+                            CostPerGram = s.CostPerGram,
+                            Weight = s.Weight,
+                            Size = s.Size,
+                            CategoryId = s.CategoryId,
+                            CategoryName = s.Category.Name,
+                            MetalId = s.MetalId,
+                            MetalName = s.Metal.Name,
+                            KT = s.Manufacture.Karat,
+                            Purity = s.Manufacture.Purity,
+                            ShopId = s.ShopId,
+                            ShopName = s.Shop.Name,
+                            City = s.Shop.City.Name,
+                            MaterialId = s.MaterialId,
+                            MaterialName = s.Material.Name,
+                            OccasionId = s.OccasionId,
+                            OccasionName = s.Occassion.Name,
+                            StyleId = s.StyleId,
+                            StyleName = s.Style.Name,
+                            Discount = s.Discount,
+                            Status = s.Status,
+                            Quantity = s.AvailableStock, 
+                            MainPhoto = s.MainPhoto
+            })
     .ToListAsync();
 
 

@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json.Serialization;
 
 using Basket.Api.IntegrationEvents.EventHandling;
@@ -12,11 +11,11 @@ public static class Extensions
     {
         builder.AddDefaultAuthentication();
 
-        builder.AddRedisClient("redis");
+        builder.AddRedisClient("gb-redis");
 
         builder.Services.AddSingleton<IBasketRepository, RedisBasketRepository>();
 
-        builder.AddRabbitMqEventBus("eventbus")
+        builder.AddRabbitMqEventBus("gb-eventbus")
                .AddSubscription<OrderStartedIntegrationEvent, OrderStartedIntegrationEventHandler>()
                .ConfigureJsonOptions(options => options.TypeInfoResolverChain.Add(IntegrationEventContext.Default));
     }

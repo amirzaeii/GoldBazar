@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using EventBus.Abstractions;
-using EventBus.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

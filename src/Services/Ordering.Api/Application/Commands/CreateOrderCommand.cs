@@ -26,34 +26,28 @@ public class CreateOrderCommand
     public string UserName { get; private set; }
 
     [DataMember]
+    public int ShopId { get; private set; }
+
+    [DataMember]
+    public string ShopName { get; private set; }
+
+    [DataMember]
     public string City { get; private set; }
 
     [DataMember]
     public string Street { get; private set; }
 
     [DataMember]
-    public string State { get; private set; }
+    public string Location { get; private set; }
 
     [DataMember]
-    public string Country { get; private set; }
+    public string District { get; private set; }
 
     [DataMember]
-    public string ZipCode { get; private set; }
+    public string Home { get; private set; }
 
     [DataMember]
-    public string CardNumber { get; private set; }
-
-    [DataMember]
-    public string CardHolderName { get; private set; }
-
-    [DataMember]
-    public DateTime CardExpiration { get; private set; }
-
-    [DataMember]
-    public string CardSecurityNumber { get; private set; }
-
-    [DataMember]
-    public int CardTypeId { get; private set; }
+    public string Tel { get; private set; }
 
     [DataMember]
     public IEnumerable<OrderItemDTO> OrderItems => _orderItems;
@@ -63,23 +57,33 @@ public class CreateOrderCommand
         _orderItems = new List<OrderItemDTO>();
     }
 
-    public CreateOrderCommand(List<BasketItem> basketItems, string userId, string userName, string city, string street, string state, string country, string zipcode,
-        string cardNumber, string cardHolderName, DateTime cardExpiration,
-        string cardSecurityNumber, int cardTypeId)
+    public CreateOrderCommand(List<BasketItem> basketItems, 
+        string userId, 
+        string userName, 
+        int shopId,
+        string shopName,
+        string city, 
+        string district, 
+        string street, 
+        string home,         
+        string location,
+        string tel)
     {
-        _orderItems = basketItems.ToOrderItemsDTO().ToList();
-        UserId = userId;
-        UserName = userName;
-        City = city;
-        Street = street;
-        State = state;
-        Country = country;
-        ZipCode = zipcode;
-        CardNumber = cardNumber;
-        CardHolderName = cardHolderName;
-        CardExpiration = cardExpiration;
-        CardSecurityNumber = cardSecurityNumber;
-        CardTypeId = cardTypeId;
+            _orderItems = basketItems.ToOrderItemsDTO().ToList();
+            UserId = userId;
+            UserName = userName;
+            ShopId = shopId;
+            ShopName = shopName;
+            City = city;
+            Home = home;
+            District = district;
+            Tel = tel;
+            Street = street;
+            Location = location;
+            ShopId = basketItems.FirstOrDefault()!.ShopId;
+            ShopName = basketItems.FirstOrDefault()!.ShopName;
     }
+       
 }
+
 

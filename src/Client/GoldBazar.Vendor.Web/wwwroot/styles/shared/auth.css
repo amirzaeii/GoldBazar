@@ -1,0 +1,93 @@
+/* Auth Pages Layout */
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-xl);
+    background: linear-gradient(135deg, #E0E7FF 0%, #EDE9FF 100%);
+}
+
+.logo-container {
+    margin-bottom: var(--spacing-2xl);
+    text-align: center;
+}
+
+.logo-image {
+    width: 80px;
+    height: 80px;
+    margin-bottom: var(--spacing-md);
+}
+
+.logo-text {
+    color: var(--primary-color);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+}
+
+/* Auth Forms */
+.auth-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-form .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.auth-form .form-control {
+    padding: var(--spacing-md);
+}
+
+.password-input-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    left: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+}
+
+.eye-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-secondary);
+}
+
+.auth-link {
+    display: block;
+    text-align: center;
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: var(--spacing-md) 0 var(--spacing-xl);
+    font-size: var(--font-size-sm);
+}
+
+.auth-link:hover {
+    color: var(--primary-dark);
+}
+
+.auth-button {
+    width: 100%;
+    padding: var(--spacing-md);
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: background-color var(--transition-normal);
+}
+
+.auth-button:hover {
+    background: var(--primary-dark);
+} 
