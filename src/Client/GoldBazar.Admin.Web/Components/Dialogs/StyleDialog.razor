@@ -1,0 +1,42 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudForm @ref="_form">
+            <MudTextField Label="Style Name"
+                          @bind-Value="_name"
+                          Required="true"
+                          For="@(() => _name)" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Text" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Variant="Variant.Filled" OnClick="Save">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance DialogInstance { get; set; } = default!;
+    [Parameter] public StyleDTO Style { get; set; } = new(0, "");
+
+    private MudForm _form = default!;
+    private string _name = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        // Initialize local copy from the parameter
+        _name = Style.Name;
+    }
+
+    void Cancel()
+      => DialogInstance.Cancel();
+
+    async Task Save()
+    {
+        await _form.Validate();
+        if (!_form.IsValid)
+            return;
+
+        // Create a brand-new DTO with the updated name
+        var updated = new StyleDTO(Style.Id, _name.Trim());
+        DialogInstance.Close(DialogResult.Ok(updated));
+    }
+}
