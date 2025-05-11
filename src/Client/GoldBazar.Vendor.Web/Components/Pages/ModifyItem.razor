@@ -1,6 +1,8 @@
 ﻿@page "/modifyitem"
 @page "/modifyitem/{productId:int}"
+@using System.Net.Http.Headers
 @inject CatalogService CatalogService
+@inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
 <PageTitle>Modify Product</PageTitle>
@@ -36,8 +38,32 @@
             };
         }
     }
-    private void HandleSave(ItemDTO item)
+    private async Task HandleSave(ItemDTO item)
     {
         Console.WriteLine($"Saved product: {item.Caption}");
+        bool result = false;
+        try
+        {
+            if(_images.Count == 0)
+            {
+                Console.WriteLine("No images to upload.");
+                return;
+            }
+            // Save images
+            
+            var file = _images[0].File;
+
+            var mainPhoto = await CatalogService.UploadItemImage(file);
+            item.MainPhoto = mainPhoto;
+            result = item.Id > 0 ? await CatalogService.EditItem(item) : result = await CatalogService.AddItem(item);
+            if(result)
+            {                
+                NavigationManager.NavigateTo("/profile/items");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving product: {ex.Message}");
+        }
     }
 }

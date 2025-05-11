@@ -15,7 +15,7 @@ public static class CatalogApi
     {
          var api = app.MapGroup("api/catalog").HasApiVersion(1.0);
 
-        api.MapGet("/Items", GetCatalogItemList)
+        api.MapGet("/Items", GetItemList)
             .WithName("ProductsList")
             .WithSummary("List of products")
             .WithDescription("Get a paginated list of products in the catalog.")
@@ -27,25 +27,25 @@ public static class CatalogApi
             .WithDescription("Get multiple items from the catalog")
             .WithTags("Items");
 
-        api.MapGet("/categories", GetCatalogTypeList)
+        api.MapGet("/categories", GetCategoryList)
             .WithName("Item Category List")
             .WithSummary("List of item categories")
             .WithDescription("Get list of item categories.")
             .WithTags("Category");     
 
-        api.MapGet("/categories/{id:int}/pic", GetTypePictureById)
+        api.MapGet("/categories/{id:int}/pic", GetCategoryPictureById)
             .WithName("GetTypePicture")
             .WithSummary("Get catalog type picture")
             .WithDescription("Get the picture for a catalog type")
             .WithTags("Category");      
         
-        api.MapGet("/Items/{id:int}", GetCatalogItemById)
+        api.MapGet("/Items/{id:int}", GetItemById)
             .WithName("GetProduct")
             .WithSummary("Get an item by its ID")
             .WithDescription("Retrieves a specific item from the catalog by its unique identifier (ID).")
             .WithTags("Items");
 
-        api.MapGet("/Items/category/{typeid:int}", GetCatalogItemByTypeId)
+        api.MapGet("/Items/category/{typeid:int}", GetItemsByCategoryId)
             .WithName("GetProductByType")
             .WithSummary("Get items by their category")
             .WithDescription("Retrieves catalog items filtered by their category identifier.")
@@ -58,35 +58,35 @@ public static class CatalogApi
             .WithDescription("Get the picture for a catalog item")
             .WithTags("Items");
 
-        api.MapPost("/item", AddProduct)
-            .WithName("addproduct")
+        api.MapPost("/item", AddItem)
+            .WithName("additem")
             .WithSummary("create an item")
             .WithDescription("create an item")
-            .WithTags("items");
+            .WithTags("items");      
 
-        api.MapPost("/item/pic", UploadProductImage)
+        api.MapPost("/item/pic", UploadItemImage)
             .DisableAntiforgery()
             .WithName("addproductimage")
             .WithSummary("upload an item image")
             .WithDescription("upload an item image")
             .WithTags("items");
 
-        api.MapPut("/item/{id}", UpdateProduct)
-            .WithName("EditProduct")
-            .WithSummary("Update a item")
-            .WithDescription("Update a item")
+        api.MapPut("/item/{id}", UpdateItem)
+            .WithName("edititem")
+            .WithSummary("Update an item")
+            .WithDescription("Update an item")
             .WithTags("Items");
 
-        api.MapDelete("/item/{id}", DeleteProduct)
-            .WithName("DeleteProduct")
-            .WithSummary("Delete a item")
-            .WithDescription("delete a item")
+        api.MapDelete("/item/{id}", DeleteItem)
+            .WithName("DeleteItem")
+            .WithSummary("Delete an item")
+            .WithDescription("delete an item")
             .WithTags("Items");
 
-        api.MapGet("/item/similar/{typeId}", GetSimilarProducts)
-            .WithName("GetSimilarProducts")
-            .WithSummary("Get list of similar products")
-            .WithDescription("Get list of similar products")
+        api.MapGet("/item/similar/{categoryId}", GetSimilarItems)
+            .WithName("GetSimilarItems")
+            .WithSummary("Get list of similar items by its categoryId")
+            .WithDescription("Get list of similar items by its categoryId")
             .WithTags("Items");
 
         //api.MapPost("/item/filter", FilterByComposite)
@@ -100,16 +100,16 @@ public static class CatalogApi
         // .WithDescription("Apply various filters to get a list of catalog items along with their corresponding shop details.")
         // .WithTags("Items");
 
-        api.MapGet("/items/discounted", GetDiscountedProducts)
-          .WithName("GetDiscountedProducts")
-          .WithSummary("List of discounted products")
-          .WithDescription("Get a list of all products that have a discount or offer.")
+        api.MapGet("/items/discounted", GetDiscountedItems)
+          .WithName("GetDiscountedItems")
+          .WithSummary("List of discounted items")
+          .WithDescription("Get a list of all items that have a discount or offer.")
           .WithTags("Items");
 
         return app;
     }
 
-    public static async Task<Results<Ok<PaginatedItems<ItemDTO>>, BadRequest<string>>> GetCatalogItemList(
+    public static async Task<Results<Ok<PaginatedItems<ItemDTO>>, BadRequest<string>>> GetItemList(
         [AsParameters] PaginationRequest paginationRequest,
         [AsParameters] CatalogServices services)
     {
@@ -132,7 +132,7 @@ public static class CatalogApi
             .Select(s => new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -154,9 +154,8 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
-            })
-                           .ToArrayAsync();
+                            MainPhoto = s.MainPhoto ?? "default.png"
+                        }).ToArrayAsync();
 
         return TypedResults.Ok(new PaginatedItems<ItemDTO>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
@@ -171,10 +170,11 @@ public static class CatalogApi
             .Include(i => i.Style)
             .Include(i => i.Occassion)
             .Include(i => i.Shop)
+            .OrderBy(c => c.Caption)
             .Select(s =>  new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -196,11 +196,11 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
+                            MainPhoto = s.MainPhoto ?? "default.png"
             }).ToListAsync();
         return TypedResults.Ok(items);
     }
-    public static async Task<Results<Ok<ItemDTO>, NotFound>> GetCatalogItemById(
+    public static async Task<Results<Ok<ItemDTO>, NotFound>> GetItemById(
         int id, [AsParameters] CatalogServices services)
     {
         var item = await services.Context.Items.Where(i => i.Id == id)
@@ -213,7 +213,7 @@ public static class CatalogApi
                 .Select(s => new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -235,12 +235,12 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
+                            MainPhoto = s.MainPhoto ?? "default.png"
                 }).FirstOrDefaultAsync();
 
         return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
     }
-    public static async Task<Results<Ok<ItemDTO[]>, NotFound>> GetCatalogItemByTypeId(
+    public static async Task<Results<Ok<ItemDTO[]>, NotFound>> GetItemsByCategoryId(
        int categoryId, [AsParameters] CatalogServices services)
     {
         var items = await services.Context.Items.Where(i => i.CategoryId == categoryId)
@@ -253,7 +253,7 @@ public static class CatalogApi
             .Select(s => new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -275,13 +275,13 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
+                            MainPhoto = s.MainPhoto ?? "default.png"
             }).ToArrayAsync();
 
         return items is not null ? TypedResults.Ok(items) : TypedResults.NotFound();
     }
 
-    public static async Task<Results<Ok<ItemCategoryDTO[]>, BadRequest<string>>> GetCatalogTypeList(
+    public static async Task<Results<Ok<ItemCategoryDTO[]>, BadRequest<string>>> GetCategoryList(
             [AsParameters] CatalogServices services)
         {
             var totalItems = await services.Context.Categories.LongCountAsync();
@@ -293,7 +293,7 @@ public static class CatalogApi
             return TypedResults.Ok(catalogItemTypes);
         }
 
-    public static async Task<Results<Ok<ItemDTO>, NotFound>> UpdateProduct(
+    public static async Task<Results<Ok<ItemDTO>, NotFound>> UpdateItem(
         ItemDTO updatedProduct, 
         [AsParameters] CatalogServices services)
     {
@@ -325,7 +325,7 @@ public static class CatalogApi
         return TypedResults.Ok(new ItemDTO { Caption = updatedProduct.Caption, Id = updatedProduct.Id });
     }
 
-    public static async Task<Results<Ok<string>, NotFound>> DeleteProduct(
+    public static async Task<Results<Ok<string>, NotFound>> DeleteItem(
         int id, [AsParameters] CatalogServices services)
     {
         var item = await services.Context.Items.FirstOrDefaultAsync(p => p.Id == id);
@@ -340,7 +340,7 @@ public static class CatalogApi
         return TypedResults.Ok($"Item with ID {id} deleted.");
     }
 
-    public static async Task<Ok<List<ItemDTO>>> GetSimilarProducts(
+    public static async Task<Ok<List<ItemDTO>>> GetSimilarItems(
      int typeId, [AsParameters] CatalogServices services)
     {
         var similarProducts = await services.Context.Items
@@ -354,7 +354,7 @@ public static class CatalogApi
             .Select(s => new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -376,7 +376,7 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
+                            MainPhoto = s.MainPhoto ?? "default.png"
             })
             .ToListAsync();
 
@@ -411,7 +411,7 @@ public static class CatalogApi
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
           "image/wmf", "image/jp2", "image/svg+xml", "image/webp" ])]
-    public static async Task<Results<Ok<string>,NotFound>> GetTypePictureById(
+    public static async Task<Results<Ok<string>,NotFound>> GetCategoryPictureById(
         CatalogContext context,
         IWebHostEnvironment environment,
         [Description("The catalog type id")] int id)
@@ -436,7 +436,7 @@ public static class CatalogApi
         //return TypedResults.PhysicalFile(path, mimetype, lastModified: lastModified);
         return TypedResults.Ok(path);
     }
-    public static async Task<Results<Ok<List<ItemDTO>>, BadRequest<string>>> GetDiscountedProducts(
+    public static async Task<Results<Ok<List<ItemDTO>>, BadRequest<string>>> GetDiscountedItems(
        [AsParameters] CatalogServices services)
     {
         var discountedProducts = await services.Context.Items
@@ -449,7 +449,7 @@ public static class CatalogApi
             .Select(s => new ItemDTO {
                             Id = s.Id,
                             Caption = s.Caption,
-                            Description = s.Description,
+                            Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
                             Size = s.Size,
@@ -471,7 +471,7 @@ public static class CatalogApi
                             Discount = s.Discount,
                             Status = s.Status,
                             Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto
+                            MainPhoto = s.MainPhoto ?? "default.png"
             })
             .ToListAsync();
 
@@ -633,7 +633,7 @@ public static class CatalogApi
 
     //     return TypedResults.Ok(filteredProducts);
     // }
-    public static async Task<Results<Created<ItemDTO>, BadRequest<string>>> AddProduct(
+    public static async Task<Results<Created<ItemDTO>, BadRequest<string>>> AddItem(
       [FromBody] ItemDTO newItem,
       [AsParameters] CatalogServices services)
     {
@@ -672,8 +672,8 @@ public static class CatalogApi
         return TypedResults.Created($"/api/catalog/items/{item.Id}", itemDto);
     }
 
-     public static async Task<Results<Created<string>, BadRequest<string>>> UploadProductImage(
-     IFormFile file, 
+     public static async Task<Results<Created<string>, BadRequest<string>>> UploadItemImage(
+     [FromForm]IFormFile file, 
      IStorageService services)
         {
             if (file == null || file.Length == 0)

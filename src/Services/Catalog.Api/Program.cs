@@ -14,6 +14,7 @@ builder.AddDefaultOpenApi(withApiVersioning);
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 app.MapDefaultEndpoints();
 
 app.NewVersionedApi("Catalog")
@@ -26,4 +27,5 @@ app.NewVersionedApi("Shops")
     .MapShopApiV1();
 
 app.UseDefaultOpenApi();
+
 app.Run();
