@@ -19,7 +19,6 @@
     <packageVersion Include="Aspire.NpgSql" Version="$(AspireVersion)" />
     <packageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
     <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
-    <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageVersion Include="Google.Protobuf" Version="3.30.2" />
     <PackageVersion Include="MediatR" Version="12.5.0" />
     <!-- Microsoft.Extensions -->

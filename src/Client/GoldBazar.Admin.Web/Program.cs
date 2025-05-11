@@ -1,11 +1,14 @@
 using GoldBazar.Admin.Web.Components;
 using GoldBazar.Admin.Web.Extensions;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.AddServiceDefaults();
 
-builder.AddApplicationServices();
-// Add services to the container.
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.AddShareApplicationServices();
+builder.AddAdminAppApplicationServices();
+builder.Services.AddMudServices();
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();

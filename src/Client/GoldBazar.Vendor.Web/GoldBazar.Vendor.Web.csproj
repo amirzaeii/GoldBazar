@@ -7,6 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="../GoldBazar.Shared.Components/GoldBazar.Shared.Components.csproj" /> 
+    <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MudBlazor" />

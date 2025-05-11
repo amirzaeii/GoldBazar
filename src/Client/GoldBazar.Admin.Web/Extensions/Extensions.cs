@@ -2,7 +2,7 @@ namespace GoldBazar.Admin.Web.Extensions;
 
 public static class Extensions
 {
-    public static void AddApplicationServices(this IHostApplicationBuilder builder)
+    public static void AddAdminAppApplicationServices(this IHostApplicationBuilder builder)
     {
         //  builder.AddAuthenticationServices();
 

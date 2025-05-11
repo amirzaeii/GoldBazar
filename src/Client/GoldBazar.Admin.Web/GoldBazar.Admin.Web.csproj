@@ -14,10 +14,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
     <PackageReference Include="Asp.Versioning.Http.Client" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" />
-  </ItemGroup>
+    <PackageReference Include="MudBlazor" />
 
-  <ItemGroup>
-    <Folder Include="Components/Pages/" />
   </ItemGroup>
 
 </Project>
