@@ -3,6 +3,7 @@ using GoldBazar.Admin.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
 builder.AddShareApplicationServices();
 builder.AddAdminAppApplicationServices();
 builder.Services.AddMudServices();

@@ -144,17 +144,17 @@ public static class CatalogInfoApi
     }
 
     //Material
-    public static async Task<Results<Ok<List<MaterialDTO>>, NotFound>> GetAllMaterials(
+    public static async Task<Results<Ok<MaterialDTO[]>, NotFound>> GetAllMaterials(
      [AsParameters] CatalogServices services)
     {
-        var materials = await services.Context.Materials.ToListAsync();
+        var materials = await services.Context.Materials.ToArrayAsync();
 
         if (!materials.Any())
         {
             return TypedResults.NotFound();
         }
 
-        var materialDtos = materials.Select(m => new MaterialDTO(m.Id, m.Name)).ToList();
+        var materialDtos = materials.Select(m => new MaterialDTO(m.Id, m.Name)).ToArray();
         return TypedResults.Ok(materialDtos);
     }
 
@@ -223,17 +223,17 @@ public static class CatalogInfoApi
     }
 
     //Metal
-    public static async Task<Results<Ok<List<MetalDTO>>, NotFound>> GetAllMetals(
+    public static async Task<Results<Ok<MetalDTO[]>, NotFound>> GetAllMetals(
      [AsParameters] CatalogServices services)
     {
-        var metals = await services.Context.Metals.Include(m => m.Material).ToListAsync();
+        var metals = await services.Context.Metals.Include(m => m.Material).ToArrayAsync();
 
         if (!metals.Any())
         {
             return TypedResults.NotFound();
         }
 
-        var metalDtos = metals.Select(m => new MetalDTO(m.Id, m.Name, m.MaterialId, m.Material.Name)).ToList();
+        var metalDtos = metals.Select(m => new MetalDTO(m.Id, m.Name, m.MaterialId, m.Material.Name)).ToArray();
         return TypedResults.Ok(metalDtos);
     }
 
@@ -306,17 +306,17 @@ public static class CatalogInfoApi
 
     //Ocassion
     // Get All Occasions
-    public static async Task<Results<Ok<List<OccasionDTO>>, NotFound>> GetAllOccasions(
+    public static async Task<Results<Ok<OccasionDTO[]>, NotFound>> GetAllOccasions(
         [AsParameters] CatalogServices services)
     {
-        var occasions = await services.Context.Occasions.ToListAsync();
+        var occasions = await services.Context.Occasions.ToArrayAsync();
 
         if (!occasions.Any())
         {
             return TypedResults.NotFound();
         }
 
-        var occasionDtos = occasions.Select(o => new OccasionDTO(o.Id, o.Name)).ToList();
+        var occasionDtos = occasions.Select(o => new OccasionDTO(o.Id, o.Name)).ToArray();
         return TypedResults.Ok(occasionDtos);
     }
 
@@ -389,17 +389,17 @@ public static class CatalogInfoApi
 
     //styles
     // Get All Styles
-    public static async Task<Results<Ok<List<StyleDTO>>, NotFound>> GetAllStyles(
+    public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(
         [AsParameters] CatalogServices services)
     {
-        var styles = await services.Context.Styles.ToListAsync();
+        var styles = await services.Context.Styles.ToArrayAsync();
 
         if (!styles.Any())
         {
             return TypedResults.NotFound();
         }
 
-        var styleDtos = styles.Select(s => new StyleDTO(s.Id, s.Name)).ToList();
+        var styleDtos = styles.Select(s => new StyleDTO(s.Id, s.Name)).ToArray();
         return TypedResults.Ok(styleDtos);
     }
 

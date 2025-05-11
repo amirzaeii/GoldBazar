@@ -2,7 +2,7 @@
 @using GoldBazar.Admin.Web.Components.Dialogs
 @using GoldBazar.Shared.DTOs
 @using GoldBazar.Shared.Components.Services
-@inject CatalogService StyleService
+@inject CatalogService CatalogService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
@@ -41,7 +41,7 @@
 </MudPaper>
 
 @code {
-    private List<StyleDTO> _styles = new();
+    private StyleDTO[] _styles = default!;
     private bool _isLoading;
 
     protected override async Task OnInitializedAsync()
@@ -50,7 +50,7 @@
     private async Task LoadStyles()
     {
         _isLoading = true;
-        _styles = (await StyleService.GetStyles()).ToList();
+        _styles = await CatalogService.GetStyles();
         _isLoading = false;
     }
 
@@ -63,7 +63,7 @@
         if (!result.Canceled)
         {
             var newStyle = (StyleDTO)result.Data!;
-            await StyleService.AddStyle(newStyle);
+            await CatalogService.AddStyle(newStyle);
             await LoadStyles();
         }
     }
@@ -79,7 +79,7 @@
         if (!result.Canceled)
         {
             var updated = (StyleDTO)result.Data!;
-            if (await StyleService.UpdateStyle(updated))
+            if (await CatalogService.UpdateStyle(updated))
             {
                 Snackbar.Add("Style updated", Severity.Success);
                 await LoadStyles();
@@ -105,7 +105,7 @@
 
         if (!result.Canceled)
         {
-            if (await StyleService.DeleteStyle(id))
+            if (await CatalogService.DeleteStyle(id))
             {
                 Snackbar.Add("Style deleted", Severity.Success);
                 await LoadStyles();
