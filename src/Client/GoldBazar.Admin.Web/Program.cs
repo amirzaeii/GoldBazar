@@ -1,19 +1,14 @@
 using GoldBazar.Admin.Web.Components;
 using GoldBazar.Admin.Web.Extensions;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddShareApplicationServices();
 builder.AddAdminAppApplicationServices();
 builder.Services.AddMudServices();
-
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents()
-    .AddInteractiveWebAssemblyComponents();
-
-
+       .AddInteractiveServerComponents()
+       .AddInteractiveWebAssemblyComponents(); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,5 +36,6 @@ app.MapRazorComponents<App>()
 
 app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
 app.MapForwarder("/type-images/{id}", "http://catalog-api", "/api/catalog/types/{id}/pic");
+
 
 app.Run();
