@@ -62,7 +62,9 @@ public class ItemDTO
     public int Size { get;set;   }
     public int CategoryId { get; set;  }
     public int ManufactureId { get; set; }
+    public string ManufactureName { get; set; } = string.Empty;
     public int TypeId { get; set;  } = 1;
+    public string TypeName { get; set; } = string.Empty;
     public string CategoryName { get; set;  }
     public int MetalId { get;set; } = 1;
     public string MetalName { get; set;  }

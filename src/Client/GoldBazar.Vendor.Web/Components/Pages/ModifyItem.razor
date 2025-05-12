@@ -1,7 +1,8 @@
 ﻿@page "/modifyitem"
 @page "/modifyitem/{productId:int}"
 @using System.Net.Http.Headers
-@inject CatalogService CatalogService
+@inject CatalogService _catalogService
+@inject IItemImageService _imageService
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
@@ -29,7 +30,7 @@
     {
         if (productId > 0)
         {
-            _item = await CatalogService.GetCatalogItem(productId);
+            _item = await _catalogService.GetCatalogItem(productId);
         }
         else{
             _item = new ItemDTO()
@@ -53,12 +54,13 @@
             
             var file = _images[0].File;
 
-            var mainPhoto = await CatalogService.UploadItemImage(file);
+            var mainPhoto = await _imageService.UploadItemImage(file);
             item.MainPhoto = mainPhoto;
-            result = item.Id > 0 ? await CatalogService.EditItem(item) : result = await CatalogService.AddItem(item);
+            item.ShopId = 1; // TODO: Get the actual shop ID from the user context
+            result = item.Id > 0 ? await _catalogService.EditItem(item) : result = await _catalogService.AddItem(item);
             if(result)
             {                
-                NavigationManager.NavigateTo("/profile/items");
+                NavigationManager.NavigateTo("/profile/shop/1");
             }
         }
         catch (Exception ex)

@@ -7,8 +7,10 @@ public static class Extensions
 {
     public static void AddShareApplicationServices(this IHostApplicationBuilder builder)
     {
+        builder.Services.AddHttpClient("UploadClient"); // No Polly policies applied
         // Application services
-        builder.Services.AddSingleton<IProductImageUrlProvider, ProductImageUrlProvider>();
+        builder.Services.AddHttpClient<IItemImageService, ItemImageService>(o => o.BaseAddress = new("http://catalog-api"))
+         .AddApiVersion(1.0);;
         builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
             .AddApiVersion(1.0);
         //.AddAuthToken();

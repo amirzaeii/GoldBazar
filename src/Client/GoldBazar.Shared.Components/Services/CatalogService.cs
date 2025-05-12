@@ -1,8 +1,5 @@
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
-
-using Microsoft.AspNetCore.Components.Forms;
 namespace GoldBazar.Shared.Components.Services;
 
 public class CatalogService(HttpClient httpClient) 
@@ -154,14 +151,14 @@ public class CatalogService(HttpClient httpClient)
     }
     public async Task<bool> EditItem(ItemDTO newItem)
     {
-        var uri = "api/catalog/item"; // Ensure this matches your API
+        var uri = "api/catalog/item/"; // Ensure this matches your API
 
         try
         {
             Console.WriteLine($"Sending request to: {uri}");
             Console.WriteLine($"Payload: {JsonSerializer.Serialize(newItem)}");
 
-            var response = await httpClient.PutAsJsonAsync(uri, newItem);
+            var response = await httpClient.PutAsJsonAsync($"{uri}{newItem.Id}", newItem);
 
             Console.WriteLine($"Response status: {response.StatusCode}");
 
@@ -173,44 +170,6 @@ public class CatalogService(HttpClient httpClient)
         {
             Console.WriteLine($"Error editing an item: {ex.Message}");
             return false;
-        }
-    }
-     public async Task<string> UploadItemImage(IBrowserFile file)
-    {
-        var uri = "api/catalog/item/pic"; 
-
-        try
-        {
-            var fileContent = new StreamContent(file.OpenReadStream(1024 * 1024 * 10));
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
-
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri("http://catalog-api/api/catalog/item/pic"),
-                Content = new MultipartFormDataContent
-                {
-                    // Add the file content to the request
-                     {fileContent, "file", file.Name }
-                },
-            };
-          
-            Console.WriteLine($"Sending request to: {uri}");
-
-            // var _httpClient = new HttpClient();
-            // _httpClient.BaseAddress = new Uri("http://catalog-api");
-            var response = await httpClient.SendAsync(request);
-
-            Console.WriteLine($"Response status: {response.StatusCode}");
-
-            response.EnsureSuccessStatusCode(); // Throws exception if not 2xx
-
-            return await response.Content.ReadAsStringAsync();
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error adding upload image: {ex.Message}");
-            return "default.jpg";
         }
     }
 

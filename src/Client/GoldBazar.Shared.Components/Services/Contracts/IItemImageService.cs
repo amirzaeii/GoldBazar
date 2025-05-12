@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Components.Forms;
 
-namespace GoldBazar.Shared.Components.Services;
+namespace GoldBazar.Shared.Components.Services.Contracts;
 
-public interface IProductImageUrlProvider
+public interface IItemImageService
 {
+    Task<string> UploadItemImage(IBrowserFile file);
     string GetProductImageUrl(ItemDTO item)
         => GetProductImageUrl(item.Id);
 

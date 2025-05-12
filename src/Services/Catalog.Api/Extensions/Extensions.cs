@@ -53,16 +53,5 @@ public static class Extensions
         // }
 
         // builder.Services.AddScoped<ICatalogAI, CatalogAI>();
-
-        builder.Services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAll", policy =>
-            {
-                policy
-                    .AllowAnyOrigin()    // You can restrict this to specific origins
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            });
-        });
     }
 }

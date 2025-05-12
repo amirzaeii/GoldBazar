@@ -4,6 +4,7 @@ using GoldBazar.Shared.DTOs;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Extensions;
 
 using static Catalog.Infrastructure.Models.Item;
 
@@ -135,6 +136,11 @@ public static class CatalogApi
                             Description = s.Description ?? string.Empty,
                             CostPerGram = s.CostPerGram,
                             Weight = s.Weight,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             Size = s.Size,
                             CategoryId = s.CategoryId,
                             CategoryName = s.Category.Name,
@@ -180,6 +186,11 @@ public static class CatalogApi
                             Size = s.Size,
                             CategoryId = s.CategoryId,
                             CategoryName = s.Category.Name,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             MetalId = s.MetalId,
                             MetalName = s.Metal.Name,
                             KT = s.Manufacture.Karat,
@@ -218,6 +229,11 @@ public static class CatalogApi
                             Weight = s.Weight,
                             Size = s.Size,
                             CategoryId = s.CategoryId,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             CategoryName = s.Category.Name,
                             MetalId = s.MetalId,
                             MetalName = s.Metal.Name,
@@ -259,6 +275,11 @@ public static class CatalogApi
                             Size = s.Size,
                             CategoryId = s.CategoryId,
                             CategoryName = s.Category.Name,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             MetalId = s.MetalId,
                             MetalName = s.Metal.Name,
                             KT = s.Manufacture.Karat,
@@ -294,10 +315,12 @@ public static class CatalogApi
         }
 
     public static async Task<Results<Ok<ItemDTO>, NotFound>> UpdateItem(
-        ItemDTO updatedProduct, 
+        int id,
+        [Description("The catalog item to update")]
+        [FromBody]ItemDTO updatedProduct, 
         [AsParameters] CatalogServices services)
     {
-        var item = await services.Context.Items.FirstOrDefaultAsync(p => p.Id == updatedProduct.Id);
+        var item = await services.Context.Items.FirstOrDefaultAsync(p => p.Id == id);
 
         if (item == null)
         {
@@ -308,6 +331,7 @@ public static class CatalogApi
         item.CostPerGram = updatedProduct.CostPerGram;
         item.Size = updatedProduct.Size;
         item.AvailableStock = updatedProduct.Quantity;
+        item.EligibleChangePriceRang = updatedProduct.ChangePriceRange;
         item.ManufactureId = updatedProduct.ManufactureId;
         item.Status = updatedProduct.Status;
         item.Discount = updatedProduct.Discount;
@@ -364,6 +388,11 @@ public static class CatalogApi
                             MetalName = s.Metal.Name,
                             KT = s.Manufacture.Karat,
                             Purity = s.Manufacture.Purity,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             ShopId = s.ShopId,
                             ShopName = s.Shop.Name,
                             City = s.Shop.City.Name,
@@ -460,6 +489,11 @@ public static class CatalogApi
                             KT = s.Manufacture.Karat,
                             Purity = s.Manufacture.Purity,
                             ShopId = s.ShopId,
+                            ManufactureId = s.ManufactureId,
+                            ManufactureName = s.Manufacture.Name,
+                            TypeId = (int)s.Type,
+                            TypeName = s.Type.GetDisplayName(),
+                            ChangePriceRange = s.EligibleChangePriceRang,
                             ShopName = s.Shop.Name,
                             City = s.Shop.City.Name,
                             MaterialId = s.MaterialId,
@@ -637,7 +671,7 @@ public static class CatalogApi
       [FromBody] ItemDTO newItem,
       [AsParameters] CatalogServices services)
     {
-        if (newItem.CostPerGram <= 0 || newItem.Weight <= 0 || newItem.Quantity <= 0)
+        if (newItem.CostPerGram <= 0 || newItem.Weight <= 0)
         {
             return TypedResults.BadRequest("Cost, weight, and quantity must be greater than zero.");
         }
@@ -649,7 +683,7 @@ public static class CatalogApi
             CostPerGram = newItem.CostPerGram,
             Weight = newItem.Weight,
             Size = newItem.Size,
-            CategoryId = newItem.TypeId,
+            CategoryId = newItem.CategoryId,
             MetalId = newItem.MetalId,
             ShopId = newItem.ShopId,
             MaterialId = newItem.MaterialId,
@@ -660,7 +694,8 @@ public static class CatalogApi
             AvailableStock = newItem.Quantity,
             ManufactureId = newItem.ManufactureId,
             Type = (TypeEnum)newItem.TypeId,
-            MainPhoto = newItem.MainPhoto
+            MainPhoto = newItem.MainPhoto,
+            EligibleChangePriceRang = newItem.ChangePriceRange,
         };
 
         services.Context.Items.Add(item);
