@@ -15,4 +15,8 @@
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" />
     <PackageReference Include="MudBlazor" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Dialogs\" />
+  </ItemGroup>
 </Project>

@@ -1,11 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <NavMenu></NavMenu>
+   
     <main>
         <article>
             @Body
         </article>
     </main>
 </div>
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
 
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
