@@ -382,23 +382,125 @@ public static class CatalogInfoApi
     }
 
 
-    //styles
+    ////styles
+    //// GET /styles
+    //public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    var styles = await services.Context.Styles
+    //                         .AsNoTracking()
+    //                         .ToArrayAsync();
+
+    //    if (styles.Length == 0)
+    //        return TypedResults.NotFound();
+
+    //    var dtos = styles
+    //               .Select(s => new StyleDTO(s.Id, s.Name))
+    //               .ToArray();
+
+    //    return TypedResults.Ok(dtos);
+    //}
+
+    //// GET /styles/{id}
+    //public static async Task<Results<Ok<StyleDTO>, NotFound>> GetStyleById(
+    //    int id,
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    var style = await services.Context.Styles
+    //                          .AsNoTracking()
+    //                          .FirstOrDefaultAsync(s => s.Id == id);
+
+    //    return style is not null
+    //         ? TypedResults.Ok(new StyleDTO(style.Id, style.Name))
+    //         : TypedResults.NotFound();
+    //}
+
+    //// POST /styles
+    //public static async Task<Results<Created<StyleDTO>, BadRequest<string>>> AddStyle(
+    // StyleDTO styleDto,
+    // [AsParameters] CatalogServices services)
+    //{
+    //    // 1) Prevent duplicate names
+    //    if (await services.Context.Styles
+    //              .AnyAsync(s => s.Name == styleDto.Name))
+    //    {
+    //        return TypedResults.BadRequest(
+    //            $"A style with the name '{styleDto.Name}' already exists.");
+    //    }
+
+    //    // 2) Manually generate a new ID
+    //    var maxId = await services.Context.Styles
+    //                         .Select(s => (int?)s.Id)
+    //                         .MaxAsync()
+    //               ?? 0;
+
+    //    var style = new Style
+    //    {
+    //        Id = maxId + 1,
+    //        Name = styleDto.Name
+    //    };
+
+    //    // 3) Add & save
+    //    services.Context.Styles.Add(style);
+    //    await services.Context.SaveChangesAsync();
+
+    //    // 4) Return the created DTO
+    //    var resultDto = new StyleDTO(style.Id, style.Name);
+    //    return TypedResults.Created($"/api/catalog/styles/{style.Id}", resultDto);
+    //}
+
+
+    //// PUT /styles/{id}
+    //public static async Task<Results<Ok<StyleDTO>, NotFound, BadRequest<string>>> UpdateStyle(
+    //    int id,
+    //    StyleDTO updatedDto,
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    var style = await services.Context.Styles.FindAsync(id);
+    //    if (style is null)
+    //        return TypedResults.NotFound();
+
+    //    // Prevent renaming to an existing name
+    //    var conflict = await services.Context.Styles
+    //                      .AnyAsync(s => s.Name == updatedDto.Name && s.Id != id);
+    //    if (conflict)
+    //        return TypedResults.BadRequest(
+    //            $"A style with the name '{updatedDto.Name}' already exists.");
+
+    //    style.Name = updatedDto.Name;
+    //    // EF Core will issue UPDATE
+    //    await services.Context.SaveChangesAsync();
+
+    //    return TypedResults.Ok(new StyleDTO(style.Id, style.Name));
+    //}
+
+    //// DELETE /styles/{id}
+    //public static async Task<Results<Ok<string>, NotFound>> DeleteStyle(
+    //    int id,
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    var style = await services.Context.Styles.FindAsync(id);
+    //    if (style is null)
+    //        return TypedResults.NotFound();
+
+    //    services.Context.Styles.Remove(style);
+    //    await services.Context.SaveChangesAsync();
+
+    //    return TypedResults.Ok($"Style with ID {id} deleted.");
+    //}
+
     // GET /styles
     public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(
         [AsParameters] CatalogServices services)
     {
-        var styles = await services.Context.Styles
-                             .AsNoTracking()
-                             .ToArrayAsync();
+        var dtos = await services.Context.Styles
+            .AsNoTracking()
+            .Select(s => new StyleDTO(s.Id, s.Name))
+            .ToArrayAsync();
 
-        if (styles.Length == 0)
-            return TypedResults.NotFound();
-
-        var dtos = styles
-                   .Select(s => new StyleDTO(s.Id, s.Name))
-                   .ToArray();
-
-        return TypedResults.Ok(dtos);
+        return dtos.Length > 0
+            ? TypedResults.Ok(dtos)
+            : TypedResults.NotFound();
     }
 
     // GET /styles/{id}
@@ -406,33 +508,31 @@ public static class CatalogInfoApi
         int id,
         [AsParameters] CatalogServices services)
     {
-        var style = await services.Context.Styles
-                              .AsNoTracking()
-                              .FirstOrDefaultAsync(s => s.Id == id);
+        var dto = await services.Context.Styles
+            .AsNoTracking()
+            .Where(s => s.Id == id)
+            .Select(s => new StyleDTO(s.Id, s.Name))
+            .FirstOrDefaultAsync();
 
-        return style is not null
-             ? TypedResults.Ok(new StyleDTO(style.Id, style.Name))
-             : TypedResults.NotFound();
+        return dto is not null
+            ? TypedResults.Ok(dto)
+            : TypedResults.NotFound();
     }
 
     // POST /styles
     public static async Task<Results<Created<StyleDTO>, BadRequest<string>>> AddStyle(
-     StyleDTO styleDto,
-     [AsParameters] CatalogServices services)
+        StyleDTO styleDto,
+        [AsParameters] CatalogServices services)
     {
-        // 1) Prevent duplicate names
-        if (await services.Context.Styles
-                  .AnyAsync(s => s.Name == styleDto.Name))
+        if (await services.Context.Styles.AnyAsync(s => s.Name == styleDto.Name))
         {
             return TypedResults.BadRequest(
                 $"A style with the name '{styleDto.Name}' already exists.");
         }
 
-        // 2) Manually generate a new ID
         var maxId = await services.Context.Styles
-                             .Select(s => (int?)s.Id)
-                             .MaxAsync()
-                   ?? 0;
+            .Select(s => (int?)s.Id)
+            .MaxAsync() ?? 0;
 
         var style = new Style
         {
@@ -440,15 +540,12 @@ public static class CatalogInfoApi
             Name = styleDto.Name
         };
 
-        // 3) Add & save
         services.Context.Styles.Add(style);
         await services.Context.SaveChangesAsync();
 
-        // 4) Return the created DTO
         var resultDto = new StyleDTO(style.Id, style.Name);
         return TypedResults.Created($"/api/catalog/styles/{style.Id}", resultDto);
     }
-
 
     // PUT /styles/{id}
     public static async Task<Results<Ok<StyleDTO>, NotFound, BadRequest<string>>> UpdateStyle(
@@ -460,15 +557,14 @@ public static class CatalogInfoApi
         if (style is null)
             return TypedResults.NotFound();
 
-        // Prevent renaming to an existing name
-        var conflict = await services.Context.Styles
-                          .AnyAsync(s => s.Name == updatedDto.Name && s.Id != id);
-        if (conflict)
+        if (await services.Context.Styles
+                .AnyAsync(s => s.Name == updatedDto.Name && s.Id != id))
+        {
             return TypedResults.BadRequest(
                 $"A style with the name '{updatedDto.Name}' already exists.");
+        }
 
         style.Name = updatedDto.Name;
-        // EF Core will issue UPDATE
         await services.Context.SaveChangesAsync();
 
         return TypedResults.Ok(new StyleDTO(style.Id, style.Name));
@@ -488,6 +584,7 @@ public static class CatalogInfoApi
 
         return TypedResults.Ok($"Style with ID {id} deleted.");
     }
+
 }
 
 

@@ -1,0 +1,56 @@
+﻿@inject CatalogService StyleService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" Model="model">
+            <MudTextField T="string"
+                          Label="Style Name"
+                          Required="true"
+                          RequiredError="Name is required!"
+                          Value="model.Name"
+                          ValueChanged="OnNameChanged"
+                          ValueExpression="() => model.Name" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Create</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private MudForm form = default!;
+    private StyleDTO model = new StyleDTO(0, "");
+
+    void Cancel()
+      => MudDialog.Cancel();     
+
+    private Task OnNameChanged(string newName)
+    {
+        model = model with { Name = newName };
+        return Task.CompletedTask;
+    }
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+
+        try
+        {
+            await StyleService.AddStyle(model);
+            Snackbar.Add("Style created", Severity.Success);
+            MudDialog.Close(DialogResult.Ok(true)); 
+        }
+        catch
+        {
+            Snackbar.Add("Style already exists", Severity.Error);
+        }
+    }
+}
+

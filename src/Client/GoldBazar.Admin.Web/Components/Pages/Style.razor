@@ -1,130 +1,150 @@
 ﻿@page "/styles"
+@using GoldBazar.Admin.Web.Components.Comp
+@using GoldBazar.Admin.Web.Components.Dialogs
 @using GoldBazar.Admin.Web.Extensions
-@inject ISnackbar Snackbar
 @using GoldBazar.Shared.DTOs
 @using GoldBazar.Shared.Components.Services
 @inject CatalogService CatalogService
+@inject IDialogService DialogService
 @inject ISnackbar Snackbar
-@rendermode InteractiveServer
+@layout CRUDLayout
 
-<MudCard Elevation="25" Class="mb-4">
-    <MudCardHeader>
-        <MudText Typo="Typo.h6">Add / Edit Styles</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudTextField @bind-Value="nameField"
-                      Label="Style Name"
-                      Variant="Variant.Text"
-                      Margin="Margin.Normal"
-                      FullWidth="true" />
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Success"
-                   OnClick="SaveAsync"
-                   Disabled="@string.IsNullOrWhiteSpace(nameField)"
-                   Class="mt-2">
-            @(editingId == 0 ? "Add Style" : "Update Style")
-        </MudButton>
-    </MudCardContent>
-</MudCard>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Elevation="3" Class="pa-6 ma-4">
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Style Directory</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
+                           Size="Size.Large" Class="ml-auto" OnClick="OpenCreateDialog">
+                    New Style
+                </MudButton>
+            </MudItem>
 
-<MudTextField @bind-Value="searchString"
-              Placeholder="Search styles..."
-              Adornment="Adornment.Start"
-              AdornmentIcon="@Icons.Material.Filled.Search"
-              Class="mb-2" />
+            <MudItem xs="12">
+                @if (_loading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                }
 
-<MudTable Items="styles"
-          Filter="FilterStyles"
-          Hover="true"
-          Elevation="1">
-    <HeaderContent>
-        <MudTh>ID</MudTh>
-        <MudTh>Name</MudTh>
-        <MudTh>Actions</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="ID">@context.Id</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Actions">
-            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                           Color="Color.Primary"
-                           OnClick="@(() => BeginEdit(context))" />
-            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                           Color="Color.Error"
-                           OnClick="@(() => DeleteAsync(context.Id))" />
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+                <MudDataGrid T="StyleDTO"
+                             Items="@_styles"
+                             Loading="@_loading"
+                             Hover="true"
+                             ReadOnly="true"
+                             Class="elevation-1">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6" Class="mud-primary-text">
+                            Styles (@_styles.Count)
+                        </MudText>
+                    </ToolBarContent>
+                    <Columns>
+                        <PropertyColumn Property="x => x.Name" Title="Style Name" />
+
+                        <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
+                            <CellTemplate>
+                                <MudStack Row="true" Spacing="0" Class="pa-2">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => OpenEditDialog(context.Item))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => OpenDeleteDialog(context.Item.Id))" />
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+
+                    <PagerContent>
+                        <MudDataGridPager T="StyleDTO" PageSizeOptions="new int[] {10, 25, 50, 100}" />
+                    </PagerContent>
+                </MudDataGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
 
 @code {
-    private string searchString = string.Empty;
-    private List<StyleDTO> styles = new();
-    private int editingId = 0;
-    private string nameField = string.Empty;
+    private List<StyleDTO> _styles = new();
+    private bool _loading = true;
 
     protected override async Task OnInitializedAsync()
-      => await LoadStylesAsync();
+        => await LoadStyles();
 
-    private async Task LoadStylesAsync()
+    private async Task LoadStyles()
     {
-        styles = (await CatalogService.GetStyles()).ToList();
-    }
-
-    private bool FilterStyles(StyleDTO s)
-      => string.IsNullOrWhiteSpace(searchString)
-         || s.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase);
-
-    private void BeginEdit(StyleDTO s)
-    {
-        editingId = s.Id;
-        nameField = s.Name;
-    }
-
-    private async Task SaveAsync()
-    {
-        // Build a DTO from our two fields
-        var dto = new StyleDTO(editingId, nameField.Trim());
-
         try
         {
-            StyleDTO result = editingId == 0
-              ? await CatalogService.AddStyle(dto)
-              : await CatalogService.UpdateStyle(dto);
+            _loading = true;
+            StateHasChanged();
 
-            Snackbar.Add(editingId == 0 ? "Style added" : "Style updated", Severity.Success);
-
-            // Reset form
-            editingId = 0;
-            nameField = string.Empty;
-
-            await LoadStylesAsync();
+            var result = await CatalogService.GetStyles();
+            _styles = result
+                .OrderBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+                .ToList();
         }
-        catch (HttpRequestException ex)
+        catch
         {
-            Snackbar.Add($"Error saving style: {ex.Message}", Severity.Error);
+            Snackbar.Add("Failed to load styles", Severity.Error);
+        }
+        finally
+        {
+            _loading = false;
+            StateHasChanged();
         }
     }
 
-    private async Task DeleteAsync(int id)
+    private async Task OpenCreateDialog()
     {
-        var ok = await CatalogService.DeleteStyle(id);
-        if (ok)
+        var dialog = await DialogService.ShowAsync<CreateStyle>("Add New Style");
+        var result = await dialog.Result;
+        if (!result.Canceled)
         {
-            Snackbar.Add("Style deleted", Severity.Success);
-
-            // If you were editing this one, reset the form
-            if (editingId == id)
-            {
-                editingId = 0;
-                nameField = string.Empty;
-            }
-
-            await LoadStylesAsync();
-        }
-        else
-        {
-            Snackbar.Add("Failed to delete style", Severity.Error);
+            await LoadStyles();
+            Snackbar.Add("Style created successfully", Severity.Success);
         }
     }
-}
 
+    private async Task OpenEditDialog(StyleDTO style)
+    {
+        var parameters = new DialogParameters
+            {
+                ["Style"] = style,
+                ["Title"] = $"Edit Style: {style.Name}"
+            };
+        var dialog = await DialogService.ShowAsync<EditStyle>("Edit Style", parameters);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await LoadStyles();
+            Snackbar.Add("Style updated successfully", Severity.Success);
+        }
+    }
+
+    private async Task OpenDeleteDialog(int styleId)
+    {
+        var parameters = new DialogParameters
+            {
+
+                ["StyleId"] = styleId,
+                ["Message"] = "Are you sure you want to delete this style? This action cannot be undone."
+            };
+
+
+        var dialog = await DialogService.ShowAsync<DeleteStyle>(
+            "Confirm Deletion",
+            parameters
+        );
+
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await CatalogService.DeleteStyle(styleId);
+            await LoadStyles();
+            Snackbar.Add("Style deleted successfully", Severity.Success);
+        }
+}
+}

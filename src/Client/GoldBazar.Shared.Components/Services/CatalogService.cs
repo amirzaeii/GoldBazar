@@ -59,12 +59,6 @@ public class CatalogService(HttpClient httpClient)
         return result!;
     }
     
-    public async Task<StyleDTO[]> GetStyles()
-    {
-        var uri = $"{remoteServiceBaseUrl}styles";
-        var result = await httpClient.GetFromJsonAsync<StyleDTO[]>(uri);
-        return result!;
-    }
 
     private static string GetAllCatalogItemsUri(string baseUri, int pageIndex, int pageSize, int? type)
     {
@@ -371,42 +365,44 @@ public class CatalogService(HttpClient httpClient)
         }
     }
 
-    // Styles
-    // GET /api/catalog/styles/{id}
-    public async Task<StyleDTO> GetStyleById(int id)
+    //// Styles
+    // GET /api/catalog/styles
+    public async Task<StyleDTO[]> GetStyles()
     {
-        var uri = $"{remoteServiceBaseUrl}styles/{id}";
-        var response = await httpClient.GetAsync(uri);
-        if (!response.IsSuccessStatusCode)
-            throw new HttpRequestException($"Error fetching style {id}: {response.StatusCode}");
-        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
+        var uri = $"{remoteServiceBaseUrl}styles";
+        var result = await httpClient.GetFromJsonAsync<StyleDTO[]>(uri);
+        return result!;
     }
+
+    // GET /api/catalog/styles/{id}
+    public Task<StyleDTO> GetStyleById(int id)
+        => httpClient.GetFromJsonAsync<StyleDTO>($"{remoteServiceBaseUrl}styles/{id}")!;
 
     // POST /api/catalog/styles
     public async Task<StyleDTO> AddStyle(StyleDTO newStyle)
     {
-        var uri = $"{remoteServiceBaseUrl}styles";
-        var response = await httpClient.PostAsJsonAsync(uri, newStyle);
-        response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
+        var resp = await httpClient.PostAsJsonAsync(
+            $"{remoteServiceBaseUrl}styles",
+            newStyle);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<StyleDTO>()!;
     }
 
     // PUT /api/catalog/styles/{id}
     public async Task<StyleDTO> UpdateStyle(StyleDTO style)
     {
-        var uri = $"{remoteServiceBaseUrl}styles/{style.Id}";
-        var response = await httpClient.PutAsJsonAsync(uri, style);
-        response.EnsureSuccessStatusCode();
-        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
+        var resp = await httpClient.PutAsJsonAsync(
+            $"{remoteServiceBaseUrl}styles/{style.Id}",
+            style);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<StyleDTO>()!;
     }
 
     // DELETE /api/catalog/styles/{id}
     public async Task<bool> DeleteStyle(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}styles/{id}";
-        var response = await httpClient.DeleteAsync(uri);
-        return response.IsSuccessStatusCode;
-    }
+        => (await httpClient.DeleteAsync(
+                $"{remoteServiceBaseUrl}styles/{id}"))
+           .IsSuccessStatusCode;
 
 }
 
