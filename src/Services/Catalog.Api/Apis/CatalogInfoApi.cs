@@ -105,41 +105,36 @@ public static class CatalogInfoApi
 
         // Style Endpoints
         api.MapGet("/styles", GetAllStyles)
-            .WithName("StyleList")
-            .WithSummary("List of styles")
-            .WithDescription("Get a paginated list of styles.")
-            .WithTags("Style");
+           .WithName("StyleList")
+           .WithSummary("List of styles")
+           .WithTags("Style");
 
         api.MapGet("/styles/{id}", GetStyleById)
-            .WithName("GetStyleById")
-            .WithSummary("Get style by ID")
-            .WithDescription("Retrieve a style by its unique ID.")
-            .WithTags("Style");
+           .WithName("GetStyleById")
+           .WithSummary("Get style by ID")
+           .WithTags("Style");
 
         api.MapPost("/styles", AddStyle)
-            .WithName("AddStyle")
-            .WithSummary("Add a new style")
-            .WithDescription("Create a new style entry in the catalog.")
-            .WithTags("Style");
+           .WithName("AddStyle")
+           .WithSummary("Add a new style")
+           .WithTags("Style");
 
         api.MapPut("/styles/{id}", UpdateStyle)
-            .WithName("UpdateStyle")
-            .WithSummary("Update style details")
-            .WithDescription("Modify the details of an existing style.")
-            .WithTags("Style");
+           .WithName("UpdateStyle")
+           .WithSummary("Update style details")
+           .WithTags("Style");
 
         api.MapDelete("/styles/{id}", DeleteStyle)
-            .WithName("DeleteStyle")
-            .WithSummary("Delete a style")
-            .WithDescription("Remove a style from the catalog by its ID.")
-            .WithTags("Style");
+           .WithName("DeleteStyle")
+           .WithSummary("Delete a style")
+           .WithTags("Style");
 
-        api.MapGet("/manufactures", GetAllManufacture)
-            .WithName("All Manufacture List")
-            .WithSummary("List of manufactures")
-            .WithDescription("List of manufactures.")
-            .WithTags("Manufacture");
- 
+        //api.MapGet("/manufactures", GetAllManufacture)
+        //    .WithName("All Manufacture List")
+        //    .WithSummary("List of manufactures")
+        //    .WithDescription("List of manufactures.")
+        //    .WithTags("Manufacture");
+
         return app;
     }
 
@@ -388,102 +383,111 @@ public static class CatalogInfoApi
 
 
     //styles
-    // Get All Styles
+    // GET /styles
     public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(
         [AsParameters] CatalogServices services)
     {
-        var styles = await services.Context.Styles.ToArrayAsync();
+        var styles = await services.Context.Styles
+                             .AsNoTracking()
+                             .ToArrayAsync();
 
-        if (!styles.Any())
-        {
+        if (styles.Length == 0)
             return TypedResults.NotFound();
-        }
 
-        var styleDtos = styles.Select(s => new StyleDTO(s.Id, s.Name)).ToArray();
-        return TypedResults.Ok(styleDtos);
+        var dtos = styles
+                   .Select(s => new StyleDTO(s.Id, s.Name))
+                   .ToArray();
+
+        return TypedResults.Ok(dtos);
     }
 
-    // Get Style By ID
+    // GET /styles/{id}
     public static async Task<Results<Ok<StyleDTO>, NotFound>> GetStyleById(
-        int id, [AsParameters] CatalogServices services)
+        int id,
+        [AsParameters] CatalogServices services)
     {
-        var style = await services.Context.Styles.FindAsync(id);
+        var style = await services.Context.Styles
+                              .AsNoTracking()
+                              .FirstOrDefaultAsync(s => s.Id == id);
 
         return style is not null
-            ? TypedResults.Ok(new StyleDTO(style.Id, style.Name))
-            : TypedResults.NotFound();
+             ? TypedResults.Ok(new StyleDTO(style.Id, style.Name))
+             : TypedResults.NotFound();
     }
 
-    // Add New Style
+    // POST /styles
     public static async Task<Results<Created<StyleDTO>, BadRequest<string>>> AddStyle(
-        StyleDTO style,
-        [AsParameters] CatalogServices services)
+     StyleDTO styleDto,
+     [AsParameters] CatalogServices services)
     {
-        if (await services.Context.Styles.AnyAsync(s => s.Name == style.Name))
+        // 1) Prevent duplicate names
+        if (await services.Context.Styles
+                  .AnyAsync(s => s.Name == styleDto.Name))
         {
-            return TypedResults.BadRequest($"A style with the name '{style.Name}' already exists.");
+            return TypedResults.BadRequest(
+                $"A style with the name '{styleDto.Name}' already exists.");
         }
 
-        services.Context.Styles.Add(new Style
+        // 2) Manually generate a new ID
+        var maxId = await services.Context.Styles
+                             .Select(s => (int?)s.Id)
+                             .MaxAsync()
+                   ?? 0;
+
+        var style = new Style
         {
-            Name = style.Name
-        });
+            Id = maxId + 1,
+            Name = styleDto.Name
+        };
+
+        // 3) Add & save
+        services.Context.Styles.Add(style);
         await services.Context.SaveChangesAsync();
 
-        var styleDto = new StyleDTO(style.Id, style.Name);
-        return TypedResults.Created($"/styles/{style.Id}", styleDto);
+        // 4) Return the created DTO
+        var resultDto = new StyleDTO(style.Id, style.Name);
+        return TypedResults.Created($"/api/catalog/styles/{style.Id}", resultDto);
     }
 
-    // Update Existing Style
+
+    // PUT /styles/{id}
     public static async Task<Results<Ok<StyleDTO>, NotFound, BadRequest<string>>> UpdateStyle(
-        StyleDTO updatedStyle, 
+        int id,
+        StyleDTO updatedDto,
         [AsParameters] CatalogServices services)
     {
-        var style = await services.Context.Styles.FindAsync(updatedStyle.Id);
-
-        if (style == null)
-        {
+        var style = await services.Context.Styles.FindAsync(id);
+        if (style is null)
             return TypedResults.NotFound();
-        }
 
-        style.Name = updatedStyle.Name;
+        // Prevent renaming to an existing name
+        var conflict = await services.Context.Styles
+                          .AnyAsync(s => s.Name == updatedDto.Name && s.Id != id);
+        if (conflict)
+            return TypedResults.BadRequest(
+                $"A style with the name '{updatedDto.Name}' already exists.");
 
+        style.Name = updatedDto.Name;
+        // EF Core will issue UPDATE
         await services.Context.SaveChangesAsync();
+
         return TypedResults.Ok(new StyleDTO(style.Id, style.Name));
     }
 
-    // Delete Style
+    // DELETE /styles/{id}
     public static async Task<Results<Ok<string>, NotFound>> DeleteStyle(
         int id,
         [AsParameters] CatalogServices services)
     {
         var style = await services.Context.Styles.FindAsync(id);
-
-        if (style == null)
-        {
+        if (style is null)
             return TypedResults.NotFound();
-        }
 
         services.Context.Styles.Remove(style);
         await services.Context.SaveChangesAsync();
 
         return TypedResults.Ok($"Style with ID {id} deleted.");
     }
-
-     public static async Task<Results<Ok<List<ManufactureDTO>>, NotFound>> GetAllManufacture(
-     [AsParameters] CatalogServices services)
-    {
-        var manufactures = await services.Context.Manufactures.ToListAsync();
-
-        if (!manufactures.Any())
-        {
-            return TypedResults.NotFound();
-        }
-
-        var materialDtos = manufactures.Select(m => new ManufactureDTO(m.Id, m.Name, (int)m.Source, m.Karat, m.Purity)).ToList();
-        return TypedResults.Ok(materialDtos);
-    }
-
 }
 
 

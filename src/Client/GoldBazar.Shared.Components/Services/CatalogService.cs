@@ -372,63 +372,41 @@ public class CatalogService(HttpClient httpClient)
     }
 
     // Styles
-
-
+    // GET /api/catalog/styles/{id}
     public async Task<StyleDTO> GetStyleById(int id)
     {
         var uri = $"{remoteServiceBaseUrl}styles/{id}";
-        var result = await httpClient.GetFromJsonAsync<StyleDTO>(uri);
-        return result!;
+        var response = await httpClient.GetAsync(uri);
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException($"Error fetching style {id}: {response.StatusCode}");
+        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
     }
 
-    public async Task<bool> AddStyle(StyleDTO style)
+    // POST /api/catalog/styles
+    public async Task<StyleDTO> AddStyle(StyleDTO newStyle)
     {
         var uri = $"{remoteServiceBaseUrl}styles";
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(uri, style);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error creating style: {ex.Message}");
-            return false;
-        }
+        var response = await httpClient.PostAsJsonAsync(uri, newStyle);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
     }
 
-    public async Task<bool> UpdateStyle(StyleDTO style)
+    // PUT /api/catalog/styles/{id}
+    public async Task<StyleDTO> UpdateStyle(StyleDTO style)
     {
         var uri = $"{remoteServiceBaseUrl}styles/{style.Id}";
-        try
-        {
-            var response = await httpClient.PutAsJsonAsync(uri, style);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error updating style: {ex.Message}");
-            return false;
-        }
+        var response = await httpClient.PutAsJsonAsync(uri, style);
+        response.EnsureSuccessStatusCode();
+        return (await response.Content.ReadFromJsonAsync<StyleDTO>())!;
     }
 
+    // DELETE /api/catalog/styles/{id}
     public async Task<bool> DeleteStyle(int id)
     {
         var uri = $"{remoteServiceBaseUrl}styles/{id}";
-        try
-        {
-            var response = await httpClient.DeleteAsync(uri);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error deleting style: {ex.Message}");
-            return false;
-        }
+        var response = await httpClient.DeleteAsync(uri);
+        return response.IsSuccessStatusCode;
     }
-
 
 }
 

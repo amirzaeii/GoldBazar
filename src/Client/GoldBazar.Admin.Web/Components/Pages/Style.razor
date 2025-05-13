@@ -1,0 +1,130 @@
+﻿@page "/styles"
+@using GoldBazar.Admin.Web.Extensions
+@inject ISnackbar Snackbar
+@using GoldBazar.Shared.DTOs
+@using GoldBazar.Shared.Components.Services
+@inject CatalogService CatalogService
+@inject ISnackbar Snackbar
+@rendermode InteractiveServer
+
+<MudCard Elevation="25" Class="mb-4">
+    <MudCardHeader>
+        <MudText Typo="Typo.h6">Add / Edit Styles</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField @bind-Value="nameField"
+                      Label="Style Name"
+                      Variant="Variant.Text"
+                      Margin="Margin.Normal"
+                      FullWidth="true" />
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Success"
+                   OnClick="SaveAsync"
+                   Disabled="@string.IsNullOrWhiteSpace(nameField)"
+                   Class="mt-2">
+            @(editingId == 0 ? "Add Style" : "Update Style")
+        </MudButton>
+    </MudCardContent>
+</MudCard>
+
+<MudTextField @bind-Value="searchString"
+              Placeholder="Search styles..."
+              Adornment="Adornment.Start"
+              AdornmentIcon="@Icons.Material.Filled.Search"
+              Class="mb-2" />
+
+<MudTable Items="styles"
+          Filter="FilterStyles"
+          Hover="true"
+          Elevation="1">
+    <HeaderContent>
+        <MudTh>ID</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Actions">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                           Color="Color.Primary"
+                           OnClick="@(() => BeginEdit(context))" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                           Color="Color.Error"
+                           OnClick="@(() => DeleteAsync(context.Id))" />
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+
+@code {
+    private string searchString = string.Empty;
+    private List<StyleDTO> styles = new();
+    private int editingId = 0;
+    private string nameField = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+      => await LoadStylesAsync();
+
+    private async Task LoadStylesAsync()
+    {
+        styles = (await CatalogService.GetStyles()).ToList();
+    }
+
+    private bool FilterStyles(StyleDTO s)
+      => string.IsNullOrWhiteSpace(searchString)
+         || s.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase);
+
+    private void BeginEdit(StyleDTO s)
+    {
+        editingId = s.Id;
+        nameField = s.Name;
+    }
+
+    private async Task SaveAsync()
+    {
+        // Build a DTO from our two fields
+        var dto = new StyleDTO(editingId, nameField.Trim());
+
+        try
+        {
+            StyleDTO result = editingId == 0
+              ? await CatalogService.AddStyle(dto)
+              : await CatalogService.UpdateStyle(dto);
+
+            Snackbar.Add(editingId == 0 ? "Style added" : "Style updated", Severity.Success);
+
+            // Reset form
+            editingId = 0;
+            nameField = string.Empty;
+
+            await LoadStylesAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            Snackbar.Add($"Error saving style: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task DeleteAsync(int id)
+    {
+        var ok = await CatalogService.DeleteStyle(id);
+        if (ok)
+        {
+            Snackbar.Add("Style deleted", Severity.Success);
+
+            // If you were editing this one, reset the form
+            if (editingId == id)
+            {
+                editingId = 0;
+                nameField = string.Empty;
+            }
+
+            await LoadStylesAsync();
+        }
+        else
+        {
+            Snackbar.Add("Failed to delete style", Severity.Error);
+        }
+    }
+}
+

@@ -8,6 +8,7 @@ public record MetalDTO(int id, string name, int materialId, string materialName)
 public record OccasionDTO(int Id, string Name);
 public record StyleDTO(int Id, string Name);
 
+
 public class ItemDTO
 {
     public ItemDTO()
