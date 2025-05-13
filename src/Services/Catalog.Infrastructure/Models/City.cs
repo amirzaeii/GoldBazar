@@ -7,12 +7,12 @@ public class City
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;
-    public int StateId { get; set; }
-    [ForeignKey("StateId")]
-    public State State { get; set; } = default!;
+    public int GovernorateId { get; set; }
+    [ForeignKey("GovernorateId")]
+    public Governorate Governorate { get; set; } = default!;
 }
 
-public class State
+public class Governorate
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

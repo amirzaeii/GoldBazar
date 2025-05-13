@@ -32,7 +32,7 @@ public static class Extensions
                .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
                .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-        builder.Services.AddScoped<IStorageService, LocalStorageService>();
+        builder.Services.AddScoped<IFileService, LocalFileService>();
         // builder.Services.AddOptions<CatalogOptions>()
         //     .BindConfiguration(nameof(CatalogOptions));
 

@@ -29,4 +29,9 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.MapForwarder("/product-images/{id}", "http://catalog-api", "/api/catalog/items/{id}/pic");
+app.MapForwarder("/type-images/{id}", "http://catalog-api", "/api/catalog/types/{id}/pic");
+app.MapForwarder("/shop-logo/{id}", "http://catalog-api", "/api/shops/{id}/logo");
+app.MapForwarder("/shop-banner/{id}", "http://catalog-api", "/api/shops/{id}/banner");
+
 app.Run();

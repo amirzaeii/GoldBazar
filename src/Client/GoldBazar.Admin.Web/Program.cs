@@ -43,8 +43,6 @@
 
 
 using GoldBazar.Admin.Web.Components;
-using GoldBazar.Admin.Web.Extensions;
-using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

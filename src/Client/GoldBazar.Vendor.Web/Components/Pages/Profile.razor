@@ -1,21 +1,23 @@
 ﻿@page "/profile/shop/{shopId:int}"
-
+@if(shop == null){
+    <MudSkeleton></MudSkeleton>
+}
+else
+{
  <div class="w-100 d-flex justify-content-between position-absolute top-1 z-3 px-3">
         <button class="btn-icon btn-icon-simple bg-white rounded-3"
             onclick="window.location.href='dashboard.html'"><img src="icons/arrow.svg" alt=""></button>
 
         <div class="position-relative">
             <button id="moreBtn" class="btn-icon btn-icon-simple bg-white rounded-3">
-                <img src="icons/more.svg" alt="">
+                ...
             </button>
             <div class="popup-menu bg-white rounded-3 shadow-sm" id="popupMenu">
                 <button class="popup-item d-flex align-items-center gap-2 w-100 border-0 bg-transparent py-2 px-3">
-                    <img src="icons/change-bg.svg" alt="" class="popup-icon">
-                    <span>گۆڕینی وێنەی پشتەوە</span>
+                    <span>change banner photo</span>
                 </button>
                 <button class="popup-item d-flex align-items-center gap-2 w-100 border-0 bg-transparent py-2 px-3">
-                    <img src="icons/change-pro.svg" alt="" class="icon">
-                    <span>گۆڕینی وێنەی پڕۆفایل</span>
+                    <span>change logo photo</span>
                 </button>
             </div>
         </div>
@@ -23,20 +25,20 @@
     <!-- Profile Header -->
     <div class="profile-header">
         <div class="profile-background">
-            <img src="images/pro-bg.png" alt="Store Background" class="background-image">
+            <img src="@shop.BannerUrl" alt="@shop.Name" class="background-image">
         </div>
         <div class="profile-content text-center">
             <div class="profile-logo">
                 <div class="logo-container">
-                    <img src="images/logo.png" alt="Jewelry Logo" class="profile-image">
+                    <img src="@shop.LogoUrl" alt="@shop.Name" class="profile-image">
                 </div>
             </div>
-            <h4 class="mb-2">Sarzhin Jewelry</h4>
-            <p class="text-muted">Sarzhin</p>
+            <h4 class="mb-2">@shop.Name</h4>
+            <p class="text-muted">@shop.OwnerName</p>
             <p class="text-muted">
             <div class="">
-
-                <p class="text-muted">Sulaymaniyah</p>
+                 <p class="text-muted">@shop.CityName</p>
+                <p class="text-muted">@shop.Address</p>
             </div>
             </p>
             <div class="mt-2">
@@ -44,7 +46,7 @@
                     <span class="stars">⭐</span>
                     <span class="rating-number">4</span>
                 </span>
-                <span class="text-muted">(1122)</span>
+                <span class="text-muted">@shop.ContactNo</span>
             </div>
         </div>
     </div>
@@ -66,103 +68,12 @@
         <div class="mb-4">
             <div class="input-group">
                 <input type="search" class="input-field rounded-3" placeholder="Search" aria-label="Search">
-                <img src="icons/search.svg" alt="Search" class="search-icon icon">
             </div>
         </div>
 
         <!-- Products Section -->
         <section class="products">
-            <div class="w-100 d-flex flex-wrap gap-1 align-items-center justify-content-between product-grid">
-
-                <div class="col-md-3 col-lg-4">
-                    <div class="product-card" onclick="window.location.href='product-details.html'">
-                       
-                        <div class="product-container" style="position: relative;">
-                        <div class="product-header">
-                            <img src="icons/offer.svg" alt="Rating" class="">
-                            <button class="favorite-btn">
-                                <img src="icons/Heart.svg" alt="Add to favorites" />
-                            </button>
-                        </div> 
-                    </div>
-                        <img src="images/gwara4.png" alt="گوارەی عەیارە ٢١" class="product-img">
-                        <div class="product-info">
-                            <h3 class="product-title text-center">Earring Style 21</h3>
-                            <div class="product-price">
-                                <span class="current-price">$179</span>
-                                <span class="original-price">$149</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-lg-4">
-                    <div class="product-card">
-                        <div class="product-container" style="position: relative;">
-                            <div class="product-header">
-                                <img src="icons/offer.svg" alt="Rating" class="">
-                                <button class="favorite-btn">
-                                    <img src="icons/Heart.svg" alt="Add to favorites" />
-                                </button>
-                            </div> 
-                        </div>
-                        
-                        <img src="images/product.jpeg" alt="گوارەی عەیارە ٢١" class="product-img">
-                        <div class="product-info">
-                            <h3 class="product-title text-center    ">Earring Style 21</h3>
-                            <div class="product-price">
-                                <span class="current-price">$179</span>
-                                <span class="original-price">$149</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 col-lg-4">
-                    <div class="product-card">
-                        <div class="product-container" style="position: relative;">
-                            <div class="product-header">
-                                <img src="icons/offer.svg" alt="Rating" class="">
-                                <button class="favorite-btn">
-                                    <img src="icons/Heart.svg" alt="Add to favorites" />
-                                </button>
-                            </div> 
-                        </div>
-                        <img src="images/p3.png" alt="گوارەی عەیارە ٢١" class="product-img">
-                        <div class="product-info">
-                            <h3 class="product-title text-center">Earring Style 21</h3>
-                            <div class="product-price">
-                                <span class="current-price">$179</span>
-                                <span class="original-price">$149</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-lg-4">
-                    <div class="product-card">
-                        <div class="product-container" style="position: relative;">
-                            <div class="product-header">
-                                <img src="icons/offer.svg" alt="Rating" class="">
-                                <button class="favorite-btn">
-                                    <img src="icons/Heart.svg" alt="Add to favorites" />
-                                </button>
-                            </div> 
-                        </div>
-                        <img src="images/p2.png" alt="گوارەی عەیارە ٢١" class="product-img">
-                        <div class="product-info">
-                            <h3 class="product-title text-center">Earring Style 21</h3>
-                            <div class="product-price">
-                                <span class="current-price">$179</span>
-                                <span class="original-price">$149</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- More product cards with the same structure... -->
-                <!-- Repeat the col-6 col-md-4 col-lg-3 div structure for more products -->
-            </div>
+           
         </section>
     </div>
-@code{
-    [Parameter] public int shopId { get; set; } = 1;
 }

@@ -16,7 +16,9 @@ else
 
 
 @code{
-    [Parameter] public ItemDTO Item  { get; set; } // Default value
+    [Parameter]
+    [EditorRequired]
+     public ItemDTO Item  { get; set; } = default!;// Default value
     private ManufactureDTO[] manufactures = default!;
     protected override async Task OnInitializedAsync()
     {

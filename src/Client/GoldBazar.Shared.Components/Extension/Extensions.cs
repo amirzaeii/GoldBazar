@@ -1,23 +1,29 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Hosting;
-
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class Extensions
 {
     public static void AddShareApplicationServices(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddHttpClient("UploadClient"); // No Polly policies applied
+        builder.Services.AddHttpForwarderWithServiceDiscovery();
+
         // Application services
-        builder.Services.AddHttpClient<IItemImageService, ItemImageService>(o => o.BaseAddress = new("http://catalog-api"))
-         .AddApiVersion(1.0);;
+        builder.Services.AddHttpClient<IImageService, ImageService>(o => o.BaseAddress = new("http://catalog-api"))
+         .AddApiVersion(1.0);
+
         builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new("http://catalog-api"))
+            .AddApiVersion(1.0);
+        //.AddAuthToken();
+
+          builder.Services.AddHttpClient<ShopService>(o => o.BaseAddress = new("http://catalog-api"))
             .AddApiVersion(1.0);
         //.AddAuthToken();
 
         builder.Services.AddHttpClient<OrderingService>(o => o.BaseAddress = new("http://ordering-api"))
             .AddApiVersion(1.0);
-        //     .AddAuthToken();
+        //     .AddAuthToken();      
+
     }
 
     public static async Task<string?> GetBuyerIdAsync(this AuthenticationStateProvider authenticationStateProvider)
