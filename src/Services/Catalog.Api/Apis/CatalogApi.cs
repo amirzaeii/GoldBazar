@@ -707,16 +707,17 @@ public static class CatalogApi
         return TypedResults.Created($"/api/catalog/items/{item.Id}", itemDto);
     }
 
-     public static async Task<Results<Created<string>, BadRequest<string>>> UploadItemImage(
+     public static async Task<Results<Created<UploadResult>, BadRequest<UploadResult>>> UploadItemImage(
      [FromForm]IFormFile file, 
-     IStorageService services)
+     IFileService services)
         {
-            if (file == null || file.Length == 0)
-                return TypedResults.BadRequest("File is empty.");
+            UploadResult uploadResults = new UploadResult();
+            if (file == null)
+                return TypedResults.BadRequest(uploadResults);
 
-            var result = await services.UploadFileAsync(file);
+            uploadResults = await services.SaveFileAsync(file);
 
-            return TypedResults.Created($"wwwroot/uploads/items/{result}", result);
+            return TypedResults.Created($"api/catalog/item/pic", uploadResults );
         }
 
     private static string GetImageMimeTypeFromImageFileExtension(string extension) => extension switch

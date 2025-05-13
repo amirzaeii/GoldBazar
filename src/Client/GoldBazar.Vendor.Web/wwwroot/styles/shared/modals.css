@@ -109,3 +109,48 @@
     color: #333;
     font-weight: 600;
 }
+
+/* profille modal */
+.popup-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 200px;
+    display: none;
+    z-index: 1000;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+}
+
+.popup-menu.show {
+    display: block;
+}
+
+.popup-item {
+    transition: background-color 0.2s;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.popup-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.popup-item:first-child {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.popup-item:last-child {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.popup-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.position-relative {
+    position: relative !important;
+}

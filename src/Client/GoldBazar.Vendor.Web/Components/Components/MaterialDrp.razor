@@ -16,7 +16,9 @@ else
 
 
 @code{
-    [Parameter] public ItemDTO Item { get; set; } // Default value
+    [Parameter] 
+    [EditorRequired]
+    public ItemDTO Item { get; set; } = default!;// Default value
     [Parameter] public bool Disabled { get; set; } = false; // Default label
     private MaterialDTO[] materials = default!;
     protected override async Task OnInitializedAsync()

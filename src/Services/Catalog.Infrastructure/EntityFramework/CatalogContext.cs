@@ -6,6 +6,8 @@ public class CatalogContext : DbContext
         {            
         }
         public DbSet<Shop> Shops { get; set; }
+        public DbSet<Governorate> Governorates { get; set; }
+        public DbSet<City> Cities { get; set; }
         public DbSet<Item> Items { get; set; } 
         public DbSet<Material> Materials { get; set; }
         public DbSet<Metal> Metals { get; set; } 

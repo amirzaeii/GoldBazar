@@ -5,8 +5,9 @@
         align-items: center;
         text-align: center;
         display: flex;
-        margin-top: var(--spacing-sm);
-        margin-bottom: var(--spacing-xl);
+        /* margin-top: var(--spacing-sm); */
+         margin-bottom: var(--spacing-sm);
+         box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1)
        }
        
         

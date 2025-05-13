@@ -1,5 +1,4 @@
-namespace GoldBazar.Admin.Web.Extensions;
-
+namespace Microsoft.Extensions.DependencyInjection;
 public static class Extensions
 {
     public static void AddAdminAppApplicationServices(this IHostApplicationBuilder builder)
@@ -8,8 +7,6 @@ public static class Extensions
 
         builder.AddRabbitMqEventBus("gb-eventbus")
                .AddEventBusSubscriptions();
-
-        builder.Services.AddHttpForwarderWithServiceDiscovery();
        
     }
 

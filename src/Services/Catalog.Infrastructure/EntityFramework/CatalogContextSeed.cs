@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Npgsql;
 
 namespace Catalog.Infrastructure.EntityFramework;
@@ -11,8 +10,43 @@ public partial class ContextData {
     public Occassion[] Occasions { get; set; }
     public Style[] Styles { get; set; }
     public Shop[] Shops { get; set; }
+    public City[] Cities { get; set; }
+    public Governorate[] Governorates { get; set; }
     public ContextData()
     {
+        Governorates = [
+            new Governorate { Id = 1, Name = "Al-Anbar" },
+            new Governorate { Id = 2, Name = "Al-Basrah" },
+            new Governorate { Id = 3, Name = "Al-Muthanna" },
+            new Governorate { Id = 4, Name = "Al-Najaf" },
+            new Governorate { Id = 5, Name = "Erbil (Hawler)" },
+            new Governorate { Id = 6, Name = "As-Sulaymaniyah" },
+            new Governorate { Id = 7, Name = "Babylon (Babil)" },
+            new Governorate { Id = 8, Name = "Baghdad" },
+            new Governorate { Id = 9, Name = "Dhi Qar" },
+            new Governorate { Id = 10, Name = "Diyala" },
+            new Governorate { Id = 11, Name = "Dohuk (Dahuk)" },
+            new Governorate { Id = 12, Name = "Karbala" },
+            new Governorate { Id = 13, Name = "Kirkuk" },
+            new Governorate { Id = 14, Name = "Maysan" },
+            new Governorate { Id = 15, Name = "Nineveh (Ninawa)" },
+            new Governorate { Id = 16, Name = "Al-Qadisiyyah" },
+            new Governorate { Id = 17, Name = "Salah ad Din" },
+            new Governorate { Id = 18, Name = "Wasit" },
+            new Governorate { Id = 19, Name = "Halabja" }];
+
+        Cities = [
+            new City { Id = 1, Name = "Sulaymaniyah", GovernorateId = 6 },
+            new City { Id = 3, Name = "Penjwen" , GovernorateId = 6 },
+            new City { Id = 4, Name = "Ranya" , GovernorateId = 6 },
+            new City { Id = 5, Name = "Chamchamal" , GovernorateId = 6 },
+            new City { Id = 6, Name = "Kalar" , GovernorateId = 6 },
+            new City { Id = 7, Name = "Darbandikhan" , GovernorateId = 6 },
+            new City { Id = 8, Name = "Dokan" , GovernorateId = 6 },
+            new City { Id = 9, Name = "Said Sadiq" , GovernorateId = 6 },
+            new City { Id = 10, Name = "Qaladiza" , GovernorateId = 6 },
+        ];
+        
         Categories = [ 
                 new Category{Id = 1, Name = "Set", Photo = "https://goldbazarblob.blob.core.windows.net/images/category/FullSet.png"},
                 new Category{Id = 2, Name = "Half-Set", Photo = "https://goldbazarblob.blob.core.windows.net/images/category/HalfSet.png"}, 
@@ -88,7 +122,19 @@ public partial class ContextData {
                 new Style{Id = 10, Name = "Art Deco"},
                 new Style{Id = 11, Name = "Gothic"}];
 
-        Shops = new Shop[0];
+        Shops = [
+                new Shop{Id = 1, 
+                Name = "GoldBazar Jewerly", 
+                Owner = "GoldBazar",
+                CityId = 1, 
+                Address = "Sulaymanyah", 
+                ContactNumber = "077000000", 
+                Instagram = "", 
+                Tiktok = "", 
+                Description = "this is a sample shop", 
+                Logo = "https://goldbazarblob.blob.core.windows.net/images/shops/goldbazarshop.png", 
+                Banner = "https://goldbazarblob.blob.core.windows.net/images/shops/goldbazarbanner.png",},
+        ];
     }
 }
 public partial class CatalogDevelopmentContextSeed(
@@ -104,6 +150,18 @@ public partial class CatalogDevelopmentContextSeed(
         context.Database.OpenConnection();
         ((NpgsqlConnection)context.Database.GetDbConnection()).ReloadTypes();
 
+        if(!context.Governorates.Any()){
+           
+            await context.Governorates.AddRangeAsync(contextData.Governorates);
+            logger.LogInformation("Seeded Governorates with {NumItems} Governorates", context.Governorates.Count());
+            await context.SaveChangesAsync();
+        }      
+        if(!context.Cities.Any()){
+           
+            await context.Cities.AddRangeAsync(contextData.Cities);
+            logger.LogInformation("Seeded Cities with {NumItems} Cities", context.Cities.Count());
+            await context.SaveChangesAsync();
+        }      
         if(!context.Shops.Any()){
            
             await context.Shops.AddRangeAsync(contextData.Shops);
@@ -172,8 +230,27 @@ public partial class CatalogContextSeed(
         // Workaround from https://github.com/npgsql/efcore.pg/issues/292#issuecomment-388608426
         context.Database.OpenConnection();
         ((NpgsqlConnection)context.Database.GetDbConnection()).ReloadTypes();
-
-         if (!context.Materials.Any())
+        
+           if(!context.Governorates.Any()){
+           
+            await context.Governorates.AddRangeAsync(contextData.Governorates);
+            logger.LogInformation("Seeded Governorates with {NumItems} Governorates", context.Governorates.Count());
+            await context.SaveChangesAsync();
+        }      
+        if(!context.Cities.Any()){
+           
+            await context.Cities.AddRangeAsync(contextData.Cities);
+            logger.LogInformation("Seeded Cities with {NumItems} Cities", context.Cities.Count());
+            await context.SaveChangesAsync();
+        }      
+        if(!context.Shops.Any()){
+           
+            await context.Shops.AddRangeAsync(contextData.Shops);
+            logger.LogInformation("Seeded shops with {NumItems} items", context.Shops.Count());
+            await context.SaveChangesAsync();
+        }      
+        
+        if (!context.Materials.Any())
         {
             await context.Materials.AddRangeAsync(contextData.Materials);
 
@@ -189,6 +266,7 @@ public partial class CatalogContextSeed(
             await context.SaveChangesAsync();
 
         }
+
         if(!context.Manufactures.Any())
         {
             await context.Manufactures.AddRangeAsync(contextData.Manufactures);
@@ -196,6 +274,7 @@ public partial class CatalogContextSeed(
              logger.LogInformation("Seeded catalog with {NumBrands} Manufactures", context.Manufactures.Count());
              await context.SaveChangesAsync();
         }
+
         if (!context.Styles.Any())
         {
             await context.Styles.AddRangeAsync(contextData.Styles);
@@ -203,6 +282,7 @@ public partial class CatalogContextSeed(
              logger.LogInformation("Seeded catalog with {NumBrands} Styles", context.Styles.Count());
              await context.SaveChangesAsync();
         }
+
         if(!context.Occasions.Any())
         {
             await context.Occasions.AddRangeAsync(contextData.Occasions);

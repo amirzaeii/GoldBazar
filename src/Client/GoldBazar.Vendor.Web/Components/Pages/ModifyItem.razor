@@ -2,7 +2,7 @@
 @page "/modifyitem/{productId:int}"
 @using System.Net.Http.Headers
 @inject CatalogService _catalogService
-@inject IItemImageService _imageService
+@inject IImageService _imageService
 @inject NavigationManager NavigationManager
 @rendermode InteractiveServer
 
@@ -25,7 +25,7 @@
 @code{
     [Parameter] public int productId { get; set; } = 0;
     private ItemDTO _item = new ItemDTO();
-    private IList<FileUploadDTO> _images = new List<FileUploadDTO>();
+    private IList<FileUploadDTO> _images = default!;
     protected override async Task OnInitializedAsync()
     {
         if (productId > 0)
@@ -37,6 +37,7 @@
             {
                 Id = 0
             };
+            _images = new List<FileUploadDTO>();
         }
     }
     private async Task HandleSave(ItemDTO item)

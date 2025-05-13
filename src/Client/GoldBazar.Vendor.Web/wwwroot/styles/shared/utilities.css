@@ -157,3 +157,26 @@
 .cursor-default { cursor: default !important; }
 .cursor-not-allowed { cursor: not-allowed !important; }
 
+/* backgrund color */
+
+.bg-green{
+  background-color: #E0FFE0;
+}
+.bg-purple{
+  background-color: #D7D9FF;
+}
+  .bg-blue{
+      background-color: #D5FFFF;
+  }
+  .bg-grey{
+    background-color: #eeeeee;
+  }
+  .bg-gold{
+    background-color: #ffec7e;
+  }
+
+  
+  .border-gold{
+    border-color: #FFD700;
+  }
+  
