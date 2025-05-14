@@ -4,6 +4,8 @@ namespace Catalog.Infrastructure.Models;
 
 public class ItemPhoto
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public string Url { get; set; } = string.Empty;
     public string PhotoPath { get; set; } = string.Empty;

@@ -5,6 +5,8 @@ namespace Catalog.Infrastructure.Models;
 
 public class Item
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Caption is required.")]
@@ -17,6 +19,7 @@ public class Item
     [Required(ErrorMessage = "Weight is required.")]
     public decimal Weight { get; set; }        
     public TypeEnum Type { get; set; } = default!; 
+    [ForeignKey("CategoryId")]
     public Category Category { get; set; } = default!; 
     public int CategoryId { get; set; }
     public int MaterialId { get; set; } // FK to Material
@@ -45,6 +48,7 @@ public class Item
     [ForeignKey("ShopId")]
     public Shop Shop { get; set; } = default!; // Navigation property
     public int ManufactureId { get; set; }
+    [ForeignKey("ManufactureId")]
     public Manufacture Manufacture { get; set; } = default!; // Navigation property
     // Added 
     [Range(0, int.MaxValue, ErrorMessage = "Size cannot be negative.")]

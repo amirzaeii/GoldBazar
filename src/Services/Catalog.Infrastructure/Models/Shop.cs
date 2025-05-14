@@ -4,6 +4,8 @@ namespace Catalog.Infrastructure.Models;
 
 public class Shop
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Name is required.")]

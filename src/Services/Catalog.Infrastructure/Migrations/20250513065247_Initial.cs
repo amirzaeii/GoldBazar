@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Catalog.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,6 +23,19 @@ namespace Catalog.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Governorates",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Governorates", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,19 +82,6 @@ namespace Catalog.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "State",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_State", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Styles",
                 columns: table => new
                 {
@@ -92,6 +92,26 @@ namespace Catalog.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Styles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    GovernorateId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cities_Governorates_GovernorateId",
+                        column: x => x.GovernorateId,
+                        principalTable: "Governorates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,26 +131,6 @@ namespace Catalog.Infrastructure.Migrations
                         name: "FK_Metals_Materials_MaterialId",
                         column: x => x.MaterialId,
                         principalTable: "Materials",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "City",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    StateId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_City", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_City_State_StateId",
-                        column: x => x.StateId,
-                        principalTable: "State",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -159,9 +159,9 @@ namespace Catalog.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Shops", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shops_City_CityId",
+                        name: "FK_Shops_Cities_CityId",
                         column: x => x.CityId,
-                        principalTable: "City",
+                        principalTable: "Cities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -175,6 +175,7 @@ namespace Catalog.Infrastructure.Migrations
                     Caption = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Status = table.Column<bool>(type: "boolean", nullable: false),
                     Discount = table.Column<decimal>(type: "numeric", nullable: false),
+                    EligibleChangePriceRang = table.Column<decimal>(type: "numeric", nullable: false),
                     Weight = table.Column<decimal>(type: "numeric", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     CategoryId = table.Column<int>(type: "integer", nullable: false),
@@ -264,9 +265,9 @@ namespace Catalog.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_City_StateId",
-                table: "City",
-                column: "StateId");
+                name: "IX_Cities_GovernorateId",
+                table: "Cities",
+                column: "GovernorateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemPhotos_ItemId",
@@ -350,10 +351,10 @@ namespace Catalog.Infrastructure.Migrations
                 name: "Materials");
 
             migrationBuilder.DropTable(
-                name: "City");
+                name: "Cities");
 
             migrationBuilder.DropTable(
-                name: "State");
+                name: "Governorates");
         }
     }
 }

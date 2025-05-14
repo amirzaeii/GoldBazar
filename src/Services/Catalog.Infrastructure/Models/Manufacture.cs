@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 namespace Catalog.Infrastructure.Models;
 public class Manufacture
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     public int Karat { get; set; }
     public decimal Purity { get; set; }

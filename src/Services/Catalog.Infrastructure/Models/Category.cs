@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace Catalog.Infrastructure.Models;
+﻿namespace Catalog.Infrastructure.Models;
 
 public class Category
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required(ErrorMessage = "Name is required.")]
     [StringLength(255, ErrorMessage = "Name cannot exceed 100 characters.")]

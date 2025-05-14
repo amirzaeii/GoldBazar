@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Catalog.Infrastructure.Migrations
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20250506124214_init")]
-    partial class init
+    [Migration("20250513065247_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,18 +53,35 @@ namespace Catalog.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("GovernorateId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("StateId")
+                    b.HasKey("Id");
+
+                    b.HasIndex("GovernorateId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("Catalog.Infrastructure.Models.Governorate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StateId");
-
-                    b.ToTable("City");
+                    b.ToTable("Governorates");
                 });
 
             modelBuilder.Entity("Catalog.Infrastructure.Models.Item", b =>
@@ -93,6 +110,9 @@ namespace Catalog.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<decimal>("Discount")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("EligibleChangePriceRang")
                         .HasColumnType("numeric");
 
                     b.Property<string>("MainPhoto")
@@ -344,23 +364,6 @@ namespace Catalog.Infrastructure.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("Catalog.Infrastructure.Models.State", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("State");
-                });
-
             modelBuilder.Entity("Catalog.Infrastructure.Models.Style", b =>
                 {
                     b.Property<int>("Id")
@@ -381,13 +384,13 @@ namespace Catalog.Infrastructure.Migrations
 
             modelBuilder.Entity("Catalog.Infrastructure.Models.City", b =>
                 {
-                    b.HasOne("Catalog.Infrastructure.Models.State", "State")
+                    b.HasOne("Catalog.Infrastructure.Models.Governorate", "Governorate")
                         .WithMany()
-                        .HasForeignKey("StateId")
+                        .HasForeignKey("GovernorateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("State");
+                    b.Navigation("Governorate");
                 });
 
             modelBuilder.Entity("Catalog.Infrastructure.Models.Item", b =>

@@ -12,3 +12,5 @@ global using Catalog.Infrastructure.Events;
 global using Catalog.Infrastructure.EntityFramework;
 global using Catalog.Infrastructure.Exceptions;
 global using Catalog.Infrastructure.Models;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
