@@ -379,9 +379,9 @@ public class CatalogService(HttpClient httpClient)
         => httpClient.GetFromJsonAsync<StyleDTO>($"{remoteServiceBaseUrl}styles/{id}")!;
 
     // POST /api/catalog/styles
-    public async Task<StyleDTO> AddStyle(StyleDTO newStyle)
+    public async Task<StyleDTO?> AddStyle(StyleDTO newStyle)
     {
-        var resp = await httpClient.PostAsJsonAsync(
+        var resp = await httpClient.PostAsJsonAsync<StyleDTO>(
             $"{remoteServiceBaseUrl}styles",
             newStyle);
         resp.EnsureSuccessStatusCode();
@@ -389,7 +389,7 @@ public class CatalogService(HttpClient httpClient)
     }
 
     // PUT /api/catalog/styles/{id}
-    public async Task<StyleDTO> UpdateStyle(StyleDTO style)
+    public async Task<StyleDTO?> EditStyle(StyleDTO style)
     {
         var resp = await httpClient.PutAsJsonAsync(
             $"{remoteServiceBaseUrl}styles/{style.Id}",

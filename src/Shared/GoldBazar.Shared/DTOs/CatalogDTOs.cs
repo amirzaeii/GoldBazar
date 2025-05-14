@@ -6,7 +6,20 @@ public record MaterialDTO(int Id, string Name);
 public record ManufactureDTO(int Id, string Name, int Manufacture, decimal KT, decimal Purity);
 public record MetalDTO(int id, string name, int materialId, string materialName);
 public record OccasionDTO(int Id, string Name);
-public record StyleDTO(int Id, string Name);
+public record StyleDTO
+{
+    public StyleDTO()
+    {
+        
+    }
+    public StyleDTO(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
 
 public class ItemDTO
 {

@@ -1,0 +1,51 @@
+﻿@inject CatalogService StyleService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
+    <DialogContent>       
+        <MudForm @ref="form" Model="Style">
+            <MudTextField T="string"
+                          Label="Style Name"
+                          Required="true"
+                          RequiredError="Name is required!"
+                          @bind-Value="Style.Name" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Create</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;   
+    private MudForm form = default!;
+    [Parameter] public string Title { get; set; } = default!;
+    [Parameter] public StyleDTO Style { get; set; } = default!;
+    [Parameter] [EditorRequired] public Func<StyleDTO, Task>? OnSave { get; set; }
+    void Cancel() => MudDialog.Cancel();     
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (!form.IsValid) return;
+        
+        try
+        {
+            if(OnSave != null){
+                MudDialog.Close(DialogResult.Ok(true));
+                await OnSave.Invoke(Style);               
+            }            
+        }
+        catch
+        {
+            Snackbar.Add("an error occured", Severity.Error);
+        }
+    }
+}
+
