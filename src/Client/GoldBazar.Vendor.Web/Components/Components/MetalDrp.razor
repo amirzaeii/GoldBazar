@@ -9,7 +9,7 @@ else
     <MudSelect @bind-Value="Item.MetalId" Label="Select Metal" T="int" Disabled="@Disabled">
         @foreach (var cat in metals)
         {
-            <MudSelectItem Value="@cat.id">@cat.name</MudSelectItem>
+            <MudSelectItem Value="@cat.Id">@cat.Name</MudSelectItem>
         }
     </MudSelect>
 }

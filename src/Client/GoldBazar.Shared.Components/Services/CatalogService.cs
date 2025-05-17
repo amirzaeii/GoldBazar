@@ -38,27 +38,6 @@ public class CatalogService(HttpClient httpClient)
         return result!;
     }
     
-    public async Task<MaterialDTO[]> GetMaterials()
-    {
-        var uri = $"{remoteServiceBaseUrl}materials";
-        var result = await httpClient.GetFromJsonAsync<MaterialDTO[]>(uri);
-        return result!;
-    }
-    
-    public async Task<MetalDTO[]> GetMetals()
-    {
-        var uri = $"{remoteServiceBaseUrl}metals";
-        var result = await httpClient.GetFromJsonAsync<MetalDTO[]>(uri);
-        return result!;
-    }
-    
-    public async Task<OccasionDTO[]> GetOccasions()
-    {
-        var uri = $"{remoteServiceBaseUrl}occasions";
-        var result = await httpClient.GetFromJsonAsync<OccasionDTO[]>(uri);
-        return result!;
-    }
-    
 
     private static string GetAllCatalogItemsUri(string baseUri, int pageIndex, int pageSize, int? type)
     {
@@ -193,177 +172,87 @@ public class CatalogService(HttpClient httpClient)
     }
 
     /***********************************************************************************/
-    // Materials
-
-
-    public async Task<MaterialDTO> GetMaterialById(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}materials/{id}";
-        var result = await httpClient.GetFromJsonAsync<MaterialDTO>(uri);
-        return result!;
-    }
-
-    public async Task<bool> AddMaterial(MaterialDTO material)
-    {
-        var uri = $"{remoteServiceBaseUrl}materials";
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(uri, material);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error creating material: {ex.Message}");
-            return false;
-        }
-    }
-
-    public async Task<bool> UpdateMaterial(MaterialDTO material)
-    {
-        var uri = $"{remoteServiceBaseUrl}materials/{material.Id}";
-        try
-        {
-            var response = await httpClient.PutAsJsonAsync(uri, material);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error updating material: {ex.Message}");
-            return false;
-        }
-    }
-
-    public async Task<bool> DeleteMaterial(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}materials/{id}";
-        try
-        {
-            var response = await httpClient.DeleteAsync(uri);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error deleting material: {ex.Message}");
-            return false;
-        }
-    }
 
     // Metals
-
-    public async Task<MetalDTO> GetMetalById(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}metals/{id}";
-        var result = await httpClient.GetFromJsonAsync<MetalDTO>(uri);
-        return result!;
-    }
-
-    public async Task<bool> AddMetal(MetalDTO metal)
+    public async Task<MetalDTO[]> GetMetals()
     {
         var uri = $"{remoteServiceBaseUrl}metals";
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(uri, metal);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error creating metal: {ex.Message}");
-            return false;
-        }
+        var result = await httpClient.GetFromJsonAsync<MetalDTO[]>(uri);
+        return result ?? Array.Empty<MetalDTO>();
     }
 
-    public async Task<bool> UpdateMetal(MetalDTO metal)
+    public async Task<MetalDTO?> GetMetalById(int id)
     {
-        var uri = $"{remoteServiceBaseUrl}metals/{metal.id}";
-        try
-        {
-            var response = await httpClient.PutAsJsonAsync(uri, metal);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error updating metal: {ex.Message}");
-            return false;
-        }
+        var uri = $"{remoteServiceBaseUrl}metals/{id}";
+        return await httpClient.GetFromJsonAsync<MetalDTO>(uri);
     }
 
+    public async Task<MetalDTO?> AddMetal(MetalDTO dto)
+    {
+        var uri = $"{remoteServiceBaseUrl}metals";
+        var response = await httpClient.PostAsJsonAsync(uri, dto);
+        if (!response.IsSuccessStatusCode) return null;
+
+        return await response.Content.ReadFromJsonAsync<MetalDTO>();
+    }
+    public async Task<MetalDTO?> UpdateMetal(MetalDTO dto)
+    {
+        var uri = $"{remoteServiceBaseUrl}metals/{dto.Id}";
+        var response = await httpClient.PutAsJsonAsync(uri, dto);
+        if (!response.IsSuccessStatusCode) return null;
+
+        return await response.Content.ReadFromJsonAsync<MetalDTO>();
+    }
     public async Task<bool> DeleteMetal(int id)
     {
         var uri = $"{remoteServiceBaseUrl}metals/{id}";
-        try
-        {
-            var response = await httpClient.DeleteAsync(uri);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error deleting metal: {ex.Message}");
-            return false;
-        }
+        var response = await httpClient.DeleteAsync(uri);
+        return response.IsSuccessStatusCode;
     }
+
 
     // Occasions
+    // --------------------------
+    // Occasions (ViewModel-style)
+    // --------------------------
 
-    public async Task<OccasionDTO> GetOccasionById(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}occasions/{id}";
-        var result = await httpClient.GetFromJsonAsync<OccasionDTO>(uri);
-        return result!;
-    }
-
-    public async Task<bool> AddOccasion(OccasionDTO occasion)
+    // GET /api/catalog/occasions
+    public async Task<OccasionDTO[]> GetOccasions()
     {
         var uri = $"{remoteServiceBaseUrl}occasions";
-        try
-        {
-            var response = await httpClient.PostAsJsonAsync(uri, occasion);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error creating occasion: {ex.Message}");
-            return false;
-        }
+        var result = await httpClient.GetFromJsonAsync<OccasionDTO[]>(uri);
+        return result ?? Array.Empty<OccasionDTO>();
     }
 
-    public async Task<bool> UpdateOccasion(OccasionDTO occasion)
+    // GET /api/catalog/occasions/{id}
+    public Task<OccasionDTO> GetOccasionById(int id)
+        => httpClient.GetFromJsonAsync<OccasionDTO>($"{remoteServiceBaseUrl}occasions/{id}")!;
+
+    // POST /api/catalog/occasions
+    public async Task<OccasionDTO?> AddOccasion(OccasionDTO newOccasion)
     {
-        var uri = $"{remoteServiceBaseUrl}occasions/{occasion.Id}";
-        try
-        {
-            var response = await httpClient.PutAsJsonAsync(uri, occasion);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error updating occasion: {ex.Message}");
-            return false;
-        }
+        var resp = await httpClient.PostAsJsonAsync(
+            $"{remoteServiceBaseUrl}occasions", newOccasion);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<OccasionDTO>()!;
     }
 
+    // PUT /api/catalog/occasions/{id}
+    public async Task<OccasionDTO?> UpdateOccasion(OccasionDTO occasion)
+    {
+        var resp = await httpClient.PutAsJsonAsync(
+            $"{remoteServiceBaseUrl}occasions/{occasion.Id}", occasion);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<OccasionDTO>()!;
+    }
+
+    // DELETE /api/catalog/occasions/{id}
     public async Task<bool> DeleteOccasion(int id)
-    {
-        var uri = $"{remoteServiceBaseUrl}occasions/{id}";
-        try
-        {
-            var response = await httpClient.DeleteAsync(uri);
-            response.EnsureSuccessStatusCode();
-            return true;
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error deleting occasion: {ex.Message}");
-            return false;
-        }
-    }
+        => (await httpClient.DeleteAsync($"{remoteServiceBaseUrl}occasions/{id}"))
+           .IsSuccessStatusCode;
+
+
+    /******************************************/
 
     //// Styles
     // GET /api/catalog/styles
@@ -403,6 +292,45 @@ public class CatalogService(HttpClient httpClient)
         => (await httpClient.DeleteAsync(
                 $"{remoteServiceBaseUrl}styles/{id}"))
            .IsSuccessStatusCode;
+
+
+    // Materials
+
+    // GET /api/catalog/materials
+    public async Task<MaterialDTO[]> GetMaterials()
+    {
+        var uri = $"{remoteServiceBaseUrl}materials";
+        var result = await httpClient.GetFromJsonAsync<MaterialDTO[]>(uri);
+        return result ?? Array.Empty<MaterialDTO>();
+    }
+
+    // GET /api/catalog/materials/{id}
+    public Task<MaterialDTO> GetMaterialById(int id)
+        => httpClient.GetFromJsonAsync<MaterialDTO>($"{remoteServiceBaseUrl}materials/{id}")!;
+
+    // POST /api/catalog/materials
+    public async Task<MaterialDTO?> AddMaterial(MaterialDTO newMaterial)
+    {
+        var resp = await httpClient.PostAsJsonAsync(
+            $"{remoteServiceBaseUrl}materials", newMaterial);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<MaterialDTO>()!;
+    }
+
+    // PUT /api/catalog/materials/{id}
+    public async Task<MaterialDTO?> UpdateMaterial(MaterialDTO material)
+    {
+        var resp = await httpClient.PutAsJsonAsync(
+            $"{remoteServiceBaseUrl}materials/{material.Id}", material);
+        resp.EnsureSuccessStatusCode();
+        return await resp.Content.ReadFromJsonAsync<MaterialDTO>()!;
+    }
+
+    // DELETE /api/catalog/materials/{id}
+    public async Task<bool> DeleteMaterial(int id)
+        => (await httpClient.DeleteAsync($"{remoteServiceBaseUrl}materials/{id}"))
+           .IsSuccessStatusCode;
+
 
 }
 

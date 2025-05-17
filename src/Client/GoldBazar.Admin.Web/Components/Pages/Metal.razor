@@ -1,8 +1,155 @@
 ﻿@page "/metals"
+@inject CatalogService CatalogService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @layout CRUDLayout
 
-<h3>Metal</h3>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Elevation="3" Class="pa-6 ma-4">
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Metal Directory</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
+                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyMetalDialog(new MetalDTO()))">
+                    New Metal
+                </MudButton>
+            </MudItem>
+
+            <MudItem xs="12">
+                @if (_loading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                }
+
+                <MudDataGrid T="MetalDTO"
+                             Items="@metals"
+                             Loading="@_loading"
+                             Hover="true"
+                             ReadOnly="true"
+                             Class="elevation-1">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6" Class="mud-primary-text">
+                            Metals (@metals.Length)
+                        </MudText>
+                    </ToolBarContent>
+                    <Columns>
+                        <PropertyColumn Property="x => x.Name" Title="Metal Name" />
+                        <PropertyColumn Property="x => x.MaterialName" Title="Material" />
+
+                        <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
+                            <CellTemplate>
+                                <MudStack Row="true" Spacing="0" Class="pa-2">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => ModifyMetalDialog(context.Item))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => DeleteDialog(context.Item.Id))" />
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+
+
+                    <PagerContent>
+                        <MudDataGridPager T="MetalDTO" PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+                    </PagerContent>
+                </MudDataGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>
 
 @code {
+    private MetalDTO[] metals = default!;
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+        => await LoadMetals();
+
+    private async Task LoadMetals()
+    {
+        try
+        {
+            _loading = true;
+            metals = await CatalogService.GetMetals();
+        }
+        catch
+        {
+            Snackbar.Add("Failed to load Metals", Severity.Error);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+
+    private async Task ModifyMetalDialog(MetalDTO metal)
+    {
+        var parameters = new DialogParameters
+        {
+            {"Metal" , metal},
+            {"Title" , metal.Id == 0 ? "Create New Metal" : $"Edit Metal: {metal.Name}" },
+            {"OnSave", new Func<MetalDTO, Task>(OnModifyMetal) }
+        };
+        var dialog = await DialogService.ShowAsync<ModifyMetal>("Modify Metal", parameters);
+    }
+
+    private async Task DeleteDialog(int metalId)
+    {
+        var parameters = new DialogParameters
+        {
+            {"Id" , metalId },
+            {"Message" , "Are you sure you want to delete this Metal?" },
+            {"OnDelete", new Func<int, Task>(OnDeleteMetal) }
+        };
+        var dialog = await DialogService.ShowAsync<DeleteConfirmation>(
+            "Confirm Deletion",
+            parameters
+        );
+    }
+
+    public async Task OnModifyMetal(MetalDTO metal)
+    {
+        if (metal.Id == 0)
+        {
+            var result = await CatalogService.AddMetal(metal);
+            if (result?.Id > 0)
+            {
+                metals = metals.Append(result).ToArray();
+                Snackbar.Add("Metal created successfully", Severity.Success);
+            }
+        }
+        else
+        {
+            var updated = await CatalogService.UpdateMetal(metal);
+            if (updated != null)
+            {
+                metals = metals.Select(m => m.Id == updated.Id ? updated : m).ToArray();
+                Snackbar.Add("Metal updated successfully", Severity.Success);
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    public async Task OnDeleteMetal(int id)
+    {
+        var result = await CatalogService.DeleteMetal(id);
+        if (result)
+        {
+            metals = metals.Where(w => w.Id != id).ToArray();
+            Snackbar.Add("Metal deleted successfully", Severity.Success);
+        }
+        else
+        {
+            Snackbar.Add("Metal deleted failed", Severity.Error);
+        }
+        StateHasChanged();
+    }
 
 }

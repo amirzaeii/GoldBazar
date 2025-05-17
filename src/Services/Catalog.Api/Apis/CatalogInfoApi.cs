@@ -1,4 +1,6 @@
-﻿using GoldBazar.Shared.DTOs;
+﻿using Catalog.Infrastructure.Models;
+
+using GoldBazar.Shared.DTOs;
 
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -163,24 +165,29 @@ public static class CatalogInfoApi
             ? TypedResults.Ok(new MaterialDTO(material.Id, material.Name))
             : TypedResults.NotFound();
     }
-
     public static async Task<Results<Created<MaterialDTO>, BadRequest<string>>> AddMaterial(
-        MaterialDTO material, 
-        [AsParameters] CatalogServices services)
+    MaterialDTO materialDto,
+    [AsParameters] CatalogServices services)
     {
-        if (await services.Context.Materials.AnyAsync(m => m.Name == material.Name))
+        if (await services.Context.Materials.AnyAsync(m => m.Name == materialDto.Name))
         {
-            return TypedResults.BadRequest($"A material with the name '{material.Name}' already exists.");
+            return TypedResults.BadRequest($"A material with the name '{materialDto.Name}' already exists.");
         }
 
-        services.Context.Materials.Add(new Material
+        var material = new Material
         {
-            Name = material.Name
-        });
+            Name = materialDto.Name
+         
+        };
+
+        services.Context.Materials.Add(material);
         await services.Context.SaveChangesAsync();
 
-        return TypedResults.Created($"/materials/{material.Id}", new MaterialDTO(material.Id, material.Name));
+        // material.Id is now populated by EF after SaveChangesAsync
+        var resultDto = new MaterialDTO(material.Id, material.Name);
+        return TypedResults.Created($"/api/catalog/materials/{material.Id}", resultDto);
     }
+
 
     public static async Task<Results<Ok<MaterialDTO>, NotFound>> UpdateMaterial(
         int id, 
@@ -218,79 +225,147 @@ public static class CatalogInfoApi
     }
 
     //Metal
+    // GET /api/catalog/metals
     public static async Task<Results<Ok<MetalDTO[]>, NotFound>> GetAllMetals(
-     [AsParameters] CatalogServices services)
-    {
-        var metals = await services.Context.Metals.Include(m => m.Material).ToArrayAsync();
-
-        if (!metals.Any())
-        {
-            return TypedResults.NotFound();
-        }
-
-        var metalDtos = metals.Select(m => new MetalDTO(m.Id, m.Name, m.MaterialId, m.Material.Name)).ToArray();
-        return TypedResults.Ok(metalDtos);
-    }
-
-    public static async Task<Results<Ok<MetalDTO>, NotFound>> GetMetalById(
-        int id, 
         [AsParameters] CatalogServices services)
     {
-        var metal = await services.Context.Metals.Include(m => m.Material).FirstOrDefaultAsync(m => m.Id == id);
+        var metals = await services.Context.Metals
+            .Include(m => m.Material)
+            .ToArrayAsync();
+
+        if (!metals.Any())
+            return TypedResults.NotFound();
+
+        var dtos = metals.Select(m =>
+            new MetalDTO(m.Id, m.Name, m.MaterialId, m.Material.Name)).ToArray();
+
+        return TypedResults.Ok(dtos);
+    }
+
+    // GET /api/catalog/metals/{id}
+    public static async Task<Results<Ok<MetalDTO>, NotFound>> GetMetalById(
+        int id,
+        [AsParameters] CatalogServices services)
+    {
+        var metal = await services.Context.Metals
+            .Include(m => m.Material)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
         return metal is not null
             ? TypedResults.Ok(new MetalDTO(metal.Id, metal.Name, metal.MaterialId, metal.Material.Name))
             : TypedResults.NotFound();
     }
 
+    //POST /api/catalog/metals
     public static async Task<Results<Created<MetalDTO>, BadRequest<string>>> AddMetal(
-        MetalDTO metal, 
+        MetalDTO dto,
         [AsParameters] CatalogServices services)
     {
-        if (await services.Context.Metals.AnyAsync(m => m.Name == metal.name))
+        var isDuplicate = await services.Context.Metals
+            .AnyAsync(m => m.Name == dto.Name && m.MaterialId == dto.MaterialId);
+
+        if (isDuplicate)
         {
-            return TypedResults.BadRequest($"A metal with the name '{metal.name}'");
+            return TypedResults.BadRequest(
+                $"A metal with the name '{dto.Name}' already exists for the selected material.");
         }
 
-        services.Context.Metals.Add(new Metal
+        var metal = new Metal
         {
-            Name = metal.name,
-            MaterialId = metal.materialId
-        });
+            Name = dto.Name,
+            MaterialId = dto.MaterialId
+        };
+
+        services.Context.Metals.Add(metal);
         await services.Context.SaveChangesAsync();
 
-        return TypedResults.Created($"/metals/{metal.id}", new MetalDTO(metal.id, metal.name, metal.materialId, string.Empty));
+        var resultDto = new MetalDTO(metal.Id, metal.Name, metal.MaterialId, string.Empty);
+        return TypedResults.Created($"/api/catalog/metals/{metal.Id}", resultDto);
     }
 
-    public static async Task<Results<Ok<MetalDTO>, NotFound>> UpdateMetal(
-        int id, 
-        MetalDTO updatedMetal, 
+
+    //public static async Task<Results<Created<MetalDTO>, BadRequest<string>>> AddMetal(
+    //    MetalDTO dto,
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    if (await services.Context.Metals.AnyAsync(m => m.Name == dto.Name))
+    //    {
+    //        return TypedResults.BadRequest($"A metal with the name '{dto.Name}' already exists.");
+    //    }
+
+    //    var metal = new Metal
+    //    {
+    //        Name = dto.Name,
+    //        MaterialId = dto.MaterialId
+    //    };
+
+    //    services.Context.Metals.Add(metal);
+    //    await services.Context.SaveChangesAsync();
+
+    //    var resultDto = new MetalDTO(metal.Id, metal.Name, metal.MaterialId, string.Empty);
+    //    return TypedResults.Created($"/api/catalog/metals/{metal.Id}", resultDto);
+    //}
+    // POST /api/catalog/metals
+    //public static async Task<Results<Created<MetalDTO>, BadRequest<string>>> AddMetal(
+    //    MetalDTO dto,
+    //    [AsParameters] CatalogServices services)
+    //{
+    //    if (await services.Context.Metals.AnyAsync(m => m.Name == dto.Name))
+    //    {
+    //        return TypedResults.BadRequest($"A metal with the name '{dto.Name}' already exists.");
+    //    }
+
+    //    var material = await services.Context.Materials.FindAsync(dto.MaterialId);
+    //    if (material is null)
+    //    {
+    //        return TypedResults.BadRequest($"Material with ID {dto.MaterialId} not found.");
+    //    }
+
+    //    var metal = new Metal
+    //    {
+    //        Name = dto.Name,
+    //        MaterialId = dto.MaterialId
+    //    };
+
+    //    services.Context.Metals.Add(metal);
+    //    await services.Context.SaveChangesAsync();
+
+    //    var resultDto = new MetalDTO(metal.Id, metal.Name, metal.MaterialId, material.Name);
+    //    return TypedResults.Created($"/api/catalog/metals/{metal.Id}", resultDto);
+    //}
+
+
+    // PUT /api/catalog/metals/{id}
+    public static async Task<Results<Ok<MetalDTO>, NotFound, BadRequest<string>>> UpdateMetal(
+        int id,
+        MetalDTO dto,
         [AsParameters] CatalogServices services)
     {
         var metal = await services.Context.Metals.FindAsync(id);
-
-        if (metal == null)
-        {
+        if (metal is null)
             return TypedResults.NotFound();
+
+        if (await services.Context.Metals.AnyAsync(m => m.Name == dto.Name && m.Id != id))
+        {
+            return TypedResults.BadRequest($"A metal with the name '{dto.Name}' already exists.");
         }
 
-        metal.Name = updatedMetal.name;
-        metal.MaterialId = updatedMetal.materialId;
+        metal.Name = dto.Name;
+        metal.MaterialId = dto.MaterialId;
 
         await services.Context.SaveChangesAsync();
 
         return TypedResults.Ok(new MetalDTO(metal.Id, metal.Name, metal.MaterialId, string.Empty));
     }
 
+    // DELETE /api/catalog/metals/{id}
     public static async Task<Results<Ok<string>, NotFound>> DeleteMetal(
-        int id, [AsParameters] CatalogServices services)
+        int id,
+        [AsParameters] CatalogServices services)
     {
         var metal = await services.Context.Metals.FindAsync(id);
-
-        if (metal == null)
-        {
+        if (metal is null)
             return TypedResults.NotFound();
-        }
 
         services.Context.Metals.Remove(metal);
         await services.Context.SaveChangesAsync();
@@ -299,81 +374,91 @@ public static class CatalogInfoApi
     }
 
 
+
     //Ocassion
-    // Get All Occasions
+    // GET /api/catalog/occasions
     public static async Task<Results<Ok<OccasionDTO[]>, NotFound>> GetAllOccasions(
         [AsParameters] CatalogServices services)
     {
-        var occasions = await services.Context.Occasions.ToArrayAsync();
+        var occasions = await services.Context.Occasions
+            .AsNoTracking()
+            .Select(o => new OccasionDTO(o.Id, o.Name))
+            .ToArrayAsync();
 
-        if (!occasions.Any())
-        {
-            return TypedResults.NotFound();
-        }
-
-        var occasionDtos = occasions.Select(o => new OccasionDTO(o.Id, o.Name)).ToArray();
-        return TypedResults.Ok(occasionDtos);
-    }
-
-    // Get Occasion By ID
-    public static async Task<Results<Ok<OccasionDTO>, NotFound>> GetOccasionById(
-        int id, [AsParameters] CatalogServices services)
-    {
-        var occasion = await services.Context.Occasions.FindAsync(id);
-
-        return occasion is not null
-            ? TypedResults.Ok(new OccasionDTO(occasion.Id, occasion.Name))
+        return occasions.Length > 0
+            ? TypedResults.Ok(occasions)
             : TypedResults.NotFound();
     }
 
-    // Add New Occasion
+    // GET /api/catalog/occasions/{id}
+    public static async Task<Results<Ok<OccasionDTO>, NotFound>> GetOccasionById(
+        int id,
+        [AsParameters] CatalogServices services)
+    {
+        var dto = await services.Context.Occasions
+            .AsNoTracking()
+            .Where(o => o.Id == id)
+            .Select(o => new OccasionDTO(o.Id, o.Name))
+            .FirstOrDefaultAsync();
+
+        return dto is not null
+            ? TypedResults.Ok(dto)
+            : TypedResults.NotFound();
+    }
+
+    // POST /api/catalog/occasions
     public static async Task<Results<Created<OccasionDTO>, BadRequest<string>>> AddOccasion(
-        OccasionDTO occasion, 
-        [AsParameters] CatalogServices services)
+       OccasionDTO dto,
+       [AsParameters] CatalogServices services)
     {
-        if (await services.Context.Occasions.AnyAsync(o => o.Name == occasion.Name))
+        if (await services.Context.Occasions.AnyAsync(o => o.Name == dto.Name))
         {
-            return TypedResults.BadRequest($"An occasion with the name '{occasion.Name}' already exists.");
+            return TypedResults.BadRequest($"An occasion with the name '{dto.Name}' already exists.");
         }
 
-        services.Context.Occasions.Add(new Occassion
+        var occasion = new Occassion
         {
-            Name = occasion.Name
-        });
+            Name = dto.Name
+        };
+
+        services.Context.Occasions.Add(occasion);
         await services.Context.SaveChangesAsync();
 
-        var occasionDto = new OccasionDTO(occasion.Id, occasion.Name);
-        return TypedResults.Created($"/occasions/{occasion.Id}", occasionDto);
+        var resultDto = new OccasionDTO(occasion.Id, occasion.Name);
+        return TypedResults.Created($"/api/catalog/occasions/{occasion.Id}", resultDto);
     }
 
-    // Update Existing Occasion
+
+
+    // PUT /api/catalog/occasions/{id}
     public static async Task<Results<Ok<OccasionDTO>, NotFound, BadRequest<string>>> UpdateOccasion(
-        OccasionDTO updatedOccasion, 
-        [AsParameters] CatalogServices services)
-    {
-        var occasion = await services.Context.Occasions.FindAsync(updatedOccasion.Id);
-        if (occasion == null)
-        {
-            return TypedResults.NotFound();
-        }
-
-        occasion.Name = updatedOccasion.Name;
-
-        await services.Context.SaveChangesAsync();
-        return TypedResults.Ok(new OccasionDTO(occasion.Id, occasion.Name));
-    }
-
-    // Delete Occasion
-    public static async Task<Results<Ok<string>, NotFound>> DeleteOccasion(
-        int id, 
+        int id,
+        OccasionDTO dto,
         [AsParameters] CatalogServices services)
     {
         var occasion = await services.Context.Occasions.FindAsync(id);
-
-        if (occasion == null)
-        {
+        if (occasion is null)
             return TypedResults.NotFound();
+
+        if (await services.Context.Occasions.AnyAsync(o => o.Name == dto.Name && o.Id != id))
+        {
+            return TypedResults.BadRequest($"An occasion with the name '{dto.Name}' already exists.");
         }
+
+        occasion.Name = dto.Name;
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Ok(new OccasionDTO(occasion.Id, occasion.Name));
+    }
+
+    // DELETE /api/catalog/occasions/{id}
+    public static async Task<Results<Ok<string>, NotFound>> DeleteOccasion(
+        int id,
+        [AsParameters] CatalogServices services)
+    {
+        var occasion = await services.Context.Occasions.FindAsync(id);
+        if (occasion is null)
+            return TypedResults.NotFound();
 
         services.Context.Occasions.Remove(occasion);
         await services.Context.SaveChangesAsync();
@@ -382,112 +467,6 @@ public static class CatalogInfoApi
     }
 
 
-    ////styles
-    //// GET /styles
-    //public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(
-    //    [AsParameters] CatalogServices services)
-    //{
-    //    var styles = await services.Context.Styles
-    //                         .AsNoTracking()
-    //                         .ToArrayAsync();
-
-    //    if (styles.Length == 0)
-    //        return TypedResults.NotFound();
-
-    //    var dtos = styles
-    //               .Select(s => new StyleDTO(s.Id, s.Name))
-    //               .ToArray();
-
-    //    return TypedResults.Ok(dtos);
-    //}
-
-    //// GET /styles/{id}
-    //public static async Task<Results<Ok<StyleDTO>, NotFound>> GetStyleById(
-    //    int id,
-    //    [AsParameters] CatalogServices services)
-    //{
-    //    var style = await services.Context.Styles
-    //                          .AsNoTracking()
-    //                          .FirstOrDefaultAsync(s => s.Id == id);
-
-    //    return style is not null
-    //         ? TypedResults.Ok(new StyleDTO(style.Id, style.Name))
-    //         : TypedResults.NotFound();
-    //}
-
-    //// POST /styles
-    //public static async Task<Results<Created<StyleDTO>, BadRequest<string>>> AddStyle(
-    // StyleDTO styleDto,
-    // [AsParameters] CatalogServices services)
-    //{
-    //    // 1) Prevent duplicate names
-    //    if (await services.Context.Styles
-    //              .AnyAsync(s => s.Name == styleDto.Name))
-    //    {
-    //        return TypedResults.BadRequest(
-    //            $"A style with the name '{styleDto.Name}' already exists.");
-    //    }
-
-    //    // 2) Manually generate a new ID
-    //    var maxId = await services.Context.Styles
-    //                         .Select(s => (int?)s.Id)
-    //                         .MaxAsync()
-    //               ?? 0;
-
-    //    var style = new Style
-    //    {
-    //        Id = maxId + 1,
-    //        Name = styleDto.Name
-    //    };
-
-    //    // 3) Add & save
-    //    services.Context.Styles.Add(style);
-    //    await services.Context.SaveChangesAsync();
-
-    //    // 4) Return the created DTO
-    //    var resultDto = new StyleDTO(style.Id, style.Name);
-    //    return TypedResults.Created($"/api/catalog/styles/{style.Id}", resultDto);
-    //}
-
-
-    //// PUT /styles/{id}
-    //public static async Task<Results<Ok<StyleDTO>, NotFound, BadRequest<string>>> UpdateStyle(
-    //    int id,
-    //    StyleDTO updatedDto,
-    //    [AsParameters] CatalogServices services)
-    //{
-    //    var style = await services.Context.Styles.FindAsync(id);
-    //    if (style is null)
-    //        return TypedResults.NotFound();
-
-    //    // Prevent renaming to an existing name
-    //    var conflict = await services.Context.Styles
-    //                      .AnyAsync(s => s.Name == updatedDto.Name && s.Id != id);
-    //    if (conflict)
-    //        return TypedResults.BadRequest(
-    //            $"A style with the name '{updatedDto.Name}' already exists.");
-
-    //    style.Name = updatedDto.Name;
-    //    // EF Core will issue UPDATE
-    //    await services.Context.SaveChangesAsync();
-
-    //    return TypedResults.Ok(new StyleDTO(style.Id, style.Name));
-    //}
-
-    //// DELETE /styles/{id}
-    //public static async Task<Results<Ok<string>, NotFound>> DeleteStyle(
-    //    int id,
-    //    [AsParameters] CatalogServices services)
-    //{
-    //    var style = await services.Context.Styles.FindAsync(id);
-    //    if (style is null)
-    //        return TypedResults.NotFound();
-
-    //    services.Context.Styles.Remove(style);
-    //    await services.Context.SaveChangesAsync();
-
-    //    return TypedResults.Ok($"Style with ID {id} deleted.");
-    //}
 
     // GET /styles
     public static async Task<Results<Ok<StyleDTO[]>, NotFound>> GetAllStyles(

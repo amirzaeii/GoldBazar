@@ -6,13 +6,13 @@
     <TitleContent>
         <MudText Typo="Typo.h6">@Title</MudText>
     </TitleContent>
-    <DialogContent>       
-        <MudForm @ref="form" Model="Style">
+    <DialogContent>
+        <MudForm @ref="form" Model="Material">
             <MudTextField T="string"
-                          Label="Style Name"
+                          Label="Material Name"
                           Required="true"
                           RequiredError="Name is required!"
-                          @bind-Value="Style.Name" />
+                          @bind-Value="Material.Name" />
         </MudForm>
     </DialogContent>
     <DialogActions>
@@ -22,29 +22,30 @@
 </MudDialog>
 
 @code {
-    
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;   
+
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
     private MudForm form = default!;
     [Parameter] public string Title { get; set; } = default!;
-    [Parameter] public StyleDTO Style { get; set; } = default!;
-    [Parameter] [EditorRequired] public Func<StyleDTO, Task>? OnSave { get; set; }
-    void Cancel() => MudDialog.Cancel();     
+    [Parameter] public MaterialDTO Material { get; set; } = default!;
+    [Parameter][EditorRequired] public Func<MaterialDTO, Task>? OnSave { get; set; }
+    void Cancel() => MudDialog.Cancel();
 
     async Task Submit()
     {
         await form.Validate();
         if (!form.IsValid) return;
-        
+
         try
         {
-            if(OnSave != null){
+            if (OnSave != null)
+            {
                 MudDialog.Close(DialogResult.Ok(true));
-                await OnSave.Invoke(Style);               
-            }            
+                await OnSave.Invoke(Material);
+            }
         }
         catch
         {
-            Snackbar.Add("Entered Style already exists", Severity.Error);
+            Snackbar.Add("Entered Material already exists", Severity.Error);
         }
     }
 }

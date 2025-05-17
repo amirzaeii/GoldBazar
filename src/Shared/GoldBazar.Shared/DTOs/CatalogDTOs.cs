@@ -2,10 +2,57 @@ namespace GoldBazar.Shared.DTOs;
 
 public record ItemResult(int PageIndex, int PageSize, int Count, List<ItemDTO> Data);
 public record ItemCategoryDTO(int Id, string Name, string? PhotoUrl);
-public record MaterialDTO(int Id, string Name);
+public record MaterialDTO
+{
+    public MaterialDTO()
+    {
+
+    }
+    public MaterialDTO(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
+        
 public record ManufactureDTO(int Id, string Name, int Manufacture, decimal KT, decimal Purity);
-public record MetalDTO(int id, string name, int materialId, string materialName);
-public record OccasionDTO(int Id, string Name);
+//public record MetalDTO(int id, string name, int materialId, string materialName);
+public class MetalDTO
+{
+    public MetalDTO()
+    {
+    }
+
+    public MetalDTO(int id, string name, int materialId, string materialName)
+    {
+        Id = id;
+        Name = name;
+        MaterialId = materialId;
+        MaterialName = materialName;
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int MaterialId { get; set; }
+    public string MaterialName { get; set; } = string.Empty;
+}
+
+public record OccasionDTO
+{
+    public OccasionDTO()
+    {
+
+    }
+    public OccasionDTO(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
 public record StyleDTO
 {
     public StyleDTO()
