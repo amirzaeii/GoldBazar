@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
     <ProjectReference Include="../Catalog.Infrastructure/Catalog.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Client\GoldBazar.Shared.Components\GoldBazar.Shared.Components.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,5 @@
-﻿@page "/shops"
-@inject ShopService ShopService
+﻿@page "/govs"
+@inject RegionService regionService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @layout CRUDLayout
@@ -8,10 +8,10 @@
     <MudPaper Elevation="3" Class="pa-6 ma-4">
         <MudGrid>
             <MudItem xs="12" Class="d-flex justify-space-between align-center">
-                <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Shop Directory</MudText>
+                <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Governorate Directory</MudText>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
-                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyShopDialog(new ShopDTO()))">
-                    New Shop
+                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyGovernorateDialog(new GovernateDTO()))">
+                    New Governorate
                 </MudButton>
             </MudItem>
 
@@ -21,19 +21,19 @@
                     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
                 }
 
-                <MudDataGrid T="ShopDTO"
-                             Items="@shops"
+                <MudDataGrid T="GovernateDTO"
+                             Items="@govs"
                              Loading="@_loading"
                              Hover="true"
                              ReadOnly="true"
                              Class="elevation-1">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6" Class="mud-primary-text">
-                            Shops (@shops.Length)
+                            Governorates (@govs.Length)
                         </MudText>
                     </ToolBarContent>
                     <Columns>
-                        <PropertyColumn Property="x => x.Name" Title="Shop Name" />
+                        <PropertyColumn Property="x => x.Name" Title="Governorate Name" />
 
                         <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
                             <CellTemplate>
@@ -42,7 +42,7 @@
                                                    Color="Color.Primary"
                                                    Size="Size.Small"
                                                    Class="mx-1"
-                                                   OnClick="@(() => ModifyShopDialog(context.Item))" />
+                                                   OnClick="@(() => ModifyGovernorateDialog(context.Item))" />
                                     <MudIconButton Icon="@Icons.Material.Filled.Delete"
                                                    Color="Color.Error"
                                                    Size="Size.Small"
@@ -54,7 +54,7 @@
                     </Columns>
 
                     <PagerContent>
-                        <MudDataGridPager T="ShopDTO" PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+                        <MudDataGridPager T="GovernateDTO" PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
                     </PagerContent>
                 </MudDataGrid>
             </MudItem>
@@ -63,22 +63,22 @@
 </MudContainer>
 
 @code {
-    private ShopDTO[] shops = default!;
+    private GovernateDTO[] govs = default!;
     private bool _loading = true;
 
     protected override async Task OnInitializedAsync()
-        => await LoadShops();
+        => await LoadGovernorate();
 
-    private async Task LoadShops()
+    private async Task LoadGovernorate()
     {
         try
         {
             _loading = true;
-            shops = await ShopService.GetAllShops();
+            govs = await regionService.GetGovernorates();
         }
         catch
         {
-            Snackbar.Add("Failed to load Shops", Severity.Error);
+            Snackbar.Add("Failed to load Governorates", Severity.Error);
         }
         finally
         {
@@ -86,24 +86,24 @@
         }
     }
 
-    private async Task ModifyShopDialog(ShopDTO shop)
+    private async Task ModifyGovernorateDialog(GovernateDTO gov)
     {
         var parameters = new DialogParameters
         {
-            {"Shop" , shop},
-            {"Title" , shop.Id == 0 ? "Create New Shop" : $"Edit Shop: {shop.Name}" },
-            {"OnSave", new Func<ShopDTO, Task>(OnModifyShop) }
+            {"Governorate" , gov },
+            {"Title" , gov.Id == 0 ? "Create New Governorate" : $"Edit Governorate: {gov.Name}" },
+            {"OnSave", new Func<GovernateDTO, Task>(OnModifyGovernorate) }
         };
-        var dialog = await DialogService.ShowAsync<ModifyShop>("Modify Shop", parameters);
+        var dialog = await DialogService.ShowAsync<ModifyGov>("Modify Governorate", parameters);
     }
 
-    private async Task DeleteDialog(int shopId)
+    private async Task DeleteDialog(int govId)
     {
         var parameters = new DialogParameters
         {
-            {"Id" , shopId },
-            {"Message" , "Are you sure you want to delete this shop?" },
-            {"OnDelete", new Func<int, Task>(OnDeleteShop) }
+            {"Id" , govId },
+            {"Message" , "Are you sure you want to delete this Governorate?" },
+            {"OnDelete", new Func<int, Task>(OnDeleteGovernorate) }
         };
         var dialog = await DialogService.ShowAsync<DeleteConfirmation>(
             "Confirm Deletion",
@@ -111,33 +111,33 @@
         );
     }
 
-    public async Task OnModifyShop(ShopDTO shop)
+    public async Task OnModifyGovernorate(GovernateDTO gov)
     {
-        var result = new ShopDTO();
-        if (shop.Id == 0)
+        var result = new GovernateDTO();
+        if (gov.Id == 0)
         {
-            result = await ShopService.AddShop(shop);
-            if (result?.Id > 0) shops = shops.Append(result).ToArray();
-            Snackbar.Add("shop updated successfully", Severity.Success);
+            result = await regionService.AddGovernorate(gov);
+            if (result?.Id > 0) govs = govs.Append(result).ToArray();
+            Snackbar.Add("Governorate updated successfully", Severity.Success);
         }
         else
         {
-            await ShopService.UpdateShop(shop.Id,shop);
-            Snackbar.Add("Shop created successfully", Severity.Success);
+            await regionService.UpdateGovernorate(gov);
+            Snackbar.Add("Governorate edited successfully", Severity.Success);
         }
         StateHasChanged();
     }
-    public async Task OnDeleteShop(int id)
+    public async Task OnDeleteGovernorate(int id)
     {
-        var result = await ShopService.DeleteShop(id);
+        var result = await regionService.DeleteGovernorate(id);
         if (result)
         {
-            shops = shops.Where(w => w.Id != id).ToArray();
-            Snackbar.Add("Shop deleted successfully", Severity.Success);
+            govs = govs.Where(w => w.Id != id).ToArray();
+            Snackbar.Add("Governorate deleted successfully", Severity.Success);
         }
         else
         {
-            Snackbar.Add("Shop deleted failed", Severity.Error);
+            Snackbar.Add("Governorate deleted failed", Severity.Error);
         }
         StateHasChanged();
     }

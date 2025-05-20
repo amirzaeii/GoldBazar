@@ -16,9 +16,43 @@ public record MaterialDTO
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
-        
+public class CityDTO
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int GovernorateId { get; set; }
+    public string GovernorateName { get; set; } = string.Empty;
+
+    public CityDTO() { }
+
+    public CityDTO(int id, string name, int governorateId, string governorateName)
+    {
+        Id = id;
+        Name = name;
+        GovernorateId = governorateId;
+        GovernorateName = governorateName;
+    }
+
+    public CityDTO(int id, string name)
+    {
+        Name = name;
+    }
+}
+public record GovernateDTO
+{
+    public GovernateDTO()
+    {
+
+    }
+    public GovernateDTO(int id, string name)
+    {
+        Id = id;
+        Name = name;
+    }
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}
 public record ManufactureDTO(int Id, string Name, int Manufacture, decimal KT, decimal Purity);
-//public record MetalDTO(int id, string name, int materialId, string materialName);
 public class MetalDTO
 {
     public MetalDTO()

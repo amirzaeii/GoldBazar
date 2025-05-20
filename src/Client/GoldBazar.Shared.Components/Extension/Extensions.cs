@@ -24,6 +24,9 @@ public static class Extensions
             .AddApiVersion(1.0);
         //     .AddAuthToken();      
 
+        builder.Services.AddHttpClient<RegionService>(o => o.BaseAddress = new("http://catalog-api"))
+           .AddApiVersion(1.0);
+
     }
 
     public static async Task<string?> GetBuyerIdAsync(this AuthenticationStateProvider authenticationStateProvider)

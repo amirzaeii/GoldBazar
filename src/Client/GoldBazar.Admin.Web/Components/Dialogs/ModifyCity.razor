@@ -1,1 +1,89 @@
-﻿
+﻿@inject RegionService regionService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudDialog MaxWidth="MaxWidth.Small" FullWidth="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudForm @ref="form" Model="City">
+            <!-- Governorate selector -->
+            <MudSelect T="int"
+                       Label="Governorate"
+                       Required="true"
+                       RequiredError="Please select a governorate"
+                       @bind-Value="City.GovernorateId">
+                @foreach (var gov in _governorates)
+                {
+                    <MudSelectItem Value="gov.Id">@gov.Name</MudSelectItem>
+                }
+            </MudSelect>
+
+            <!-- City name -->
+            <MudTextField T="string"
+                          Label="City Name"
+                          Required="true"
+                          RequiredError="Name is required!"
+                          @bind-Value="City.Name" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
+    [Parameter] public string Title { get; set; } = default!;
+    [Parameter] public CityDTO City { get; set; } = new CityDTO();
+    [Parameter][EditorRequired] public Func<CityDTO, Task> OnSave { get; set; } = _ => Task.CompletedTask;
+
+    private MudForm form = default!;
+    private GovernateDTO[] _governorates = Array.Empty<GovernateDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            // load all governorates for the dropdown
+            _governorates = await regionService.GetGovernorates();
+
+            // if editing existing city, ensure City.GovernorateName is set
+            if (City.GovernorateId != 0)
+            {
+                var gov = _governorates.FirstOrDefault(g => g.Id == City.GovernorateId);
+                if (gov is not null)
+                    City.GovernorateName = gov.Name;
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Failed to load governorates", Severity.Error);
+        }
+    }
+
+    void Cancel() => MudDialog.Cancel();
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (!form.IsValid)
+            return;
+
+        // sync the selected governorate name back into the DTO
+        var selected = _governorates.FirstOrDefault(g => g.Id == City.GovernorateId);
+        City.GovernorateName = selected?.Name ?? string.Empty;
+
+        MudDialog.Close(DialogResult.Ok(true));
+        try
+        {
+            await OnSave(City);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error saving city: {ex.Message}", Severity.Error);
+        }
+    }
+}
