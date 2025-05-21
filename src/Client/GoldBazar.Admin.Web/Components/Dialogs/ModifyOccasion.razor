@@ -21,32 +21,3 @@
     </DialogActions>
 </MudDialog>
 
-@code {
-
-    [CascadingParameter] IMudDialogInstance MudDialog { get; set; } = default!;
-    private MudForm form = default!;
-    [Parameter] public string Title { get; set; } = default!;
-    [Parameter] public OccasionDTO Occasion { get; set; } = default!;
-    [Parameter][EditorRequired] public Func<OccasionDTO, Task>? OnSave { get; set; }
-    void Cancel() => MudDialog.Cancel();
-
-    async Task Submit()
-    {
-        await form.Validate();
-        if (!form.IsValid) return;
-
-        try
-        {
-            if (OnSave != null)
-            {
-                MudDialog.Close(DialogResult.Ok(true));
-                await OnSave.Invoke(Occasion);
-            }
-        }
-        catch
-        {
-            Snackbar.Add("Entered Occasion already exists", Severity.Error);
-        }
-    }
-}
-

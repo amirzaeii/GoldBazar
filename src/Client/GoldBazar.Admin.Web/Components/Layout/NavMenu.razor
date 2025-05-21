@@ -1,6 +1,21 @@
 ﻿@using MudBlazor
 
 <MudNavMenu Dense="true">
+    <MudNavLink Href="/"
+                Icon="@Icons.Material.Filled.Dashboard"
+                Match="NavLinkMatch.Prefix">
+        Dashboard
+    </MudNavLink>
+    <MudNavLink Href="/deliveries"
+                Icon="@Icons.Material.Filled.SportsMotorsports"
+                Match="NavLinkMatch.Prefix">
+        Deliveries 
+    </MudNavLink>
+    <MudNavLink Href="/orders"
+                Icon="@Icons.Material.Filled.ShoppingBag"
+                Match="NavLinkMatch.Prefix">
+        Orders
+    </MudNavLink>
     <MudNavLink Href="/styles"
                 Icon="@Icons.Material.Filled.Diamond"
                 Match="NavLinkMatch.Prefix">
@@ -29,12 +44,6 @@
                 Icon="@Icons.Material.Filled.Storefront"
                 Match="NavLinkMatch.Prefix">
         Shops
-    </MudNavLink>
-
-    <MudNavLink Href="/manufactures"
-                Icon="@Icons.Material.Filled.Construction" 
-                Match="NavLinkMatch.Prefix">
-        Manufactures
     </MudNavLink>
     <MudNavLink Href="/govs"
                 Icon="@Icons.Material.Filled.AddLocationAlt"
