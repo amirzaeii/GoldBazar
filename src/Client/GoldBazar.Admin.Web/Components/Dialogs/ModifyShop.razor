@@ -1,0 +1,102 @@
+﻿@inject ShopService shopser
+@inject RegionService regionService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudDialog MaxWidth="MaxWidth.Small" FullWidth="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6">@Title</MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudForm @ref="form" Model="Shop">
+            <MudTextField T="string"
+                          Label="Name"
+                          For="@(() => Shop.Name)"
+                          @bind-Value="Shop.Name"
+                          Required="true"
+                          RequiredError="Name is required" />
+
+            <MudSelect T="int"
+                       Label="City"
+                       For="@(() => Shop.CityId)"
+                       @bind-Value="Shop.CityId"
+                       Required="true"
+                       RequiredError="City is required">
+                @foreach (var c in _cities)
+                {
+                    <MudSelectItem Value="c.Id">@c.Name</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudTextField T="string"
+                          Label="Address"
+                          For="@(() => Shop.Address)"
+                          @bind-Value="Shop.Address"
+                          Required="true"
+                          RequiredError="Address is required" />
+
+            <MudTextField T="string"
+                          Label="Contact No."
+                          For="@(() => Shop.ContactNo)"
+                          @bind-Value="Shop.ContactNo"
+                          Required="true"
+                          RequiredError="Contact number is required" />
+
+            <MudTextField T="string"
+                          Label="Owner"
+                          For="@(() => Shop.OwnerName)"
+                          @bind-Value="Shop.OwnerName" />
+
+            <!-- Active switch: green when on -->
+            <MudSwitch Label="Active"
+                       For="@(() => Shop.Status)"
+                       @bind-Checked="Shop.Status"
+                       Color="Color.Success" />
+
+            <!-- Logo upload + preview -->
+            <MudText Typo="Typo.subtitle2" Class="mt-4">Logo</MudText>
+            <InputFile OnChange="OnLogoFilesChanged" accept="image/*" />
+            @if (logoPreview is not null)
+            {
+                <img src="@logoPreview" class="upload-preview" style="max-width:100px;max-height:100px" />
+            }
+
+            <!-- Banner upload + preview -->
+            <MudText Typo="Typo.subtitle2" Class="mt-4">Banner</MudText>
+            <InputFile OnChange="OnBannerFilesChanged" accept="image/*" />
+            @if (bannerPreview is not null)
+            {
+                <img src="@bannerPreview" class="upload-preview" style="max-width:100px;max-height:100px" />
+            }
+
+
+            <MudTextField T="string"
+                          Label="Description"
+                          Lines="3"
+                          For="@(() => Shop.Description)"
+                          @bind-Value="Shop.Description" />
+
+            <!-- Join Date picker: basic usage -->
+            <MudDatePicker @ref="_picker"
+                           Label="Join Date"
+                           @bind-Date="_joinDate"
+                           Mask="@(new DateMask("MM/dd/yyyy"))"
+                           DateFormat="MM/dd/yyyy"
+                           Placeholder="Select a date"
+                           Variant="Variant.Filled" />
+
+
+            <MudTextField T="string"
+                          Label="Subscription Plan Name"
+                          For="@(() => Shop.CurrentSubscriptionPlanName)"
+                          @bind-Value="Shop.CurrentSubscriptionPlanName" />
+        </MudForm>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+

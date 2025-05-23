@@ -1,8 +1,10 @@
-﻿using GoldBazar.Shared.DTOs;
-
+﻿
+using GoldBazar.Shared.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
+
+using static GoldBazar.Shared.Components.Services.ShopService;
 namespace Catalog.Api;
 
 public static class ShopApi
@@ -228,28 +230,56 @@ public static class ShopApi
     }
 
     public static async Task<Results<Created<ShopDTO>, BadRequest<string>>> AddShop(
-        [FromBody] ShopDTO shop, 
+        [FromBody] ShopDTO dto,
         [AsParameters] CatalogServices services)
     {
-        if (await services.Context.Shops.AnyAsync(s => s.Name == shop.Name))
-        {
-            return TypedResults.BadRequest($"A shop with the name '{shop.Name}' already exists.");
-        }
+        if (await services.Context.Shops.AnyAsync(s => s.Name == dto.Name))
+            return TypedResults.BadRequest($"A shop with the name '{dto.Name}' already exists.");
 
-        services.Context.Shops.Add(new Shop
+        var entity = new Shop
         {
-            Name = shop.Name,
-            CityId = shop.CityId,
-            Address = shop.Address,
-            ContactNumber = shop.ContactNo,
-            Owner = shop.OwnerName,
-            Logo = shop.LogoUrl,
-            Banner = shop.BannerUrl
-        });
+            Name = dto.Name,
+            CityId = dto.CityId,
+            Address = dto.Address,
+            ContactNumber = dto.ContactNo,
+            Owner = dto.OwnerName,
+            Logo = dto.LogoUrl,
+            Banner = dto.BannerUrl,
+            Description = dto.Description,
+            Status = dto.Status ? 1 : 0
+        };
+
+        services.Context.Shops.Add(entity);
         await services.Context.SaveChangesAsync();
-        return TypedResults.Created($"/shops/{shop.Id}", shop);
-    }
 
+        var cityName = await services.Context.Cities
+            .Where(c => c.Id == entity.CityId)
+            .Select(c => c.Name)
+            .FirstAsync();
+
+
+        var result = new ShopDTO(
+            entity.Id,
+            entity.Name,
+            entity.Address,
+            cityName,
+            entity.CityId,
+            entity.ContactNumber,
+            entity.Owner,
+            dto.Status,
+            dto.CurrentSubscriptionPlanPrice,
+            dto.CurrentSubscriptionPlanName,
+            dto.LogoUrl,
+            dto.BannerUrl,
+            dto.Description,
+            dto.JoinDate == default ? DateTimeOffset.UtcNow : dto.JoinDate,
+            dto.SubscriptionExpiredDate ?? default,
+            dto.OrdersDelivered,
+            dto.UpComingOrders
+        );
+
+        return TypedResults.Created($"/api/shops/{entity.Id}", result);
+    }
     public static async Task<Results<Ok<ShopDTO>, NotFound, BadRequest<string>>> UpdateShop(
         int id, 
         [FromBody] ShopDTO updatedShop, 
