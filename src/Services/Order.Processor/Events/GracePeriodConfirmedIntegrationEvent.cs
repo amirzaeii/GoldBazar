@@ -1,12 +1,10 @@
-﻿namespace OrderProcessor.Events
+﻿namespace Order.Processor.Events;
+using EventBus.Events;
+
+public record GracePeriodConfirmedIntegrationEvent : IntegrationEvent
 {
-    using EventBus.Events;
+    public int OrderId { get; }
 
-    public record GracePeriodConfirmedIntegrationEvent : IntegrationEvent
-    {
-        public int OrderId { get; }
-
-        public GracePeriodConfirmedIntegrationEvent(int orderId) =>
-            OrderId = orderId;
-    }
+    public GracePeriodConfirmedIntegrationEvent(int orderId) =>
+        OrderId = orderId;
 }

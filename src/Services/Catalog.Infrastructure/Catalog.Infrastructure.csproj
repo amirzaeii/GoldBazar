@@ -10,17 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SharedClass\MigrateDbContextExtensions.cs" Link="Services\MigrateDbContextExtensions.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
     <ProjectReference Include="../../Infrastructure/IntegrationEventLogEF/IntegrationEventLogEF.csproj" />
     <ProjectReference Include="../../Shared/GoldBazar.Shared/GoldBazar.Shared.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exepetions/" />
-  </ItemGroup>
-
 </Project>

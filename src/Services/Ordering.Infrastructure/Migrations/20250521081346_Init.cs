@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ordering.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -82,7 +82,7 @@ namespace Ordering.Infrastructure.Migrations
                     OrderStatus = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     ShopId = table.Column<int>(type: "integer", nullable: false),
-                    ShopName = table.Column<string>(type: "text", nullable: false),
+                    ShopName = table.Column<string>(type: "text", nullable: true),
                     PaymentId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

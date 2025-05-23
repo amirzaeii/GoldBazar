@@ -1,11 +1,3 @@
-using System.ComponentModel;
-
-using GoldBazar.Shared.DTOs;
-
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
-
 using static Catalog.Infrastructure.Models.Item;
 
 namespace Catalog.Api.Apis;

@@ -1,4 +1,6 @@
-﻿namespace Ordering.Infrastructure.Repositories;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Infrastructure.Repositories;
 
 public class BuyerRepository
     : IBuyerRepository

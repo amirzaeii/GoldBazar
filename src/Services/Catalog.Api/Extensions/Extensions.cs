@@ -1,5 +1,5 @@
 
-namespace Catalog.Api.Extensions;
+namespace Microsoft.Extensions.DependencyInjection;
 public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
@@ -13,15 +13,15 @@ public static class Extensions
         });
 
         //REVIEW: This is done for development ease but shouldn't be here in production
-        if(builder.Environment.IsDevelopment())
+        if (builder.Environment.IsDevelopment())
         {
-           builder.Services.AddMigration<CatalogContext, CatalogDevelopmentContextSeed>();
+            builder.Services.AddMigration<CatalogContext, CatalogDevelopmentContextSeed>();
         }
         else
         {
             builder.Services.AddMigration<CatalogContext, CatalogContextSeed>();
         }
-       
+
 
         // Add the integration services that consume the DbContext
         builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<CatalogContext>>();

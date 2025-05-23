@@ -1,8 +1,9 @@
 global using Asp.Versioning.Conventions;
 global using System.Runtime.Serialization;
-global using FluentValidation;
 global using MediatR;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.EntityFrameworkCore;
 global using EventBus.Abstractions;
 global using EventBus.Events;
@@ -19,7 +20,7 @@ global using Ordering.Domain.Models;
 global using Ordering.Domain.Contracts;
 global using Ordering.Domain.Events;
 global using Ordering.Domain.Exceptions;
-global using Ordering.Infrastructure;
+global using Ordering.Infrastructure.EntityFramework;
 global using Ordering.Infrastructure.Idempotency;
 global using Ordering.Infrastructure.Repositories;
 global using GoldBazar.ServiceDefaults;
@@ -27,4 +28,5 @@ global using IntegrationEventLogEF.Services;
 global using EventBus.Extensions;
 global using Microsoft.Extensions.Logging;
 global using Ordering.Api.Application.IntegrationEvents;
+global using FluentValidation;
 

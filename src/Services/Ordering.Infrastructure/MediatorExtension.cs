@@ -1,4 +1,6 @@
-﻿namespace Ordering.Infrastructure;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Infrastructure;
 
 static class MediatorExtension
 {

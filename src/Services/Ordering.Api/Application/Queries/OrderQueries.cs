@@ -1,4 +1,6 @@
-﻿namespace Ordering.Api.Application.Queries;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Api.Application.Queries;
 
 public class OrderQueries(OrderingContext context)
     : IOrderQueries
@@ -8,7 +10,7 @@ public class OrderQueries(OrderingContext context)
         var order = await context.Orders
             .Include(o => o.OrderItems)
             .FirstOrDefaultAsync(o => o.Id == id);
-      
+
         if (order is null)
             throw new KeyNotFoundException();
 
@@ -40,15 +42,15 @@ public class OrderQueries(OrderingContext context)
     public async Task<IEnumerable<OrderSummary>> GetOrdersFromUserAsync(string userId)
     {
         return await context.Orders
-            .Where(o => o.Buyer.IdentityGuid == userId)  
+            .Where(o => o.Buyer.IdentityGuid == userId)
             .Select(o => new OrderSummary
             {
                 OrderNumber = o.Id,
                 Date = o.OrderDate,
                 Status = o.OrderStatus.ToString(),
-                Total =(double) o.OrderItems.Sum(oi => oi.UnitPrice* oi.Units)
+                Total = (double)o.OrderItems.Sum(oi => oi.UnitPrice * oi.Units)
             })
             .ToListAsync();
-    } 
-    
+    }
+
 }
