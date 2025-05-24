@@ -12,7 +12,6 @@ global using Catalog.Infrastructure.EntityFramework;
 global using IntegrationEventLogEF.Services;
 global using Catalog.Infrastructure.IntegrationEvents.EventHandling;
 global using Catalog.Infrastructure.Utility;
-global using Catalog.Api.Services;
 global using System.ComponentModel;
 global using GoldBazar.Shared.DTOs;
 global using Microsoft.AspNetCore.Http.HttpResults;
