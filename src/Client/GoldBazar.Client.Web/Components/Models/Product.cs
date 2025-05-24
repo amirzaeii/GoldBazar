@@ -2,6 +2,7 @@ public class Product
 {
     public required string Name { get; set; }
     public required string Image { get; set; }
+    public List<string>? Images { get; set; }
     public required string Price { get; set; }
     public string? DiscountPrice { get; set; }
     public bool HasDiscountBadge { get; set; }

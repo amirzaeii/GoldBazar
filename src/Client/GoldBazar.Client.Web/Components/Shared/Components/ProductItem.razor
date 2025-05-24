@@ -1,0 +1,51 @@
+@using GoldBazar.Client.Web.Components.Shared.Icons
+
+<div class="product__item relative h-[237px] rounded-[17px] border border-[#07070736]">
+    @if (Product.IsFavorite)
+    {
+        <span
+            class="product__item-fav absolute top-[6px] right-[6px] flex size-[30px] items-center justify-center rounded-full bg-[#8D62F926]">
+            <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.4905 4.78801C12.4844 3.22793 11.6659 1.76078 10.0522 1.24094C8.9442 0.883372 7.73722 1.08222 6.79989 2.42797C5.86256 1.08222 4.65557 0.883372 3.54753 1.24094C1.93369 1.76084 1.1152 3.22827 1.10928 4.78855C1.09435 7.89145 4.23855 10.2659 6.79909 11.4008L6.79989 11.4004L6.80069 11.4008C9.36137 10.2658 12.5058 7.89121 12.4905 4.78801Z"
+                    stroke="#8D62F9" stroke-opacity="0.92" stroke-width="1.23041" stroke-linecap="square" />
+            </svg>
+        </span>
+    }
+
+    @if (Product.HasDiscountBadge)
+    {
+        <span class="product__item-discount absolute top-[12px] left-[12px]">
+            <GradientDiscountIcon />
+        </span>
+    }
+
+    <div class="flex h-[130px] items-center justify-center">
+        <img src="@Product.Image" class="h-[100px] w-auto" alt="@Product.Name" />
+    </div>
+
+    <hr class="h-[1px] border-t border-[#07070736]" />
+
+    <div class="px-3 py-2">
+        <h2 class="text-base font-normal">@Product.Name</h2>
+        <div class="mt-2 flex items-center gap-2">
+            @if (Product.DiscountPrice != null)
+            {
+                <span class="text-sm font-bold text-[#7A7A7A] line-through">@Product.Price</span>
+                <span class="text-base font-bold text-[#020202]">@Product.DiscountPrice</span>
+            }
+            else
+            {
+                <span class="text-base font-bold text-[#020202]">@Product.Price</span>
+            }
+        </div>
+        <button class="size-sm h-[34px] w-full rounded-[8.53px] bg-[#8D62F954] text-[#474747]">
+            ئەڤیتا ستۆر
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public required Product Product { get; set; }
+}

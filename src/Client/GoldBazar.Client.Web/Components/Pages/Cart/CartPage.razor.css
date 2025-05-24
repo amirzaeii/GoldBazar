@@ -1,0 +1,11 @@
+.card-wrapper-shadow {
+  box-shadow: 0px 13px 28px 0px #5c5c5c1a, 0px 51px 51px 0px #5c5c5c17,
+    0px 115px 69px 0px #5c5c5c0d, 0px 205px 82px 0px #5c5c5c03,
+    0px 321px 90px 0px #5c5c5c00;
+}
+
+.card-wrapper-shadow .buy-button-shadow {
+  box-shadow: 1px 1px 3px 0px #0000001a, 4px 5px 6px 0px #00000017,
+    8px 10px 8px 0px #0000000d, 14px 18px 9px 0px #00000003,
+    23px 28px 10px 0px #00000000;
+}

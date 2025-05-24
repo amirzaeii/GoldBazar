@@ -1,7 +1,7 @@
 @rendermode InteractiveServer
 @inject IJSRuntime JS
 
-<div class="slider mx-[17px]">
+<div class="home-page slider mx-[17px]">
     <div class="swiper h-[170px]">
         <div class="swiper-wrapper">
             <div class="swiper-slide">
@@ -35,7 +35,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initializeSwiper");
+            await JS.InvokeVoidAsync("initializeBazarSwiper");
         }
     }
 }
