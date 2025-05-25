@@ -1,4 +1,5 @@
-<main class="mt-[35px] flex justify-center flex-col">
+<div
+    class="py-4 flex justify-center flex-col absolute transition-all delay-150 duration-300 ease-in-out rounded-t-3xl bg-white w-full shadow-[0px_-5px_50px_rgba(0,0,0,0.14)] @CssClass()">
     <div class="flex justify-center text-xl text-center">
         <h1 class="text-[#0000009E] w-[310px] ">ئەو ناونیشانە هەڵبژێرە کە دەتەوێت بۆتی بگەیەنین</h1>
     </div>
@@ -37,4 +38,15 @@
     <div class="flex justify-center">
         <button class="h-[68px] w-[277px] rounded-[51px] bg-[#4C46E3] text-white text-2xl">داواکردن</button>
     </div>
-</main>
+</div>
+
+@code {
+    [Parameter]
+    public required bool Show { get; set; }
+
+    private string CssClass()
+    {
+        if (Show) return "bottom-0";
+        return "bottom-0 translate-y-[1000px]";
+    }
+}
