@@ -1,0 +1,60 @@
+@using GoldBazar.Client.Web.Components.Shared.Icons
+
+<div class="flex items-center justify-between px-6 h-full">
+    @foreach (var item in MenuItems)
+    {
+        <NavItem Item="@item" />
+    }
+</div>
+
+@code {
+    public List<Nav> MenuItems { get; set; } = new()
+{
+new Nav {
+Href = "/",
+Match = NavLinkMatch.All,
+Icon = builder => {
+builder.OpenComponent<BazarIcon>(0);
+builder.AddAttribute(1, "Color", "currentColor");
+builder.CloseComponent();
+},
+Label = "بازاڕ"
+},
+new Nav {
+Href = "/cart",
+Icon = builder => {
+builder.OpenComponent<CartIcon>(0);
+builder.AddAttribute(1, "Color", "currentColor");
+builder.CloseComponent();
+},
+Label = "کاڵاکان"
+},
+new Nav {
+Href = "/discounts",
+Icon = builder => {
+builder.OpenComponent<DiscountIcon>(0);
+builder.AddAttribute(1, "Color", "currentColor");
+builder.CloseComponent();
+},
+Label = "ئۆفەرەکان"
+},
+new Nav {
+Href = "/jewelers",
+Icon = builder => {
+builder.OpenComponent<MenuIcon>(0);
+builder.AddAttribute(1, "Color", "currentColor");
+builder.CloseComponent();
+},
+Label = "زەڕەنگەرەکان"
+},
+new Nav {
+Href = "/profile",
+Icon = builder => {
+builder.OpenComponent<ProfileIcon>(0);
+builder.AddAttribute(1, "Color", "currentColor");
+builder.CloseComponent();
+},
+Label = "هەژمار"
+}
+};
+}

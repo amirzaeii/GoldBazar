@@ -1,0 +1,46 @@
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+
+<div class="product-details">
+    <div class="swiper h-[233px]">
+        @if (Product != null)
+        {
+            <div class="swiper-wrapper">
+                @if (Product.Images != null && Product.Images.Any())
+                {
+                    @foreach (var image in Product.Images)
+                    {
+                        <div class="swiper-slide">
+                            <div class="size-full flex items-center justify-center">
+                                <img class="w-auto h-full" src="@image" alt="">
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="swiper-slide">
+                        <div class="size-full flex items-center justify-center">
+                            <img class="w-auto h-full" src="@Product.Image" alt="">
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination !bottom-0"></div>
+        }
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public required Product Product { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeProductDetailsSwiper");
+        }
+    }
+}

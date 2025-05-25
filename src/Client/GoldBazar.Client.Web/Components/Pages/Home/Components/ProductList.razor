@@ -1,0 +1,70 @@
+@using GoldBazar.Client.Web.Components.Shared.Components;
+
+<div class="product mx-[17px] mt-[18px]">
+    <div class="product__list grid grid-cols-2 md:grid-cols-4 gap-4">
+        @foreach (var Product in Products)
+        {
+            <ProductItem Product="@Product" />
+        }
+    </div>
+</div>
+
+@code {
+    private List<Product> Products = new()
+{
+
+new Product
+{
+Name = "گوارەی عەیارە 21",
+Image = "/images/product/0.png",
+DiscountPrice = "$١٨٩",
+Price = "$١٨٩",
+HasDiscountBadge = true,
+IsFavorite = true,
+Category = new Category {
+Title = "گوارە", Image = "/images/categories/3.png"
+},
+},
+
+new Product
+{
+Name = "گوارەی عەیارە 21",
+Image = "/images/product/1.png",
+DiscountPrice = "$١٨٩",
+Price = "$١٨٩",
+HasDiscountBadge = true,
+IsFavorite = false,
+Category = new Category {
+Title = "گوارە", Image = "/images/categories/3.png"
+},
+},
+
+new Product
+{
+Name = "گوارەی عەیارە 21",
+Image = "/images/product/2.png",
+DiscountPrice = "$١٨٩",
+Price = "$١٨٩",
+HasDiscountBadge = false,
+IsFavorite = true,
+Category = new Category {
+Title = "گوارە", Image = "/images/categories/3.png"
+},
+},
+
+new Product
+{
+Name = "گوارەی عەیارە 21",
+Image = "/images/product/3.png",
+Price = "$١٨٩",
+HasDiscountBadge = false,
+IsFavorite = false,
+Category = new Category {
+Title = "گوارە", Image = "/images/categories/3.png"
+},
+},
+
+
+};
+
+}
