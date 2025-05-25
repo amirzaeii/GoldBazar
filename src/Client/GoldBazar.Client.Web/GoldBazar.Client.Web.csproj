@@ -9,4 +9,10 @@
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
       <Exec Command="npm run build:css" />
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Include="../../GoldBazar.ServiceDefaults/GoldBazar.ServiceDefaults.csproj" />
+    <ProjectReference Include="../../Infrastructure/EventBusRabbitMQ/EventBusRabbitMQ.csproj" />
+    <ProjectReference Include="../GoldBazar.Shared.Components/GoldBazar.Shared.Components.csproj" />
+  </ItemGroup>
 </Project>

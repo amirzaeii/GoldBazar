@@ -1,70 +1,25 @@
-@using GoldBazar.Client.Web.Components.Shared.Components;
-
+@inject CatalogService _catalogService
 <div class="product mx-[17px] mt-[18px]">
     <div class="product__list grid grid-cols-2 md:grid-cols-4 gap-4">
-        @foreach (var Product in Products)
+        @if (Products == null || Products.Count == 0)
         {
-            <ProductItem Product="@Product" />
+            <p class="text-center col-span-4">No products available.</p>
+        }
+        else
+        {
+            @foreach (var Product in Products.Data)
+            {
+                <ProductItem Product="@Product" />
+            }
         }
     </div>
 </div>
 
 @code {
-    private List<Product> Products = new()
-{
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/0.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = true,
-IsFavorite = true,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/1.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = true,
-IsFavorite = false,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/2.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = false,
-IsFavorite = true,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/3.png",
-Price = "$١٨٩",
-HasDiscountBadge = false,
-IsFavorite = false,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-
-};
+    private ItemResult Products = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await _catalogService.GetCatalogItems(0, 20, null);
+    }
 
 }

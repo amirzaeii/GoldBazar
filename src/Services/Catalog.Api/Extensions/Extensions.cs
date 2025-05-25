@@ -1,5 +1,6 @@
 
 namespace Microsoft.Extensions.DependencyInjection;
+
 public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
@@ -32,7 +33,7 @@ public static class Extensions
                .AddSubscription<OrderStatusChangedToAwaitingValidationIntegrationEvent, OrderStatusChangedToAwaitingValidationIntegrationEventHandler>()
                .AddSubscription<OrderStatusChangedToPaidIntegrationEvent, OrderStatusChangedToPaidIntegrationEventHandler>();
 
-        builder.Services.AddScoped<IFileService, LocalFileService>();
+        //builder.Services.AddScoped<IFileService, LocalFileService>();
         // builder.Services.AddOptions<CatalogOptions>()
         //     .BindConfiguration(nameof(CatalogOptions));
 

@@ -1,22 +1,24 @@
+@inject CatalogService _catalogService
 <div class="category mt-[18px] mr-[17px]">
-    <div
-        class="flex h-[95px] items-center px-3 gap-3 overflow-y-auto rounded-tr-lg rounded-br-lg bg-linear-to-r from-[#8D62F9] to-[#533A93] pt-1">
-        @foreach (var Category in Categories)
+    <div  class="flex h-[95px] items-center px-3 gap-3 overflow-y-auto rounded-tr-lg rounded-br-lg bg-linear-to-r from-[#8D62F9] to-[#533A93] pt-1">
+        @if (Categories == null || Categories.Length == 0)
         {
-            <CategoryItem Category="@Category" />
+            <p class="text-white text-sm">No categories available</p>
+        }
+        else
+        {
+            @foreach (var Category in Categories)
+            {
+                <CategoryItem Category="@Category" />
+            }
         }
     </div>
 </div>
 
 @code {
-    private List<Category> Categories = new()
-{
-new Category { Title = "مستیلە", Image = "/images/categories/0.png" },
-new Category { Title = "ملواانکە", Image = "/images/categories/1.png" },
-new Category { Title = "بازنە", Image = "/images/categories/2.png" },
-new Category { Title = "گوارە", Image = "/images/categories/3.png" },
-new Category { Title = "پشتێن", Image = "/images/categories/4.png" },
-new Category { Title = "پاوانە", Image = "/images/categories/5.png" },
-new Category { Title = "عەڵقە", Image = "/images/categories/6.png" }
-};
+    private ItemCategoryDTO[] Categories = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _catalogService.GetItemCatergories();
+    }
 }

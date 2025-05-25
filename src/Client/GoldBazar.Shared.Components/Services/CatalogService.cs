@@ -2,14 +2,14 @@ using System.Net.Http.Json;
 using System.Text.Json;
 namespace GoldBazar.Shared.Components.Services;
 
-public class CatalogService(HttpClient httpClient) 
+public class CatalogService(HttpClient httpClient)
 {
     private readonly string remoteServiceBaseUrl = "api/catalog/";
 
     public async Task<ItemDTO> GetCatalogItem(int id)
     {
         var uri = $"{remoteServiceBaseUrl}items/{id}";
-        var result =  await httpClient.GetFromJsonAsync<ItemDTO>(uri);
+        var result = await httpClient.GetFromJsonAsync<ItemDTO>(uri);
         return result!;
     }
     public async Task<ItemDTO[]> GetCatalogItems(IEnumerable<int> ids)
@@ -18,10 +18,17 @@ public class CatalogService(HttpClient httpClient)
         var result = await httpClient.GetFromJsonAsync<ItemDTO[]>(uri);
         return result!;
     }
-    public async Task<ItemDTO> GetCatalogItems(int pageIndex, int pageSize, int? type)
+    public async Task<ItemResult> GetCatalogItems(int pageIndex, int pageSize, int? type)
     {
-        var uri = GetAllCatalogItemsUri(remoteServiceBaseUrl, pageIndex, pageSize, type);
-        var result = await httpClient.GetFromJsonAsync<ItemDTO>(uri);
+        var uri = $"{remoteServiceBaseUrl}items?pageIndex={pageIndex}&pageSize={pageSize}";
+        var result = await httpClient.GetFromJsonAsync<ItemResult>(uri);
+        return result!;
+    }
+
+    public async Task<ItemPhotosDTO[]> GetItemPhotos(int itemId)
+    {
+        var uri = $"{remoteServiceBaseUrl}items/{itemId}/pic";
+        var result = await httpClient.GetFromJsonAsync<ItemPhotosDTO[]>(uri);
         return result!;
     }
 
@@ -37,12 +44,7 @@ public class CatalogService(HttpClient httpClient)
         var result = await httpClient.GetFromJsonAsync<ManufactureDTO[]>(uri);
         return result!;
     }
-    
 
-    private static string GetAllCatalogItemsUri(string baseUri, int pageIndex, int pageSize, int? type)
-    {
-        return $"{baseUri}items?pageIndex={pageIndex}&pageSize={pageSize}";
-    }
 
     public async Task<ItemResult> GetCatalogItemsByType(int pageIndex, int pageSize, int typeId)
     {
@@ -145,14 +147,6 @@ public class CatalogService(HttpClient httpClient)
             return false;
         }
     }
-
-    public async Task<IEnumerable<CatalogInfo>> GetCatalogDataAsync(string category)
-    {
-        var uri = $"{remoteServiceBaseUrl}{category}";
-        var result = await httpClient.GetFromJsonAsync<IEnumerable<CatalogInfo>>(uri);
-        return result ?? Array.Empty<CatalogInfo>();
-    }
-
     public async Task<IEnumerable<ItemDTO>> FilterByComposite(CompositeFilterDto filterDto)
     {
         var uri = $"{remoteServiceBaseUrl}item/filter";

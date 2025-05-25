@@ -177,6 +177,7 @@ public record ItemDTO
     public bool Status { get; set; }
     public int Quantity { get; set; } // Changed to settable
     public string MainPhoto { get; set; } = string.Empty;
+    public bool IsFavorite { get; set; }
 }
 public record ItemPhotosDTO
 {
