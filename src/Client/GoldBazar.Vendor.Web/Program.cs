@@ -7,7 +7,6 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.AddServiceDefaults();
-builder.AddShareApplicationServices();
 builder.AddVendorAppApplicationServices();
 builder.Services.AddMudServices();
 var app = builder.Build();

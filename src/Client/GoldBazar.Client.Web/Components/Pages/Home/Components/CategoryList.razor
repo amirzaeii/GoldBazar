@@ -1,0 +1,24 @@
+@inject CatalogService _catalogService
+<div class="category mt-[18px] mr-[17px]">
+    <div  class="flex h-[95px] items-center px-3 gap-3 overflow-y-auto rounded-tr-lg rounded-br-lg bg-linear-to-r from-[#8D62F9] to-[#533A93] pt-1">
+        @if (Categories == null || Categories.Length == 0)
+        {
+            <p class="text-white text-sm">No categories available</p>
+        }
+        else
+        {
+            @foreach (var Category in Categories)
+            {
+                <CategoryItem Category="@Category" />
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private ItemCategoryDTO[] Categories = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await _catalogService.GetItemCatergories();
+    }
+}

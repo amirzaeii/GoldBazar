@@ -1,4 +1,4 @@
-﻿namespace OrderProcessor;
+﻿namespace Order.Processor;
 
 public class BackgroundTaskOptions
 {

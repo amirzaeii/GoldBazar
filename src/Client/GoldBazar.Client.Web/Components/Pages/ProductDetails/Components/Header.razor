@@ -1,0 +1,19 @@
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+
+<div class="flex items-center justify-end gap-3 text-black mt-[19px] px-6">
+    <h2 class="text-base font-normal">@Product?.Caption</h2>
+    <button class="cursor-pointer" @onclick="GoBack">
+        <ArrowLeft Stroke="currentColor" />
+    </button>
+</div>
+
+@code {
+    [Parameter]
+    public ItemDTO? Product { get; set; }
+
+    private async Task GoBack()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}

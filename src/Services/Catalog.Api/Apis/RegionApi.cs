@@ -1,9 +1,4 @@
-﻿using GoldBazar.Shared.DTOs;
-
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Catalog.Api.Apis;
+﻿namespace Catalog.Api.Apis;
 
 public static class RegionApi
 {
