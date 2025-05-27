@@ -32,8 +32,28 @@ public static class CatalogApi
             .WithName("Item Category List")
             .WithSummary("List of item categories")
             .WithDescription("Get list of item categories.")
-            .WithTags("Category");     
+            .WithTags("Category");
+        /* Category */
+        api.MapGet("/categories/{id:int}", GetCategoryById)
+           .WithName("GetCategory")
+           .WithSummary("Get a single category")
+           .WithTags("Category");
 
+        api.MapPost("/categories", AddCategory)
+           .WithName("AddCategory")
+           .WithSummary("Create a new category")
+           .WithTags("Category");
+
+        api.MapPut("/categories/{id:int}", UpdateCategory)
+           .WithName("UpdateCategory")
+           .WithSummary("Update an existing category")
+           .WithTags("Category");
+
+        api.MapDelete("/categories/{id:int}", DeleteCategory)
+           .WithName("DeleteCategory")
+           .WithSummary("Delete a category")
+           .WithTags("Category");
+        /***********/
         api.MapGet("/categories/{id:int}/pic", GetCategoryPictureById)
             .WithName("GetTypePicture")
             .WithSummary("Get catalog type picture")
@@ -590,7 +610,7 @@ public static class CatalogApi
     //        )).ToListAsync();
 
     //    return TypedResults.Ok(filteredProducts);
-    
+
 
     // public static async Task<Ok<List<ItemDto>>> FilterByComposite(
     // [AsParameters] CatalogServices services,
@@ -667,6 +687,66 @@ public static class CatalogApi
 
     //     return TypedResults.Ok(filteredProducts);
     // }
+
+    // Categories
+    public static async Task<Results<Ok<CategoryDTO>, NotFound>> GetCategoryById(
+        int id,
+        [AsParameters] CatalogServices services)
+    {
+        var c = await services.Context.Categories.FindAsync(id);
+        if (c is null) return TypedResults.NotFound();
+
+        return TypedResults.Ok(new CategoryDTO(c.Id, c.Name, c.Photo));
+    }
+
+    public static async Task<Results<Created<CategoryDTO>, BadRequest<string>>> AddCategory(
+        [FromBody] CategoryDTO dto,
+        [AsParameters] CatalogServices services)
+    {
+        if (string.IsNullOrWhiteSpace(dto.Name))
+            return TypedResults.BadRequest("Name is required.");
+
+        var entity = new Category
+        {
+            Name = dto.Name,
+            Photo = dto.Photo
+        };
+
+        services.Context.Categories.Add(entity);
+        await services.Context.SaveChangesAsync();
+
+        var resultDto = new CategoryDTO(entity.Id, entity.Name, entity.Photo);
+        return TypedResults.Created($"/api/catalog/categories/{entity.Id}", resultDto);
+    }
+
+    public static async Task<Results<Ok<CategoryDTO>, NotFound>> UpdateCategory(
+        int id,
+        [FromBody] CategoryDTO dto,
+        [AsParameters] CatalogServices services)
+    {
+        var c = await services.Context.Categories.FindAsync(id);
+        if (c is null) return TypedResults.NotFound();
+
+        c.Name = dto.Name;
+        c.Photo = dto.Photo;
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Ok(new CategoryDTO(c.Id, c.Name, c.Photo));
+    }
+
+    public static async Task<Results<Ok<string>, NotFound>> DeleteCategory(
+        int id,
+        [AsParameters] CatalogServices services)
+    {
+        var c = await services.Context.Categories.FindAsync(id);
+        if (c is null) return TypedResults.NotFound();
+
+        services.Context.Categories.Remove(c);
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Ok($"Category with ID {id} deleted.");
+    }
+
     public static async Task<Results<Created<ItemDTO>, BadRequest<string>>> AddItem(
       [FromBody] ItemDTO newItem,
       [AsParameters] CatalogServices services)

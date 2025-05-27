@@ -1,0 +1,27 @@
+﻿@inject CatalogService StyleService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+@using MudBlazor;
+
+<MudDialog>
+  <TitleContent>@Title</TitleContent>
+  <DialogContent>
+    <MudForm @ref="form">
+      <MudTextField T="string"
+                    @bind-Value="Category.Name"
+                    Label="Name"
+                    Required="true"
+                    For="@(() => Category.Name)" />
+
+      <MudTextField T="string"
+                    @bind-Value="Category.Photo"
+                    Label="Photo Path or URL"
+                    For="@(() => Category.Photo)"
+                    Class="mt-4" />
+    </MudForm>
+  </DialogContent>
+  <DialogActions>
+    <MudButton Variant="Variant.Text"   OnClick="Cancel">Cancel</MudButton>
+    <MudButton Variant="Variant.Filled" OnClick="Save">Save</MudButton>
+  </DialogActions>
+</MudDialog>
