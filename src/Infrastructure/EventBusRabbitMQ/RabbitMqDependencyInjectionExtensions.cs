@@ -1,7 +1,7 @@
 ﻿using EventBusRabbitMQ;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Microsoft.Extensions.Hosting;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class RabbitMqDependencyInjectionExtensions
 {

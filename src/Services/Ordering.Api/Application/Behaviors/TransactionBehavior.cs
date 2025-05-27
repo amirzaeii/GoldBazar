@@ -1,4 +1,6 @@
-﻿namespace Ordering.Api.Application.Behaviors;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Api.Application.Behaviors;
 
 public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {

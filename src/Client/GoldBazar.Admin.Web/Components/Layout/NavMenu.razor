@@ -1,29 +1,56 @@
-﻿@using MudBlazor
-
 <MudNavMenu Dense="true">
+    <MudNavLink Href="/"
+                Icon="@Icons.Material.Filled.Dashboard"
+                Match="NavLinkMatch.Prefix">
+        Dashboard
+    </MudNavLink>
+    <MudNavLink Href="/deliveries"
+                Icon="@Icons.Material.Filled.SportsMotorsports"
+                Match="NavLinkMatch.Prefix">
+        Deliveries 
+    </MudNavLink>
+    <MudNavLink Href="/orders"
+                Icon="@Icons.Material.Filled.ShoppingBag"
+                Match="NavLinkMatch.Prefix">
+        Orders
+    </MudNavLink>
     <MudNavLink Href="/styles"
                 Icon="@Icons.Material.Filled.Diamond"
                 Match="NavLinkMatch.Prefix">
         Styles
     </MudNavLink>
+
     <MudNavLink Href="/metals"
-                Icon="@Icons.Material.Filled.Grain"
+                Icon="@Icons.Material.Filled.Inventory" 
                 Match="NavLinkMatch.Prefix">
         Metals
     </MudNavLink>
+
     <MudNavLink Href="/occasions"
-                Icon="@Icons.Material.Filled.Celebration"
+                Icon="@Icons.Material.Filled.CardGiftcard" 
                 Match="NavLinkMatch.Prefix">
         Occasions
     </MudNavLink>
+
     <MudNavLink Href="/materials"
-                Icon="@Icons.Material.Filled.Texture"
+                Icon="@Icons.Material.Filled.Layers" 
                 Match="NavLinkMatch.Prefix">
         Materials
     </MudNavLink>
+
     <MudNavLink Href="/shops"
                 Icon="@Icons.Material.Filled.Storefront"
                 Match="NavLinkMatch.Prefix">
-        Shop
+        Shops
+    </MudNavLink>
+    <MudNavLink Href="/govs"
+                Icon="@Icons.Material.Filled.AddLocationAlt"
+                Match="NavLinkMatch.Prefix">
+        Governates
+    </MudNavLink>
+    <MudNavLink Href="/cities"
+                Icon="@Icons.Material.Filled.LocationCity"
+                Match="NavLinkMatch.Prefix">
+        Cities
     </MudNavLink>
 </MudNavMenu>

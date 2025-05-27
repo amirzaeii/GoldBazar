@@ -1,12 +1,10 @@
-﻿using Ordering.Api.Application.DomainEventHandlers;
-using Ordering.Api.Infrastructure;
-
-internal static class Extensions
+﻿namespace Microsoft.Extensions.DependencyInjection;
+public static class Extensions
 {
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
         var services = builder.Services;
-        
+
         // Add the authentication services to DI
         builder.AddDefaultAuthentication();
 
@@ -18,6 +16,8 @@ internal static class Extensions
             options.UseNpgsql(builder.Configuration.GetConnectionString("orderingdb"));
         });
         builder.EnrichNpgsqlDbContext<OrderingContext>();
+
+        services.AddMigration<OrderingContext, OrderingContextSeed>();
 
         // Add the integration services that consume the DbContext
         services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<OrderingContext>>();

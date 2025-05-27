@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
-using OrderProcessor.Events;
+using Order.Processor;
+using Order.Processor.Events;
 
-namespace OrderProcessor.Extensions;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class Extensions
 {

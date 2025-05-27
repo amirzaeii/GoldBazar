@@ -2,11 +2,9 @@
 //Subplan could be enum
 public record ShopDTO 
 {
-  public ShopDTO()
-  {
-    
-  }
-  public ShopDTO(int id,
+    public ShopDTO() { }
+
+    public ShopDTO(int id,
    string name, 
    string address, 
    string cityName, 
@@ -56,7 +54,7 @@ public record ShopDTO
   public string BannerUrl { get; set; }  = string.Empty;
   public string Description { get; set; }  = string.Empty;
   public DateTimeOffset JoinDate { get; set; } 
-  public DateTimeOffset SubscriptionExpiredDate { get; set; } 
+  public DateTimeOffset? SubscriptionExpiredDate { get; set; } 
   public int OrdersDelivered { get; set; }
   public int UpComingOrders { get; set; } 
 }

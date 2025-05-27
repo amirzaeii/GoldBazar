@@ -1,4 +1,6 @@
-﻿namespace Ordering.Api.Application.IntegrationEvents;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Api.Application.IntegrationEvents;
 
 public class OrderingIntegrationEventService(IEventBus eventBus,
     OrderingContext orderingContext,

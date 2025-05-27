@@ -1,0 +1,63 @@
+﻿@page "/govs"
+@inject RegionService regionService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
+    <MudPaper Elevation="3" Class="pa-6 ma-4">
+        <MudGrid>
+            <MudItem xs="12" Class="d-flex justify-space-between align-center">
+                <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Governorate Directory</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
+                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyGovernorateDialog(new GovernateDTO()))">
+                    New Governorate
+                </MudButton>
+            </MudItem>
+
+            <MudItem xs="12">
+                @if (_loading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
+                }
+
+                <MudDataGrid T="GovernateDTO"
+                             Items="@govs"
+                             Loading="@_loading"
+                             Hover="true"
+                             ReadOnly="true"
+                             Class="elevation-1">
+                    <ToolBarContent>
+                        <MudText Typo="Typo.h6" Class="mud-primary-text">
+                            Governorates (@govs.Length)
+                        </MudText>
+                    </ToolBarContent>
+                    <Columns>
+                        <PropertyColumn Property="x => x.Name" Title="Governorate Name" />
+
+                        <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
+                            <CellTemplate>
+                                <MudStack Row="true" Spacing="0" Class="pa-2">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                                   Color="Color.Primary"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => ModifyGovernorateDialog(context.Item))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                                   Color="Color.Error"
+                                                   Size="Size.Small"
+                                                   Class="mx-1"
+                                                   OnClick="@(() => DeleteDialog(context.Item.Id))" />
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+
+                    <PagerContent>
+                        <MudDataGridPager T="GovernateDTO" PageSizeOptions="new int[] { 10, 25, 50, 100 }" />
+                    </PagerContent>
+                </MudDataGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+</MudContainer>

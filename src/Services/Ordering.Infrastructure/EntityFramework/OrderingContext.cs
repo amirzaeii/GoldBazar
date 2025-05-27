@@ -1,6 +1,6 @@
 ﻿using IntegrationEventLogEF;
 
-namespace Ordering.Infrastructure;
+namespace Ordering.Infrastructure.EntityFramework;
 
 /// <remarks>
 /// Add migrations using the following command inside the 'Ordering.Infrastructure' project directory:
@@ -26,7 +26,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
 
-        System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
+        System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

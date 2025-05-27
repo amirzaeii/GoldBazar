@@ -1,11 +1,3 @@
-using System.ComponentModel;
-
-using GoldBazar.Shared.DTOs;
-
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
-
 using static Catalog.Infrastructure.Models.Item;
 
 namespace Catalog.Api.Apis;
@@ -14,81 +6,86 @@ public static class CatalogApi
 {
     public static IEndpointRouteBuilder MapCatalogApiV1(this IEndpointRouteBuilder app)
     {
-         var api = app.MapGroup("api/catalog").HasApiVersion(1.0);
+        var api = app.MapGroup("api/catalog").HasApiVersion(1.0);
 
         api.MapGet("/Items", GetItemList)
             .WithName("ProductsList")
             .WithSummary("List of products")
             .WithDescription("Get a paginated list of products in the catalog.")
-            .WithTags("Items");
+            .WithTags("Item");
 
         api.MapGet("/items/by", GetItemsByIds)
             .WithName("BatchGetItems")
             .WithSummary("Batch get catalog items")
             .WithDescription("Get multiple items from the catalog")
-            .WithTags("Items");
+            .WithTags("Item");
 
         api.MapGet("/categories", GetCategoryList)
             .WithName("Item Category List")
             .WithSummary("List of item categories")
             .WithDescription("Get list of item categories.")
-            .WithTags("Category");     
+            .WithTags("Category");
 
         api.MapGet("/categories/{id:int}/pic", GetCategoryPictureById)
             .WithName("GetTypePicture")
             .WithSummary("Get catalog type picture")
             .WithDescription("Get the picture for a catalog type")
-            .WithTags("Category");      
-        
-        api.MapGet("/Items/{id:int}", GetItemById)
+            .WithTags("Category");
+
+        api.MapGet("/items/{id:int}", GetItemById)
             .WithName("GetProduct")
             .WithSummary("Get an item by its ID")
             .WithDescription("Retrieves a specific item from the catalog by its unique identifier (ID).")
-            .WithTags("Items");
+            .WithTags("Item");
+
+        api.MapGet("/items/{id:int}/pic", GetItemPhotos)
+            .WithName("GetPhotosOfProduct")
+            .WithSummary("Get an item pictures by its ID")
+            .WithDescription("Retrieves photos of an item from the catalog by its unique identifier (ID).")
+            .WithTags("Item");
 
         api.MapGet("/Items/category/{typeid:int}", GetItemsByCategoryId)
             .WithName("GetProductByType")
             .WithSummary("Get items by their category")
             .WithDescription("Retrieves catalog items filtered by their category identifier.")
-            .WithTags("Items");
+            .WithTags("Item");
 
 
-        api.MapGet("/items/{id:int}/pic", GetItemPictureById)
+        api.MapGet("/items/{id:int}/mainpic", GetItemPictureById)
             .WithName("GetItemPicture")
             .WithSummary("Get catalog item picture")
             .WithDescription("Get the picture for a catalog item")
-            .WithTags("Items");
+            .WithTags("Item");
 
         api.MapPost("/item", AddItem)
             .WithName("additem")
             .WithSummary("create an item")
             .WithDescription("create an item")
-            .WithTags("items");      
+            .WithTags("item");
 
-        api.MapPost("/item/pic", UploadItemImage)
-            .DisableAntiforgery()
-            .WithName("addproductimage")
-            .WithSummary("upload an item image")
-            .WithDescription("upload an item image")
-            .WithTags("items");
+        api.MapPost("/item/photos", AddItemPhotos)
+            .WithName("additemphotos")
+            .WithSummary("adding phtots for an item")
+            .WithDescription("adding phtots for an item")
+            .WithTags("item");
 
         api.MapPut("/item/{id}", UpdateItem)
             .WithName("edititem")
             .WithSummary("Update an item")
             .WithDescription("Update an item")
-            .WithTags("Items");
+            .WithTags("Item");
 
         api.MapDelete("/item/{id}", DeleteItem)
             .WithName("DeleteItem")
             .WithSummary("Delete an item")
             .WithDescription("delete an item")
-            .WithTags("Items");
+            .WithTags("Item");
 
         api.MapGet("/item/similar/{categoryId}", GetSimilarItems)
             .WithName("GetSimilarItems")
             .WithSummary("Get list of similar items by its categoryId")
             .WithDescription("Get list of similar items by its categoryId")
-            .WithTags("Items");
+            .WithTags("Item");
 
         //api.MapPost("/item/filter", FilterByComposite)
         //     .WithName("FilterByComposite")
@@ -105,7 +102,7 @@ public static class CatalogApi
           .WithName("GetDiscountedItems")
           .WithSummary("List of discounted items")
           .WithDescription("Get a list of all items that have a discount or offer.")
-          .WithTags("Items");
+          .WithTags("Item");
 
         return app;
     }
@@ -130,38 +127,39 @@ public static class CatalogApi
             .OrderBy(c => c.Caption)
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
-            .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
-                        }).ToArrayAsync();
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                ChangePriceRange = s.EligibleChangePriceRang,
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ShopId = s.ShopId,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? "default.png"
+            }).ToArrayAsync();
 
         return TypedResults.Ok(new PaginatedItems<ItemDTO>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
@@ -177,37 +175,38 @@ public static class CatalogApi
             .Include(i => i.Occassion)
             .Include(i => i.Shop)
             .OrderBy(c => c.Caption)
-            .Select(s =>  new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                ChangePriceRange = s.EligibleChangePriceRang,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ShopId = s.ShopId,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? "default.png"
             }).ToListAsync();
         return TypedResults.Ok(items);
     }
@@ -221,37 +220,38 @@ public static class CatalogApi
                 .Include(i => i.Style)
                 .Include(i => i.Occassion)
                 .Include(i => i.Shop)
-                .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
+                .Select(s => new ItemDTO
+                {
+                    Id = s.Id,
+                    Caption = s.Caption,
+                    Description = s.Description ?? string.Empty,
+                    CostPerGram = s.CostPerGram,
+                    Weight = s.Weight,
+                    Size = s.Size,
+                    CategoryId = s.CategoryId,
+                    ManufactureId = s.ManufactureId,
+                    ManufactureName = s.Manufacture.Name,
+                    TypeId = (int)s.Type,
+                    TypeName = s.Type.GetDisplayName(),
+                    ChangePriceRange = s.EligibleChangePriceRang,
+                    CategoryName = s.Category.Name,
+                    MetalId = s.MetalId,
+                    MetalName = s.Metal.Name,
+                    KT = s.Manufacture.Karat,
+                    Purity = s.Manufacture.Purity,
+                    ShopId = s.ShopId,
+                    ShopName = s.Shop.Name,
+                    City = s.Shop.City.Name,
+                    MaterialId = s.MaterialId,
+                    MaterialName = s.Material.Name,
+                    OccasionId = s.OccasionId,
+                    OccasionName = s.Occassion.Name,
+                    StyleId = s.StyleId,
+                    StyleName = s.Style.Name,
+                    Discount = s.Discount,
+                    Status = s.Status,
+                    Quantity = s.AvailableStock,
+                    MainPhoto = s.MainPhoto ?? "default.png"
                 }).FirstOrDefaultAsync();
 
         return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
@@ -265,59 +265,79 @@ public static class CatalogApi
             .Include(i => i.Manufacture)
             .Include(i => i.Style)
             .Include(i => i.Occassion)
-            .Include(i => i.Shop)            
-            .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
+            .Include(i => i.Shop)
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                ChangePriceRange = s.EligibleChangePriceRang,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ShopId = s.ShopId,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? "default.png"
             }).ToArrayAsync();
 
         return items is not null ? TypedResults.Ok(items) : TypedResults.NotFound();
     }
 
+    public static async Task<Results<Ok<ItemPhotosDTO[]>, NotFound>> GetItemPhotos(
+       int id,
+       [AsParameters] CatalogServices services)
+    {
+        var item = await services.Context.ItemPhotos.Where(i => i.ItemId == id)
+                .Select(s => new ItemPhotosDTO
+                {
+                    Id = s.Id,
+                    AbsolutePath = s.PhotoPath,
+                    RelativePath = s.Url,
+                    ThumbnailPath = s.ThumbnailPath,
+                    Priority = s.Priority,
+                    Description = s.Description ?? string.Empty,
+                    ItemId = s.ItemId
+                }).ToArrayAsync();
+
+        return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
+    }
+
     public static async Task<Results<Ok<ItemCategoryDTO[]>, BadRequest<string>>> GetCategoryList(
             [AsParameters] CatalogServices services)
-        {
-            var totalItems = await services.Context.Categories.LongCountAsync();
+    {
+        var totalItems = await services.Context.Categories.LongCountAsync();
 
-            var catalogItemTypes = await services.Context.Categories
-                .OrderBy(pt => pt.Name)
-                .Select(s => new ItemCategoryDTO(s.Id, s.Name, s.Photo)).ToArrayAsync();
+        var catalogItemTypes = await services.Context.Categories
+            .OrderBy(pt => pt.Name)
+            .Select(s => new ItemCategoryDTO(s.Id, s.Name, s.Photo)).ToArrayAsync();
 
-            return TypedResults.Ok(catalogItemTypes);
-        }
+        return TypedResults.Ok(catalogItemTypes);
+    }
 
     public static async Task<Results<Ok<ItemDTO>, NotFound>> UpdateItem(
         int id,
         [Description("The catalog item to update")]
-        [FromBody]ItemDTO updatedProduct, 
+        [FromBody]ItemDTO updatedProduct,
         [AsParameters] CatalogServices services)
     {
         var item = await services.Context.Items.FirstOrDefaultAsync(p => p.Id == id);
@@ -375,37 +395,38 @@ public static class CatalogApi
             .Include(p => p.Category)
             .Include(p => p.Shop)
             .Include(p => p.Type)
-            .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                ChangePriceRange = s.EligibleChangePriceRang,
+                ShopId = s.ShopId,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? "default.png"
             })
             .ToListAsync();
 
@@ -416,7 +437,7 @@ public static class CatalogApi
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
           "image/wmf", "image/jp2", "image/svg+xml", "image/webp" ])]
-    public static async Task<Results<PhysicalFileHttpResult,NotFound>> GetItemPictureById(
+    public static async Task<Results<PhysicalFileHttpResult, NotFound>> GetItemPictureById(
         CatalogContext context,
         IWebHostEnvironment environment,
         [Description("The catalog item id")] int id)
@@ -440,7 +461,7 @@ public static class CatalogApi
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
           "image/wmf", "image/jp2", "image/svg+xml", "image/webp" ])]
-    public static async Task<Results<Ok<string>,NotFound>> GetCategoryPictureById(
+    public static async Task<Results<Ok<string>, NotFound>> GetCategoryPictureById(
         CatalogContext context,
         IWebHostEnvironment environment,
         [Description("The catalog type id")] int id)
@@ -451,8 +472,8 @@ public static class CatalogApi
         {
             return TypedResults.NotFound();
         }
-        
-        if(item.Photo!.StartsWith("http"))
+
+        if (item.Photo!.StartsWith("http"))
         {
             return TypedResults.Ok(item.Photo);
         }
@@ -460,7 +481,7 @@ public static class CatalogApi
         string imageFileExtension = Path.GetExtension(item.Photo ?? "default.png");
         string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-        var path = GetFullPathType(environment.ContentRootPath, item.Photo ?? "default.png");       
+        var path = GetFullPathType(environment.ContentRootPath, item.Photo ?? "default.png");
         DateTime lastModified = File.GetLastWriteTimeUtc(path);
         //return TypedResults.PhysicalFile(path, mimetype, lastModified: lastModified);
         return TypedResults.Ok(path);
@@ -475,37 +496,38 @@ public static class CatalogApi
             .Include(p => p.Manufacture)
             .Include(p => p.Shop)
             .Include(p => p.Type)
-            .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? "default.png"
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ShopId = s.ShopId,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                ChangePriceRange = s.EligibleChangePriceRang,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? "default.png"
             })
             .ToListAsync();
 
@@ -590,7 +612,7 @@ public static class CatalogApi
     //        )).ToListAsync();
 
     //    return TypedResults.Ok(filteredProducts);
-    
+
 
     // public static async Task<Ok<List<ItemDto>>> FilterByComposite(
     // [AsParameters] CatalogServices services,
@@ -707,18 +729,39 @@ public static class CatalogApi
         return TypedResults.Created($"/api/catalog/items/{item.Id}", itemDto);
     }
 
-     public static async Task<Results<Created<UploadResult>, BadRequest<UploadResult>>> UploadItemImage(
-     [FromForm]IFormFile file, 
-     IFileService services)
+    public static async Task<Results<Created<ItemPhotosDTO[]>, BadRequest<string>>> AddItemPhotos(
+     [FromBody] ItemPhotosDTO[] itemPhotos,
+     [AsParameters] CatalogServices services)
+    {
+        if (itemPhotos.Length == 0)
         {
-            UploadResult uploadResults = new UploadResult();
-            if (file == null)
-                return TypedResults.BadRequest(uploadResults);
-
-            uploadResults = await services.SaveFileAsync(file);
-
-            return TypedResults.Created($"api/catalog/item/pic", uploadResults );
+            return TypedResults.BadRequest("nothing to add");
         }
+        var itemsPhotosInAdd = new List<ItemPhoto>();
+        foreach (var itemPhoto in itemPhotos)
+        {
+            if (string.IsNullOrEmpty(itemPhoto.AbsolutePath) || itemPhoto.ItemId <= 0)
+            {
+                return TypedResults.BadRequest("Invalid photo or item ID.");
+            }
+            var itemPhotoEntity = new ItemPhoto
+            {
+                PhotoPath = itemPhoto.AbsolutePath,
+                Url = itemPhoto.RelativePath,
+                ThumbnailPath = itemPhoto.ThumbnailPath,
+                Priority = itemPhoto.Priority,
+                Description = itemPhoto.Description,
+                ItemId = itemPhoto.ItemId
+            };
+            itemsPhotosInAdd.Add(itemPhotoEntity);
+        }
+
+        await services.Context.ItemPhotos.AddRangeAsync(itemsPhotosInAdd);
+        await services.Context.SaveChangesAsync();
+
+
+        return TypedResults.Created($"/api/catalog/itemphotos/{itemPhotos[0].ItemId}", itemPhotos);
+    }
 
     private static string GetImageMimeTypeFromImageFileExtension(string extension) => extension switch
     {

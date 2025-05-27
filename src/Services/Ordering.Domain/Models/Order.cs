@@ -21,7 +21,7 @@ public class Order
 
     public int ShopId { get; private set; }
     
-    public string ShopName { get; set; }
+    public string? ShopName { get; set; }
 
     // Draft orders have this set to true. Currently we don't check anywhere the draft status of an Order, but we could do it if needed
 #pragma warning disable CS0414 // The field 'Order._isDraft' is assigned but its value is never used
@@ -75,7 +75,7 @@ public class Order
     {
         var existingOrderForProduct = _orderItems.SingleOrDefault(o => o.ProductId == productId);
 
-        if (existingOrderForProduct != null)
+        if (existingOrderForProduct is not null)
         {
             //if previous line exist modify it with higher discount  and units..
             if (discount > existingOrderForProduct.Discount)

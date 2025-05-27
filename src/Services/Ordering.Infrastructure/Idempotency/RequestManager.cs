@@ -1,4 +1,6 @@
-﻿namespace Ordering.Infrastructure.Idempotency;
+﻿using Ordering.Infrastructure.EntityFramework;
+
+namespace Ordering.Infrastructure.Idempotency;
 
 public class RequestManager : IRequestManager
 {
