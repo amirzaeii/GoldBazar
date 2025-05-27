@@ -7,14 +7,14 @@
 <PageTitle>GOLD BAZAR</PageTitle>
 
 <main>
-    <Header Title="@PageTitle()" />
+    <Header Title="@product?.Caption" />
 
     <section class="h-[233px] relative my-3 bg-[#F9F9FB]">
         @if (product != null)
         {
-            <Slider Product="@product" />
+            <Slider ProductId="@product.Id" />
 
-            @if (product.HasDiscountBadge)
+            @if (product.Discount > 0)
             {
                 <span class="absolute top-[24px] left-[24px]">
                     <DiscountIcon Color="#8D62F9EB" />
@@ -28,7 +28,9 @@
             <div class="absolute flex flex-col items-end bottom-[24px] left-[24px]">
                 <div class="flex items-center justify-around rounded-[34px] p-1 border-[#D7D7D7] border w-[66px] h-[20px]">
                     <h5 class="pt-0.5 text-[#A39999] text-[10px] border-l border-[#A39999] leading-[1] pl-1">234</h5>
-                    <span class="mb-0.5"><StarIcon Color="#EBAD42" Height="12" Width="12" /></span>
+                    <span class="mb-0.5">
+                        <StarIcon Color="#EBAD42" Height="12" Width="12" />
+                    </span>
                     <h6 class="text-xs font-normal">4.3</h6>
                 </div>
                 <div class="flex w-[90px] items-center justify-between mt-2">
@@ -46,12 +48,12 @@
     <section class="flex items-center justify-between my-2 mx-4">
         @if (product != null)
         {
-            <h2 class="text-2xl font-normal">@product.Name</h2>
+            <h2 class="text-2xl font-normal">@product.Caption</h2>
             <div class="flex items-center">
-                @if (product.DiscountPrice != null)
+                @if (product.Discount > 0)
                 {
                     <span class="text-[20px] text-[#898989] ml-2 line-through">@product.Price</span>
-                    <span class="text-[26px] text-black">@product.DiscountPrice</span>
+                    <span class="text-[26px] text-black">@product.OldPrice</span>
                 }
                 else
                 {
@@ -78,21 +80,27 @@
                     <span class="text-black">34</span>
                 </div>
             </div>
-            <div class="border text-base text-white flex items-center justify-center border-[#4C46E3] bg-[#4C46E3] rounded-b-lg h-[43px] w-full">
+            <div
+                class="border text-base text-white flex items-center justify-center border-[#4C46E3] bg-[#4C46E3] rounded-b-lg h-[43px] w-full">
                 بەپێی خواستی خۆت دیاریبکە
             </div>
         }
     </section>
 
     <section class="flex flex-col items-center justify-between m-4">
-        <div class="bg-[#EBAD420D] border border-[#EBAD42] w-full rounded-lg min-h-[153px] p-4 flex items-start justify-between">
+        <div
+            class="bg-[#EBAD420D] border border-[#EBAD42] w-full rounded-lg min-h-[153px] p-4 flex items-start justify-between">
             <div class="flex flex-col gap-1.5">
                 <div class="text-[#565656] flex items-center">
-                    <span class="mb-2"><HomeIcon Color="currentColor"/></span>
+                    <span class="mb-2">
+                        <HomeIcon Color="currentColor" />
+                    </span>
                     <h3 class="text-xl mr-2">ئەڤیتا ستۆر</h3>
                 </div>
                 <div class="text-[#565656] flex items-center">
-                    <span class="mb-2"><LocationIcon Stroke="currentColor"/></span>
+                    <span class="mb-2">
+                        <LocationIcon Stroke="currentColor" />
+                    </span>
                     <h3 class="text-xl mr-2">سلێمانی ، بەرامبەر سەرا</h3>
                 </div>
                 <div class="flex w-[138px] items-center justify-between mr-1 mt-1">
@@ -104,12 +112,17 @@
                 </div>
             </div>
             <div>
-                <div class="size-[90px] border border-[#EBAD4299] rounded-[10px] flex items-center justify-center bg-white">
+                <div
+                    class="size-[90px] border border-[#EBAD4299] rounded-[10px] flex items-center justify-center bg-white">
                     <img class="w-full h-auto" src="/images/shop/0.png" alt="">
                 </div>
-                <div class="size-[90px] rounded-[34px] h-[20px] border borded-2 border-[#EBAD42] mt-1 flex justify-center items-center">
-                    <h5 class="pt-0.5 text-[#A39999] text-[10px] border-l border-[#A39999] leading-[1] pl-1 ml-2">234</h5>
-                    <span class="mb-0.5"><StarIcon Color="#EBAD42" Height="12" Width="12" /></span>
+                <div
+                    class="size-[90px] rounded-[34px] h-[20px] border borded-2 border-[#EBAD42] mt-1 flex justify-center items-center">
+                    <h5 class="pt-0.5 text-[#A39999] text-[10px] border-l border-[#A39999] leading-[1] pl-1 ml-2">234
+                    </h5>
+                    <span class="mb-0.5">
+                        <StarIcon Color="#EBAD42" Height="12" Width="12" />
+                    </span>
                     <h6 class="text-xs font-normal mr-1">4.3</h6>
                 </div>
             </div>
@@ -175,17 +188,21 @@
         <div class="w-full">
             <h2 class="text-lg px-2 text-black">بەرهەمەکانی تری زەڕەنگەر</h2>
             <div class="mt-2 flex overflow-x-auto gap-2">
-                <div class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
-                    <div>    
+                <div
+                    class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
+                    <div>
                         <div>
                             <span class="text-base text-[#7A7A7A] ml-2 line-through">$١٨٩</span>
                             <span class="text-lg text-[#020202]">$١٧٩</span>
                         </div>
                         <h2 class="text-black mt-2">گوارەی عەیارە 21</h2>
                         <h3 class="text-black mt-1">زەڕەنگەری : ئەڤیتا ستۆر</h3>
-                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5"/>
-                            <path d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z" stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square"/>
+                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5" />
+                            <path
+                                d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z"
+                                stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square" />
                         </svg>
                     </div>
                     <div class="size-[130px] bg-white rounded-2xl">
@@ -193,17 +210,21 @@
                     </div>
                 </div>
 
-                <div class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
-                    <div>    
+                <div
+                    class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
+                    <div>
                         <div>
                             <span class="text-base text-[#7A7A7A] ml-2 line-through">$١٨٩</span>
                             <span class="text-lg text-[#020202]">$١٧٩</span>
                         </div>
                         <h2 class="text-black mt-2">گوارەی عەیارە 21</h2>
                         <h3 class="text-black mt-1">زەڕەنگەری : ئەڤیتا ستۆر</h3>
-                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5"/>
-                            <path d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z" stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square"/>
+                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5" />
+                            <path
+                                d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z"
+                                stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square" />
                         </svg>
                     </div>
                     <div class="size-[130px] bg-white rounded-2xl">
@@ -211,25 +232,30 @@
                     </div>
                 </div>
 
-                <div class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
-                    <div>    
+                <div
+                    class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
+                    <div>
                         <div>
                             <span class="text-base text-[#7A7A7A] ml-2 line-through">$١٨٩</span>
                             <span class="text-lg text-[#020202]">$١٧٩</span>
                         </div>
                         <h2 class="text-black mt-2">گوارەی عەیارە 21</h2>
                         <h3 class="text-black mt-1">زەڕەنگەری : ئەڤیتا ستۆر</h3>
-                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5"/>
-                            <path d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z" stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square"/>
+                        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5" />
+                            <path
+                                d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z"
+                                stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square" />
                         </svg>
                     </div>
                     <div class="size-[130px] bg-white rounded-2xl">
                         <img src="/images/product/0.png" class="w-full h-auto rounded-2xl" alt="" />
                     </div>
                 </div>
-             
-                <div class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[140px] w-[140px] p-4 flex items-center justify-between">
+
+                <div
+                    class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[140px] w-[140px] p-4 flex items-center justify-between">
                     <div class="w-full flex flex-col items-center justify-center">
                         <span class="bg-[#8D62F9] rounded-full p-1">
                             <ArrowLeft Stroke="#FFFFFF" />
@@ -245,10 +271,10 @@
         <div class="w-full">
             <h2 class="text-lg px-2 text-black">بەرهەمی هاوشێوە</h2>
             <div class="mt-2 gap-4 grid grid-cols-2 md:grid-cols-4">
-                @foreach (var Product in Products)
+                @* @foreach (var Product in Products)
                 {
                     <ProductItem Product="@Product" />
-                }
+                } *@
             </div>
         </div>
     </section>
@@ -257,100 +283,8 @@
 @code {
     [Parameter]
     public int productId { get; set; }
-
-    private Product? product { get; set; }
-
+    private ItemDTO product { get; set; }
     private string FavColor => product!.IsFavorite ? "#8D62F9EB" : "none";
-
-    private string PageTitle() {
-        if (product != null)
-        {
-            return product.Name;
-        }
-
-        return "";
-    }
-
-    private List<Product> Products = new()
-{
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/0.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = true,
-IsFavorite = true,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/1.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = true,
-IsFavorite = false,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/2.png",
-DiscountPrice = "$١٨٩",
-Price = "$١٨٩",
-HasDiscountBadge = false,
-IsFavorite = true,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},
-
-new Product
-{
-Name = "گوارەی عەیارە 21",
-Image = "/images/product/3.png",
-Price = "$١٨٩",
-HasDiscountBadge = false,
-IsFavorite = false,
-Category = new Category {
-Title = "گوارە", Image = "/images/categories/3.png"
-},
-},};
-
-    protected override async Task OnInitializedAsync()
-    {
-        await Task.Delay(500);
-
-        product = new Product
-        {
-            Name = "گوارەی عەیارە 21",
-            Image = "/images/product/0.png",
-            Images = new()
-{
-"/images/product/0.png",
-"/images/product/1.png",
-"/images/product/2.png",
-"/images/product/3.png",
-},
-            DiscountPrice = "$١٨٩",
-            Price = "$١٨٩",
-            HasDiscountBadge = true,
-            IsFavorite = false,
-            Category = new Category
-            {
-                Title = "گوارە",
-                Image = "/images/categories/3.png"
-            },
-        };
-    }
 
     private async Task onFavIconClick()
     {

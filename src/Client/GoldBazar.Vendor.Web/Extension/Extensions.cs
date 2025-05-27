@@ -5,7 +5,7 @@ public static class Extensions
   public static void AddVendorAppApplicationServices(this IHostApplicationBuilder builder)
   {
     //  builder.AddAuthenticationServices();
-
+    builder.AddShareApplicationServices();
     builder.AddRabbitMqEventBus("gb-eventbus")
            .AddEventBusSubscriptions();
 
