@@ -7,7 +7,7 @@
 <PageTitle>GOLD BAZAR</PageTitle>
 
 <main>
-    <Header Product="@product" />
+    <Header Title="@PageTitle()" />
 
     <section class="h-[233px] relative my-3 bg-[#F9F9FB]">
         @if (product != null)
@@ -261,6 +261,15 @@
     private Product? product { get; set; }
 
     private string FavColor => product!.IsFavorite ? "#8D62F9EB" : "none";
+
+    private string PageTitle() {
+        if (product != null)
+        {
+            return product.Name;
+        }
+
+        return "";
+    }
 
     private List<Product> Products = new()
 {

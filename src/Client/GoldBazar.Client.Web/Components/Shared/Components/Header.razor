@@ -3,8 +3,8 @@
 
 @using GoldBazar.Client.Web.Components.Shared.Icons
 
-<div class="flex items-center justify-end gap-3 text-black mt-[19px] px-6">
-    <h2 class="text-base font-normal">@Product?.Name</h2>
+<div class="flex items-center justify-end gap-3 text-black mt-[20px] px-4">
+    <h2 class="text-base font-normal">@Title</h2>
     <button class="cursor-pointer" @onclick="GoBack">
         <ArrowLeft Stroke="currentColor" />
     </button>
@@ -12,7 +12,7 @@
 
 @code {
     [Parameter]
-    public Product? Product { get; set; }
+    public string? Title { get; set; }
 
     private async Task GoBack()
     {
