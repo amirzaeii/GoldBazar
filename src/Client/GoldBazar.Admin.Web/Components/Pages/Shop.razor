@@ -9,7 +9,7 @@
             <MudItem xs="12" Class="d-flex justify-space-between align-center">
                 <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Shop Directory</MudText>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
-                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyShopDialog(new ShopDTO()))">
+                    Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyShopDialog(new ShopDTO()))">
                     New Shop
                 </MudButton>
             </MudItem>
@@ -20,33 +20,36 @@
                     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
                 }
 
-                <MudDataGrid T="ShopDTO"
-                             Items="@shops"
-                             Loading="@_loading"
-                             Hover="true"
-                             ReadOnly="true"
-                             Class="elevation-1">
+                <MudDataGrid T="ShopDTO" Items="@shops" Loading="@_loading" Hover="true" ReadOnly="true"
+                    Class="elevation-1">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6" Class="mud-primary-text">
                             Shops (@shops.Length)
                         </MudText>
                     </ToolBarContent>
                     <Columns>
+                        <PropertyColumn Property="x => x.Id" Title="Code" />
                         <PropertyColumn Property="x => x.Name" Title="Shop Name" />
-
+                        <PropertyColumn Property="x => x.OwnerName" Title="Owner" />
+                        <PropertyColumn Property="x => x.ContactNo" Title="Tel" />
+                        <PropertyColumn Property="x => x.CityName" Title="City" />
+                        <PropertyColumn Property="x => x.Address" Title="Address" />
+                        <TemplateColumn Title="Address">
+                            <CellTemplate>
+                                <MudImage Class="rounded" Style="width: 50px; height: 50px;"
+                                    Src="@context.Item.LogoUrl">
+                                </MudImage>
+                            </CellTemplate>
+                        </TemplateColumn>
                         <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
                             <CellTemplate>
                                 <MudStack Row="true" Spacing="0" Class="pa-2">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                                   Color="Color.Primary"
-                                                   Size="Size.Small"
-                                                   Class="mx-1"
-                                                   OnClick="@(() => ModifyShopDialog(context.Item))" />
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                                   Color="Color.Error"
-                                                   Size="Size.Small"
-                                                   Class="mx-1"
-                                                   OnClick="@(() => DeleteDialog(context.Item.Id))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary"
+                                        Size="Size.Small" Class="mx-1"
+                                        OnClick="@(() => ModifyShopDialog(context.Item))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                        Size="Size.Small" Class="mx-1"
+                                        OnClick="@(() => DeleteDialog(context.Item.Id))" />
                                 </MudStack>
                             </CellTemplate>
                         </TemplateColumn>
@@ -60,4 +63,3 @@
         </MudGrid>
     </MudPaper>
 </MudContainer>
-
