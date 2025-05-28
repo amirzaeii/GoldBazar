@@ -16,8 +16,13 @@ public record MaterialDTO
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
-public record CityDTO
+public class CityDTO
 {
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int GovernorateId { get; set; }
+    public string GovernorateName { get; set; } = string.Empty;
+
     public CityDTO() { }
 
     public CityDTO(int id, string name, int governorateId, string governorateName)
@@ -32,11 +37,6 @@ public record CityDTO
     {
         Name = name;
     }
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int GovernorateId { get; set; }
-    public string GovernorateName { get; set; } = string.Empty;
-
 }
 public record GovernateDTO
 {
@@ -72,6 +72,7 @@ public class MetalDTO
     public int MaterialId { get; set; }
     public string MaterialName { get; set; } = string.Empty;
 }
+
 public record OccasionDTO
 {
     public OccasionDTO()
@@ -90,7 +91,7 @@ public record StyleDTO
 {
     public StyleDTO()
     {
-
+        
     }
     public StyleDTO(int id, string name)
     {
@@ -100,7 +101,23 @@ public record StyleDTO
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
-public record ItemDTO
+
+public record CategoryDTO
+{
+    public CategoryDTO() { }
+    public CategoryDTO(int id, string name, string? photo)
+    {
+        Id = id;
+        Name = name;
+        Photo = photo;
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Photo { get; set; }
+}
+
+public class ItemDTO
 {
     public ItemDTO()
     {
@@ -145,65 +162,38 @@ public record ItemDTO
         MainPhoto = mainPhoto;
     }
 
-    public int Id { get; set; }
-    public string Caption { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public decimal CostPerGram { get; set; }
-    public decimal ChangePriceRange { get; set; }
-    public decimal Weight { get; set; }
-    public int Size { get; set; }
-    public int CategoryId { get; set; }
+    public int Id { get; set;  }
+    public string Caption { get; set;  }
+    public string Description { get; set;  }
+    public decimal CostPerGram { get; set;  }
+    public decimal ChangePriceRange { get; set;  }
+    public decimal Weight { get; set;  }
+    public int Size { get;set;   }
+    public int CategoryId { get; set;  }
     public int ManufactureId { get; set; }
     public string ManufactureName { get; set; } = string.Empty;
-    public int TypeId { get; set; } = 1;
+    public int TypeId { get; set;  } = 1;
     public string TypeName { get; set; } = string.Empty;
-    public string CategoryName { get; set; } = string.Empty;
-    public int MetalId { get; set; } = 1;
-    public string MetalName { get; set; } = string.Empty;
-    public decimal KT { get; set; }
-    public decimal Purity { get; set; }
-    public int ShopId { get; set; }
-    public string ShopName { get; set; } = string.Empty;
-    public string City { get; set; } = string.Empty;
-    public int MaterialId { get; set; } = 1;
-    public string MaterialName { get; set; } = string.Empty;
-    public int OccasionId { get; set; }
-    public string OccasionName { get; set; } = string.Empty;
-    public int StyleId { get; set; }
+    public string CategoryName { get; set;  }
+    public int MetalId { get;set; } = 1;
+    public string MetalName { get; set;  }
+    public decimal KT { get; set;  }
+    public decimal Purity { get;set;   }
+    public int ShopId { get; set;  }
+    public string ShopName { get; set;  }
+    public string City { get; set;  }
+    public int MaterialId { get; set;  } = 1;
+    public string MaterialName { get; set;  }
+    public int OccasionId { get; set;  }
+    public string OccasionName { get;set;   }
+    public int StyleId { get; set;  }
     public decimal OldPrice { get; set; }
     public decimal Price { get; set; }
-    public string StyleName { get; set; } = string.Empty;
-    public decimal Discount { get; set; }
-    public bool Status { get; set; }
+    public string StyleName { get; set;  }
+    public decimal Discount { get; set;  }
+    public bool Status { get;set;   }
     public int Quantity { get; set; } // Changed to settable
-    public string MainPhoto { get; set; } = string.Empty;
-    public bool IsFavorite { get; set; }
-}
-public record ItemPhotosDTO
-{
-    public ItemPhotosDTO()
-    {
-    }
-
-    public ItemPhotosDTO(int id, string absolutPath, string relativePath, string thumbnailPath, int priority, string description, int itemId)
-    {
-        Id = id;
-        AbsolutePath = absolutPath;
-        RelativePath = relativePath;
-        ThumbnailPath = thumbnailPath;
-        Priority = priority;
-        Description = description;
-        ItemId = itemId;
-    }
-
-    public int Id { get; set; }
-    public string AbsolutePath { get; set; } = string.Empty;
-    public string RelativePath { get; set; } = string.Empty;
-    public string ThumbnailPath { get; set; } = string.Empty;
-    public int Priority { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public int ItemId { get; set; }
-
+    public string MainPhoto { get; set;  }
 }
 public class CompositeFilterDto
 {
