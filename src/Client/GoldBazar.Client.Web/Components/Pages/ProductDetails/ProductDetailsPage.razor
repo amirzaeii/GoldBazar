@@ -7,7 +7,7 @@
 <PageTitle>GOLD BAZAR</PageTitle>
 
 <main>
-    <Header Product="@product" />
+    <Header Title="@product?.Caption" />
 
     <section class="h-[233px] relative my-3 bg-[#F9F9FB]">
         @if (product != null)
@@ -283,8 +283,9 @@
 @code {
     [Parameter]
     public int productId { get; set; }
-    private ItemDTO product { get; set; }
+    private ItemDTO product { get; set; } = default!;
     private string FavColor => product!.IsFavorite ? "#8D62F9EB" : "none";
+
     private async Task onFavIconClick()
     {
         await Task.Delay(500);

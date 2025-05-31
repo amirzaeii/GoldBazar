@@ -4,6 +4,9 @@ window.initializeBazarSwiper = () => {
     const _ = new Swiper(".home-page .swiper", {
         speed: 400,
         spaceBetween: 10,
+        autoplay: {
+            delay: 5000,
+        },
         loop: true, // optional
         pagination: {
             el: ".home-page .swiper-pagination",
@@ -19,6 +22,9 @@ window.initializeProductDetailsSwiper = () => {
         speed: 400,
         spaceBetween: 10,
         loop: true, // optional
+        autoplay: {
+            delay: 5000,
+        },
         pagination: {
             el: ".product-details .swiper-pagination",
             clickable: true,
