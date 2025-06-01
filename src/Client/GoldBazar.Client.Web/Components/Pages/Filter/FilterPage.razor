@@ -1,15 +1,16 @@
 ﻿@page "/search"
+@rendermode InteractiveServer
 @using GoldBazar.Client.Web.Components.Shared.Components
+@using System.Text.Json
 
 <PageTitle>GOLD BAZAR - Filter</PageTitle>
 
-<main class=" bg-red-500">
+<main class="h-full">
     <Header Title="جیاکاری" />
 
     <div class="px-4 mt-4">
-
         <div class="bg-[#F5F5F5] rounded-2xl h-[57px] w-full grid grid-cols-2">
-            <div class="flex items-center justify-center gap-2">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" @onclick="() => ShowModal = true">
                 <span class="text-[#292D32]">جیاکارییەکان</span>
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -27,21 +28,291 @@
 
             <div class="flex items-center justify-center gap-2">
                 <span class="text-[#292D32]">ڕیزکردن بە پێی</span>
-                <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M11.175 17.825L10 18.5834C8.90833 19.2584 7.39166 18.5 7.39166 17.15V12.6917C7.39166 12.1 7.05833 11.3417 6.71666 10.925L3.51664 7.55837C3.09164 7.13337 2.75833 6.38338 2.75833 5.87505V3.94171C2.75833 2.93338 3.51668 2.17505 4.44168 2.17505H15.5583C16.4833 2.17505 17.2417 2.93337 17.2417 3.85837V5.70837C17.2417 6.38337 16.8167 7.22505 16.4 7.64171"
-                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path
-                        d="M14.2333 10.4083L11.2833 13.3583C11.1666 13.475 11.0583 13.6916 11.0333 13.85L10.875 14.975C10.8166 15.3833 11.1 15.6666 11.5083 15.6083L12.6333 15.45C12.7916 15.425 13.0167 15.3166 13.125 15.2L16.075 12.25C16.5833 11.7416 16.825 11.15 16.075 10.4C15.3333 9.6583 14.7417 9.89998 14.2333 10.4083Z"
-                        stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                    <path d="M13.8167 10.825C14.0667 11.725 14.7667 12.4249 15.6667 12.6749" stroke="#292D32"
-                        stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 7.5H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M6 12.5H18" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
+                    <path d="M10 17.5H14" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
                 </svg>
             </div>
         </div>
 
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+            @if (SearchResult != null)
+            {
+                @foreach (var Product in SearchResult.Products)
+                {
+                    <ProductItem2 Product="@Product" />
+                }
+            }
+        </div>
     </div>
 
+    <Modal IsOpen="@ShowModal" OnClose="() => ShowModal = false" Title="جیاکارییەکان">
+        <div class="mt-[68px] h-[calc(100%-158px)] overflow-hidden">
+            <div class="grid h-full grid-cols-[42%_58%]">
+                <div class="bg-[#F5F1FF] h-full py-4 overflow-y-auto">
+                    @if (SearchResult != null)
+                    {
+                        @foreach (var filter in SearchResult.Filters)
+                        {
+                            <div @onclick="() => OnFilterSelected(filter.Key)"
+                                class="h-[50px] flex items-center justify-between w-full px-2 text-base mt-2 cursor-pointer @getCssClassForFilter(filter.Key)">
+                                <span>@filter.Value.Title</span>
+                                @if (FilterQueryParams.ContainsKey(filter.Key) && FilterQueryParams[filter.Key].Count > 0)
+                                {
+                                    <span
+                                        class="size-4 flex items-center justify-center rounded-sm bg-[#8D62F9] text-white text-xs">@FilterQueryParams[filter.Key].Count</span>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+                <div>
+                    <div class="h-full p-4 overflow-y-auto">
+                        @getFilterContent()
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="filter__confirm bg-white absolute bottom-0 items-center justify-center gap-4 h-[90px] w-full flex">
+            <button class="bg-[#8D62F9] text-white rounded-[12.36px] h-[47px] w-[172px] cursor-pointer"
+                @onclick="onApplyFilters">جێبەجێکردن</button>
+            <button class="bg-[#DCD2FE] text-[#4F3267] rounded-[12.36px] h-[47px] w-[172px] cursor-pointer"
+                @onclick="onClearFilters">لابردنی
+                هەمووی</button>
+        </div>
+    </Modal>
 </main>
+
+@code {
+    public record FilterItem(string? Value, string? Name);
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private SearchResultDTO? SearchResult;
+    private string SelectedFilter = string.Empty;
+
+    private Dictionary<string, List<FilterItem>> FilterQueryParams = new();
+    private bool ShowModal = false;
+
+    public Dictionary<string, Dictionary<string, List<string>>> ParseQueryParams(Uri uri)
+    {
+        var result = new Dictionary<string, Dictionary<string, List<string>>>();
+
+        var query = Microsoft.AspNetCore.WebUtilities.QueryHelpers.ParseQuery(uri.Query);
+
+        foreach (var (key, values) in query)
+        {
+            var match = System.Text.RegularExpressions.Regex.Match(key, @"^(?<param>[^\[\]]+)(\[(?<subkey>[^\[\]]+)\])?$");
+
+            if (!match.Success) continue;
+
+            var param = match.Groups["param"].Value;
+            var subkey = match.Groups["subkey"].Success ? match.Groups["subkey"].Value : string.Empty;
+
+            if (!result.ContainsKey(param))
+                result[param] = new Dictionary<string, List<string>>();
+
+            if (!result[param].ContainsKey(subkey))
+                result[param][subkey] = new List<string>();
+
+            foreach (var val in values)
+            {
+                if (!string.IsNullOrEmpty(val))
+                {
+                    result[param][subkey].Add(val);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("OnInitializedAsync called");
+
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+
+        foreach (var (key, values) in ParseQueryParams(uri))
+        {
+            if (!FilterQueryParams.ContainsKey(key))
+            {
+                FilterQueryParams[key] = new List<FilterItem>();
+            }
+
+
+            foreach (var (subkey, subvalues) in values)
+            {
+                string? name = null;
+                if (!int.TryParse(subkey, out _))
+                    name = subkey;
+
+                foreach (var value in subvalues)
+                {
+                    onFilterChange(key, value, name);
+                }
+            }
+        }
+
+        await Task.Delay(500);
+        SearchResult = DummySearchData.GetSearchResult();
+    }
+
+    private void OnFilterSelected(string filterKey)
+    {
+        SelectedFilter = filterKey;
+    }
+
+    private void onApplyFilters()
+    {
+        UpdateQueryString();
+        ShowModal = false;
+    }
+
+    private void onClearFilters()
+    {
+        FilterQueryParams.Clear();
+        UpdateQueryString();
+        ShowModal = false;
+    }
+
+    private void UpdateQueryString()
+    {
+        var queryList = new List<string>();
+
+        foreach (var kvp in FilterQueryParams)
+        {
+            var key = kvp.Key;
+            var values = kvp.Value;
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (values[i].Name == null)
+                {
+                    queryList.Add($"{key}[{i}]={Uri.EscapeDataString(values[i].Value!)}");
+                }
+                else
+                {
+                    queryList.Add($"{key}[{values[i].Name}]={Uri.EscapeDataString(values[i].Value!)}");
+                }
+            }
+        }
+
+        var newQuery = string.Join("&", queryList);
+        var uri = NavigationManager.GetUriWithQueryParameters(new Dictionary<string, object?>());
+
+        var baseUri = uri.Split('?')[0];
+        NavigationManager.NavigateTo($"{baseUri}?{newQuery}", forceLoad: false);
+    }
+
+    private void onFilterChange(string filterKey, string? value, string? name = null)
+    {
+        if (value == null && name == null) return;
+
+        if (!FilterQueryParams.ContainsKey(filterKey))
+        {
+            FilterQueryParams[filterKey] = new List<FilterItem>();
+        }
+
+        if (name != null && name.Length > 0)
+        {
+            FilterQueryParams[filterKey].RemoveAll(f => f.Name == name);
+        }
+
+
+        var filterItem = new FilterItem(value, name);
+        if (value != null && value.Length > 0)
+        {
+            if (FilterQueryParams[filterKey].Contains(filterItem))
+            {
+                FilterQueryParams[filterKey].Remove(filterItem);
+            }
+            else
+            {
+                FilterQueryParams[filterKey].Add(filterItem);
+            }
+        }
+    }
+
+    private RenderFragment getFilterContent()
+    {
+        if (SearchResult == null || SelectedFilter.Length == 0)
+        {
+            return @<div class="text-gray-500 text-sm text-center mt-4">هیچ فلتەرێک
+                هەلبژێردراو نییە.</div>;
+        }
+
+        var filter = SearchResult.Filters[SelectedFilter];
+        if (filter == null || filter.Options == null)
+        {
+            return @<div class="text-gray-500 text-sm text-center mt-4">زانیارییەکانی ئەم فلتەرە بەردەست نییە.</div>;
+        }
+
+        if (filter.Type == FilterType.Checkbox)
+        {
+            var checkboxOptions = (CheckboxFilterOptions)filter.Options;
+            return @<div>
+            @foreach (var option in checkboxOptions.Items)
+            {
+                    <div class="h-[50px] flex items-center justify-between w-full px-2 text-base mt-2 cursor-pointer"
+                        @onclick="() => onFilterChange(SelectedFilter, option.Id)">
+
+                        <span class="text-[#4F3267] text-[12.36px]">@option.Title</span>
+                        @if (FilterQueryParams.ContainsKey(SelectedFilter) && FilterQueryParams[SelectedFilter].Any(f => f.Value ==
+                                option.Id))
+                        {
+                            <span>
+                                <OkIcon Width="16" Height="16" Stroke="#4F3267" />
+                            </span>
+                        }
+                    </div>
+            }
+            </div>;
+        }
+
+        if (filter.Type == FilterType.Slider)
+        {
+            var sliderOptions = (SliderFilterOptions)filter.Options;
+            return @<div>
+                <div class="h-[50px] flex items-center justify-between w-full px-2 text-base mt-2 cursor-pointer">
+                    <span class="text-[#4F3267] text-[12.36px] w-[40px]">لە</span>
+                    <input class="border border-[#E9E9E9] focus-within:border-black outline-0 rounded-md px-2 py-1 grow"
+                        type="number" placeholder="@sliderOptions.Min"
+                        @onchange="(e) => onFilterChange(SelectedFilter, e.Value?.ToString(), nameof(sliderOptions.Min))"
+                        value="@getInputValue(SelectedFilter, nameof(sliderOptions.Min))" />
+                    <span class="text-[#4F3267] text-[12.36px] mr-2">$</span>
+                </div>
+
+                <div class="h-[50px] flex items-center justify-between w-full px-2 text-base mt-2 cursor-pointer">
+                    <span class="text-[#4F3267] text-[12.36px] w-[40px]">حەتّا</span>
+                    <input class="border border-[#E9E9E9] focus-within:border-black outline-0 rounded-md px-2 py-1 grow"
+                        type="number" placeholder="@sliderOptions.Max"
+                        @onchange="(e) => onFilterChange(SelectedFilter, e.Value?.ToString(), nameof(sliderOptions.Max))"
+                        value="@getInputValue(SelectedFilter, nameof(sliderOptions.Max))" />
+                    <span class="text-[#4F3267] text-[12.36px] mr-2">$</span>
+                </div>
+            </div>;
+        }
+
+        return @<div class="text-gray-500 text-sm text-center mt-4">جۆری ئەم فلتەرە پشتگیری ناکرێت.</div>;
+    }
+
+    private string getInputValue(string filterKey, string? name)
+    {
+        if (FilterQueryParams.ContainsKey(filterKey))
+        {
+            var item = FilterQueryParams[filterKey].FirstOrDefault(f => f.Name == name);
+            return item?.Value ?? string.Empty;
+        }
+
+        return string.Empty;
+    }
+
+    private string getCssClassForFilter(string filterKey)
+    {
+        return SelectedFilter == filterKey ? "bg-[#E7DDFF] text-[#8D62F9]" : "text-black";
+    }
+
+}
