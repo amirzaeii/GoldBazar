@@ -360,4 +360,3 @@ public class CatalogService(HttpClient httpClient)
 
 
 }
-

@@ -783,4 +783,3 @@ public static class CatalogApi
         Path.Combine(contentRootPath, "wwwroot/uploads/items", pictureFileName);
 
 }
-
