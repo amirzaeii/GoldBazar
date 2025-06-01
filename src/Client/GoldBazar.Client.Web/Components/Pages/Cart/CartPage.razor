@@ -1,9 +1,11 @@
 ﻿@page "/cart"
+@rendermode InteractiveServer
 @layout Layout.DashboardLayout
+@using GoldBazar.Client.Web.Components.Pages.Cart.Components
 
 <PageTitle>GOLD BAZAR - Cart</PageTitle>
 
-<main class="mt-[20px]">
+<main class="mt-[20px] relative overflow-hidden">
     <h2 class="text-2xl font-normal px-6 mb-3">کاڵاکان</h2>
     <div class="mx-[17px] p-3 rounded-[16px] border border-[#F2F2F2] card-wrapper-shadow">
         <span class="text-xl font-bold mr-6 mt-3">زەڕەنگەری سەرژین</span>
@@ -106,7 +108,7 @@
         </div>
 
         <div class="flex mt-5">
-            <button
+            <button @onclick="onBilling"
                 class="flex items-center justify-center gap-3 w-[193px] h-[56px] rounded-[96px] bg-[linear-gradient(90deg,_#4C46E3_0%,_#004FD6_100%)] text-white text-xl font-bold buy-button-shadow">
                 داواکردن
                 <svg width="33" height="33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,4 +123,15 @@
             </div>
         </div>
     </div>
+
+    <CartAddress Show="showPayment" />
 </main>
+
+@code {
+    private bool showPayment = false;
+
+    private void onBilling()
+    {
+        showPayment = true;
+    }
+}
