@@ -1,0 +1,40 @@
+﻿@page "/categories"
+@inject CatalogService CatalogService
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+
+<MudPaper Class="pa-4">
+    <MudStack Row="true" AlignItems="AlignItems.Center" JustifyContent="space-between">
+        <MudText Typo="Typo.h5">Categories</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary"
+                   OnClick="() => OpenModifyDialog(new CategoryDTO())">
+            <MudIcon Icon="@Icons.Material.Filled.Add" /> New
+        </MudButton>
+    </MudStack>
+
+    <MudTable Items="categories" Loading="_loading" Dense="true">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>Photo</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Photo">
+                <MudAvatar Size="Size.Medium"
+                           Src="@GetPhotoUrl(context)"
+                           Alt="@context.Name" />
+            </MudTd>
+            <MudTd DataLabel="Actions">
+                <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                               Color="Color.Primary"
+                               OnClick="() => OpenModifyDialog(context)" />
+                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                               Color="Color.Error"
+                               OnClick="() => OpenDeleteDialog(context.Id)" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>

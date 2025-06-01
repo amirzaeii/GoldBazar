@@ -1,5 +1,7 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+
+using Microsoft.AspNetCore.Components.Forms;
 namespace GoldBazar.Shared.Components.Services;
 
 public class CatalogService(HttpClient httpClient)
@@ -325,6 +327,36 @@ public class CatalogService(HttpClient httpClient)
         => (await httpClient.DeleteAsync($"{remoteServiceBaseUrl}materials/{id}"))
            .IsSuccessStatusCode;
 
+    // Categories 
+    public async Task<CategoryDTO[]> GetCategories()
+    {
+        return await httpClient.GetFromJsonAsync<CategoryDTO[]>("api/catalog/categories")
+               ?? Array.Empty<CategoryDTO>();
+    }
+
+    public Task<CategoryDTO> GetCategoryById(int id)
+        => httpClient.GetFromJsonAsync<CategoryDTO>($"api/catalog/categories/{id}")!;
+
+    public async Task<CategoryDTO?> AddCategory(CategoryDTO newCat)
+    {
+        var resp = await httpClient.PostAsJsonAsync("api/catalog/categories", newCat);
+        if (!resp.IsSuccessStatusCode) return null;
+        return await resp.Content.ReadFromJsonAsync<CategoryDTO>();
+    }
+
+    public async Task<CategoryDTO?> EditCategory(CategoryDTO cat)
+    {
+        var resp = await httpClient.PutAsJsonAsync(
+            $"api/catalog/categories/{cat.Id}", cat);
+        if (!resp.IsSuccessStatusCode) return null;
+        return await resp.Content.ReadFromJsonAsync<CategoryDTO>();
+    }
+
+    public async Task<bool> DeleteCategory(int id)
+    {
+        var resp = await httpClient.DeleteAsync($"api/catalog/categories/{id}");
+        return resp.IsSuccessStatusCode;
+    }
+
 
 }
-

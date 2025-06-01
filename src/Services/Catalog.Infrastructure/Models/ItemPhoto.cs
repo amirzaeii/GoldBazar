@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace Catalog.Infrastructure.Models;
 
 public class ItemPhoto

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-namespace Catalog.Infrastructure.Models;
+﻿namespace Catalog.Infrastructure.Models;
 
 public class Occassion
 {

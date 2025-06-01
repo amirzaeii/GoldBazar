@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-namespace Catalog.Infrastructure.Models;
+﻿namespace Catalog.Infrastructure.Models;
 
 public class Shop
 {

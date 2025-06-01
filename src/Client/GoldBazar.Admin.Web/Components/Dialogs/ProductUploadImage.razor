@@ -1,0 +1,67 @@
+﻿@using System.Net.Http.Headers
+@using System.Text.Json
+@using GoldBazar.Shared.Components.Services.Contracts
+@inject IJSRuntime JS
+@inject IImageService _imageService
+<script src="js/imagePreview.js"></script>
+
+<MudContainer Class="pa-5 mt-10">
+    <MudPaper Class="pa-4">
+        <div class="upload-box-main mb-2">
+            <InputFile id="image-main" class="upload-input" OnChange="UploadFiles" accept="image/*" />
+            <label for="image-main" class="upload-box-icon">
+                <img src="" class="upload-preview">
+            </label>
+        </div>
+        <div class="image-upload-grid ">
+            <div class="upload-box">
+                <InputFile id="image1" class="upload-input" OnChange="UploadFiles" accept="image/*" />
+                <label for="image1" class="upload-box-icon">
+                    <img src="" class="upload-preview">
+                </label>
+            </div>
+        </div>
+
+        @if (Files != null)
+        {
+            <MudText Typo="@Typo.h6">@Files.Count() File@(Files.Count() == 1 ? "" : "s"):</MudText>
+            <div class="image-upload-grid">
+                @foreach (var file in Files)
+                {
+                    <div>
+                        <MudImage Src="@file.PreviewUrl" Class="upload-preview"></MudImage>
+                    </div>
+                }
+            </div>
+        }
+    </MudPaper>
+</MudContainer>
+@code {
+    [Parameter] public IList<FileUploadDTO> Files { get; set; } = default!;
+    UploadResult[] uploadResults = new UploadResult[4];
+    private InputFile? inputFile;
+    private ElementReference previewImageElem;
+    private async Task UploadFiles(InputFileChangeEventArgs e)
+    {
+
+        @* await JS.InvokeVoidAsync(
+        "previewImage", inputFile!.Element, previewImageElem); *@
+        await _imageService.UploadItemImage(e.File);
+
+    }
+
+
+    private async Task<(string, byte[])> ResizeImage(IBrowserFile file)
+    {
+        // Optional: limit size to avoid reading too much
+        var resizedFile = await file.RequestImageFileAsync(file.ContentType, 500, 600);
+
+        using var stream = file.OpenReadStream(50 * 1024 * 1024); // max 500KB
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        var bytes = ms.ToArray();
+        return new($"data:{file.ContentType};base64,{Convert.ToBase64String(bytes)}", bytes);
+    }
+
+}

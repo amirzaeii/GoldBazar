@@ -9,7 +9,7 @@
             <MudItem xs="12" Class="d-flex justify-space-between align-center">
                 <MudText Typo="Typo.h3" Color="Color.Primary" Class="mb-4">Material Directory</MudText>
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AddBox"
-                           Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyMaterialDialog(new MaterialDTO()))">
+                    Size="Size.Large" Class="ml-auto" OnClick="(() => ModifyMaterialDialog(new MaterialDTO()))">
                     New Material
                 </MudButton>
             </MudItem>
@@ -20,33 +20,25 @@
                     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4" />
                 }
 
-                <MudDataGrid T="MaterialDTO"
-                             Items="@materials"
-                             Loading="@_loading"
-                             Hover="true"
-                             ReadOnly="true"
-                             Class="elevation-1">
+                <MudDataGrid T="MaterialDTO" Items="@materials" Loading="@_loading" Hover="true" ReadOnly="true"
+                    Class="elevation-1">
                     <ToolBarContent>
                         <MudText Typo="Typo.h6" Class="mud-primary-text">
                             Materials (@materials.Length)
                         </MudText>
                     </ToolBarContent>
                     <Columns>
+                        <PropertyColumn Property="x => x.Id" Title="Code" />
                         <PropertyColumn Property="x => x.Name" Title="Material Name" />
-
                         <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
                             <CellTemplate>
                                 <MudStack Row="true" Spacing="0" Class="pa-2">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                                   Color="Color.Primary"
-                                                   Size="Size.Small"
-                                                   Class="mx-1"
-                                                   OnClick="@(() => ModifyMaterialDialog(context.Item))" />
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                                   Color="Color.Error"
-                                                   Size="Size.Small"
-                                                   Class="mx-1"
-                                                   OnClick="@(() => DeleteDialog(context.Item.Id))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary"
+                                        Size="Size.Small" Class="mx-1"
+                                        OnClick="@(() => ModifyMaterialDialog(context.Item))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error"
+                                        Size="Size.Small" Class="mx-1"
+                                        OnClick="@(() => DeleteDialog(context.Item.Id))" />
                                 </MudStack>
                             </CellTemplate>
                         </TemplateColumn>

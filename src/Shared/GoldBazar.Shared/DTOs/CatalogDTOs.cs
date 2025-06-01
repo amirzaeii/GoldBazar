@@ -16,8 +16,13 @@ public record MaterialDTO
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
-public record CityDTO
+public class CityDTO
 {
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public int GovernorateId { get; set; }
+    public string GovernorateName { get; set; } = string.Empty;
+
     public CityDTO() { }
 
     public CityDTO(int id, string name, int governorateId, string governorateName)
@@ -32,11 +37,6 @@ public record CityDTO
     {
         Name = name;
     }
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int GovernorateId { get; set; }
-    public string GovernorateName { get; set; } = string.Empty;
-
 }
 public record GovernateDTO
 {
@@ -72,6 +72,7 @@ public class MetalDTO
     public int MaterialId { get; set; }
     public string MaterialName { get; set; } = string.Empty;
 }
+
 public record OccasionDTO
 {
     public OccasionDTO()
@@ -100,6 +101,22 @@ public record StyleDTO
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
 }
+
+public record CategoryDTO
+{
+    public CategoryDTO() { }
+    public CategoryDTO(int id, string name, string? photo)
+    {
+        Id = id;
+        Name = name;
+        Photo = photo;
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Photo { get; set; }
+}
+
 public record ItemDTO
 {
     public ItemDTO()

@@ -12,12 +12,12 @@ public class OrderingContext : DbContext, IUnitOfWork
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
     public DbSet<Buyer> Buyers { get; set; }
-    private readonly IMediator _mediator;
-    private IDbContextTransaction _currentTransaction;
+    private readonly IMediator? _mediator;
+    private IDbContextTransaction? _currentTransaction;
 
     public OrderingContext(DbContextOptions<OrderingContext> options) : base(options) { }
 
-    public IDbContextTransaction GetCurrentTransaction() => _currentTransaction;
+    public IDbContextTransaction? GetCurrentTransaction() => _currentTransaction;
 
     public bool HasActiveTransaction => _currentTransaction != null;
 
@@ -47,7 +47,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         // side effects from the domain event handlers which are using the same DbContext with "InstancePerLifetimeScope" or "scoped" lifetime
         // B) Right AFTER committing data (EF SaveChanges) into the DB will make multiple transactions. 
         // You will need to handle eventual consistency and compensatory actions in case of failures in any of the Handlers. 
-        await _mediator.DispatchDomainEventsAsync(this);
+        await _mediator!.DispatchDomainEventsAsync(this);
 
         // After executing this line all the changes (from the Command Handler and Domain Event Handlers) 
         // performed through the DbContext will be committed
@@ -56,7 +56,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         return true;
     }
 
-    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    public async Task<IDbContextTransaction?> BeginTransactionAsync()
     {
         if (_currentTransaction != null) return null;
 
@@ -100,7 +100,7 @@ public class OrderingContext : DbContext, IUnitOfWork
         {
             if (HasActiveTransaction)
             {
-                _currentTransaction.Dispose();
+                _currentTransaction?.Dispose();
                 _currentTransaction = null;
             }
         }
