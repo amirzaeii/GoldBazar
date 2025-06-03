@@ -38,8 +38,18 @@ public class Filter
     public IFilterOptions? Options { get; set; }
 };
 
+public class Sort
+{
+    public string Title { get; set; }
+
+    public string Value { get; set; }
+}
+
 public class SearchResultDTO
 {
     public Dictionary<string, Filter> Filters { get; set; }
+    public List<Sort> Sorts { get; set; }
+
+    public string DefaultSort { get; set; }
     public List<ItemDTO> Products { get; set; }
 };

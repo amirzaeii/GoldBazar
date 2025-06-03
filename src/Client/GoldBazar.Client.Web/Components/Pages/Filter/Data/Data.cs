@@ -8,6 +8,20 @@ public static class DummySearchData
     {
         return new SearchResultDTO
         {
+            Sorts = new List<Sort>
+            {
+                new Sort
+                {
+                    Title = "هەرزان بۆ گران",
+                    Value = "ascending"
+                },
+                new Sort
+                {
+                    Title = "گران بۆ هەرزان",
+                    Value = "descending"
+                },
+            },
+            DefaultSort = "ascending",
             Filters = new Dictionary<string, Filter>
             {
                 {

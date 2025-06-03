@@ -10,7 +10,7 @@
 
     <div class="px-4 mt-4">
         <div class="bg-[#F5F5F5] rounded-2xl h-[57px] w-full grid grid-cols-2">
-            <div class="flex items-center justify-center gap-2 cursor-pointer" @onclick="() => ShowModal = true">
+            <div class="flex items-center justify-center gap-2 cursor-pointer" @onclick="() => ShowFilters = true">
                 <span class="text-[#292D32]">جیاکارییەکان</span>
                 <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -26,13 +26,32 @@
                 </svg>
             </div>
 
-            <div class="flex items-center justify-center gap-2">
-                <span class="text-[#292D32]">ڕیزکردن بە پێی</span>
-                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 7.5H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
-                    <path d="M6 12.5H18" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
-                    <path d="M10 17.5H14" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
-                </svg>
+            <div class="relative flex items-center justify-center gap-2">
+                <div class="cursor-pointer flex items-center justify-center" @onclick="() => ShowSorts = !ShowSorts">
+                    <span class="text-[#292D32]">ڕیزکردن بە پێی</span>
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 7.5H21" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M6 12.5H18" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M10 17.5H14" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                </div>
+                @if (ShowSorts)
+                {
+                    if (SearchResult != null)
+                    {
+                        <div class="fixed inset-0 bg-black opacity-70 z-40"></div>
+                        <div style="box-shadow: 0px 34px 14px rgba(0, 0, 0, 0.01), 0px 19px 11px rgba(0, 0, 0, 0.05), 0px 8px 8px rgba(0, 0, 0, 0.09), 0px 2px 5px rgba(0, 0, 0, 0.1);"
+                            class="absolute p-4 rounded-2xl bg-white top-[50px] z-50 flex flex-col gap-2 focus:border-0 focus:outline-0"
+                            @onfocusout="() => ShowSorts = false" tabindex="0" @ref="sortMenu">
+                            @foreach (var sortOption in SearchResult.Sorts)
+                            {
+                                <div class="p-2 w-full rounded-xl cursor-pointer @getCssClassForSort(sortOption.Value)"
+                                    @onclick="() => onSortChange(sortOption.Value)">
+                                    @sortOption.Title</div>
+                            }
+                        </div>
+                    }
+                }
             </div>
         </div>
 
@@ -47,7 +66,7 @@
         </div>
     </div>
 
-    <Modal IsOpen="@ShowModal" OnClose="() => ShowModal = false" Title="جیاکارییەکان">
+    <Modal IsOpen="@ShowFilters" OnClose="() => ShowFilters = false" Title="جیاکارییەکان">
         <div class="mt-[68px] h-[calc(100%-158px)] overflow-hidden">
             <div class="grid h-full grid-cols-[42%_58%]">
                 <div class="bg-[#F5F1FF] h-full py-4 overflow-y-auto">
@@ -85,6 +104,17 @@
 </main>
 
 @code {
+
+    protected override async Task OnAfterRenderAsync(bool _)
+    {
+        if (ShowSorts)
+        {
+            await sortMenu.FocusAsync();
+        }
+    }
+
+    private ElementReference sortMenu;
+
     public record FilterItem(string? Value, string? Name);
 
     [Inject]
@@ -93,8 +123,11 @@
     private SearchResultDTO? SearchResult;
     private string SelectedFilter = string.Empty;
 
+    private string SelectedSort = string.Empty;
+
     private Dictionary<string, List<FilterItem>> FilterQueryParams = new();
-    private bool ShowModal = false;
+    private bool ShowFilters = false;
+    private bool ShowSorts = false;
 
     public Dictionary<string, Dictionary<string, List<string>>> ParseQueryParams(Uri uri)
     {
@@ -131,12 +164,16 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("OnInitializedAsync called");
-
         var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
 
         foreach (var (key, values) in ParseQueryParams(uri))
         {
+            if (key == "sort" && values.Count == 1)
+            {
+                SelectedSort = values.First().Value.FirstOrDefault(string.Empty);
+                continue;
+            }
+
             if (!FilterQueryParams.ContainsKey(key))
             {
                 FilterQueryParams[key] = new List<FilterItem>();
@@ -158,6 +195,10 @@
 
         await Task.Delay(500);
         SearchResult = DummySearchData.GetSearchResult();
+        if (string.IsNullOrEmpty(SelectedSort))
+        {
+            SelectedSort = SearchResult?.DefaultSort ?? string.Empty;
+        }
     }
 
     private void OnFilterSelected(string filterKey)
@@ -168,14 +209,14 @@
     private void onApplyFilters()
     {
         UpdateQueryString();
-        ShowModal = false;
+        ShowFilters = false;
     }
 
     private void onClearFilters()
     {
         FilterQueryParams.Clear();
         UpdateQueryString();
-        ShowModal = false;
+        ShowFilters = false;
     }
 
     private void UpdateQueryString()
@@ -200,11 +241,23 @@
             }
         }
 
+        if (!string.IsNullOrEmpty(SelectedSort))
+        {
+            queryList.Add($"sort={Uri.EscapeDataString(SelectedSort)}");
+        }
+
         var newQuery = string.Join("&", queryList);
         var uri = NavigationManager.GetUriWithQueryParameters(new Dictionary<string, object?>());
 
         var baseUri = uri.Split('?')[0];
         NavigationManager.NavigateTo($"{baseUri}?{newQuery}", forceLoad: false);
+    }
+
+    private void onSortChange(string sortKey)
+    {
+        SelectedSort = sortKey;
+        UpdateQueryString();
+        ShowSorts = false;
     }
 
     private void onFilterChange(string filterKey, string? value, string? name = null)
@@ -313,6 +366,11 @@
     private string getCssClassForFilter(string filterKey)
     {
         return SelectedFilter == filterKey ? "bg-[#E7DDFF] text-[#8D62F9]" : "text-black";
+    }
+
+    private string getCssClassForSort(string sortKey)
+    {
+        return SelectedSort == sortKey ? "bg-[#6E3FF8] text-white" : "bg-[#F6F6F6] text-[#292D32]";
     }
 
 }
