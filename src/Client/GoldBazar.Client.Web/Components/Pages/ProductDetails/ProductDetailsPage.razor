@@ -337,8 +337,9 @@
                 <h5 class="text-[#4D4D4D] text-[18px] mt-2 text-center leading-8">بەم شێوەیە ئەو کاڵایانەی پێشوو هەڵتبژاردووە ئەسڕدرێنەوە ، دڵنیایت لە سڕینەوەی کاڵاکانی پێشوو؟</h5>
             </div>
             <div class="flex flex-col items-center gap-3 p-4 my-2">
-                <button class="text-[#EF6060] text-xl cursor-pointer font-bold">بەڵێ دڵنیام</button>
-                <button class="text-[#0000009C] text-xl cursor-pointer font-semibold">نەخێر ، کڕینەکانی پێشووم تەواو دەکەم</button>
+                @* TODO: Clear current cart when click on this button *@
+                <button class="text-[#EF6060] text-xl cursor-pointer font-bold">بەڵێ دڵنیام</button> 
+                <button class="text-[#0000009C] text-xl cursor-pointer font-semibold" @onclick="() => OpenCancelationModal = false">نەخێر ، کڕینەکانی پێشووم تەواو دەکەم</button>
             </div>
         </ChildContent>
     </AnimatedModal>
