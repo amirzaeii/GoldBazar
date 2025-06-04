@@ -281,7 +281,7 @@
 
     <section class="fixed bottom-0 h-[96px] w-full z-10 bg-white" style="box-shadow: 0px -5px 23.4px rgba(0, 0, 0, 0.15);">
         <div class="flex items-center justify-between h-full py-5 px-8">
-            <button class="cursor-pointer flex items-center gap-4 h-full justify-center text-white w-[210px] rounded-2xl bg-[linear-gradient(99.09deg,_#4C46E3_26.12%,_#524CEA_103.96%)]">
+            <button class="cursor-pointer flex items-center gap-4 h-full justify-center text-white w-[210px] rounded-2xl bg-[linear-gradient(99.09deg,_#4C46E3_26.12%,_#524CEA_103.96%)]" @onclick="() => OpenAddToCartModal = true">
                 <span class="text-[28px] font-normal">کڕین</span>    
                 <CartIcon2 Color="currentColor" />
             </button>
@@ -301,6 +301,47 @@
             </div>
         </div>
     </section>
+
+    <AnimatedModal @bind-IsVisible="OpenAddToCartModal">
+        <ChildContent>
+            <div class="bg-[#EBAD4236] h-[65px] flex justify-center items-center">
+                <NotificationIcon Stroke="#EBAD42" />
+            </div>
+            <div class="flex flex-col items-center gap-2 p-4">
+                <h3 class="text-black text-2xl">کڕینی پێشووت تەواو نەکردووە</h3>
+                <h5 class="text-[#4D4D4D] text-[18px] mt-2 text-center leading-8">سەرەتا کڕینەکەی پێشووت تەواو بکە لە بەشی کاڵاکان بۆ داواکردنی کاڵای نوێ</h5>
+                <div class="flex flex-col items-center gap-4 my-4">
+                    <NavLink href="/cart">
+                        <button class="text-white gap-3 rounded-2xl flex items-center justify-center p-2.5 bg-[#3379F0] w-[232px] text-[17px] cursor-pointer font-bold">
+                            <span>کڕینەکەم تەواودەکەم</span>
+                            <span><CartIcon2 Color="currentColor" /></span>
+                        </button>
+                    </NavLink>
+                    <button class="text-black text-sm cursor-pointer font-semibold" @onclick="() => OpenCancelationModal = true">هەڵوەشاندنەوەی کڕینی پێشوو</button>
+                </div>
+                <div class="flex items-center gap-2 self-start text-[#989898] text-sm">
+                    <NotificationIcon Stroke="currentColor" Width="17" Height="17" />
+                    <span>هۆکاری ئەم ڕووداوە</span>
+                </div>
+            </div>
+        </ChildContent>
+    </AnimatedModal>
+
+    <AnimatedModal @bind-IsVisible="OpenCancelationModal">
+        <ChildContent>
+            <div class="bg-[#EF606036] h-[65px] flex justify-center items-center">
+                <NotificationIcon Stroke="#EF6060" />
+            </div>
+            <div class="flex flex-col items-center gap-2 p-4 border-b border-[#0000000F]">
+                <h3 class="text-black text-2xl">ئاگاداربە</h3>
+                <h5 class="text-[#4D4D4D] text-[18px] mt-2 text-center leading-8">بەم شێوەیە ئەو کاڵایانەی پێشوو هەڵتبژاردووە ئەسڕدرێنەوە ، دڵنیایت لە سڕینەوەی کاڵاکانی پێشوو؟</h5>
+            </div>
+            <div class="flex flex-col items-center gap-3 p-4 my-2">
+                <button class="text-[#EF6060] text-xl cursor-pointer font-bold">بەڵێ دڵنیام</button>
+                <button class="text-[#0000009C] text-xl cursor-pointer font-semibold">نەخێر ، کڕینەکانی پێشووم تەواو دەکەم</button>
+            </div>
+        </ChildContent>
+    </AnimatedModal>
 </main>
 
 @code {
@@ -308,6 +349,9 @@
     public int productId { get; set; }
     private ItemDTO product { get; set; } = default!;
     private string FavColor => product!.IsFavorite ? "#8D62F9EB" : "none";
+
+    private bool OpenAddToCartModal { get; set; } = false;
+    private bool OpenCancelationModal { get; set; } = false;
 
     private async Task onFavIconClick()
     {
