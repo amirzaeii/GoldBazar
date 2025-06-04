@@ -1,6 +1,7 @@
 @inject CatalogService _catalogService
 <div class="category mt-[18px] mr-[17px]">
-    <div  class="flex h-[95px] items-center px-3 gap-3 overflow-y-auto rounded-tr-lg rounded-br-lg bg-linear-to-r from-[#8D62F9] to-[#533A93] pt-1">
+    <div
+        class="min-h-[95px] flex items-start px-3 gap-3 overflow-y-auto rounded-tr-lg rounded-br-lg bg-linear-to-r from-[#8D62F9] to-[#533A93] pt-2">
         @if (Categories == null || Categories.Length == 0)
         {
             <p class="text-white text-sm">No categories available</p>
