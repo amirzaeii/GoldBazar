@@ -1,6 +1,17 @@
 ﻿@page "/jewelers"
 @layout Layout.DashboardLayout
+@using GoldBazar.Client.Web.Components.Pages.Jewelers.Components
 
 <PageTitle>GOLD BAZAR - Jewelers</PageTitle>
 
-<h2>Jewelers</h2>
+
+<main class="relative">
+    <JewelersHeader />
+    <JewelersStories />
+    <JewelersList />
+</main>
+
+
+@code {
+
+}
