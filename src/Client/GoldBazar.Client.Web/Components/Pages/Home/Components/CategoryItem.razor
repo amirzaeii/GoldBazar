@@ -1,11 +1,13 @@
-<a class="category__item" href="#!">
-    <div class="category__item-icon flex size-[60px] items-center justify-center rounded-full bg-white">
-        <img class="rounded-full object-cover" src="@Category.PhotoUrl" alt="category icon" />
+<div class="flex flex-col items-center justify-center">
+    <div
+        class="category__item-icon relative overflow-hidden flex size-[60px] items-center justify-center rounded-full bg-white">
+        <img class="object-cover" src="@Category.PhotoUrl" alt="category icon" />
+        <div class="absolute inset-0 rounded-full pointer-events-none shadow-[inset_0_0_20px_rgba(0,0,0,0.3)]"></div>
     </div>
     <h2 class="category__item-title mt-0.5 text-center text-sm leading-[22px] font-light text-white">
         @Category.Name
     </h2>
-</a>
+</div>
 
 @code {
     [Parameter]
