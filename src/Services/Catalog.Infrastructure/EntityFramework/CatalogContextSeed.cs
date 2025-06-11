@@ -69,8 +69,7 @@ public partial class ContextData
                 new Category{Id = 17, Name = "Earring", Photo = "https://goldbazarblob.blob.core.windows.net/development/category/Earrings.png"},
                 new Category{Id = 18, Name = "Ashqband", Photo = "https://goldbazarblob.blob.core.windows.net/development/category/Ashqband.png"},
                 new Category{Id = 19, Name = "Dastband", Photo = "https://goldbazarblob.blob.core.windows.net/development/category/Dastband.png"},
-               //Added
-                new Category{Id=20, Name = "Pendant", Photo = ""}
+                new Category{Id = 20, Name = "Pendant", Photo = "https://goldbazarblob.blob.core.windows.net/development/category/pendant.png"}
             ];
 
         Materials = [new Material{Id = 1, Name = "Gold"},
@@ -146,9 +145,9 @@ public partial class ContextData
         Id = 1,
         Caption = "Elegant Gold Necklace",
         Status = true,
-        Discount = 0.10M,
-        EligibleChangePriceRang = 500M,
-        Weight = 20.0M,
+        Discount = 5M,
+        EligibleChangePriceRang = 5M,
+        Weight = 20.1M,
         Type = Item.TypeEnum.Women,
         CategoryId = 15,       // Necklace
         MaterialId = 1,        // Gold
@@ -156,11 +155,11 @@ public partial class ContextData
         OccasionId = 1,        // Wedding
         StyleId = 2,           // Modern
         Description = "18KT yellow-gold necklace with a classic modern twist.",
-        CostPerGram = 65.0M,
+        CostPerGram = 12.0M,
         ShopId = 1,
         ManufactureId = 1,     // DUBAI-18KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item1.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item1.jpg",
         AvailableStock = 8,
         RestockThreshold = 2,
         MaxStockThreshold = 20
@@ -170,8 +169,8 @@ public partial class ContextData
         Id = 2,
         Caption = "Classic Diamond Ring",
         Status = true,
-        Discount = 0.05M,
-        EligibleChangePriceRang = 200M,
+        Discount = 0M,
+        EligibleChangePriceRang = 2M,
         Weight = 5.5M,
         Type = Item.TypeEnum.Women,
         CategoryId = 10,       // Wedding-Ring
@@ -180,11 +179,11 @@ public partial class ContextData
         OccasionId = 2,        // Engagement
         StyleId = 5,           // Classic
         Description = "5.5g diamond ring in 21KT white-gold setting.",
-        CostPerGram = 85.0M,
+        CostPerGram = 8.0M,
         ShopId = 1,
         ManufactureId = 6,     // TURKEY-21KT
         Size = 6,              // US ring size
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item2.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item2.jpg",
         AvailableStock = 3,
         RestockThreshold = 1,
         MaxStockThreshold = 10
@@ -195,7 +194,7 @@ public partial class ContextData
         Caption = "Men’s Gold Bracelet",
         Status = true,
         Discount = 0.00M,
-        EligibleChangePriceRang = 300M,
+        EligibleChangePriceRang = 3M,
         Weight = 25.0M,
         Type = Item.TypeEnum.Men,
         CategoryId = 5,        // Bracelet
@@ -204,11 +203,11 @@ public partial class ContextData
         OccasionId = 7,        // Formal
         StyleId = 6,           // Trendy
         Description = "Bold 18KT rose-gold men’s bracelet, 25g.",
-        CostPerGram = 62.0M,
+        CostPerGram = 10.0M,
         ShopId = 1,
         ManufactureId = 2,     // DUBAI-21KT
         Size = 22,             // wrist circumference in cm
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item3.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item3.jpg",
         AvailableStock = 12,
         RestockThreshold = 4,
         MaxStockThreshold = 25
@@ -218,8 +217,8 @@ public partial class ContextData
         Id = 4,
         Caption = "Kids Gold Pendant",
         Status = true,
-        Discount = 0.15M,
-        EligibleChangePriceRang = 100M,
+        Discount = 0M,
+        EligibleChangePriceRang = 1M,
         Weight = 3.0M,
         Type = Item.TypeEnum.Kids,
         CategoryId = 20,        // pendant
@@ -228,11 +227,11 @@ public partial class ContextData
         OccasionId = 10,       // Everyday
         StyleId = 7,           // Minimalist
         Description = "Lightweight gold pendant for kids, hypoallergenic.",
-        CostPerGram = 1.2M,
+        CostPerGram = 5M,
         ShopId = 1,
-        ManufactureId = 9,     
+        ManufactureId = 9,
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item4.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item4.jpg",
         AvailableStock = 20,
         RestockThreshold = 5,
         MaxStockThreshold = 50
@@ -241,9 +240,9 @@ public partial class ContextData
     {
         Id = 5,
         Caption = "Art Deco Gold Bangle",
-        Status = false,
-        Discount = 0.20M,
-        EligibleChangePriceRang = 400M,
+        Status = true,
+        Discount = 2M,
+        EligibleChangePriceRang = 4M,
         Weight = 30.0M,
         Type = Item.TypeEnum.Women,
         CategoryId = 6,        // Bracelet(2)
@@ -252,25 +251,23 @@ public partial class ContextData
         OccasionId = 11,       // Special Occasion
         StyleId = 10,          // Art Deco
         Description = "30g yellow-gold bangle in art-deco design.",
-        CostPerGram = 70.0M,
+        CostPerGram = 10.0M,
         ShopId = 1,
-        ManufactureId = 3,     // DUBAI-22KT
+        ManufactureId = 2,     // DUBAI-21KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item5.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item5.jpg",
         AvailableStock = 0,
         RestockThreshold = 2,
         MaxStockThreshold = 15
     },
-
-
         new Item
         {
             Id = 6,
             Caption = "Royal Gold Party Set",
             Status = true,
-            Discount = 0.12M,
-            EligibleChangePriceRang = 600M,
-            Weight = 50.0M,
+            Discount = 1M,
+            EligibleChangePriceRang = 6M,
+            Weight = 51.30M,
             Type = Item.TypeEnum.Women,
             CategoryId = 1,       // Set
             MaterialId = 1,       // Gold
@@ -278,25 +275,23 @@ public partial class ContextData
             OccasionId = 8,       // Party
             StyleId = 9,          // Vintage
             Description = "50g yellow-gold full set with vintage filigree work.",
-            CostPerGram = 68.0M,
+            CostPerGram = 9M,
             ShopId = 1,
-            ManufactureId = 3,    // DUBAI-22KT
+            ManufactureId = 2,    // DUBAI-21KT
             Size = 0,
-            MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item6.jpg",
+            MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item6.jpg",
             AvailableStock = 5,
             RestockThreshold = 1,
             MaxStockThreshold = 10
         },
-
-    
     new Item
     {
         Id = 7,
         Caption = "Elegant Rose-Gold Half-Set",
         Status = true,
-        Discount = 0.08M,
-        EligibleChangePriceRang = 300M,
-        Weight = 15.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 5M,
+        Weight = 15.21M,
         Type = Item.TypeEnum.Women,
         CategoryId = 2,       // Half-Set
         MaterialId = 1,       // Gold
@@ -304,25 +299,25 @@ public partial class ContextData
         OccasionId = 3,       // Anniversary
         StyleId = 4,          // Contemporary
         Description = "15g rose-gold half-set with matching earrings and pendant.",
-        CostPerGram = 64.0M,
+        CostPerGram = 6M,
         ShopId = 1,
-        ManufactureId = 7,    // TURKEY-22KT
+        ManufactureId = 8,    // TURKEY-24KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item7.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item7.jpg",
         AvailableStock = 7,
         RestockThreshold = 2,
         MaxStockThreshold = 15
     },
 
-    
+
     new Item
     {
         Id = 8,
         Caption = "Traditional White-Gold Belt",
         Status = true,
-        Discount = 0.05M,
-        EligibleChangePriceRang = 1000M,
-        Weight = 80.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 10M,
+        Weight = 83.6M,
         Type = Item.TypeEnum.Women,
         CategoryId = 3,       // Belt
         MaterialId = 1,       // Gold
@@ -330,25 +325,23 @@ public partial class ContextData
         OccasionId = 7,       // Formal
         StyleId = 1,          // Traditional
         Description = "80g white-gold bridal belt in classic traditional design.",
-        CostPerGram = 60.0M,
+        CostPerGram = 10.0M,
         ShopId = 1,
         ManufactureId = 9,    // IRAQ-18KT
         Size = 100,           // belt length in cm
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item8.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item8.jpg",
         AvailableStock = 2,
         RestockThreshold = 1,
         MaxStockThreshold = 5
     },
-
-    
     new Item
     {
         Id = 9,
         Caption = "Diamond Stud Earrings",
         Status = true,
-        Discount = 0.15M,
-        EligibleChangePriceRang = 100M,
-        Weight = 2.5M,
+        Discount = 12M,
+        EligibleChangePriceRang = 0M,
+        Weight = 2.53M,
         Type = Item.TypeEnum.Women,
         CategoryId = 17,      // Earring
         MaterialId = 1,       // Diamond
@@ -356,25 +349,24 @@ public partial class ContextData
         OccasionId = 9,       // Gift
         StyleId = 5,          // Classic
         Description = "2.5g diamond studs set in 21KT Yellow-gold.",
-        CostPerGram = 120.0M,
+        CostPerGram = 12.0M,
         ShopId = 1,
         ManufactureId = 6,    // TURKEY-21KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item9.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item9.jpg",
         AvailableStock = 15,
         RestockThreshold = 5,
         MaxStockThreshold = 30
     },
 
-   
     new Item
     {
         Id = 10,
         Caption = "Gold Art-Deco Tiara",
         Status = true,
-        Discount = 0.20M,
-        EligibleChangePriceRang = 800M,
-        Weight = 30.0M,
+        Discount = 2M,
+        EligibleChangePriceRang = 8M,
+        Weight = 31.2M,
         Type = Item.TypeEnum.Women,
         CategoryId = 16,      // Tiara
         MaterialId = 1,       // Gold
@@ -382,11 +374,11 @@ public partial class ContextData
         OccasionId = 1,       // Wedding
         StyleId = 11,         // Gothic
         Description = "30g gold tiara in bold art-deco style.",
-        CostPerGram = 150.0M,
+        CostPerGram = 15.0M,
         ShopId = 1,
         ManufactureId = 12,   // IRAQ-24KT (placeholder)
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item10.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item10.jpg",
         AvailableStock = 1,
         RestockThreshold = 0,
         MaxStockThreshold = 2
@@ -396,9 +388,9 @@ public partial class ContextData
         Id = 11,
         Caption = "Gold Bohemian Bangle",
         Status = true,
-        Discount = 0.07M,
-        EligibleChangePriceRang = 250M,
-        Weight = 18.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 2M,
+        Weight = 18.60M,
         Type = Item.TypeEnum.Women,
         CategoryId = 7,       // Bracelet(6)
         MaterialId = 1,        // Gold
@@ -406,11 +398,11 @@ public partial class ContextData
         OccasionId = 6,        // Casual
         StyleId = 8,           // Bohemian
         Description = "18g rose-gold bangle with bohemian bead accents.",
-        CostPerGram = 63.5M,
+        CostPerGram = 7.6M,
         ShopId = 1,
         ManufactureId = 5,     // TURKEY-18KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item11.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item11.jpg",
         AvailableStock = 10,
         RestockThreshold = 3,
         MaxStockThreshold = 20
@@ -422,9 +414,9 @@ public partial class ContextData
         Id = 12,
         Caption = "Gold Layered Antique Necklace",
         Status = true,
-        Discount = 0.05M,
-        EligibleChangePriceRang = 150M,
-        Weight = 12.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 5M,
+        Weight = 12.4M,
         Type = Item.TypeEnum.Women,
         CategoryId = 11,      // Neck-piece
         MaterialId = 1,
@@ -432,25 +424,23 @@ public partial class ContextData
         OccasionId = 5,       // Festival
         StyleId = 3,          // Antique
         Description = "12g layered yellow-gold necklace with antique coin pendants.",
-        CostPerGram = 67.0M,
+        CostPerGram = 7M,
         ShopId = 1,
-        ManufactureId = 3,    // DUBAI-22KT
+        ManufactureId = 4,    // DUBAI-22KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item12.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item12.jpg",
         AvailableStock = 6,
         RestockThreshold = 2,
         MaxStockThreshold = 15
     },
-
-    
     new Item
     {
         Id = 13,
         Caption = "Gold Shal",
         Status = true,
-        Discount = 0.10M,
-        EligibleChangePriceRang = 30M,
-        Weight = 2.0M,
+        Discount = 2M,
+        EligibleChangePriceRang = 3M,
+        Weight = 2.9M,
         Type = Item.TypeEnum.Kids,
         CategoryId = 13,      // Shal
         MaterialId = 1,
@@ -458,25 +448,25 @@ public partial class ContextData
         OccasionId = 9,       // Gift
         StyleId = 7,          // Minimalist
         Description = "2g yellow-gold talisman charm on a shal base.",
-        CostPerGram = 65.0M,
+        CostPerGram = 11M,
         ShopId = 1,
         ManufactureId = 1,    // DUBAI-18KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item13.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item13.jpg",
         AvailableStock = 30,
         RestockThreshold = 5,
         MaxStockThreshold = 50
     },
 
-    
+
     new Item
     {
         Id = 14,
         Caption = "Gold Baraq",
         Status = true,
-        Discount = 0.15M,
-        EligibleChangePriceRang = 100M,
-        Weight = 10.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 1M,
+        Weight = 10.60M,
         Type = Item.TypeEnum.Women,
         CategoryId = 12,      // Baraq
         MaterialId = 1,
@@ -484,11 +474,11 @@ public partial class ContextData
         OccasionId = 4,       // Birthday
         StyleId = 2,          // Modern
         Description = "10g white-gold baraq with sleek lines.",
-        CostPerGram = 72.0M,
+        CostPerGram = 7M,
         ShopId = 1,
         ManufactureId = 10,   // IRAQ-21KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item14.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item14.jpg",
         AvailableStock = 7,
         RestockThreshold = 2,
         MaxStockThreshold = 20
@@ -499,9 +489,9 @@ public partial class ContextData
         Id = 15,
         Caption = "Gold Dastband",
         Status = true,
-        Discount = 0.10M,
-        EligibleChangePriceRang = 80M,
-        Weight = 4.5M,
+        Discount = 2M,
+        EligibleChangePriceRang = 8M,
+        Weight = 4.55M,
         Type = Item.TypeEnum.Men,
         CategoryId = 19,      // Dastband
         MaterialId = 1,
@@ -509,11 +499,11 @@ public partial class ContextData
         OccasionId = 7,       // Formal
         StyleId = 2,          // Modern
         Description = "4.5g yellow-gold dastband with filigree details.",
-        CostPerGram = 66.0M,
+        CostPerGram = 9M,
         ShopId = 1,
         ManufactureId = 2,    // DUBAI-21KT
         Size = 7,             // ring size
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item15.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item15.jpg",
         AvailableStock = 4,
         RestockThreshold = 1,
         MaxStockThreshold = 10
@@ -525,8 +515,8 @@ public partial class ContextData
         Caption = "Gold Link Ring",
         Status = true,
         Discount = 0.00M,
-        EligibleChangePriceRang = 50M,
-        Weight = 3.0M,
+        EligibleChangePriceRang = 5M,
+        Weight = 3.95M,
         Type = Item.TypeEnum.Men,
         CategoryId = 9,       // Ring
         MaterialId = 1,
@@ -534,25 +524,23 @@ public partial class ContextData
         OccasionId = 10,      // Everyday
         StyleId = 5,          // Classic
         Description = "3g rose-gold link-band ring, built for daily wear.",
-        CostPerGram = 64.5M,
+        CostPerGram = 6M,
         ShopId = 1,
-        ManufactureId = 7,    // TURKEY-22KT
+        ManufactureId = 6,    // TURKEY-21KT
         Size = 10,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item16.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item16.jpg",
         AvailableStock = 20,
         RestockThreshold = 5,
         MaxStockThreshold = 30
     },
-
-
     new Item
     {
         Id = 17,
         Caption = "Gold Chandelier Earrings",
         Status = true,
-        Discount = 0.18M,
-        EligibleChangePriceRang = 180M,
-        Weight = 6.0M,
+        Discount = 1M,
+        EligibleChangePriceRang = 1M,
+        Weight = 6.4M,
         Type = Item.TypeEnum.Women,
         CategoryId = 17,      // Earring
         MaterialId = 1,
@@ -560,11 +548,11 @@ public partial class ContextData
         OccasionId = 8,       // Party
         StyleId = 6,          // Trendy
         Description = "6g yellow-gold chandelier earrings with crystal drops.",
-        CostPerGram = 74.0M,
+        CostPerGram = 7M,
         ShopId = 1,
         ManufactureId = 4,    // DUBAI-24KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item17.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item17.jpg",
         AvailableStock = 5,
         RestockThreshold = 2,
         MaxStockThreshold = 10
@@ -576,9 +564,9 @@ public partial class ContextData
         Id = 18,
         Caption = "Gold Ashqband ",
         Status = true,
-        Discount = 0.12M,
-        EligibleChangePriceRang = 350M,
-        Weight = 22.0M,
+        Discount = 2M,
+        EligibleChangePriceRang = 3M,
+        Weight = 22.23M,
         Type = Item.TypeEnum.Women,
         CategoryId = 18,      // Ashqband
         MaterialId = 1,
@@ -586,25 +574,23 @@ public partial class ContextData
         OccasionId = 3,       // Anniversary
         StyleId = 5,          // Classic
         Description = "22g yellow-gold ashqband with heart motif.",
-        CostPerGram = 70.0M,
+        CostPerGram = 11M,
         ShopId = 1,
         ManufactureId = 8,    // TURKEY-24KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item18.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item18.jpg",
         AvailableStock = 3,
         RestockThreshold = 1,
         MaxStockThreshold = 10
     },
-
-
     new Item
     {
         Id = 19,
         Caption = "Gold Multi-Layer Neck-Piece",
         Status = true,
-        Discount = 0.20M,
-        EligibleChangePriceRang = 700M,
-        Weight = 45.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 7M,
+        Weight = 45.6M,
         Type = Item.TypeEnum.Women,
         CategoryId = 11,      // Neck-piece
         MaterialId = 1,
@@ -612,11 +598,11 @@ public partial class ContextData
         OccasionId = 8,       // Party
         StyleId = 4,          // Contemporary
         Description = "45g white-gold multi-layer neck-piece with pearl accents.",
-        CostPerGram = 69.0M,
+        CostPerGram = 9M,
         ShopId = 1,
-        ManufactureId = 11,   // IRAQ-22KT
+        ManufactureId = 10,   // IRAQ-21KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item19.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item19.jpg",
         AvailableStock = 2,
         RestockThreshold = 1,
         MaxStockThreshold = 5
@@ -627,9 +613,9 @@ public partial class ContextData
         Id = 20,
         Caption = "Gold 12-Link Bracelet",
         Status = true,
-        Discount = 0.07M,
-        EligibleChangePriceRang = 200M,
-        Weight = 28.0M,
+        Discount = 0M,
+        EligibleChangePriceRang = 0M,
+        Weight = 21.25M,
         Type = Item.TypeEnum.Men,
         CategoryId = 8,       // Bracelet(12)
         MaterialId = 1,
@@ -637,11 +623,11 @@ public partial class ContextData
         OccasionId = 2,       // Engagement
         StyleId = 1,          // Traditional
         Description = "28g rose-gold bracelet featuring twelve interlocking links.",
-        CostPerGram = 63.0M,
+        CostPerGram = 6.0M,
         ShopId = 1,
         ManufactureId = 5,    // TURKEY-18KT
         Size = 0,
-        MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item20.jpg",
+        MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item20.jpg",
         AvailableStock = 9,
         RestockThreshold = 3,
         MaxStockThreshold = 20
@@ -652,9 +638,9 @@ new Item
     Id = 21,
     Caption = "Delicate Gold Double-Bracelet Set",
     Status = true,
-    Discount = 0.05M,
-    EligibleChangePriceRang = 150M,
-    Weight = 12.0M,
+    Discount = 5M,
+    EligibleChangePriceRang = 9M,
+    Weight = 12.75M,
     Type = Item.TypeEnum.Women,
     CategoryId = 6,       // Bracelet(2)
     MaterialId = 1,       // Gold
@@ -662,11 +648,11 @@ new Item
     OccasionId = 11,      // Special Occasion
     StyleId = 3,          // Antique
     Description = "12g yellow-gold double-bracelet set with antique scrollwork.",
-    CostPerGram = 67.0M,
+    CostPerGram = 15M,
     ShopId = 1,
     ManufactureId = 5,    // TURKEY-18KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item21.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item21.jpg",
     AvailableStock = 9,
     RestockThreshold = 3,
     MaxStockThreshold = 20
@@ -678,8 +664,8 @@ new Item
     Caption = "Chunky Gold Men’s Bangle",
     Status = true,
     Discount = 0.00M,
-    EligibleChangePriceRang = 300M,
-    Weight = 40.0M,
+    EligibleChangePriceRang = 3M,
+    Weight = 40.63M,
     Type = Item.TypeEnum.Men,
     CategoryId = 7,       // Bracelet(6)
     MaterialId = 1,
@@ -687,11 +673,11 @@ new Item
     OccasionId = 5,       // Festival
     StyleId = 1,          // Traditional
     Description = "40g rose-gold bangle with bold traditional pattern.",
-    CostPerGram = 65.5M,
+    CostPerGram = 8M,
     ShopId = 1,
-    ManufactureId = 7,    // TURKEY-22KT
+    ManufactureId = 8,    // TURKEY-24KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item22.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item22.jpg",
     AvailableStock = 4,
     RestockThreshold = 1,
     MaxStockThreshold = 10
@@ -702,8 +688,8 @@ new Item
     Id = 23,
     Caption = "Gold 12-Link Cuff",
     Status = true,
-    Discount = 0.10M,
-    EligibleChangePriceRang = 200M,
+    Discount = 0M,
+    EligibleChangePriceRang = 2M,
     Weight = 48.0M,
     Type = Item.TypeEnum.Women,
     CategoryId = 8,       // Bracelet(12)
@@ -712,11 +698,11 @@ new Item
     OccasionId = 8,       // Party
     StyleId = 4,          // Contemporary
     Description = "48g white-gold cuff with twelve interlocking links.",
-    CostPerGram = 69.0M,
+    CostPerGram = 8.5M,
     ShopId = 1,
     ManufactureId = 4,    // DUBAI-24KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item23.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item23.jpg",
     AvailableStock = 6,
     RestockThreshold = 2,
     MaxStockThreshold = 15
@@ -728,9 +714,9 @@ new Item
     Id = 24,
     Caption = "Slim Gold Ring",
     Status = true,
-    Discount = 0.07M,
-    EligibleChangePriceRang = 80M,
-    Weight = 3.0M,
+    Discount = 0M,
+    EligibleChangePriceRang = 0M,
+    Weight = 3.5M,
     Type = Item.TypeEnum.Women,
     CategoryId = 9,       // Ring
     MaterialId = 1,
@@ -738,16 +724,15 @@ new Item
     OccasionId = 6,       // Casual
     StyleId = 7,          // Minimalist
     Description = "3g yellow-gold slim band, perfect for everyday wear.",
-    CostPerGram = 66.0M,
+    CostPerGram = 6M,
     ShopId = 1,
     ManufactureId = 1,    // DUBAI-18KT
     Size = 6,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item24.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item24.jpg",
     AvailableStock = 12,
     RestockThreshold = 3,
     MaxStockThreshold = 25
 },
-
 
 new Item
 {
@@ -755,8 +740,8 @@ new Item
     Caption = "Bold Gold Statement Ring",
     Status = true,
     Discount = 0.00M,
-    EligibleChangePriceRang = 120M,
-    Weight = 5.0M,
+    EligibleChangePriceRang = 1M,
+    Weight = 5.66M,
     Type = Item.TypeEnum.Men,
     CategoryId = 9,       // Ring
     MaterialId = 1,
@@ -764,11 +749,11 @@ new Item
     OccasionId = 10,      // Everyday
     StyleId = 6,          // Trendy
     Description = "5g rose-gold ring with geometric contemporary pattern.",
-    CostPerGram = 64.0M,
+    CostPerGram = 8M,
     ShopId = 1,
     ManufactureId = 2,    // DUBAI-21KT
     Size = 11,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item25.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item25.jpg",
     AvailableStock = 8,
     RestockThreshold = 2,
     MaxStockThreshold = 20
@@ -780,9 +765,9 @@ new Item
     Id = 26,
     Caption = "Classic Gold Wedding Band",
     Status = true,
-    Discount = 0.05M,
-    EligibleChangePriceRang = 100M,
-    Weight = 6.0M,
+    Discount = 4M,
+    EligibleChangePriceRang = 5M,
+    Weight = 6.77M,
     Type = Item.TypeEnum.Women,
     CategoryId = 10,      // Wedding-Ring
     MaterialId = 1,
@@ -790,11 +775,11 @@ new Item
     OccasionId = 1,       // Wedding
     StyleId = 5,          // Classic
     Description = "6g yellow-gold wedding band in timeless classic finish.",
-    CostPerGram = 68.0M,
+    CostPerGram = 17M,
     ShopId = 1,
     ManufactureId = 9,    // IRAQ-18KT
     Size = 7,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item26.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item26.jpg",
     AvailableStock = 14,
     RestockThreshold = 5,
     MaxStockThreshold = 30
@@ -806,9 +791,9 @@ new Item
     Id = 27,
     Caption = "Elegant Gold Drop Earrings",
     Status = true,
-    Discount = 0.12M,
-    EligibleChangePriceRang = 140M,
-    Weight = 3.5M,
+    Discount = 0M,
+    EligibleChangePriceRang = 1M,
+    Weight = 9.5M,
     Type = Item.TypeEnum.Women,
     CategoryId = 17,      // Earring
     MaterialId = 1,
@@ -816,11 +801,11 @@ new Item
     OccasionId = 2,       // Engagement
     StyleId = 8,          // Bohemian
     Description = "3.5g white-gold drop earrings with hand-picked gemstone.",
-    CostPerGram = 75.0M,
+    CostPerGram = 7M,
     ShopId = 1,
     ManufactureId = 6,    // TURKEY-21KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item27.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item27.jpg",
     AvailableStock = 10,
     RestockThreshold = 3,
     MaxStockThreshold = 20
@@ -832,9 +817,9 @@ new Item
     Id = 28,
     Caption = "Gold Pearl Accent Necklace",
     Status = true,
-    Discount = 0.10M,
-    EligibleChangePriceRang = 180M,
-    Weight = 22.0M,
+    Discount = 0M,
+    EligibleChangePriceRang = 1M,
+    Weight = 22.2M,
     Type = Item.TypeEnum.Women,
     CategoryId = 11,      // Neck-piece
     MaterialId = 1,
@@ -842,11 +827,11 @@ new Item
     OccasionId = 4,       // Birthday
     StyleId = 2,          // Modern
     Description = "22g rose-gold necklace with freshwater pearl clusters.",
-    CostPerGram = 70.0M,
+    CostPerGram = 7M,
     ShopId = 1,
-    ManufactureId = 7,    // TURKEY-22KT
+    ManufactureId = 8,    // TURKEY-24KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item28.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item28.jpg",
     AvailableStock = 5,
     RestockThreshold = 1,
     MaxStockThreshold = 10
@@ -858,9 +843,9 @@ new Item
     Id = 29,
     Caption = "Gold Baraq",
     Status = true,
-    Discount = 0.07M,
-    EligibleChangePriceRang = 60M,
-    Weight = 1.8M,
+    Discount = 0M,
+    EligibleChangePriceRang = 1M,
+    Weight = 1.99M,
     Type = Item.TypeEnum.Kids,
     CategoryId = 12,      // Baraq
     MaterialId = 1,
@@ -868,25 +853,23 @@ new Item
     OccasionId = 5,       // Festival
     StyleId = 6,          // Trendy
     Description = "1.8g yellow-gold in baraq style, great for kids.",
-    CostPerGram = 66.5M,
+    CostPerGram = 11M,
     ShopId = 1,
     ManufactureId = 1,    // DUBAI-18KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item29.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item29.jpg",
     AvailableStock = 25,
     RestockThreshold = 5,
     MaxStockThreshold = 50
 },
-
-
 new Item
 {
     Id = 30,
     Caption = "Open-Cuff Gold Dastband",
     Status = true,
-    Discount = 0.15M,
-    EligibleChangePriceRang = 220M,
-    Weight = 20.0M,
+    Discount = 1M,
+    EligibleChangePriceRang = 2M,
+    Weight = 20.40M,
     Type = Item.TypeEnum.Men,
     CategoryId = 19,      // Dastband
     MaterialId = 1,
@@ -894,16 +877,15 @@ new Item
     OccasionId = 3,       // Anniversary
     StyleId = 10,         // Art Deco
     Description = "20g white-gold open cuff with art-deco motifs.",
-    CostPerGram = 72.0M,
+    CostPerGram = 9.0M,
     ShopId = 1,
     ManufactureId = 8,    // TURKEY-24KT
     Size = 0,
-    MainPhoto = "https://goldbazarblob.blob.core.windows.net/images/items/item30.jpg",
+    MainPhoto = "https://goldbazarblob.blob.core.windows.net/development/items/item30.jpg",
     AvailableStock = 3,
     RestockThreshold = 1,
     MaxStockThreshold = 10
-}};
-
+        }};
     }
 }
 public partial class CatalogDevelopmentContextSeed(
@@ -938,13 +920,6 @@ public partial class CatalogDevelopmentContextSeed(
 
             await context.Shops.AddRangeAsync(contextData.Shops);
             logger.LogInformation("Seeded shops with {NumItems} items", context.Shops.Count());
-            await context.SaveChangesAsync();
-        }
-        if (!context.Items.Any())
-        {
-
-            await context.Items.AddRangeAsync(contextData.Items);
-            logger.LogInformation("Seeded items with {NumItems} items", context.Items.Count());
             await context.SaveChangesAsync();
         }
 
@@ -990,6 +965,14 @@ public partial class CatalogDevelopmentContextSeed(
             await context.Categories.AddRangeAsync(contextData.Categories);
 
             logger.LogInformation("Seeded catalog with {NumBrands} Categories", context.Categories.Count());
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.Items.Any())
+        {
+
+            await context.Items.AddRangeAsync(contextData.Items);
+            logger.LogInformation("Seeded items with {NumItems} items", context.Items.Count());
             await context.SaveChangesAsync();
         }
     }
