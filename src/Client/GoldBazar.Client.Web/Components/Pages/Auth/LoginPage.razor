@@ -142,7 +142,6 @@
 
     private async Task HandleValidSubmit()
     {
-        Console.WriteLine("Form submitted successfully.");
         messageStore.Clear();
         var result = await LoginAsync(loginModel);
 
@@ -154,7 +153,6 @@
             }
 
             editContext.NotifyValidationStateChanged();
-
             serverError = result.Message;
         }
         else
