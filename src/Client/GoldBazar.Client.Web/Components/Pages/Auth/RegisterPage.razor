@@ -1,6 +1,7 @@
 @page "/auth/register"
 @rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
+@using GoldBazar.Client.Web.Components.Pages.Auth.Components
 
 <PageTitle>GOLD BAZAR - Register</PageTitle>
 
@@ -88,8 +89,8 @@
             </span>
         </div>
 
-        <button type="submit"
-            class="p-3 mt-4 cursor-pointer text-white rounded-2xl text-[18px] bg-[linear-gradient(99.1deg,_rgba(141,98,249,0.92)_0.76%,_rgba(68,25,177,0.8832)_118.26%)]">خۆتۆمارکردن</button>
+        <SubmitBtn Title="خۆتۆمارکردن" />
+
         @if (!string.IsNullOrEmpty(serverError))
         {
             <div class="text-red-500 text-center">@serverError</div>
