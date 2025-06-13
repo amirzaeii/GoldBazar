@@ -8,13 +8,13 @@
         </NavLink>
     </div>
 
-    <form class="w-full max-w-[400px] flex flex-col gap-4 px-6">
+    <form class="w-full max-w-[400px] flex flex-col gap-4 px-6" @onsubmit="onSubmit" @onsubmit:preventDefault>
         <div class="flex flex-col items-center justify-center">
             <OTPVerificationImg />
 
             <h3 class="text-2xl text-[#151515] mt-12">کۆدی OTP بنووسە</h3>
             <p class="text-[18px] text-[#696969] text-center mt-2 mb-4">کۆدێکی ٤ ژمارەیی نێردرا بۆ ژمارەی</p>
-            <span class="text-base text-[#151515] mt-2">@Mobile</span>
+            <span class="text-base text-[#151515] mt-0.5">@Mobile</span>
         </div>
 
 
@@ -23,7 +23,7 @@
             {
                 <input type="text" maxlength="1" name="@i" key="@i" value="@inputValue[i]"
                     @oninput="(e) => UpdateValue(i, e)" autofocus="@(i == 0)"
-                    class="border rounded-lg aspect-square text-center text-xl @(HasError ? "border-red-500" : "border-[#D1D1D1]")"
+                    class="border rounded-lg aspect-square text-center text-xl @(String.IsNullOrEmpty(ErrorMessage) ? "border-[#D1D1D1]" : "border-red-500")"
                     @ref="inputRef[i]" @onkeyup="(e) => HandleInput(i, e)" />
             }
         </div>
@@ -50,19 +50,20 @@
 @code {
 
     [Parameter]
-    public EventCallback<string> OnCompleted { get; set; }
+    [EditorRequired]
+    public Func<string, Task<FormResult>> OnCompleted { get; set; }
 
     [Parameter]
+    [EditorRequired]
+    public EventCallback OnResendRequested { get; set; }
+
+    [Parameter]
+    [EditorRequired]
     public string Mobile { get; set; } = string.Empty;
 
     [Parameter]
+    [EditorRequired]
     public string BackUrl { get; set; } = string.Empty;
-
-    [Parameter]
-    public bool HasError { get; set; } = false;
-
-    [Parameter]
-    public string ErrorMessage { get; set; } = string.Empty;
 
     [Parameter]
     public int InputLength { get; set; } = 4;
@@ -70,11 +71,12 @@
     [Parameter]
     public int TimerInSeconds { get; set; } = 60;
 
-    [Parameter]
-    public EventCallback OnResendRequested { get; set; }
+    private string ErrorMessage { get; set; } = string.Empty;
 
     private int remainingSeconds;
+
     private System.Timers.Timer countdownTimer;
+
     private bool timerExpired = false;
 
     private Dictionary<int, ElementReference> inputRef = new();
@@ -82,7 +84,6 @@
     private Dictionary<int, string> inputValue = new();
 
     private List<int> inputSize = new();
-
 
     protected override void OnInitialized()
     {
@@ -161,9 +162,27 @@
         if (currentInput == maxInput && !deleteRequest)
         {
             string otpValues = string.Empty;
-
             inputValue.Select(a => a.Value).ToList().ForEach(b => otpValues += b);
-            OnCompleted.InvokeAsync(otpValues);
         }
+    }
+
+    private async void onSubmit()
+    {
+        string otpValues = string.Empty;
+        inputValue.Select(a => a.Value).ToList().ForEach(b => otpValues += b);
+
+        if (otpValues.Length != 4)
+        {
+            ErrorMessage = "کۆدی چوار ژمارەیی داخڵ بکە.";
+            return;
+        }
+
+        var result = await OnCompleted(otpValues);
+        if (!result.Success)
+        {
+            ErrorMessage = result.Message;
+            return;
+        }
+
     }
 }
