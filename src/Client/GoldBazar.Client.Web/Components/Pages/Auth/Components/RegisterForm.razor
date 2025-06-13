@@ -1,5 +1,7 @@
 <main class="h-full flex flex-col items-center">
-    <h2 class="text-[#2A2A2A] text-3xl my-[84px]">چوونەژوورەوە</h2>
+    <h2 class="text-[#2A2A2A] text-3xl my-[84px]">خۆتۆمارکردن</h2>
+
+
     <EditForm class="w-full max-w-[400px] flex flex-col gap-4 px-6" OnValidSubmit="HandleValidSubmit"
         EditContext="@editContext">
         <DataAnnotationsValidator />
@@ -9,13 +11,13 @@
             <div
                 class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
                 @* TODO: add Country code that you want here. *@
-                <InputSelect id="countryCode" @bind-Value="loginModel.CountryCode"
+                <InputSelect id="countryCode" @bind-Value="registerModel.CountryCode"
                     class="form-control text-left [direction:ltr] outline-0">
                     <option value="+964">+964</option>
                     <option value="+962">+962</option>
                     <option value="+965">+965</option>
                 </InputSelect>
-                <InputText @bind-Value="loginModel.Mobile" class="text-[#696969] grow size-full outline-0" type="tel"
+                <InputText @bind-Value="registerModel.Mobile" class="text-[#696969] grow size-full outline-0" type="tel"
                     id="mobile" name="mobile" placeholder="07*********" />
                 @if (@isMobileValid())
                 {
@@ -23,8 +25,24 @@
                 }
             </div>
             <span class="text-red-500 text-sm mt-1 flex flex-col">
-                <ValidationMessage For="@(() => loginModel.Mobile)" />
-                <ValidationMessage For="@(() => loginModel.CountryCode)" />
+                <ValidationMessage For="@(() => registerModel.Mobile)" />
+                <ValidationMessage For="@(() => registerModel.CountryCode)" />
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="text-[#2A2A2A] size-[18px]">ئیمەیڵەکەت بنووسە</label>
+            <div
+                class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
+                <InputText @bind-Value="registerModel.Email" class="text-[#696969] grow size-full outline-0" type="tel"
+                    id="email" name="email" placeholder="abc12@gmail.com" />
+                @if (@isEmailValid())
+                {
+                    <ValidInputIcon />
+                }
+            </div>
+            <span class="text-red-500 text-sm mt-1 flex flex-col">
+                <ValidationMessage For="@(() => registerModel.Email)" />
             </span>
         </div>
 
@@ -32,8 +50,8 @@
             <label for="password" class="text-[#2A2A2A] size-[18px]">وشەی نهێنیت بنووسە</label>
             <div
                 class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
-                <InputText @bind-Value="loginModel.Password"
-                    class="text-[#696969] [direction:ltr] grow size-full outline-0"
+                <InputText @bind-Value="registerModel.Password"
+                    class="text-[#696969] grow size-full outline-0 [direction:ltr]"
                     type="@(isPasswordVisible ? "text" : "password")" id="password" name="password"
                     placeholder="************" />
                 <span class="cursor-pointer @(isPasswordVisible ? "text-[#2A2A2A]" : "text-[#C4C4C4]")"
@@ -42,26 +60,39 @@
                 </span>
             </div>
             <span class="text-red-500 text-sm mt-1 flex flex-col">
-                <ValidationMessage For="@(() => loginModel.Password)" />
+                <ValidationMessage For="@(() => registerModel.Password)" />
             </span>
         </div>
 
-        <div class="form-group cursor-pointer">
-            <NavLink class="text-[#6994E5] text-[18px] mx-4" href="/auth/forgot-password">وشەی نهێنیت لە
-                بیرکردووە؟
-            </NavLink>
+        <div class="form-group">
+            <label for="confirm-password" class="text-[#2A2A2A] size-[18px]">هەمان وشەی نهێنی بنووسەوە</label>
+            <div
+                class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
+                <InputText @bind-Value="registerModel.ConfirmPassword"
+                    class="text-[#696969] text-left grow size-full outline-0 [direction:ltr]"
+                    type="@(isPasswordVisible ? "text" : "password")" id="confirm-password" name="confirm-password"
+                    placeholder="************" />
+                <span class="cursor-pointer @(isPasswordVisible ? "text-[#2A2A2A]" : "text-[#C4C4C4]")"
+                    @onclick="TogglePasswordVisibility">
+                    <EyeIcon Color="currentColor" />
+                </span>
+            </div>
+            <span class="text-red-500 text-sm mt-1 flex flex-col">
+                <ValidationMessage For="@(() => registerModel.ConfirmPassword)" />
+            </span>
         </div>
 
-        <SubmitBtn Title="چوونەژوورەوە" />
+        <SubmitBtn Title="خۆتۆمارکردن" />
+
         @if (!string.IsNullOrEmpty(errorMessage))
         {
-            <div class="text-red-500 text-center">@errorMessage`</div>
+            <div class="text-red-500 text-center">@errorMessage</div>
         }
 
         <div class="text-center mt-[40px] flex flex-col gap-2 pb-6">
             <div class="text-[18px]">
-                <span class="text-[#696969]">هەژمارت نییە؟</span>
-                <NavLink class="text-[#151515] mx-1" href="/auth/register">خۆت تۆماربکە</NavLink>
+                <span class="text-[#696969]">هەژمارت هەیە؟</span>
+                <NavLink class="text-[#151515] mx-1" href="/auth/login">بچۆ ژوورەوە</NavLink>
             </div>
             <span class="text-[#696969] text-base">یان</span>
 
@@ -79,19 +110,16 @@
                 </span>
                 <AppleIcon />
             </div>
-
-            <span class="text-[#696969] text-base mt-4">یان</span>
-            <NavLink class="text-[#151515] mx-1 underline" href="/">بەردەوامبوون وەک میوان</NavLink>
         </div>
-
     </EditForm>
 </main>
 
 @code {
-    [Parameter]
-    public Func<LoginModel, Task<FormResult>> OnValidSubmit { get; set; }
 
-    private LoginModel loginModel = new LoginModel
+    [Parameter]
+    public Func<RegisterModel, Task<FormResult>> OnValidSubmit { get; set; }
+
+    private RegisterModel registerModel = new RegisterModel
     {
         CountryCode = "+964" // Default country code
     };
@@ -106,7 +134,7 @@
 
     protected override void OnInitialized()
     {
-        editContext = new EditContext(loginModel);
+        editContext = new EditContext(registerModel);
         messageStore = new ValidationMessageStore(editContext);
 
         editContext.OnFieldChanged += (sender, args) =>
@@ -118,13 +146,24 @@
 
     private bool isMobileValid()
     {
-        if (String.IsNullOrEmpty(loginModel.Mobile)) return false;
+        if (String.IsNullOrEmpty(registerModel.Mobile)) return false;
 
-        var field = editContext.Field(nameof(loginModel.Mobile));
+        var field = editContext.Field(nameof(registerModel.Mobile));
         var isMobileValid = !editContext.GetValidationMessages(field).Any();
 
         return isMobileValid;
     }
+
+    private bool isEmailValid()
+    {
+        if (String.IsNullOrEmpty(registerModel.Email)) return false;
+
+        var field = editContext.Field(nameof(registerModel.Email));
+        var isEmailValid = !editContext.GetValidationMessages(field).Any();
+
+        return isEmailValid;
+    }
+
 
     private void TogglePasswordVisibility()
     {
@@ -135,7 +174,7 @@
     {
         messageStore.Clear();
 
-        var result = await OnValidSubmit(loginModel);
+        var result = await OnValidSubmit(registerModel);
         if (result.Success)
         {
             errorMessage = string.Empty;
