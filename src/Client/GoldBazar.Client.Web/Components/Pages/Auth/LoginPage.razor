@@ -12,7 +12,7 @@
 else
 {
     <OTPVerification Mobile="@loginModel.Mobile" BackUrl="/auth/login" TimerInSeconds="60" OnCompleted="onValidOTP"
-        OnResendRequested="@(() => {})" />
+        OnResendRequested="@(() => LoginAsync(loginModel))" />
 }
 
 @code {

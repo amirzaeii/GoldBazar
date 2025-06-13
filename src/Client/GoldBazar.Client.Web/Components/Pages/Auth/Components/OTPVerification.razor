@@ -23,15 +23,15 @@
             {
                 <input type="text" maxlength="1" name="@i" key="@i" value="@inputValue[i]"
                     @oninput="(e) => UpdateValue(i, e)" autofocus="@(i == 0)"
-                    class="border rounded-lg aspect-square text-center text-xl @(String.IsNullOrEmpty(ErrorMessage) ? "border-[#D1D1D1]" : "border-red-500")"
+                    class="border rounded-lg aspect-square text-center text-xl @(String.IsNullOrEmpty(errorMessage) ? "border-[#D1D1D1]" : "border-red-500")"
                     @ref="inputRef[i]" @onkeyup="(e) => HandleInput(i, e)" />
             }
         </div>
 
         <SubmitBtn Title="دڵنیاکردنەوە" />
-        @if (!string.IsNullOrEmpty(ErrorMessage))
+        @if (!string.IsNullOrEmpty(errorMessage))
         {
-            <div class="text-red-500 text-center">@ErrorMessage</div>
+            <div class="text-red-500 text-center">@errorMessage</div>
         }
 
         <div class="resend-container pb-8">
@@ -71,7 +71,7 @@
     [Parameter]
     public int TimerInSeconds { get; set; } = 60;
 
-    private string ErrorMessage { get; set; } = string.Empty;
+    private string errorMessage { get; set; } = string.Empty;
 
     private int remainingSeconds;
 
@@ -120,9 +120,11 @@
 
     private async Task Resend()
     {
+        errorMessage = string.Empty;
         timerExpired = false;
         remainingSeconds = TimerInSeconds;
         countdownTimer.Start();
+        
         await OnResendRequested.InvokeAsync();
     }
 
@@ -168,19 +170,20 @@
 
     private async void onSubmit()
     {
+        errorMessage = string.Empty;
+
         string otpValues = string.Empty;
         inputValue.Select(a => a.Value).ToList().ForEach(b => otpValues += b);
-
         if (otpValues.Length != 4)
         {
-            ErrorMessage = "کۆدی چوار ژمارەیی داخڵ بکە.";
+            errorMessage = "کۆدی چوار ژمارەیی داخڵ بکە.";
             return;
         }
 
         var result = await OnCompleted(otpValues);
         if (!result.Success)
         {
-            ErrorMessage = result.Message;
+            errorMessage = result.Message;
             return;
         }
 
