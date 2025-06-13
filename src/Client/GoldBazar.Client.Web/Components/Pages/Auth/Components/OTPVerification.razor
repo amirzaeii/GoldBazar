@@ -1,0 +1,169 @@
+@rendermode InteractiveServer
+
+<main class="h-full flex flex-col items-center">
+    <div class="text-[#2A2A2A] my-[40px] flex items-center">
+        <h2 class=" text-3xl">دڵنیاکردنەوە</h2>
+        <NavLink class="pr-10" href="@BackUrl">
+            <ArrowLeft Height="24" Width="24" Stroke="currentColor" />
+        </NavLink>
+    </div>
+
+    <form class="w-full max-w-[400px] flex flex-col gap-4 px-6">
+        <div class="flex flex-col items-center justify-center">
+            <OTPVerificationImg />
+
+            <h3 class="text-2xl text-[#151515] mt-12">کۆدی OTP بنووسە</h3>
+            <p class="text-[18px] text-[#696969] text-center mt-2 mb-4">کۆدێکی ٤ ژمارەیی نێردرا بۆ ژمارەی</p>
+            <span class="text-base text-[#151515] mt-2">@Mobile</span>
+        </div>
+
+
+        <div class="grid grid-cols-4 gap-4 [direction:ltr]">
+            @foreach (int i in inputSize)
+            {
+                <input type="text" maxlength="1" name="@i" key="@i" value="@inputValue[i]"
+                    @oninput="(e) => UpdateValue(i, e)" autofocus="@(i == 0)"
+                    class="border rounded-lg aspect-square text-center text-xl @(HasError ? "border-red-500" : "border-[#D1D1D1]")"
+                    @ref="inputRef[i]" @onkeyup="(e) => HandleInput(i, e)" />
+            }
+        </div>
+
+        <SubmitBtn Title="دڵنیاکردنەوە" />
+        @if (!string.IsNullOrEmpty(ErrorMessage))
+        {
+            <div class="text-red-500 text-center">@ErrorMessage</div>
+        }
+
+        <div class="resend-container pb-8">
+            @if (!timerExpired)
+            {
+                <h3 class="mt-4 text-[#696969] text-center text-base">دووبارە ناردنەوەی کۆد (@FormatTime())</h3>
+            }
+            else
+            {
+                <h3 class="mt-4 text-blue-600 text-center text-base cursor-pointer" @onclick="Resend">ناردنەوەی کۆدەکە</h3>
+            }
+        </div>
+    </form>
+</main>
+
+@code {
+
+    [Parameter]
+    public EventCallback<string> OnCompleted { get; set; }
+
+    [Parameter]
+    public string Mobile { get; set; } = string.Empty;
+
+    [Parameter]
+    public string BackUrl { get; set; } = string.Empty;
+
+    [Parameter]
+    public bool HasError { get; set; } = false;
+
+    [Parameter]
+    public string ErrorMessage { get; set; } = string.Empty;
+
+    [Parameter]
+    public int InputLength { get; set; } = 4;
+
+    [Parameter]
+    public int TimerInSeconds { get; set; } = 60;
+
+    [Parameter]
+    public EventCallback OnResendRequested { get; set; }
+
+    private int remainingSeconds;
+    private System.Timers.Timer countdownTimer;
+    private bool timerExpired = false;
+
+    private Dictionary<int, ElementReference> inputRef = new();
+
+    private Dictionary<int, string> inputValue = new();
+
+    private List<int> inputSize = new();
+
+
+    protected override void OnInitialized()
+    {
+        for (int i = 0; i < InputLength; i++)
+        {
+            inputSize.Add(i);
+            inputValue.Add(i, string.Empty);
+        }
+
+        remainingSeconds = TimerInSeconds;
+        countdownTimer = new System.Timers.Timer(1000);
+        countdownTimer.Elapsed += async (_, __) =>
+        {
+            if (remainingSeconds > 0)
+            {
+                remainingSeconds--;
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                countdownTimer.Stop();
+                timerExpired = true;
+                await InvokeAsync(StateHasChanged);
+            }
+        };
+        countdownTimer.Start();
+    }
+
+    private string FormatTime()
+    {
+        var ts = TimeSpan.FromSeconds(remainingSeconds);
+        return ts.ToString(@"mm\:ss");
+    }
+
+    private async Task Resend()
+    {
+        timerExpired = false;
+        remainingSeconds = TimerInSeconds;
+        countdownTimer.Start();
+        await OnResendRequested.InvokeAsync();
+    }
+
+    private void UpdateValue(int index, ChangeEventArgs e)
+    {
+        string? value = e.Value?.ToString();
+
+        if (!string.IsNullOrEmpty(value))
+        {
+            inputValue[index] = value;
+        }
+    }
+
+    private void HandleInput(int currentInput, KeyboardEventArgs e)
+    {
+        int maxInput = inputRef.Count() - 1;
+        int nextInput = currentInput == maxInput ? maxInput : currentInput + 1;
+        int prevInput = currentInput == 0 ? 0 : currentInput - 1;
+        bool deleteRequest = e.Code == "Backspace" || e.Code == "Delete" || e.Code == "ArrowLeft";
+        bool isNumber = e.Key.All(c => c >= '0' && c <= '9');
+
+        if (isNumber)
+        {
+            inputRef[nextInput].FocusAsync();
+        }
+        else
+        {
+            inputValue[currentInput] = string.Empty;
+        }
+
+        if (deleteRequest)
+        {
+            inputRef[prevInput].FocusAsync();
+            inputValue[currentInput] = string.Empty;
+        }
+
+        if (currentInput == maxInput && !deleteRequest)
+        {
+            string otpValues = string.Empty;
+
+            inputValue.Select(a => a.Value).ToList().ForEach(b => otpValues += b);
+            OnCompleted.InvokeAsync(otpValues);
+        }
+    }
+}
