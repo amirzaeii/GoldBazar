@@ -1,6 +1,6 @@
-<div class="h-[225px] bg-[#F8F8FA] rounded-3xl relative">
-    @if (Product.IsFavorite)
-    {
+<NavLink href="@($"/products/{Product.Id}")" class="h-[240px] overflow-hidden bg-[#F8F8FA] rounded-3xl relative">
+@if (Product.IsFavorite)
+{
         <span
             class="product__item-fav absolute bottom-[6px] right-[6px] flex size-[40px] items-center justify-center rounded-full bg-[#8D62F926]">
             <svg width="18" height="17" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,22 +9,32 @@
                     stroke="#8D62F9" stroke-opacity="0.92" stroke-width="1.23041" stroke-linecap="square" />
             </svg>
         </span>
-    }
+}
 
-    @if (Product.Discount > 0)
-    {
+@if (Product.Discount > 0)
+{
         <span class="product__item-discount absolute top-[12px] left-[12px]">
             <GradientDiscountIcon />
         </span>
-    }
+}
 
     <div class="flex h-[145px] overflow-hidden items-center justify-center p-2">
         <img src="@Product.MainPhoto" class="h-full w-auto" alt="@Product.Caption" />
     </div>
 
     <div class="p-2">
-        <h2 class="text-[18px] text-[#00000085] font-normal text-left">
-            @Product.Caption</h2>
+        <h2 class="text-[18px] h-[30px] line-clamp-1 text-[#00000085] font-normal text-left">
+            @Product.Caption @Product.Caption</h2>
+        <div class="flex justify-end gap-1 text-sm text-white font-light">
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>عەیارە :</span>
+                <span>@Product.KT</span>
+            </div>
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>کۆ :</span>
+                <span><span>@Product.Weight</span>gr</span>
+            </div>
+        </div>
         <div class="mt-1 flex items-center justify-end gap-2">
             @if (Product.Discount > 0)
             {
@@ -38,7 +48,7 @@
         </div>
     </div>
 
-</div>
+</NavLink>
 
 @code {
     [Parameter]
