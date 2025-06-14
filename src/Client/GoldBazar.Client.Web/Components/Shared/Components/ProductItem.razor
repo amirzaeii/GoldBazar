@@ -1,4 +1,4 @@
-<div class="product__item relative h-[237px] rounded-[17px] border border-[#07070736]">
+<div class="product__item relative h-[258px] rounded-[17px] border border-[#07070736]">
     @if (Product.IsFavorite)
     {
         <span
@@ -19,13 +19,23 @@
     }
 
     <div class="flex h-[130px] items-center justify-center">
-        <img src="@Product.MainPhoto" class="h-[100px] w-auto" alt="@Product.Caption" />
+        <img src="@Product.MainPhoto" class="h-[100px] w-auto rounded-lg" alt="@Product.Caption" />
     </div>
 
     <hr class="h-[1px] border-t border-[#07070736]" />
 
     <div class="px-3 py-2">
-        <h2 class="text-base font-normal">@Product.Caption</h2>
+        <h2 class="text-base font-normal h-[24px] line-clamp-1">@Product.Caption</h2>
+        <div class="flex gap-1 text-sm text-white font-light">
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>عەیارە :</span>
+                <span>@Product.KT</span>
+            </div>
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>کۆ :</span>
+                <span><span>@Product.Weight</span>gr</span>
+            </div>
+        </div>
         <div class="mt-2 flex items-center gap-2">
             @if (Product.Discount > 0)
             {

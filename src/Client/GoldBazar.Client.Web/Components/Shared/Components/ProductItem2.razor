@@ -1,4 +1,4 @@
-<div class="h-[225px] bg-[#F8F8FA] rounded-3xl relative">
+<div class="h-[240px] overflow-hidden bg-[#F8F8FA] rounded-3xl relative">
     @if (Product.IsFavorite)
     {
         <span
@@ -23,8 +23,18 @@
     </div>
 
     <div class="p-2">
-        <h2 class="text-[18px] text-[#00000085] font-normal text-left">
-            @Product.Caption</h2>
+        <h2 class="text-[18px] h-[30px] line-clamp-1 text-[#00000085] font-normal text-left">
+            @Product.Caption @Product.Caption</h2>
+        <div class="flex justify-end gap-1 text-sm text-white font-light">
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>عەیارە :</span>
+                <span>@Product.KT</span>
+            </div>
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>کۆ :</span>
+                <span><span>@Product.Weight</span>gr</span>
+            </div>
+        </div>
         <div class="mt-1 flex items-center justify-end gap-2">
             @if (Product.Discount > 0)
             {
