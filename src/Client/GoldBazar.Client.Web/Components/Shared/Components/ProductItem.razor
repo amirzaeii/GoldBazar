@@ -1,4 +1,5 @@
-<div class="product__item relative h-[258px] rounded-[17px] border border-[#07070736]">
+<NavLink href="@($"/products/{Product.Id}")"
+    class="product__item relative h-[258px] rounded-[17px] border border-[#07070736]">
     @if (Product.IsFavorite)
     {
         <span
@@ -51,7 +52,7 @@
             @Product.ShopName
         </button>
     </div>
-</div>
+</NavLink>
 
 @code {
     [Parameter]
