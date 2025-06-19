@@ -5,18 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace GoldBazar.Shared.DTOs;
-public record PromotionDTO
+public class PromotionSliderDTO
 {
-    public PromotionDTO() { }
+    public int Id { get; set; }
+    public string Title { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public string ImageUrl { get; set; } = string.Empty;
+    public string Link { get; set; } = string.Empty;
+    public int Priority { get; set; }
+    public bool IsActive { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-    public PromotionDTO(int id, string title, string? imageUrl)
+    public PromotionSliderDTO() { }
+
+    public PromotionSliderDTO(int id, string title, string desc, string img, string link, int priority, bool isActive, DateTime created, DateTime? updated)
     {
         Id = id;
         Title = title;
-        ImageUrl = imageUrl;
+        Description = desc;
+        ImageUrl = img;
+        Link = link;
+        Priority = priority;
+        IsActive = isActive;
+        CreatedAt = created;
+        UpdatedAt = updated;
     }
-
-    public int Id { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public string? ImageUrl { get; set; }
 }

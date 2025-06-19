@@ -14,6 +14,9 @@ public class Promotion
     [Required]
     [StringLength(200)]
     public string Title { get; set; } = default!;
+    [Required]
+    [StringLength(500)]
+    public string SubTitle { get; set; } = default!;
 
     [StringLength(500)]
     public string? ImageUrl { get; set; }
