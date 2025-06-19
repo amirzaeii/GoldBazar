@@ -30,6 +30,7 @@ public record OrderRecord(
     decimal Total);
 
 public record OrderDto(
+    string V,
     int OrderNumber,
     DateTime Date,
     string Status,

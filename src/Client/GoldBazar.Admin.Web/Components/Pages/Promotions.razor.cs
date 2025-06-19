@@ -1,0 +1,5 @@
+namespace GoldBazar.Admin.Web.Components.Pages;
+
+public partial class Promotions
+{
+}

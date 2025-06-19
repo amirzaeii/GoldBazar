@@ -1,4 +1,4 @@
-﻿using GoldBazar.Shared.DTOs;
+using GoldBazar.Shared.DTOs;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -20,7 +20,7 @@ public partial class ModifyShop
     private CityDTO[] _cities = Array.Empty<CityDTO>();
     private MudDatePicker _picker;
     private DateTime? _joinDate = DateTime.Today;
-
+    private GovernateDTO[] _governorates = Array.Empty<GovernateDTO>();
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
@@ -29,14 +29,41 @@ public partial class ModifyShop
 
     private List<IBrowserFile> logoFiles = new();
     private List<IBrowserFile> bannerFiles = new();
+    private int _selectedGovernorateId;
     private string? logoPreview;
     private string? bannerPreview;
-
+    private async Task OnGovernorateChanged(int governorateId)
+    {
+        _cities = await regionService.GetCitiesByGovernorate(governorateId);
+        Shop.CityId = 0; 
+        StateHasChanged();
+    }
+    private int SelectedGovernorateId
+    {
+        get => _selectedGovernorateId;
+        set
+        {
+            if (_selectedGovernorateId != value)
+            {
+                _selectedGovernorateId = value;
+                _ = OnGovernorateChanged(value);
+            }
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            _cities = await regionService.GetCities();
+            _governorates = await regionService.GetGovernorates();
+
+            // Load cities if editing
+            if (Shop.CityId > 0)
+            {
+                var selectedCity = await regionService.GetCityById(Shop.CityId);
+                SelectedGovernorateId = selectedCity.GovernorateId;
+                _cities = await regionService.GetCitiesByGovernorate(SelectedGovernorateId);
+            }
+
             _joinDate = Shop.JoinDate.DateTime;
         }
         catch
