@@ -186,19 +186,21 @@ public static class DummySearchData
             {
                 new ItemDTO
                 {
-                Discount = 10,
+                Discount = 2,
                 MainPhoto = "/images/product/0.png",
                 IsFavorite = true,
                 Caption = "گوارەی عەیارە 18",
-                Price = 3232323,
-                OldPrice = 145454,
+                CostPerGram = 10M,
+                Weight = 3.5M,
                 },
                 new ItemDTO
                 {
-                Discount = 10,
+                Discount = 3,
                 MainPhoto = "/images/product/2.png",
                 IsFavorite = true,
                 Caption = "گوارەی عەیارە 18",
+                CostPerGram = 10M,
+                Weight = 41.5M,
                 },
                 new ItemDTO
                 {
@@ -206,17 +208,17 @@ public static class DummySearchData
                 MainPhoto = "/images/product/1.png",
                 IsFavorite = true,
                 Caption = "گوارەی عەیارە 24",
-                Price = 7894561,
-                OldPrice = 8120000,
+               CostPerGram = 25M,
+                Weight = 13.5M,
                 },
                 new ItemDTO
                 {
-                Discount = 15,
+                Discount = 5M,
                 MainPhoto = "/images/product/1.png",
                 IsFavorite = true,
                 Caption = "گوارەی عەیارە 24",
-                Price = 7894561,
-                OldPrice = 8120000,
+                CostPerGram = 10M,
+                Weight = 23.5M,
                 }
             }
         };

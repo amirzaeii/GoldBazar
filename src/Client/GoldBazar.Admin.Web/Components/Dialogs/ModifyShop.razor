@@ -1,4 +1,4 @@
-﻿@inject ShopService shopser
+@inject ShopService shopser
 @inject RegionService regionService
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -18,16 +18,29 @@
                           RequiredError="Name is required" />
 
             <MudSelect T="int"
+                       Label="Governorate"
+                       @bind-Value="SelectedGovernorateId"
+                       Required="true"
+                       RequiredError="Governorate is required">
+                @foreach (var g in _governorates)
+                {
+                    <MudSelectItem Value="@g.Id">@g.Name</MudSelectItem>
+                }
+            </MudSelect>
+
+            <MudSelect T="int"
                        Label="City"
                        For="@(() => Shop.CityId)"
                        @bind-Value="Shop.CityId"
                        Required="true"
-                       RequiredError="City is required">
+                       RequiredError="City is required"
+                       Disabled="@(_cities.Length == 0)">
                 @foreach (var c in _cities)
                 {
-                    <MudSelectItem Value="c.Id">@c.Name</MudSelectItem>
+                    <MudSelectItem Value="@c.Id">@c.Name</MudSelectItem>
                 }
             </MudSelect>
+
 
             <MudTextField T="string"
                           Label="Address"
@@ -48,13 +61,13 @@
                           For="@(() => Shop.OwnerName)"
                           @bind-Value="Shop.OwnerName" />
 
-            <!-- Active switch: green when on -->
+           
             <MudSwitch Label="Active"
                        For="@(() => Shop.Status)"
                        @bind-Checked="Shop.Status"
                        Color="Color.Success" />
 
-            <!-- Logo upload + preview -->
+            <!-- Logo upload + preview Still needs work--> 
             <MudText Typo="Typo.subtitle2" Class="mt-4">Logo</MudText>
             <InputFile OnChange="OnLogoFilesChanged" accept="image/*" />
             @if (logoPreview is not null)
@@ -77,7 +90,7 @@
                           For="@(() => Shop.Description)"
                           @bind-Value="Shop.Description" />
 
-            <!-- Join Date picker: basic usage -->
+           
             <MudDatePicker @ref="_picker"
                            Label="Join Date"
                            @bind-Date="_joinDate"

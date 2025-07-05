@@ -1,4 +1,4 @@
-﻿@page "/shops"
+@page "/shops"
 @inject ShopService ShopService
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
@@ -34,13 +34,13 @@
                         <PropertyColumn Property="x => x.ContactNo" Title="Tel" />
                         <PropertyColumn Property="x => x.CityName" Title="City" />
                         <PropertyColumn Property="x => x.Address" Title="Address" />
-                        <TemplateColumn Title="Address">
+                        <TemplateColumn Title="ProfilePic">
                             <CellTemplate>
-                                <MudImage Class="rounded" Style="width: 50px; height: 50px;"
-                                    Src="@context.Item.LogoUrl">
+                                <MudImage Class="rounded" Style="width: 50px; height: 50px;" Src="@context.Item.LogoUrl">
                                 </MudImage>
                             </CellTemplate>
                         </TemplateColumn>
+
                         <TemplateColumn Title="Actions" TextAlignment="TextAlignment.Right">
                             <CellTemplate>
                                 <MudStack Row="true" Spacing="0" Class="pa-2">

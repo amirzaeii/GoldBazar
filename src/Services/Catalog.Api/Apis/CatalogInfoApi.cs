@@ -1,10 +1,4 @@
-﻿using Catalog.Infrastructure.Models;
-
-using GoldBazar.Shared.DTOs;
-
-using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace Catalog.Api.Apis;
+﻿namespace Catalog.Api.Apis;
 
 public static class CatalogInfoApi
 {

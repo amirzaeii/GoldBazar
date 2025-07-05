@@ -25,6 +25,9 @@ app.NewVersionedApi("Shops")
 app.NewVersionedApi("Region")
    .MapRegionApiV1();
 
+app.NewVersionedApi("Promotion")
+   .MapPromotionsApiV1();
+
 app.UseDefaultOpenApi();
 
 app.Run();

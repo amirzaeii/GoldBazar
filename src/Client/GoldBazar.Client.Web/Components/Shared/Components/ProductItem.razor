@@ -12,18 +12,18 @@
         </span>
     }
 
-    @if (Product.Discount > 0)
-    {
-        <span class="product__item-discount absolute top-[12px] left-[12px]">
-            <GradientDiscountIcon />
-        </span>
-    }
+        @if (Product.Discount > 0)
+        {
+            <span class="product__item-discount absolute top-[12px] left-[12px]">
+                <GradientDiscountIcon />
+            </span>
+        }
 
     <div class="flex h-[130px] items-center justify-center">
         <img src="@Product.MainPhoto" class="h-[100px] w-auto rounded-lg" alt="@Product.Caption" />
     </div>
 
-    <hr class="h-[1px] border-t border-[#07070736]" />
+        <hr class="h-[1px] border-t border-[#07070736]" />
 
     <div class="px-3 py-2">
         <h2 class="text-base font-normal h-[24px] line-clamp-1">@Product.Caption</h2>

@@ -1,7 +1,5 @@
 using System.Net.Http.Json;
 using System.Text.Json;
-
-using Microsoft.AspNetCore.Components.Forms;
 namespace GoldBazar.Shared.Components.Services;
 
 public class CatalogService(HttpClient httpClient)
@@ -47,6 +45,18 @@ public class CatalogService(HttpClient httpClient)
         return result!;
     }
 
+    public async Task<bool> ToggleItemFavorite(int itemId)
+    {
+        var uri = $"{remoteServiceBaseUrl}items/{itemId}/favorite";
+        var response = await httpClient.PostAsync(uri, null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+
+        throw new HttpRequestException($"Failed to toggle favorite for item {itemId}");
+    }
 
     public async Task<ItemResult> GetCatalogItemsByType(int pageIndex, int pageSize, int typeId)
     {
@@ -87,22 +97,6 @@ public class CatalogService(HttpClient httpClient)
         }
     }
 
-
-    public async Task<IEnumerable<ItemDTO>> GetSimilarProducts(int typeId)
-    {
-        var uri = $"{remoteServiceBaseUrl}item/similar/{typeId}";
-
-        try
-        {
-            var result = await httpClient.GetFromJsonAsync<IEnumerable<ItemDTO>>(uri);
-            return result ?? Array.Empty<ItemDTO>();
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error fetching similar products: {ex.Message}");
-            return Array.Empty<ItemDTO>();
-        }
-    }
     public async Task<bool> AddItem(ItemDTO newItem)
     {
         var uri = "api/catalog/item"; // Ensure this matches your API
