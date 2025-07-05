@@ -1,0 +1,115 @@
+@page "/auth/register"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using GoldBazar.Client.Web.Components.Pages.Auth.Components
+
+<PageTitle>GOLD BAZAR - Register</PageTitle>
+
+@if (registerStep == RegisterStep.RegisterForm)
+{
+    <RegisterForm OnValidSubmit="onValidRegister" />
+}
+else
+{
+    <OTPVerification Mobile="@registerModel.Mobile" BackUrl="/auth/register" TimerInSeconds="60" OnCompleted="onValidOTP"
+        OnResendRequested="@(() => RegisterAsync(registerModel))" />
+}
+
+@code {
+    private RegisterModel registerModel { get; set; } = default!;
+
+    enum RegisterStep
+    {
+        RegisterForm,
+        OTPForm,
+    };
+
+    RegisterStep registerStep { get; set; } = RegisterStep.RegisterForm;
+
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = default!;
+
+    private async Task<FormResult> onValidRegister(RegisterModel registerModel)
+    {
+        var result = await RegisterAsync(registerModel);
+        if (result.Success)
+        {
+            this.registerModel = registerModel;
+            registerStep = RegisterStep.OTPForm;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        return result;
+    }
+
+    private async Task<FormResult> onValidOTP(string code)
+    {
+        var result = await OTPAsync(code);
+        if (result.Success)
+        {
+            @* TODO: Store user and related token to client *@
+            NavigationManager.NavigateTo("/", forceLoad: true);
+        }
+
+        return result;
+    }
+
+    public Task<FormResult> RegisterAsync(RegisterModel model)
+    {
+        var errors = new Dictionary<string, string>();
+
+        if (model.ConfirmPassword != model.Password)
+        {
+            errors.Add(nameof(model.ConfirmPassword), "تێپەڕەوشەکان پێویستە یەکسان بن.");
+        }
+
+        if (model.Mobile != "1234567890")
+        {
+            errors.Add(nameof(model.Mobile), "ژمارەی مۆبایل نادروستە.");
+        }
+
+        if (string.IsNullOrEmpty(model.Email) || !new EmailAddressAttribute().IsValid(model.Email))
+        {
+            errors.Add(nameof(model.Email), "ئیمەیڵی نادروستە.");
+        }
+
+        if (errors.Count == 0)
+        {
+            return Task.FromResult(new FormResult
+            {
+                Success = true,
+                Errors = errors,
+                Message = "چوونەژوورەوە سەرکەوتووبوو"
+            });
+        }
+
+        return Task.FromResult(new FormResult
+        {
+            Success = false,
+            Errors = errors,
+            Message = "چوونەژوورەوە ناکام بوو"
+        });
+    }
+
+    public Task<FormResult> OTPAsync(string code)
+    {
+        @* TODO: create request base you endpoint and send it *@
+
+        if (code != "7890")
+        {
+            return Task.FromResult(new FormResult
+            {
+                Success = false,
+                Errors = new(),
+                Message = "ئەو کۆدەی داخڵ کراوە هەڵەیە."
+            });
+        }
+
+        return Task.FromResult(new FormResult
+        {
+            Success = true,
+            Errors = new(),
+            Message = "چوونەژوورەوە سەرکەوتووبوو"
+        });
+    }
+}
