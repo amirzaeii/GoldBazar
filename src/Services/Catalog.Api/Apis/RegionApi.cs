@@ -1,5 +1,4 @@
 ﻿namespace Catalog.Api.Apis;
-
 public static class RegionApi
 {
     public static IEndpointRouteBuilder MapRegionApiV1(this IEndpointRouteBuilder app)

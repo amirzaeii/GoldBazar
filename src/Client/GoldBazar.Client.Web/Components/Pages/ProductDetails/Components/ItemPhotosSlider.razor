@@ -2,16 +2,16 @@
 @inject IJSRuntime JS
 @inject CatalogService _catalogService
 
-<div class="product-details">
-    <div class="swiper h-[233px]">
-        @if (_itemPhotos == null || _itemPhotos.Length == 0)
-        {
-            <p> Loading...</p>
-        }
-        else
-        {
-            <div class="swiper-wrapper">
+@if (_itemPhotos == null || _itemPhotos.Length == 0)
+{
+    <p> Loading...</p>
+}
+else
+{
+    <div class="product-details">
+        <div class="swiper h-[233px]">
 
+            <div class="swiper-wrapper">
                 @foreach (var image in _itemPhotos)
                 {
                     <div class="swiper-slide">
@@ -23,10 +23,9 @@
 
             </div>
             <div class="swiper-pagination !bottom-0"></div>
-        }
+        </div>
     </div>
-</div>
-
+}
 
 @code {
     [Parameter]
@@ -45,10 +44,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (ProductId == 0)
-        {
-            throw new ArgumentNullException(nameof(ProductId), "Product parameter must be provided.");
-        }
         _itemPhotos = await _catalogService.GetItemPhotos(ProductId);
     }
 }

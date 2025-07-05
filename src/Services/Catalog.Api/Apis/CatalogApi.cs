@@ -81,12 +81,6 @@ public static class CatalogApi
             .WithDescription("delete an item")
             .WithTags("Item");
 
-        api.MapGet("/item/similar/{categoryId}", GetSimilarItems)
-            .WithName("GetSimilarItems")
-            .WithSummary("Get list of similar items by its categoryId")
-            .WithDescription("Get list of similar items by its categoryId")
-            .WithTags("Item");
-
         //api.MapPost("/item/filter", FilterByComposite)
         //     .WithName("FilterByComposite")
         //     .WithSummary("Filter catalog items by composite filter")
@@ -307,7 +301,8 @@ public static class CatalogApi
        int id,
        [AsParameters] CatalogServices services)
     {
-        var item = await services.Context.ItemPhotos.Where(i => i.ItemId == id)
+        var item = await services.Context.Items.FindAsync(id);
+        var itemphotos = await services.Context.ItemPhotos.Where(i => i.ItemId == id)
                 .Select(s => new ItemPhotosDTO
                 {
                     Id = s.Id,
@@ -319,7 +314,18 @@ public static class CatalogApi
                     ItemId = s.ItemId
                 }).ToArrayAsync();
 
-        return item is not null ? TypedResults.Ok(item) : TypedResults.NotFound();
+        itemphotos.Append(new ItemPhotosDTO
+        {
+            Id = 0,
+            AbsolutePath = item?.MainPhoto ?? "default.png",
+            RelativePath = item?.MainPhoto ?? "default.png",
+            ThumbnailPath = item?.MainPhoto ?? "default.png",
+            Priority = 0,
+            Description = "Main Photo",
+            ItemId = id
+        }); 
+
+        return item is not null ? TypedResults.Ok(itemphotos) : TypedResults.NotFound();
     }
 
     public static async Task<Results<Ok<ItemCategoryDTO[]>, BadRequest<string>>> GetCategoryList(
@@ -383,56 +389,6 @@ public static class CatalogApi
 
         return TypedResults.Ok($"Item with ID {id} deleted.");
     }
-
-    public static async Task<Ok<List<ItemDTO>>> GetSimilarItems(
-     int typeId, [AsParameters] CatalogServices services)
-    {
-        var similarProducts = await services.Context.Items
-            .Where(p => p.CategoryId == typeId)
-            .Include(p => p.Metal)
-            .Include(p => p.Material)
-            .Include(p => p.Manufacture)
-            .Include(p => p.Category)
-            .Include(p => p.Shop)
-            .Include(p => p.Type)
-            .Select(s => new ItemDTO
-            {
-                Id = s.Id,
-                Caption = s.Caption,
-                Description = s.Description ?? string.Empty,
-                CostPerGram = s.CostPerGram,
-                Weight = s.Weight,
-                Size = s.Size,
-                CategoryId = s.CategoryId,
-                CategoryName = s.Category.Name,
-                MetalId = s.MetalId,
-                MetalName = s.Metal.Name,
-                KT = s.Manufacture.Karat,
-                Purity = s.Manufacture.Purity,
-                ManufactureId = s.ManufactureId,
-                ManufactureName = s.Manufacture.Name,
-                TypeId = (int)s.Type,
-                TypeName = s.Type.GetDisplayName(),
-                ChangePriceRange = s.EligibleChangePriceRang,
-                ShopId = s.ShopId,
-                ShopName = s.Shop.Name,
-                City = s.Shop.City.Name,
-                MaterialId = s.MaterialId,
-                MaterialName = s.Material.Name,
-                OccasionId = s.OccasionId,
-                OccasionName = s.Occassion.Name,
-                StyleId = s.StyleId,
-                StyleName = s.Style.Name,
-                Discount = s.Discount,
-                Status = s.Status,
-                Quantity = s.AvailableStock,
-                MainPhoto = s.MainPhoto ?? "default.png"
-            })
-            .ToListAsync();
-
-        return TypedResults.Ok(similarProducts);
-    }
-
 
     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
         [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",

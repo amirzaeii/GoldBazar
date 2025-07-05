@@ -1,11 +1,4 @@
-﻿
-using GoldBazar.Shared.DTOs;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
-
-using static GoldBazar.Shared.Components.Services.ShopService;
-namespace Catalog.Api;
+﻿namespace Catalog.Api.Apis;
 
 public static class ShopApi
 {
@@ -73,7 +66,7 @@ public static class ShopApi
             .WithDescription("Deletes a shop by its unique identifier.")
             .WithTags("Shops");
 
-        
+
         return app;
     }
 
@@ -135,48 +128,48 @@ public static class ShopApi
         return shops.Any() ? TypedResults.Ok(shops) : TypedResults.NotFound();
     }
     public static async Task<Results<Ok<ItemDTO[]>, NotFound>> GetItemByShop(
-    int id, 
+    int id,
     [AsParameters] CatalogServices services)
     {
         var products = await services.Context.Items
             .Include(p => p.Metal)
             .Include(p => p.Material)
-            .Include(p => p.Type)
             .Include(p => p.Occassion)
             .Include(p => p.Manufacture)
             .Include(p => p.Style)
             .Where(p => p.ShopId == id)
-            .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? string.Empty
+            .Select(s => new ItemDTO
+            {
+                Id = s.Id,
+                Caption = s.Caption,
+                Description = s.Description ?? string.Empty,
+                CostPerGram = s.CostPerGram,
+                Weight = s.Weight,
+                ChangePriceRange = s.EligibleChangePriceRang,
+                ManufactureId = s.ManufactureId,
+                ManufactureName = s.Manufacture.Name,
+                TypeId = (int)s.Type,
+                TypeName = s.Type.GetDisplayName(),
+                Size = s.Size,
+                CategoryId = s.CategoryId,
+                CategoryName = s.Category.Name,
+                MetalId = s.MetalId,
+                MetalName = s.Metal.Name,
+                KT = s.Manufacture.Karat,
+                Purity = s.Manufacture.Purity,
+                ShopId = s.ShopId,
+                ShopName = s.Shop.Name,
+                City = s.Shop.City.Name,
+                MaterialId = s.MaterialId,
+                MaterialName = s.Material.Name,
+                OccasionId = s.OccasionId,
+                OccasionName = s.Occassion.Name,
+                StyleId = s.StyleId,
+                StyleName = s.Style.Name,
+                Discount = s.Discount,
+                Status = s.Status,
+                Quantity = s.AvailableStock,
+                MainPhoto = s.MainPhoto ?? string.Empty
             }).ToArrayAsync();
 
         return products.Any()
@@ -185,43 +178,44 @@ public static class ShopApi
     }
 
     public static async Task<Results<Ok<ItemDTO[]>, NotFound>> GetItemCategoriesByShopId(
-    int id, 
+    int id,
     [AsParameters] CatalogServices services)
     {
         var categories = await services.Context.Items
         .Where(p => p.ShopId == id)
-        .Select(s => new ItemDTO {
-                            Id = s.Id,
-                            Caption = s.Caption,
-                            Description = s.Description ?? string.Empty,
-                            CostPerGram = s.CostPerGram,
-                            Weight = s.Weight,
-                            ChangePriceRange = s.EligibleChangePriceRang,
-                            ManufactureId = s.ManufactureId,
-                            ManufactureName = s.Manufacture.Name,
-                            TypeId = (int)s.Type,
-                            TypeName = s.Type.GetDisplayName(),
-                            Size = s.Size,
-                            CategoryId = s.CategoryId,
-                            CategoryName = s.Category.Name,
-                            MetalId = s.MetalId,
-                            MetalName = s.Metal.Name,
-                            KT = s.Manufacture.Karat,
-                            Purity = s.Manufacture.Purity,
-                            ShopId = s.ShopId,
-                            ShopName = s.Shop.Name,
-                            City = s.Shop.City.Name,
-                            MaterialId = s.MaterialId,
-                            MaterialName = s.Material.Name,
-                            OccasionId = s.OccasionId,
-                            OccasionName = s.Occassion.Name,
-                            StyleId = s.StyleId,
-                            StyleName = s.Style.Name,
-                            Discount = s.Discount,
-                            Status = s.Status,
-                            Quantity = s.AvailableStock, 
-                            MainPhoto = s.MainPhoto ?? string.Empty
-                                     }).ToArrayAsync();
+        .Select(s => new ItemDTO
+        {
+            Id = s.Id,
+            Caption = s.Caption,
+            Description = s.Description ?? string.Empty,
+            CostPerGram = s.CostPerGram,
+            Weight = s.Weight,
+            ChangePriceRange = s.EligibleChangePriceRang,
+            ManufactureId = s.ManufactureId,
+            ManufactureName = s.Manufacture.Name,
+            TypeId = (int)s.Type,
+            TypeName = s.Type.GetDisplayName(),
+            Size = s.Size,
+            CategoryId = s.CategoryId,
+            CategoryName = s.Category.Name,
+            MetalId = s.MetalId,
+            MetalName = s.Metal.Name,
+            KT = s.Manufacture.Karat,
+            Purity = s.Manufacture.Purity,
+            ShopId = s.ShopId,
+            ShopName = s.Shop.Name,
+            City = s.Shop.City.Name,
+            MaterialId = s.MaterialId,
+            MaterialName = s.Material.Name,
+            OccasionId = s.OccasionId,
+            OccasionName = s.Occassion.Name,
+            StyleId = s.StyleId,
+            StyleName = s.Style.Name,
+            Discount = s.Discount,
+            Status = s.Status,
+            Quantity = s.AvailableStock,
+            MainPhoto = s.MainPhoto ?? string.Empty
+        }).ToArrayAsync();
 
 
         return categories.Any()
@@ -281,8 +275,8 @@ public static class ShopApi
         return TypedResults.Created($"/api/shops/{entity.Id}", result);
     }
     public static async Task<Results<Ok<ShopDTO>, NotFound, BadRequest<string>>> UpdateShop(
-        int id, 
-        [FromBody] ShopDTO updatedShop, 
+        int id,
+        [FromBody] ShopDTO updatedShop,
         [AsParameters] CatalogServices services)
     {
         var shop = await services.Context.Shops.FirstOrDefaultAsync(s => s.Id == id);
@@ -315,14 +309,14 @@ public static class ShopApi
         await services.Context.SaveChangesAsync();
         return TypedResults.Ok($"Shop with ID {id} deleted.");
     }
-    
-     [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
-        [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
+
+    [ProducesResponseType<byte[]>(StatusCodes.Status200OK, "application/octet-stream",
+       [ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/tiff",
           "image/wmf", "image/jp2", "image/svg+xml", "image/webp" ])]
-    public static async Task<Results<Ok<string>,NotFound>> GetShopLogo(
-        CatalogContext context,
-        IWebHostEnvironment environment,
-        int id)
+    public static async Task<Results<Ok<string>, NotFound>> GetShopLogo(
+       CatalogContext context,
+       IWebHostEnvironment environment,
+       int id)
     {
         var shop = await context.Shops.FindAsync(id);
 
@@ -330,25 +324,25 @@ public static class ShopApi
         {
             return TypedResults.NotFound();
         }
-        
-        if(shop.Logo.StartsWith("http"))
+
+        if (shop.Logo.StartsWith("http"))
         {
-            return TypedResults.Ok(shop.Logo);            
+            return TypedResults.Ok(shop.Logo);
         }
 
         string imageFileExtension = Path.GetExtension(shop.Logo ?? "default.png");
         string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-        var path = GetFullPathType(environment.ContentRootPath, shop.Logo ?? "default.png");       
+        var path = GetFullPathType(environment.ContentRootPath, shop.Logo ?? "default.png");
         DateTime lastModified = File.GetLastWriteTimeUtc(path);
         //return TypedResults.PhysicalFile(path, mimetype, lastModified: lastModified);
         return TypedResults.Ok(path);
     }
 
-      public static async Task<Results<Ok<string>,NotFound>> GetShopBanner(
-        CatalogContext context,
-        IWebHostEnvironment environment,
-        int id)
+    public static async Task<Results<Ok<string>, NotFound>> GetShopBanner(
+      CatalogContext context,
+      IWebHostEnvironment environment,
+      int id)
     {
         var shop = await context.Shops.FindAsync(id);
 
@@ -356,8 +350,8 @@ public static class ShopApi
         {
             return TypedResults.NotFound();
         }
-        
-        if(shop.Banner!.StartsWith("http"))
+
+        if (shop.Banner!.StartsWith("http"))
         {
             return TypedResults.Ok(shop.Banner);
         }
@@ -365,7 +359,7 @@ public static class ShopApi
         string imageFileExtension = Path.GetExtension(shop.Banner ?? "default.png");
         string mimetype = GetImageMimeTypeFromImageFileExtension(imageFileExtension);
 
-        var path = GetFullPathType(environment.ContentRootPath, shop.Banner ?? "default.png");       
+        var path = GetFullPathType(environment.ContentRootPath, shop.Banner ?? "default.png");
         DateTime lastModified = File.GetLastWriteTimeUtc(path);
         //return TypedResults.PhysicalFile(path, mimetype, lastModified: lastModified);
         return TypedResults.Ok(path);

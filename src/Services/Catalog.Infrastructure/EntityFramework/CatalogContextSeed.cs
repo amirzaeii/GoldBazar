@@ -134,8 +134,8 @@ public partial class ContextData
                 Instagram = "",
                 Tiktok = "",
                 Description = "this is a sample shop",
-                Logo = "https://goldbazarblob.blob.core.windows.net/images/shops/goldbazarshop.png",
-                Banner = "https://goldbazarblob.blob.core.windows.net/images/shops/goldbazarbanner.png",},
+                Logo = "https://goldbazarblob.blob.core.windows.net/development/shops/goldbazarshop.png",
+                Banner = "https://goldbazarblob.blob.core.windows.net/development/shops/goldbazarbanner.png",},
         ];
 
         Items = new Item[]
