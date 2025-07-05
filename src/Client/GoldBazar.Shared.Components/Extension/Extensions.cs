@@ -1,3 +1,5 @@
+using GoldBazar.Shared.Components.Services;
+
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Hosting;
 namespace Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,8 @@ public static class Extensions
         builder.Services.AddHttpClient<RegionService>(o => o.BaseAddress = new("http://catalog-api"))
            .AddApiVersion(1.0);
 
+        builder.Services.AddHttpClient<PromotionService>(o => o.BaseAddress = new Uri("http://catalog-api"))
+        .AddApiVersion(1.0);
     }
 
     public static async Task<string?> GetBuyerIdAsync(this AuthenticationStateProvider authenticationStateProvider)
