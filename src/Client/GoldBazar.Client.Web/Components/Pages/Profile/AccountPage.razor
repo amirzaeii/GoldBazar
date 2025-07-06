@@ -1,0 +1,30 @@
+@page "/profile/account"
+@rendermode InteractiveServer
+@inject IJSRuntime JSRuntime
+@using GoldBazar.Client.Web.Components.Pages.Profile.Components;
+
+<PageTitle>GOLD BAZAR - Account</PageTitle>
+
+<main class="bg-[#f6f6f6] flex flex-col h-dvh overflow-x-hidden overflow-y-auto scroll-smooth">
+    <div class="p-[24px] mx-2 border-b-[0.8px] rounded-b-2xl border-[#E0E0E0] bg-white">
+        <div class="flex justify-between items-center">
+            <h2 class="text-[20px] text-[#1A1A1A]">زانیارییەکانی هەژمارەکەم</h2>
+            <button class="cursor-pointer" @onclick="GoBack">
+                <ArrowLeft Stroke="currentColor" />
+            </button>
+        </div>
+
+        <div class="mt-6">
+            <AccountInformationForm />
+        </div>
+    </div>
+
+    <AccountAddresses />
+</main>
+
+@code {
+    private async Task GoBack()
+    {
+        await JSRuntime.InvokeVoidAsync("history.back");
+    }
+}
