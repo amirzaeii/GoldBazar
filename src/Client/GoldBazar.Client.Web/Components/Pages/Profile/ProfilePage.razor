@@ -1,5 +1,6 @@
 ﻿@page "/profile"
 @layout Layout.DashboardLayout
+@using GoldBazar.Client.Web.Components.Pages.Profile.Components;
 
 <PageTitle>GOLD BAZAR - Profile</PageTitle>
 
@@ -22,7 +23,7 @@
                     </NavLink>
                 </li>
                 <li>
-                    <NavLink class="flex items-center gap-4" href="/profile/requests">
+                    <NavLink class="flex items-center gap-4" href="/profile/order-history">
                         <ShopIcon Color="#000" Height="25" Width="25" />
                         <span class="text-sm text-[#666666]">داواکارییەکانم</span>
                     </NavLink>
@@ -46,15 +47,7 @@
     <div class="bg-white rounded-2xl my-4 mx-6 px-4 py-6">
         <h2 class="font-[20px] text-[#1A1A1A]">داواکارییەکانم</h2>
         <div class="mt-4">
-            <div class="flex items-center justify-between border border-[#E0E0E0] rounded-xl p-4">
-                <div class="flex flex-col">
-                    <span class="text-[#1A1A1A]">مستیلە</span>
-                    <span class="text-[#666666]">٢٠٢٤</span>
-                </div>
-                <div class="bg-[#FFF7ED] py-2 px-4 rounded-full text-sm text-[#9A3412] font-bold">
-                    لای گەیەنەرە
-                </div>
-            </div>
+            @* <OrderHistoryItem /> *@
         </div>
     </div>
 
