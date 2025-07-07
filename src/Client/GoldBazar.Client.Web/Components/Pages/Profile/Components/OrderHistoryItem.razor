@@ -10,7 +10,7 @@
         <span class="text-[#666666]">@Order.Date.Year</span>
     </div>
     <div class="py-2 px-4 rounded-full text-sm font-bold @getOrderColorByStatus()">
-        @Order.Status
+        @orderStatusToString()
     </div>
 </div>
 
@@ -32,6 +32,23 @@
             OrderStatus.CancelledByVendor => "bg-[#FCE8E6] text-[#D93025]",
             OrderStatus.CancelledByGB => "bg-[#FCE8E6] text-[#D93025]",
             _ => "bg-[#E0E0E0] text-[#666666]"
+        };
+    }
+
+    private string orderStatusToString()
+    {
+        return (OrderStatus)Enum.Parse(typeof(OrderStatus), Order!.Status) switch
+        {
+            @* TODO: complete text and bg for these base on what you want *@
+            OrderStatus.Submitted => "نێردراو",
+            OrderStatus.AwaitingValidationFromVendor => "چاوەڕێی پشتڕاستکردنەوە لە فرۆشیارەوە",
+            OrderStatus.AwaitingValidationFromGB => "چاوەڕێی پشتڕاستکردنەوە لە لایەن GB",
+            OrderStatus.Shipping => "لە بەرێوەبردنی نێردنەوە",
+            OrderStatus.Shipped => "نێردرا",
+            OrderStatus.CancelledByBuyer => "هەڵوەشاوە لەلایەن کڕیارەوە",
+            OrderStatus.CancelledByVendor => "هەڵوەشاوە لەلایەن فرۆشیارەوە",
+            OrderStatus.CancelledByGB => "هەڵوەشاوە لەلایەن GBەوە",
+            _ => "ناناسراو "
         };
     }
 }
