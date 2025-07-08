@@ -1,17 +1,18 @@
 using System.Net.Http.Json;
 
 namespace GoldBazar.Shared.Components.Services;
+
 public class OrderingService(HttpClient httpClient)
 {
     private readonly string remoteServiceBaseUrl = "/api/Orders/";
 
-    public Task<OrderRecord[]> GetOrders()
+    public Task<OrderDto[]> GetOrders()
     {
-        return httpClient.GetFromJsonAsync<OrderRecord[]>(remoteServiceBaseUrl)!;
+        return httpClient.GetFromJsonAsync<OrderDto[]>(remoteServiceBaseUrl)!;
     }
     public Task<OrderDto> GetOrders(int orderId)
     {
-        return httpClient.GetFromJsonAsync<OrderDto>(remoteServiceBaseUrl+ orderId)!;
+        return httpClient.GetFromJsonAsync<OrderDto>(remoteServiceBaseUrl + orderId)!;
     }
 
     public Task CreateOrder(CreateOrderRequest request, Guid requestId)
@@ -22,12 +23,6 @@ public class OrderingService(HttpClient httpClient)
         return httpClient.SendAsync(requestMessage);
     }
 }
-
-public record OrderRecord(
-    int OrderNumber,
-    DateTime Date,
-    string Status,
-    decimal Total);
 
 public record OrderDto(
     string V,
