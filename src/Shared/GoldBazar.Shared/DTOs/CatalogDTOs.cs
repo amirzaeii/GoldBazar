@@ -187,8 +187,8 @@ public record ItemDTO
     public int OccasionId { get; set; }
     public string OccasionName { get; set; } = string.Empty;
     public int StyleId { get; set; }
-    public decimal OldPrice => (3353.00M / 31.103M) * KT * Weight + (CostPerGram * Weight);
-    public decimal Price => (3353.00M / 31.103M) * KT * Weight + ((CostPerGram - Discount) * Weight);
+    public decimal OldPrice => (3333.00M / 31.103M) * KT * Weight + (CostPerGram * Weight);
+    public decimal Price => (3333.00M / 31.103M) * KT * Weight + ((CostPerGram - Discount) * Weight);
     public string StyleName { get; set; } = string.Empty;
     public decimal Discount { get; set; }
     public bool Status { get; set; }
