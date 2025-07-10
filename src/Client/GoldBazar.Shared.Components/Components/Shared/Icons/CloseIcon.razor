@@ -1,0 +1,13 @@
+<svg width="@Width" height="@Height" viewBox="0 0 34 34" fill="@Color" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.7279 21.2426L21.2132 12.7573" stroke="@Stroke" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path d="M21.2132 21.2427L12.7279 12.7574" stroke="@Stroke" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+</svg>
+
+@code {
+    [Parameter] public string Width { get; set; } = "34";
+    [Parameter] public string Height { get; set; } = "34";
+    [Parameter] public string Color { get; set; } = "none";
+    [Parameter] public string Stroke { get; set; } = "none";
+}

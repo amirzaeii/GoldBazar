@@ -1,0 +1,57 @@
+<NavLink href="@($"/products/{Product.Id}")" class="h-[240px] overflow-hidden bg-[#F8F8FA] rounded-3xl relative">
+@if (Product.IsFavorite)
+{
+        <span
+            class="product__item-fav absolute bottom-[6px] right-[6px] flex size-[40px] items-center justify-center rounded-full bg-[#8D62F926]">
+            <svg width="18" height="17" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M12.4905 4.78801C12.4844 3.22793 11.6659 1.76078 10.0522 1.24094C8.9442 0.883372 7.73722 1.08222 6.79989 2.42797C5.86256 1.08222 4.65557 0.883372 3.54753 1.24094C1.93369 1.76084 1.1152 3.22827 1.10928 4.78855C1.09435 7.89145 4.23855 10.2659 6.79909 11.4008L6.79989 11.4004L6.80069 11.4008C9.36137 10.2658 12.5058 7.89121 12.4905 4.78801Z"
+                    stroke="#8D62F9" stroke-opacity="0.92" stroke-width="1.23041" stroke-linecap="square" />
+            </svg>
+        </span>
+}
+
+@if (Product.Discount > 0)
+{
+        <span class="product__item-discount absolute top-[12px] left-[12px]">
+            <GradientDiscountIcon />
+        </span>
+}
+
+    <div class="flex h-[145px] overflow-hidden items-center justify-center p-2">
+        <img src="@Product.MainPhoto" class="h-full w-auto" alt="@Product.Caption" />
+    </div>
+
+    <div class="p-2">
+        <h2 class="text-[18px] h-[30px] line-clamp-1 text-[#00000085] font-normal text-left">
+            @Product.Caption @Product.Caption</h2>
+        <div class="flex justify-end gap-1 text-sm text-white font-light">
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>عەیارە :</span>
+                <span>@Product.KT</span>
+            </div>
+            <div class="flex gap-1 bg-[#8D62F9] opacity-80 px-1 rounded-md">
+                <span>کۆ :</span>
+                <span><span>@Product.Weight</span>gr</span>
+            </div>
+        </div>
+        <div class="mt-1 flex items-center justify-end gap-2">
+            @if (Product.Discount > 0)
+            {
+                <span class="text-sm font-bold text-[#8D8D8D] line-through">@Product.OldPrice<span>$</span></span>
+                <span class="text-[20px] font-bold text-[#030303]">@Product.Price<span>$</span></span>
+            }
+            else
+            {
+                <span class="text-[20px] font-bold text-[#030303]">@Product.Price<span>$</span></span>
+            }
+        </div>
+    </div>
+
+</NavLink>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public required ItemDTO Product { get; set; }
+}

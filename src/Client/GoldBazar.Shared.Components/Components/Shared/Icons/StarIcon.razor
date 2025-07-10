@@ -1,0 +1,13 @@
+<svg width="@Width" height="@Height" viewBox="0 0 16 16" fill="@Color" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M9.32115 1.55753L10.8261 4.56403C10.9736 4.85919 11.2583 5.06385 11.5884 5.11121L14.955 5.5958C15.7868 5.71589 16.1178 6.72398 15.5158 7.3016L13.0813 9.64083C12.8421 9.87087 12.7332 10.2015 12.7898 10.5263L13.3643 13.8288C13.5058 14.6457 12.6363 15.269 11.8928 14.8825L8.88382 13.3222C8.58884 13.1691 8.23555 13.1691 7.93971 13.3222L4.93071 14.8825C4.18725 15.269 3.31774 14.6457 3.46008 13.8288L4.03376 10.5263C4.09035 10.2015 3.98145 9.87087 3.7422 9.64083L1.30774 7.3016C0.705766 6.72398 1.03676 5.71589 1.86855 5.5958L5.23512 5.11121C5.56527 5.06385 5.85082 4.85919 5.99831 4.56403L7.50238 1.55753C7.87454 0.814155 8.94899 0.814155 9.32115 1.55753Z"
+        stroke="@Stroke" stroke-width="@StrokeWidth" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+@code {
+    [Parameter] public string Width { get; set; } = "16";
+    [Parameter] public string Height { get; set; } = "16";
+    [Parameter] public string Color { get; set; } = "none";
+    [Parameter] public string Stroke { get; set; } = "none";
+    [Parameter] public string StrokeWidth { get; set; } = "0.35";
+}

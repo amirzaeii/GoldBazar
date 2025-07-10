@@ -8,6 +8,10 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
+  
+  <Target Name="NpmBuild" BeforeTargets="Build">
+    <Exec Command="npm run build:css" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
@@ -21,11 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\GoldBazar.Shared\GoldBazar.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components/" />
-    <Folder Include="wwwroot/" />
   </ItemGroup>
   <ItemGroup>
       <Protobuf Include="..\..\Services\Basket.Api\Proto\basket.proto" GrpcServices="Client" />    
