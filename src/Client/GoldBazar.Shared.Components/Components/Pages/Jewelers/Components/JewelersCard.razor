@@ -1,0 +1,28 @@
+@using GoldBazar.Client.Web.Components.Pages.Jewelers.Models
+
+<NavLink href="@($"/jewelers/{Jeweler.Id}")" class="flex flex-col">
+    <div class="rounded-2xl h-[114px] overflow-hidden mx-1 md:mx-3 border border-[#F2F2F2]"><img class="size-full"
+            src="@Jeweler.LogoUrl" alt="@Jeweler.Name">
+    </div>
+
+    <div
+        class="flex flex-row-reverse items-center justify-between mt-4 border-2 border-[#EBAD42] py-1 px-2 md:px-4 lg:px-6 rounded-2xl">
+        @for (int i = 1; i <= 5; i++)
+        {
+            @if (i <= Jeweler.Rating)
+            {
+                <StarIcon Stroke="EBAD42" Color="#EBAD42" Height="12" Width="12" />
+            }
+            else
+            {
+                <StarIcon Stroke="#000" StrokeWidth="0.85" Height="12" Width="12" />
+            }
+        }
+    </div>
+</NavLink>
+
+@code {
+    [Parameter]
+
+    public required Jeweler Jeweler { get; set; }
+}

@@ -1,0 +1,26 @@
+@inject CatalogService _catalogService
+
+<div class="product mt-[18px]">
+    <div class="product__list grid grid-cols-2 md:grid-cols-4 gap-4">
+        @if (Products == null || Products.Count == 0)
+        {
+            <p class="text-center col-span-4">No products available.</p>
+        }
+        else
+        {
+            @foreach (var Product in Products.Data)
+            {
+                <ProductItem Product="@Product" />
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private ItemResult Products = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await _catalogService.GetCatalogItems(0, 20, null);
+    }
+
+}

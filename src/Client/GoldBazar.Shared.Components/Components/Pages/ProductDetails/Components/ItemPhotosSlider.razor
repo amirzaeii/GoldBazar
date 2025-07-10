@@ -1,0 +1,49 @@
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+@inject CatalogService _catalogService
+
+@if (_itemPhotos == null || _itemPhotos.Length == 0)
+{
+    <p> Loading...</p>
+}
+else
+{
+    <div class="product-details">
+        <div class="swiper h-[233px]">
+
+            <div class="swiper-wrapper">
+                @foreach (var image in _itemPhotos)
+                {
+                    <div class="swiper-slide">
+                        <div class="size-full flex items-center justify-center">
+                            <img class="w-auto h-full" src="@image.AbsolutePath" alt="@image.Description">
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="swiper-pagination !bottom-0"></div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public int ProductId { get; set; }
+
+    private ItemPhotosDTO[] _itemPhotos = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeProductDetailsSwiper");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _itemPhotos = await _catalogService.GetItemPhotos(ProductId);
+    }
+}

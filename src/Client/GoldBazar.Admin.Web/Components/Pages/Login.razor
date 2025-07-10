@@ -1,0 +1,98 @@
+@page "/login"
+@layout EmptyLayout
+@using MudBlazor
+
+<style>
+    
+    .login-bg {
+        position: fixed;
+        inset: 0; 
+        background: linear-gradient(135deg, #4A148C, #283593);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 12px;
+    }
+</style>
+
+<div class="login-bg">
+    <MudCard Class="login-card" Elevation="12">
+        <MudCardContent>
+            <div class="d-flex justify-center">
+                <MudAvatar Icon="@Icons.Material.Filled.AdminPanelSettings"
+                           Size="Size.Large"
+                           Color="Color.Primary"
+                           Class="mb-3" />
+            </div>
+            <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-1">
+                GoldBazar Admin
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="Align.Center" Color="Color.Secondary" Class="mb-4">
+                Sign in to continue
+            </MudText>
+
+            <MudForm @ref="form" OnValidSubmit="HandleValidSubmit">
+                <MudTextField T="string"
+                              @bind-Value="loginModel.UserName"
+                              Label="Username"
+                              Variant="Variant.Outlined"
+                              Required="true"
+                              FullWidth="true" />
+
+                <MudTextField T="string"
+                              @bind-Value="loginModel.Password"
+                              Label="Password"
+                              InputType="InputType.Password"
+                              Variant="Variant.Outlined"
+                              Required="true"
+                              FullWidth="true"
+                              Class="mt-3" />
+
+                <MudCheckBox T="bool"
+                             @bind-Checked="loginModel.RememberMe"
+                             Label="Remember me"
+                             Color="Color.Primary"
+                             Class="mt-2" />
+
+                <div class="d-flex justify-end mt-1">
+                    <MudText Link="true"
+                             Class="cursor-pointer"
+                             Color="Color.Primary"
+                             OnClick="ForgotPassword">
+                        Forgot password?
+                    </MudText>
+                </div>
+
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           Disabled="@_loading"
+                           Class="mt-4"
+                           OnClick='() => NavigationManager.NavigateTo("/")'>
+                    @if (_loading)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Login" Class="mr-1" />
+                        <span>LOGIN</span>
+                    }
+                </MudButton>
+
+            </MudForm>
+
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudText Color="Color.Error" Align="Align.Center" Class="mt-3">
+                    @_errorMessage
+                </MudText>
+            }
+        </MudCardContent>
+    </MudCard>
+</div>

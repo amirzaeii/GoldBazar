@@ -1,0 +1,20 @@
+<svg width="@Width" height="@Height" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M3.35535 3.87646L5.43535 4.23646L6.39835 15.7095C6.47535 16.6465 7.25835 17.3655 8.19835 17.3625H19.1073C20.0043 17.3645 20.7653 16.7045 20.8923 15.8165L21.8413 9.25846C21.9473 8.52546 21.4383 7.84546 20.7063 7.73946C20.6423 7.73046 5.76935 7.72546 5.76935 7.72546"
+        stroke="@Color" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M14.7303 11.4214H17.5033" stroke="@Color" stroke-width="1.5" stroke-linecap="round"
+        stroke-linejoin="round" />
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M7.75964 20.8291C8.06064 20.8291 8.30364 21.0731 8.30364 21.3731C8.30364 21.6741 8.06064 21.9181 7.75964 21.9181C7.45864 21.9181 7.21564 21.6741 7.21564 21.3731C7.21564 21.0731 7.45864 20.8291 7.75964 20.8291Z"
+        fill="@Color" stroke="@Color" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M19.0399 20.8291C19.3409 20.8291 19.5849 21.0731 19.5849 21.3731C19.5849 21.6741 19.3409 21.9181 19.0399 21.9181C18.7389 21.9181 18.4959 21.6741 18.4959 21.3731C18.4959 21.0731 18.7389 20.8291 19.0399 20.8291Z"
+        fill="@Color" stroke="@Color" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+</svg>
+
+
+@code {
+    [Parameter] public string Width { get; set; } = "25";
+    [Parameter] public string Height { get; set; } = "25";
+    [Parameter] public string Color { get; set; } = "#989898";
+}
