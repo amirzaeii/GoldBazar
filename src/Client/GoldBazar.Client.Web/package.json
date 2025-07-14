@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "build:css": "npx @tailwindcss/cli -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css",
-    "watch:css": "npx @tailwindcss/cli -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css --watch"
-  },
+
+  //"scripts": {
+  //  "build:css": "npx @tailwindcss/cli -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css",
+  //  "watch:css": "npx @tailwindcss/cli -i ./Styles/tailwind.css -o ./wwwroot/tailwind.css --watch"
+  //},
   "keywords": [],
   "author": "Gold Bazar Team",
   "license": "ISC",

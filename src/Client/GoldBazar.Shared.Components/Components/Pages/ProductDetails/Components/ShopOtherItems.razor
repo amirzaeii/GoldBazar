@@ -1,0 +1,33 @@
+﻿@inject ShopService _shopService;
+<h2 class="text-lg px-2 text-black">بەرهەمەکانی تری زەڕەنگەر</h2>
+<div class="mt-2 flex overflow-x-auto gap-2">
+    @if (Items != null && Items.Length > 0)
+    {
+        @foreach (var item in Items)
+        {
+            <ShopItemCard Item="@item" />
+        }
+    }
+    <div
+        class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[140px] w-[140px] p-4 flex items-center justify-between">
+        <div class="w-full flex flex-col items-center justify-center">
+            <span class="bg-[#8D62F9] rounded-full p-1">
+                <ArrowLeft Stroke="#FFFFFF" />
+            </span>
+            <span class="text-2xl text-[#8D62F9] mt-2">زیاتر ببینە</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public required int ShopId { get; set; }
+    private ItemDTO[] Items = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch items from the shop using the ShopId
+        Items = await _shopService.GetItemsByShopId(ShopId);
+        Items = Items.Take(10).ToArray(); // Limit to 10 items
+    }
+}

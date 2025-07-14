@@ -1,4 +1,5 @@
 using GoldBazar.Client.Web.Components;
+using GoldBazar.Shared.Components.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,0 +1,91 @@
+@rendermode InteractiveServer
+@using GoldBazar.Client.Web.Components.Pages.Jewelers.Models
+
+<section class="px-6 mt-8">
+    <div class="flex items-center justify-between">
+        <h2 class="text-[15px] font-light">زەڕەنگەرەکان</h2>
+
+        <div class="bg-[#96797980] flex items-center justify-between py-1 px-2.5 rounded-3xl w-[80px]">
+            <button class="p-1 rounded-full cursor-pointer @getIconClass(ViewType.Card)"
+                @onclick="() => _viewType = ViewType.Card">
+                <CardIcon Color="currentColor" />
+            </button>
+            <button class="p-1 rounded-full cursor-pointer @getIconClass(ViewType.List)"
+                @onclick="() => _viewType = ViewType.List">
+                <ListIcon Color="currentColor" />
+            </button>
+        </div>
+    </div>
+
+    @if (_jewelers == null)
+    {
+        <div class="flex items-center justify-center mt-6">
+            ...Loading
+        </div>
+    }
+    else
+    {
+        <div class="mt-6 @getViewTypeClass()">
+            @foreach (var jeweler in _jewelers)
+            {
+                if (_viewType == ViewType.List)
+                {
+                    <JewelersCard2 Jeweler="jeweler" />
+                }
+                else
+                {
+                    <JewelersCard Jeweler="jeweler" />
+                }
+            }
+        </div>
+    }
+</section>
+
+@code {
+    enum ViewType
+    {
+        Card,
+        List
+    }
+
+    private ViewType _viewType = ViewType.Card;
+
+    private string getViewTypeClass()
+    {
+        return _viewType switch
+        {
+            ViewType.Card => "grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-10",
+            ViewType.List => "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2",
+            _ => "grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-10"
+        };
+    }
+
+    private string getIconClass(ViewType type)
+    {
+        if (_viewType == type)
+        {
+            return "bg-white text-black";
+        }
+
+        return "text-white";
+    }
+
+    private List<Jeweler>? _jewelers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        _jewelers = new List<Jeweler>
+{
+new Jeweler { Id = 1, Name = "زەڕەنگەر 1", Location = "ناوچە 1", LogoUrl = "/images/jewelers/1.png", Rating = 4.5f,
+ReviewsCount
+= 258 },
+new Jeweler { Id = 2, Name = "زەڕەنگەر 2", Location = "ناوچە 2", LogoUrl = "/images/jewelers/1.png", Rating = 2f,
+ReviewsCount =
+112 },
+new Jeweler { Id = 3, Name = "زەڕەنگەر 3", Location = "ناوچە 3", LogoUrl = "/images/jewelers/1.png", Rating = 5f,
+ReviewsCount =
+4 },
+};
+    }
+}

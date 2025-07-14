@@ -1,0 +1,29 @@
+﻿<div
+    class="bg-[#8D62F926] border border-[#8D62F9CF] rounded-2xl h-[159px] min-w-[320px] w-[320px] p-4 flex items-center justify-between">
+    <div>
+        <div>
+            @if (Item.Discount > 0)
+            {
+                <span class="text-base text-[#7A7A7A] ml-2 line-through">@Item.OldPrice.ToString("C")</span>
+            }
+            <span class="text-lg text-[#020202]">@Item.Price.ToString("C")</span>
+        </div>
+        <h2 class="text-black mt-2">@Item.Caption</h2>
+        <h3 class="text-black mt-1">@Item.ShopName</h3>
+        <svg class="mt-2 mr-[-4px]" width="36" height="36" viewBox="0 0 36 36" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="18" fill="#8D62F9" fill-opacity="0.5" />
+            <path
+                d="M25.3231 16.9633C25.3157 15.0614 24.3179 13.2728 22.3506 12.6391C20.9998 12.2032 19.5284 12.4456 18.3857 14.0862C17.243 12.4456 15.7715 12.2032 14.4207 12.6391C12.4533 13.2729 11.4555 15.0618 11.4482 16.964C11.4301 20.7467 15.2632 23.6414 18.3847 25.0249L18.3857 25.0245L18.3867 25.0249C21.5084 23.6413 25.3418 20.7464 25.3231 16.9633Z"
+                stroke="white" stroke-opacity="0.92" stroke-width="1.5" stroke-linecap="square" />
+        </svg>
+    </div>
+    <div class="size-[130px] bg-white rounded-2xl">
+        <img src="@Item.MainPhoto" class="w-full h-auto rounded-2xl" alt="" />
+    </div>
+</div>
+@code {
+    [Parameter]
+    [EditorRequired]
+    public required ItemDTO Item { get; set; }
+}

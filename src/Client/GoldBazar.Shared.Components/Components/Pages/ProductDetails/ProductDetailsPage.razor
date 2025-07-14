@@ -1,0 +1,251 @@
+@rendermode InteractiveServer
+@inject CatalogService _catalogService
+@page "/products/{productId:int}"
+
+
+<PageTitle>GOLD BAZAR</PageTitle>
+@if (product == null)
+{
+
+}
+else
+{
+
+    <main class="relative mb-[100px]">
+        <Header Title="@product.Caption" />
+        <section class="h-[233px] relative my-3 bg-[#F9F9FB]">
+            <ItemPhotosSlider ProductId="@product.Id" />
+            @if (product.Discount > 0)
+            {
+                <span class="absolute top-[24px] left-[24px]">
+                    <DiscountIcon Color="#8D62F9EB" />
+                </span>
+            }
+
+            <div class="absolute bottom-[24px] right-[24px] cursor-pointer z-1" @onclick="onFavIconClick">
+                <FavIcon Color="@FavColor" Stroke="#8D62F9EB" />
+            </div>
+
+            <div class="absolute flex flex-col items-end bottom-[24px] left-[24px]">
+                <div class="flex items-center justify-around rounded-[34px] p-1 border-[#D7D7D7] border w-[66px] h-[20px]">
+                    <h5 class="pt-0.5 text-[#A39999] text-[10px] border-l border-[#A39999] leading-[1] pl-1">234</h5>
+                    <span class="mb-0.5">
+                        <StarIcon Color="#EBAD42" Height="12" Width="12" />
+                    </span>
+                    <h6 class="text-xs font-normal">4.3</h6>
+                </div>
+                <div class="flex w-[90px] items-center justify-between mt-2">
+                    <StarIcon Stroke="#000" Height="14" Width="14" />
+                    <StarIcon Stroke="#000" Height="14" Width="14" />
+                    <StarIcon Stroke="#000" Height="14" Width="14" />
+                    <StarIcon Stroke="#000" Height="14" Width="14" />
+                    <StarIcon Stroke="#000" Height="14" Width="14" />
+                </div>
+            </div>
+        </section>
+
+        <section class="flex items-center justify-between my-2 mx-4">
+            <h2 class="text-2xl font-normal">@product.Caption</h2>
+            <div class="flex items-center">
+                @if (product.Discount > 0)
+                {
+                    <span class="text-[20px] text-[#898989] ml-2 line-through">@product.Price.ToPriceString()</span>
+                    <span class="text-[26px] text-black">@product.OldPrice.ToPriceString()</span>
+                }
+                else
+                {
+                    <span class="text-[26px] text-black">@product.Price.ToPriceString()</span>
+                }
+            </div>
+        </section>
+
+        <section class="flex flex-col items-center justify-between my-2 mx-4">
+            <div class="border border-[#4C46E3] grid grid-cols-3 place-items-center rounded-t-lg h-[56px] w-full">
+                <div class="text-base">
+                    <span class="text-[#6D6D6D]">عەیارە:</span>
+                    <span class="text-black">@product.KT</span>
+                </div>
+                <div class="text-base">
+                    <span class="text-[#6D6D6D]">کێش:</span>
+                    <span class="text-black">@product.Weight g</span>
+                </div>
+                <div class="text-base">
+                    <span class="text-[#6D6D6D]">قەبارە:</span>
+                    <span class="text-black">@product.Size</span>
+                </div>
+            </div>
+            <div
+                class="border text-base text-white flex items-center justify-center border-[#4C46E3] bg-[#4C46E3] rounded-b-lg h-[43px] w-full">
+                بەپێی خواستی خۆت دیاریبکە
+            </div>
+        </section>
+
+        <section class="flex flex-col items-center justify-between m-4">
+            <ShopCard ShopId="@product.ShopId" />
+        </section>
+
+        <section class="flex flex-col items-center justify-between my-2 mx-4">
+            <div class="bg-[#FFF2E8] rounded-lg w-full flex flex-col">
+                <div class="flex items-center p-4">
+                    <GoldIcon Color="#FFBE0D" Height="24" Width="24" />
+                    <span class="text-black text-base mr-2">ئاڵتوون</span>
+                </div>
+                <div class="grid grid-cols-3 min-h-[117px] gap-1 overflow-hidden rounded-b-lg">
+                    <div class="bg-[#FFF9F5] p-2 flex flex-col items-start">
+                        <h4 class="text-base text-black">ڕەهەندەکان</h4>
+                        <div class="flex flex-col mt-2 mr-1 items-start w-full gap-1">
+                            <span class="text-sm">درێژی : @product.Size</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#FFF9F5] p-2 flex flex-col items-start">
+                        <h4 class="text-base text-black">کێش</h4>
+                        <div class="flex flex-col mt-2 mr-1 items-start w-full gap-1">
+                            <span class="text-sm">کۆ : @product.Weight</span>
+                        </div>
+                    </div>
+                    <div class="bg-[#FFF9F5] p-2 flex flex-col items-start">
+                        <h4 class="text-base text-black">خاوێنی</h4>
+                        <div class="flex flex-col mt-2 mr-1 items-start gap-1">
+                            <span class="text-sm">عەیارە : @product.KT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flex flex-col items-center justify-between my-2 mx-4">
+            <div class="w-full p-2">
+                <h2 class="text-xl text-black">تایبەتمەندییەکان</h2>
+                <div class="grid grid-cols-2 text-lg text-[#636363] p-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-1 h-1 rounded-full bg-[#636363] mt-1 mb-1"></span>
+                        <span>نەخشی دەستکرد</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-1 h-1 rounded-full bg-[#636363] mt-1 mb-1"></span>
+                        <span>ستایلی کلاسیک</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-1 h-1 rounded-full bg-[#636363] mt-1 mb-1"></span>
+                        <span>ئاڵتونی زەرد</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="w-1 h-1 rounded-full bg-[#636363] mt-1 mb-1"></span>
+                        <span>پۆلیش کراو</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border border-[#C8C8C8] w-[60%] h-[1px]"></div>
+        </section>
+
+        <section class="flex flex-col items-center justify-between m-4">
+            <div class="w-full">
+                <ShopOtherItems ShopId="product.ShopId" />
+            </div>
+        </section>
+
+        <section class="flex flex-col items-center justify-between m-4">
+            <div class="w-full">
+                <h2 class="text-lg px-2 text-black">بەرهەمی هاوشێوە</h2>
+                <div class="mt-2 gap-4 grid grid-cols-2 md:grid-cols-4">
+
+                </div>
+            </div>
+        </section>
+
+        <section class="fixed bottom-0 h-[96px] w-full z-10 bg-white"
+            style="box-shadow: 0px -5px 23.4px rgba(0, 0, 0, 0.15);">
+            <div class="flex items-center justify-between h-full py-5 px-8">
+                <button
+                    class="cursor-pointer flex items-center gap-4 h-full justify-center text-white w-[210px] rounded-2xl bg-[linear-gradient(99.09deg,_#4C46E3_26.12%,_#524CEA_103.96%)]"
+                    @onclick="() => OpenAddToCartModal = true">
+                    <span class="text-[28px] font-normal">کڕین</span>
+                    <CartIcon2 Color="currentColor" />
+                </button>
+                <div class="flex flex-col items-center">
+                    @if (product.Discount > 0)
+                    {
+                        <span class="text-[20px] text-[#898989] line-through">@product.Price.ToString("C")</span>
+                        <span class="text-[26px] text-[#070707]">@product.OldPrice.ToString("C")</span>
+                    }
+                    else
+                    {
+                        <span class="text-[26px] text-[#070707]">@product.Price.ToString("C")</span>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <AnimatedModal @bind-IsVisible="OpenAddToCartModal">
+            <ChildContent>
+                <div class="bg-[#EBAD4236] h-[65px] flex justify-center items-center">
+                    <NotificationIcon Stroke="#EBAD42" />
+                </div>
+                <div class="flex flex-col items-center gap-2 p-4">
+                    <h3 class="text-black text-2xl">کڕینی پێشووت تەواو نەکردووە</h3>
+                    <h5 class="text-[#4D4D4D] text-[18px] mt-2 text-center leading-8">سەرەتا کڕینەکەی پێشووت تەواو بکە لە
+                        بەشی کاڵاکان بۆ داواکردنی کاڵای نوێ</h5>
+                    <div class="flex flex-col items-center gap-4 my-4">
+                        <NavLink href="/cart">
+                            <button
+                                class="text-white gap-3 rounded-2xl flex items-center justify-center p-2.5 bg-[#3379F0] w-[232px] text-[17px] cursor-pointer font-bold">
+                                <span>کڕینەکەم تەواودەکەم</span>
+                                <span>
+                                    <CartIcon2 Color="currentColor" />
+                                </span>
+                            </button>
+                        </NavLink>
+                        <button class="text-black text-sm cursor-pointer font-semibold"
+                            @onclick="() => OpenCancelationModal = true">هەڵوەشاندنەوەی کڕینی پێشوو</button>
+                    </div>
+                    <div class="flex items-center gap-2 self-start text-[#989898] text-sm">
+                        <NotificationIcon Stroke="currentColor" Width="17" Height="17" />
+                        <span>هۆکاری ئەم ڕووداوە</span>
+                    </div>
+                </div>
+            </ChildContent>
+        </AnimatedModal>
+
+        <AnimatedModal @bind-IsVisible="OpenCancelationModal">
+            <ChildContent>
+                <div class="bg-[#EF606036] h-[65px] flex justify-center items-center">
+                    <NotificationIcon Stroke="#EF6060" />
+                </div>
+                <div class="flex flex-col items-center gap-2 p-4 border-b border-[#0000000F]">
+                    <h3 class="text-black text-2xl">ئاگاداربە</h3>
+                    <h5 class="text-[#4D4D4D] text-[18px] mt-2 text-center leading-8">بەم شێوەیە ئەو کاڵایانەی پێشوو
+                        هەڵتبژاردووە ئەسڕدرێنەوە ، دڵنیایت لە سڕینەوەی کاڵاکانی پێشوو؟</h5>
+                </div>
+                <div class="flex flex-col items-center gap-3 p-4 my-2">
+                    @* TODO: Clear current cart when click on this button *@
+                    <button class="text-[#EF6060] text-xl cursor-pointer font-bold">بەڵێ دڵنیام</button>
+                    <button class="text-[#0000009C] text-xl cursor-pointer font-semibold"
+                        @onclick="() => OpenCancelationModal = false">نەخێر ، کڕینەکانی پێشووم تەواو دەکەم</button>
+                </div>
+            </ChildContent>
+        </AnimatedModal>
+    </main>
+}
+
+@code {
+    [Parameter]
+    public int productId { get; set; }
+    private ItemDTO product { get; set; } = default!;
+    private string FavColor { get; set; } = "none";
+    private bool OpenAddToCartModal { get; set; } = false;
+    private bool OpenCancelationModal { get; set; } = false;
+    protected override async Task OnInitializedAsync()
+    {
+        product = await _catalogService.GetCatalogItem(productId);
+        FavColor = product!.IsFavorite ? "#8D62F9EB" : "none";
+    }
+
+    private async Task onFavIconClick()
+    {
+        product.IsFavorite = !product.IsFavorite;
+        FavColor = product.IsFavorite ? "#8D62F9EB" : "none";
+
+        await _catalogService.ToggleItemFavorite(productId);
+        StateHasChanged();
+    }
+}
