@@ -1,6 +1,8 @@
 using GoldBazar.Client.Web.Components;
 using GoldBazar.Shared.Components.Components;
 
+using App = GoldBazar.Shared.Components.Components.App;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();

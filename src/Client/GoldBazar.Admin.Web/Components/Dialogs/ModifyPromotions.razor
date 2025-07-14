@@ -1,5 +1,7 @@
+@using GoldBazar.Shared.Components.Services.Contracts
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+@inject IImageService ImageService
 
 <MudDialog MaxWidth="MaxWidth.Small" FullWidth="true">
     <TitleContent>
@@ -10,13 +12,17 @@
         <MudForm @ref="form" Model="Promotion">
             <MudTextField T="string" Label="Title" @bind-Value="Promotion.Title" Required="true" />
             <MudTextField T="string" Label="Description" @bind-Value="Promotion.Description" />
-            <MudTextField T="string" Label="Image URL" @bind-Value="Promotion.ImageUrl" />
             <MudTextField T="string" Label="Link" @bind-Value="Promotion.Link" />
             <MudNumericField T="int" Label="Priority" @bind-Value="Promotion.Priority" />
-            <MudSwitch T="bool"
-                       Label="Active"
-                       @bind-Checked="Promotion.IsActive"
-                       Color="Color.Success" />
+            <MudSwitch T="bool" Label="Active" @bind-Checked="Promotion.IsActive" Color="Color.Success" />
+
+            <MudText Typo="Typo.subtitle1" Class="mt-4">Upload Image</MudText>
+            <InputFile OnChange="OnFileSelected" />
+
+            @if (!string.IsNullOrEmpty(Promotion.ImageUrl))
+            {
+                <img src="@Promotion.ImageUrl" alt="Promotion Image" style="width: 150px; margin-top: 10px;" />
+            }
         </MudForm>
     </DialogContent>
 
@@ -33,6 +39,20 @@
     [Parameter, EditorRequired] public Func<PromotionSliderDTO, Task> OnSave { get; set; } = _ => Task.CompletedTask;
 
     private MudForm form = default!;
+
+    private async Task OnFileSelected(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            var storedFileName = await ImageService.UploadItemImage(file);
+
+            Promotion.ImageUrl = $"/uploads/{storedFileName}";
+
+            Snackbar.Add("Image uploaded successfully", Severity.Success);
+            StateHasChanged();
+        }
+    }
 
     void Cancel() => MudDialog.Cancel();
 

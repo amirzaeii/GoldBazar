@@ -1,4 +1,4 @@
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer
 @inject IJSRuntime JS
 
 <div class="home-page slider mx-[17px]">
@@ -31,6 +31,45 @@
 
 
 @code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeBazarSwiper");
+        }
+    }
+} *@
+
+@rendermode InteractiveServer
+@inject IJSRuntime JS
+@inject PromotionService PromotionService
+
+<div class="home-page slider mx-[17px]">
+    <div class="swiper h-[170px]">
+        <div class="swiper-wrapper">
+            @foreach (var promo in promotions)
+            {
+                <div class="swiper-slide" @key="promo.Id">
+                    <div class="h-[143px] w-full rounded-2xl bg-cover bg-center bg-no-repeat"
+                         style="background-image: url('@promo.ImageUrl')">
+                        <a href="@promo.Link" class="flex size-full"></a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination !bottom-0"></div>
+    </div>
+</div>
+
+@code {
+    private List<PromotionSliderDTO> promotions = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var allPromotions = await PromotionService.GetPromotions();
+        promotions = allPromotions.Where(p => p.IsActive).OrderBy(p => p.Priority).ToList();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
