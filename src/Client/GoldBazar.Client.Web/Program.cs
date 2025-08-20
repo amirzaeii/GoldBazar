@@ -1,5 +1,4 @@
 using GoldBazar.Client.Web.Components;
-using GoldBazar.Shared.Components.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +25,8 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+     .AddAdditionalAssemblies(
+        typeof(GoldBazar.Shared.Components.Routes).Assembly);
 
 app.Run();

@@ -66,4 +66,8 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="../GoldBazar.Shared.Components/GoldBazar.Shared.Components.csproj" />
+    </ItemGroup>
+
 </Project>

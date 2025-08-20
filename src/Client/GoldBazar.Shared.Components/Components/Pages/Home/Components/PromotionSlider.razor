@@ -2,40 +2,40 @@
 @inject IJSRuntime JS
 
 <div class="home-page slider mx-[17px]">
-    <div class="swiper h-[170px]">
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <div
-                    class="h-[143px] w-full rounded-2xl bg-[url('/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
-                    <a href="#!" class="flex size-full"></a>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <div
-                    class="h-[143px] w-full rounded-2xl bg-[url('/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
-                    <a href="#!" class="flex size-full"></a>
-                </div>
-            </div>
-
-            <div class="swiper-slide">
-                <div
-                    class="h-[143px] w-full rounded-2xl bg-[url('/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
-                    <a href="#!" class="flex size-full"></a>
-                </div>
-            </div>
+  <div class="swiper h-[170px]">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div
+          class="h-[143px] w-full rounded-2xl bg-[url('/_content/GoldBazar.Shared.Components/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
+          <a href="#!" class="flex size-full"></a>
         </div>
-        <div class="swiper-pagination !bottom-0"></div>
+      </div>
+
+      <div class="swiper-slide">
+        <div
+          class="h-[143px] w-full rounded-2xl bg-[url('/_content/GoldBazar.Shared.Components/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
+          <a href="#!" class="flex size-full"></a>
+        </div>
+      </div>
+
+      <div class="swiper-slide">
+        <div
+          class="h-[143px] w-full rounded-2xl bg-[url('/_content/GoldBazar.Shared.Components/images/slider/slider-1.png')] bg-cover bg-center bg-no-repeat">
+          <a href="#!" class="flex size-full"></a>
+        </div>
+      </div>
     </div>
+    <div class="swiper-pagination !bottom-0"></div>
+  </div>
 </div>
 
 
 @code {
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
     {
-        if (firstRender)
-        {
-            await JS.InvokeVoidAsync("initializeBazarSwiper");
-        }
+      await JS.InvokeVoidAsync("initializeBazarSwiper");
     }
+  }
 }

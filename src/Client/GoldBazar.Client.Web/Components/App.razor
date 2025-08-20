@@ -1,31 +1,33 @@
-﻿<!DOCTYPE html>
+﻿@using GoldBazar.Shared.Components.Components
+@using Microsoft.AspNetCore.Components.Web
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <base href="/" />
 
-    @* Swiper styles *@
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  @* Swiper styles *@
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
-    <link rel="stylesheet" href="@Assets["tailwind.css"]" />
-    <link rel="stylesheet" href="@Assets["app.css"]" />
-    <link rel="stylesheet" href="@Assets["GoldBazar.Client.Web.styles.css"]" />
+  <link rel="stylesheet" href="_content/GoldBazar.Shared.Components/tailwind.css" />
+  <link rel="stylesheet" href="_content/GoldBazar.Shared.Components/app.css" />
 
 
-    <ImportMap />
-    <link rel="icon" href="favicon.ico" />
-    <HeadOutlet />
+  <ImportMap />
+  <link rel="icon" href="favicon.ico" />
+  <HeadOutlet />
 </head>
 
 <body dir="rtl" class="font-[Zain]">
-    <Routes />
-    <script src="_framework/blazor.web.js"></script>
+  <Routes />
+  <script src="_framework/blazor.web.js"></script>
 
-    @* Swiper scripts *@
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="@Assets["lib/swiper/swiperInterop.js"]"></script>
+  @* Swiper scripts *@
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="_content/GoldBazar.Shared.Components/lib/swiper/swiperInterop.js"></script>
 </body>
 
 </html>
