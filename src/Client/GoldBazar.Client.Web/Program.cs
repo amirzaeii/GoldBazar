@@ -25,6 +25,8 @@ app.UseAntiforgery();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+    .AddInteractiveServerRenderMode()
+     .AddAdditionalAssemblies(
+        typeof(GoldBazar.Shared.Components.Routes).Assembly);
 
 app.Run();

@@ -1056,6 +1056,14 @@ public partial class CatalogContextSeed(
             logger.LogInformation("Seeded catalog with {NumBrands} ProductTypes", context.Categories.Count());
             await context.SaveChangesAsync();
         }
+
+        if (!context.Items.Any())
+        {
+
+            await context.Items.AddRangeAsync(contextData.Items);
+            logger.LogInformation("Seeded items with {NumItems} items", context.Items.Count());
+            await context.SaveChangesAsync();
+        }
     }
 }
 

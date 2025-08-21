@@ -7,8 +7,8 @@ public static class Extensions
     {
         //  builder.AddAuthenticationServices();
         builder.AddShareApplicationServices();
-        builder.AddRabbitMqEventBus("gb-eventbus")
-               .AddEventBusSubscriptions();
+        //builder.AddRabbitMqEventBus("gb-eventbus")
+              // .AddEventBusSubscriptions();
 
     }
 
