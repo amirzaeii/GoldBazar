@@ -1,0 +1,14 @@
+<div class="bg-white rounded-2xl my-4 mx-6 px-4 py-6">
+    <h2 class="font-[20px] text-[#1A1A1A]">داواکارییەکانی پێشووم</h2>
+    <div class="mt-4">
+        @foreach (var Order in Orders)
+        {
+            <OrderHistoryItem Order="@Order" />
+        }
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public List<GoldBazar.Shared.Components.Services.OrderDto> Orders { get; set; } = default!;
+}

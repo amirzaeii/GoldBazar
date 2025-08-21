@@ -34,8 +34,8 @@
             <label for="email" class="text-[#2A2A2A] size-[18px]">ئیمەیڵەکەت بنووسە</label>
             <div
                 class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
-                <InputText @bind-Value="registerModel.Email" class="text-[#696969] grow size-full outline-0" type="tel"
-                    id="email" name="email" placeholder="abc12@gmail.com" />
+                <InputText @bind-Value="registerModel.Email" class="text-[#696969] grow size-full outline-0" id="email"
+                    type="email" name="email" placeholder="abc12@gmail.com" />
                 @if (@isEmailValid())
                 {
                     <ValidInputIcon />

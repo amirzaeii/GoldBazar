@@ -1,0 +1,155 @@
+<EditForm class="w-full flex flex-col gap-4" OnValidSubmit="HandleValidSubmit" EditContext="@editContext">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="fullname" class="text-[#2A2A2A] size-[18px]">ناوی تەواو</label>
+        <div
+            class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
+            <InputText @bind-Value="accountModel.FullName" class="text-[#1A1A1A] grow size-full outline-0" type="text"
+                id="fullname" name="fullname" placeholder="ناوی تەواو" readonly />
+        </div>
+        <span class="text-red-500 text-sm mt-1 flex flex-col">
+            <ValidationMessage For="@(() => accountModel.FullName)" />
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label for="email" class="text-[#2A2A2A] size-[18px]">ئیمەیڵ</label>
+        <div
+            class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
+            <InputText @bind-Value="accountModel.Email" class="text-[#1A1A1A] text-left grow size-full outline-0"
+                type="email" id="email" name="email" placeholder="abc12@gmail.com" readonly />
+            @if (@isEmailValid())
+            {
+                <ValidInputIcon />
+            }
+        </div>
+        <span class="text-red-500 text-sm mt-1 flex flex-col">
+            <ValidationMessage For="@(() => accountModel.Email)" />
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label for="mobile" class="text-[#2A2A2A] size-[18px]">ژمارەی مۆبایل</label>
+        <div
+            class="input-group border border-[#D1D1D1] rounded-2xl mt-2 px-3 h-[56px] flex rtl:flex-row-reverse items-center gap-2">
+            <span class="text-left [direction:ltr]">@accountModel.CountryCode</span>
+            <InputText @bind-Value="accountModel.Mobile" class="text-[#1A1A1A] grow size-full outline-0" type="tel"
+                id="mobile" name="mobile" placeholder="07*********" readonly />
+            @if (@isMobileValid())
+            {
+                <ValidInputIcon />
+            }
+        </div>
+        <span class="text-red-500 text-sm mt-1 flex flex-col">
+            <ValidationMessage For="@(() => accountModel.Mobile)" />
+            <ValidationMessage For="@(() => accountModel.CountryCode)" />
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label for="notification" class="text-[#2A2A2A] size-[18px]">ئاگادارکردنەوە لە نوێکارییەکان</label>
+        <div class="input-group mt-2 h-[56px] flex items-center gap-2">
+            <span class="text-sm text-[#1A1A1A]">ئاگادارکردنەوە لە ڕێگەی ئیمەیڵەوە</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <InputCheckbox type="checkbox" @bind-Value="accountModel.isEmailNotifactionEnabled"
+                    class="sr-only peer" />
+                <div
+                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-[#8060F4] dark:bg-gray-700">
+                </div>
+                <div
+                    class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-all peer-checked:translate-x-5">
+                </div>
+            </label>
+        </div>
+        <span class="text-red-500 text-sm mt-1 flex flex-col">
+            <ValidationMessage For="@(() => accountModel.isEmailNotifactionEnabled)" />
+        </span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="text-red-500 text-center">@errorMessage`</div>
+    }
+</EditForm>
+
+@code {
+    private AccountModel accountModel = new AccountModel
+    {
+        CountryCode = "+964", // Default country code
+        FullName = "کارزان خەلیل",
+        Email = "karza123@gmail.com",
+        Mobile = "07704326578",
+    };
+
+    private EditContext editContext;
+
+    private ValidationMessageStore messageStore;
+
+    private string errorMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(accountModel);
+        messageStore = new ValidationMessageStore(editContext);
+
+        editContext.OnFieldChanged += (sender, args) =>
+        {
+            messageStore.Clear(args.FieldIdentifier);
+            editContext.NotifyValidationStateChanged();
+        };
+    }
+
+    private bool isMobileValid()
+    {
+        if (String.IsNullOrEmpty(accountModel.Mobile)) return false;
+
+        var field = editContext.Field(nameof(accountModel.Mobile));
+        var isMobileValid = !editContext.GetValidationMessages(field).Any();
+
+        return isMobileValid;
+    }
+
+    private bool isEmailValid()
+    {
+        if (String.IsNullOrEmpty(accountModel.Email)) return false;
+
+        var field = editContext.Field(nameof(accountModel.Email));
+        var isEmailValid = !editContext.GetValidationMessages(field).Any();
+
+        return isEmailValid;
+    }
+
+
+    private async Task HandleValidSubmit()
+    {
+        messageStore.Clear();
+
+        var result = await UpdateAccountAsync();
+        if (result.Success)
+        {
+            errorMessage = string.Empty;
+            return;
+        }
+
+        foreach (var error in result.Errors)
+        {
+            messageStore.Add(editContext.Field(error.Key), error.Value);
+        }
+
+        editContext.NotifyValidationStateChanged();
+        errorMessage = result.Message;
+    }
+
+    public Task<FormResult> UpdateAccountAsync()
+    {
+        @* TODO: create request base you endpoint and send it *@
+
+        return Task.FromResult(new FormResult
+        {
+            Success = true,
+            Errors = new(),
+            Message = "چوونەژوورەوە سەرکەوتووبوو"
+        });
+    }
+}

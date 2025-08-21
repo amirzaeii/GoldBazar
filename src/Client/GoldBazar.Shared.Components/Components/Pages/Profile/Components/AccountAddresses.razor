@@ -1,0 +1,38 @@
+<div class="bg-white rounded-2xl my-4 mx-6 px-4 py-6">
+    <h2 class="font-[20px] text-[#1A1A1A]">شوێنەکەم</h2>
+    <div class="mt-4">
+        <div>
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="locationOption" value="auto" checked="@((selectedOption == "auto"))"
+                    @onchange="OnOptionChanged" class="accent-[#8060F4] transform scale-125" />
+                <span class="text-[#1A1A1A] text-sm">دیاریکردنی ناونیشان ئۆتۆماتیکی</span>
+            </label>
+            <div
+                class="flex items-center justify-center mt-2 gap-2 border border-[#E0E0E0] rounded-xl p-4 cursor-pointer">
+                <LocationIcon Height="20" Width="20" Stroke="#565656" />
+                <span class="text-sm text-[#1A1A1A]">شوێنەکەم لەسەر نەخشە</span>
+            </div>
+        </div>
+        <div class="mt-4">
+            <label class="flex items-center space-x-2 cursor-pointer">
+                <input type="radio" name="locationOption" value="manual" checked="@((selectedOption == "manual"))"
+                    @onchange="OnOptionChanged" class="accent-[#8060F4] transform scale-125" />
+                <span class="text-[#1A1A1A] text-sm">دیاریکردنی شوێنەکەم بە شێوەی دەستی</span>
+            </label>
+
+            <input type="text" name="location" id="location"
+                class="mt-2 w-full border border-[#E0E0E0] rounded-xl p-4 text-[#1A1A1A] outline-none focus:border-[#8060F4]"
+                placeholder="ناونیشانی شوێنەکەت بنووسە" />
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private string selectedOption = "auto";
+
+    private void OnOptionChanged(ChangeEventArgs e)
+    {
+        selectedOption = e.Value?.ToString() ?? "auto";
+    }
+}

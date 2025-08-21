@@ -1,6 +1,83 @@
 ﻿@page "/profile"
 @layout Layout.DashboardLayout
+@using GoldBazar.Client.Web.Components.Pages.Profile.Components;
 
 <PageTitle>GOLD BAZAR - Profile</PageTitle>
 
-<h2>Your Profile</h2>
+<main class="bg-[#f6f6f6] h-full pb-4">
+    <div class="p-[24px] mx-2 border-b-[0.8px] rounded-b-2xl border-[#E0E0E0] bg-white">
+        <div class="flex items-center">
+            <img src="/images/profile/avatar.jpg" class="size-[60px] rounded-full border-2 border-[#8060F4]" alt="">
+            <div class="mx-4">
+                <h2 class="text-[#1A1A1A] text-[20px] font-normal">کارزان خەلیل</h2>
+                <span class="text-[#666666] text-sm font-normal">karzan23@gmail.com</span>
+            </div>
+        </div>
+        <div class="bg-[#E0E0E0] h-[1px] w-full mt-[20px]"></div>
+        <div>
+            <ul class="flex flex-col gap-6 my-[30px]">
+                <li>
+                    <NavLink class="flex items-center gap-4" href="/profile/account">
+                        <ProfileIcon Color="#000" Height="25" Width="25" />
+                        <span class="text-sm text-[#666666]">زانیارییەکانی هەژمارەکەم</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="flex items-center gap-4" href="/profile/order-history">
+                        <ShopIcon Color="#000" Height="25" Width="25" />
+                        <span class="text-sm text-[#666666]">داواکارییەکانم</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="flex items-center gap-4" href="/profile/settings">
+                        <SettingIcon Color="#000" Height="25" Width="25" />
+                        <span class="text-sm text-[#666666]">ڕێکخستن</span>
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink class="flex items-center gap-4" href="/profile/protected">
+                        <ProtectedIcon Stroke="#000" Height="25" Width="25" />
+                        <span class="text-sm text-[#666666]">پارێزراوی</span>
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl my-4 mx-6 px-4 py-6">
+        <h2 class="font-[20px] text-[#1A1A1A]">داواکارییەکانم</h2>
+        <div class="mt-4">
+            @* <OrderHistoryItem /> *@
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl my-4 mx-6 px-4 py-6">
+        <h2 class="font-[20px] text-[#1A1A1A]">دۆخی ڕوکاڕ</h2>
+        <div class="mt-4">
+            <div class="flex gap-4">
+                <div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked="@IsDark" @onchange="ToggleTheme" />
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:bg-gray-600 dark:bg-gray-700">
+                        </div>
+                        <div
+                            class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-all peer-checked:translate-x-5">
+                        </div>
+                    </label>
+                </div>
+                <span>دۆخی تاریک</span>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+@code {
+    [Parameter] public bool IsDark { get; set; }
+
+    private void ToggleTheme()
+    {
+        IsDark = !IsDark;
+    }
+}
